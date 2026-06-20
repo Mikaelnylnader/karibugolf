@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balls - Karibu</title>
+    <meta name="description" content="Shop Balls at Karibu. Premium performance golf balls">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    
+        <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                                <li><a href="/categories/" class="nav-link">Categories</a></li>
+                <li><a href="/#products" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Category Header -->
+    <section class="category-hero">
+        <div class="category-hero-bg">
+            <img src="/images/categories/cat_balls.jpg" alt="Balls" loading="lazy">
+        </div>
+        <div class="category-hero-content" data-aos="fade-up">
+            <i class="fas fa-golf-ball category-hero-icon"></i>
+            <h1 class="category-hero-title">Balls</h1>
+            <p class="category-hero-description">Premium performance golf balls — 14 premium products</p>
+            <a class='btn btn-outline' href='/#products'>
+                <i class="fas fa-arrow-left"></i> Back to All Products
+            </a>
+            <a href="/catalogue.pdf" target="_blank" class="btn btn-primary" style="margin-left:10px;">
+                <i class="fas fa-download"></i> Download Catalogue
+            </a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Balls <span>Collection</span></h2>
+                <p class="section-description">14 products available</p>
+            </div>
+            <div class="products-grid">
+        <a href="/products/gk-bl001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5_Golf_Balls.jpg" alt="TaylorMade TP5 Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Golf Balls', 'KES 21,048')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5 Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL001</span>
+                </div>
+                <div class="product-price">KES 21,048</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Golf Balls', 'KES 21,048')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl002.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5_Stripe_Golf_Balls.jpg" alt="TaylorMade TP5 Stripe Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Stripe Golf Balls', 'KES 22,835')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5 Stripe Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL002</span>
+                </div>
+                <div class="product-price">KES 22,835</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Stripe Golf Balls', 'KES 22,835')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl003.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5_Pix_Golf_Balls.jpg" alt="TaylorMade TP5 Pix Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Pix Golf Balls', 'KES 22,835')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5 Pix Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL003</span>
+                </div>
+                <div class="product-price">KES 22,835</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Pix Golf Balls', 'KES 22,835')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl004.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5x_Golf_Balls.jpg" alt="TaylorMade TP5x Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Golf Balls', 'KES 21,048')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5x Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL004</span>
+                </div>
+                <div class="product-price">KES 21,048</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Golf Balls', 'KES 21,048')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl005.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5x_Stripe_Golf_Balls.jpg" alt="TaylorMade TP5x Stripe Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Stripe Golf Balls', 'KES 22,835')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5x Stripe Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL005</span>
+                </div>
+                <div class="product-price">KES 22,835</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Stripe Golf Balls', 'KES 22,835')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl006.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5x_Pix_Golf_Balls.jpg" alt="TaylorMade TP5x Pix Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Pix Golf Balls', 'KES 22,835')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade TP5x Pix Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL006</span>
+                </div>
+                <div class="product-price">KES 22,835</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5x Pix Golf Balls', 'KES 22,835')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl007.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_Tour_Response_Golf_Balls.jpg" alt="TaylorMade Tour Response Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade Tour Response Golf Balls', 'KES 10,844')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">TaylorMade Tour Response Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL007</span>
+                </div>
+                <div class="product-price">KES 10,844</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade Tour Response Golf Balls', 'KES 10,844')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl008.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_Chrome_Soft_Golf_Balls.jpg" alt="Callaway Chrome Soft Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Chrome Soft Golf Balls', 'KES 21,559')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Callaway Chrome Soft Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL008</span>
+                </div>
+                <div class="product-price">KES 21,559</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Chrome Soft Golf Balls', 'KES 21,559')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl009.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_SuperSoft_Max_Golf_Balls.jpg" alt="Callaway SuperSoft Max Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway SuperSoft Max Golf Balls', 'KES 10,715')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Callaway SuperSoft Max Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL009</span>
+                </div>
+                <div class="product-price">KES 10,715</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway SuperSoft Max Golf Balls', 'KES 10,715')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl010.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_Super_Response_Golf_Balls.jpg" alt="Callaway Super Response Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Super Response Golf Balls', 'KES 10,844')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Callaway Super Response Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL010</span>
+                </div>
+                <div class="product-price">KES 10,844</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Super Response Golf Balls', 'KES 10,844')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl011.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_Pro_V1_X_Golf_Balls.jpg" alt="Titleist Pro V1 X Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist Pro V1 X Golf Balls', 'KES 11,480')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Titleist Pro V1 X Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL011</span>
+                </div>
+                <div class="product-price">KES 11,480</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist Pro V1 X Golf Balls', 'KES 11,480')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl012.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_Pro_V1_Golf_Balls.jpg" alt="Titleist Pro V1 Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist Pro V1 Golf Balls', 'KES 11,480')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Titleist Pro V1 Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL012</span>
+                </div>
+                <div class="product-price">KES 11,480</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist Pro V1 Golf Balls', 'KES 11,480')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl013.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_TruFeel_Golf_Balls.jpg" alt="Titleist TruFeel Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist TruFeel Golf Balls', 'KES 11,480')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Titleist TruFeel Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL013</span>
+                </div>
+                <div class="product-price">KES 11,480</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist TruFeel Golf Balls', 'KES 11,480')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bl014.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="balls" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_Tour_Soft_Golf_Balls.jpg" alt="Titleist Tour Soft Golf Balls" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist Tour Soft Golf Balls', 'KES 17,222')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Balls</span>
+                <h3 class="product-title">Titleist Tour Soft Golf Balls</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BL014</span>
+                </div>
+                <div class="product-price">KES 17,222</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist Tour Soft Golf Balls', 'KES 17,222')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+            </div>
+            <div class="text-center" style="text-align:center;margin-top:40px;" data-aos="fade-up">
+                <a href="/categories/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 40px;font-size:16px;">
+                    Browse All Categories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Interested in Bulk Orders?</h2>
+                <p>We offer special pricing for clubs, pros, and bulk purchases.</p>
+                <a href="https://wa.me/8613262570197?text=Hi!%20I'd%20like%20to%20inquire%20about%20bulk%20pricing" class="btn btn-primary btn-large" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo">
+                        <img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;">
+                    </a>
+                    <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#products">Shop</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/#brands">Brands</a></li>
+                        
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Brands</h4>
+                    <ul>
+                        <li><a href="#">TaylorMade</a></li>
+                        <li><a href="#">Callaway</a></li>
+                        <li><a href="#">J.Lindeberg</a></li>
+                        <li><a href="#">Titleist</a></li>
+                        <li><a href="#">Ping</a></li>
+                        <li><a href="#">FootJoy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Contact Us on WhatsApp</h4>
+                    <p>Scan the QR code or tap to chat</p>
+                    <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;">
+                        <img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;">
+                    </a>
+                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Karibu. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+</body>
+</html>

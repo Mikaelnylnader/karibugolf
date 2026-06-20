@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karibu Golf — A golf shop for everyone</title>
+    <meta name="description" content="Premium golf equipment, apparel and accessories from top brands. Shop TaylorMade, Callaway, J.Lindeberg, Titleist and more in Kenya.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    
+        <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link active">Home</a></li>
+                                <li><a href="/categories/" class="nav-link">Categories</a></li>
+                <li><a href="/#products" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg" style="background-image:url(/images/hero-karen.jpg);"></div>
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+            <span class="hero-subtitle">Karibu sana — Welcome</span>
+            <h1 class="hero-title">A Golf Shop<br><span>for Everyone</span></h1>
+            <p class="hero-description">First-timers, weekend warriors, returning expats, and tour pros — Karibu Golf is for anyone curious about the game and the long walk that comes with it.</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn btn-primary">
+                    Browse the Shop <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <div class="brands-bar">
+        <div class="brands-slider">
+                        <div class="brand-item"><img src="/images/brands/brand_taylormade.svg" alt="TaylorMade" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_callaway.svg" alt="Callaway" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_j-lindeberg.svg" alt="J.Lindeberg" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_titleist.svg" alt="Titleist" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_malbon.png" alt="Malbon Golf" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_footjoy.png" alt="FootJoy" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_ping.svg" alt="Ping" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_cobra.png" alt="Cobra" class="brand-logo" loading="lazy"></div>
+                        <div class="brand-item"><img src="/images/brands/brand_taylormade.svg" alt="TaylorMade" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_callaway.svg" alt="Callaway" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_j-lindeberg.svg" alt="J.Lindeberg" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_titleist.svg" alt="Titleist" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_malbon.png" alt="Malbon Golf" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_footjoy.png" alt="FootJoy" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_ping.svg" alt="Ping" class="brand-logo" loading="lazy"></div>
+            <div class="brand-item"><img src="/images/brands/brand_cobra.png" alt="Cobra" class="brand-logo" loading="lazy"></div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <section id="categories" class="categories-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Browse By</span>
+                <h2 class="section-title">Shop <span>Categories</span></h2>
+                <p class="section-description">Premium golf equipment, apparel & accessories</p>
+            </div>
+            <div class="categories-grid">
+            <a class='category-card-link' data-aos-delay='0' data-aos='fade-up' href='/categories/golf-clubs.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_golf_irons.jpg" alt="Golf Clubs" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Golf Clubs</h3>
+                        <span class="product-count">Drivers, woods, hybrids, irons, wedges & putters</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            <a class='category-card-link' data-aos-delay='50' data-aos='fade-up' href='/categories/clothes.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_mens_jackets.jpg" alt="Clothes" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Clothes</h3>
+                        <span class="product-count">Men's & Women's apparel</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            <a class='category-card-link' data-aos-delay='100' data-aos='fade-up' href='/categories/bags.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_bags.png?v=2" alt="Bags" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Bags</h3>
+                        <span class="product-count">Carry your gear in style</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            <a class='category-card-link' data-aos-delay='150' data-aos='fade-up' href='/categories/mens_shoes.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_mens_shoes.jpg?v=2" alt="Shoes" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Shoes</h3>
+                        <span class="product-count">Men's & Women's golf shoes</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            <a class='category-card-link' data-aos-delay='200' data-aos='fade-up' href='/categories/hats_and_caps.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_hats_and_caps.png?v=2" alt="Hats & Caps" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Hats & Caps</h3>
+                        <span class="product-count">Top off your look</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            <a class='category-card-link' data-aos-delay='250' data-aos='fade-up' href='/categories/accessories.html'>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="/images/categories/cat_accessories.jpg" alt="Accessories" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Accessories</h3>
+                        <span class="product-count">Gloves, balls, grips & more</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>            </div>
+        </div>
+    </section>
+
+    <!-- Featured Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="0">
+                    <span class="stat-number">154+</span>
+                    <span class="stat-label">Premium Products</span>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Top Brands</span>
+                </div>
+                <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">WhatsApp Support</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Our Collection</span>
+                <h2 class="section-title">Shop <span>Premium</span></h2>
+                <p class="section-description">Handpicked selection of the finest golf equipment and apparel</p>
+            </div>
+
+
+            <div class="products-grid">
+        <a href="/products/gk-001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="accessories" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/JLindeberg_Braided_Belt_-_Black.jpg" alt="J.Lindeberg Braided Belt - Black" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('J.Lindeberg Braided Belt - Black', 'KES 7,015')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Accessories</span>
+                <h3 class="product-title">J.Lindeberg Braided Belt - Black</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-001</span>
+                </div>
+                <div class="product-price">KES 7,015</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('J.Lindeberg Braided Belt - Black', 'KES 7,015')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-mj001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_jackets" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Malbon_Puffer_Jacket_-_Navy.jpg" alt="Malbon Puffer Jacket - Navy" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Malbon Puffer Jacket - Navy', 'KES 19,135')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Apparel</span>
+                <h3 class="product-title">Malbon Puffer Jacket - Navy</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-MJ001</span>
+                </div>
+                <div class="product-price">KES 19,135</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Malbon Puffer Jacket - Navy', 'KES 19,135')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-hc001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="hats_and_caps" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/TaylorMade_TP5_Hat.jpg" alt="TaylorMade TP5 Hat" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Hat', 'KES 4,336')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Hats & Caps</span>
+                <h3 class="product-title">TaylorMade TP5 Hat</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-HC001</span>
+                </div>
+                <div class="product-price">KES 4,336</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade TP5 Hat', 'KES 4,336')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-gr001-bk.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="grips" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Golf_Pride_Tour_Velvet_-_Black.jpg" alt="Golf Pride Tour Velvet - Black" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Golf Pride Tour Velvet - Black', 'KES 574')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Grips</span>
+                <h3 class="product-title">Golf Pride Tour Velvet - Black</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-GR001-BK</span>
+                </div>
+                <div class="product-price">KES 574</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Golf Pride Tour Velvet - Black', 'KES 574')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-bg001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="bags" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_Players_4_StaDry_Stand_Bag_-_Black_White.jpg" alt="Titleist Players 4 StaDry Stand Bag - Black/White" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist Players 4 StaDry Stand Bag - Black/White', 'KES 31,574')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Bags</span>
+                <h3 class="product-title">Titleist Players 4 StaDry Stand Bag - Black/White</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-BG001</span>
+                </div>
+                <div class="product-price">KES 31,574</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist Players 4 StaDry Stand Bag - Black/White', 'KES 31,574')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-pt001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="putters" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Taylor_Made_Juno_Putter.jpg" alt="Taylor Made Juno Putter" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Taylor Made Juno Putter', 'KES 12,694')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Putters</span>
+                <h3 class="product-title">Taylor Made Juno Putter</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-PT001</span>
+                </div>
+                <div class="product-price">KES 12,694</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Taylor Made Juno Putter', 'KES 12,694')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Taylor_Made_MG4_Wedge.jpg" alt="Taylor Made MG4 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Taylor Made MG4 Wedge', 'KES 16,456')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Taylor Made MG4 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG001</span>
+                </div>
+                <div class="product-price">KES 16,456</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Taylor Made MG4 Wedge', 'KES 16,456')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/FootJoy_Pro_SL.jpg" alt="FootJoy Pro SL" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL', 'KES 38,270')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">FootJoy Pro SL</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH001</span>
+                </div>
+                <div class="product-price">KES 38,270</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL', 'KES 38,270')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+            </div>
+            <div class="text-center" style="text-align:center;margin-top:40px;" data-aos="fade-up">
+                <a href="/categories/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 40px;font-size:16px;">
+                    Browse All Categories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Can't Find What You're Looking For?</h2>
+                <p>We source premium golf equipment from around the world. Contact us for special orders.</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/8613262570197?text=Hi!%20I'm%20looking%20for%20specific%20golf%20equipment" class="btn btn-primary btn-large" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content" data-aos="fade-right">
+                    <span class="section-label">About Us</span>
+                    <h2 class="section-title">Your Golf <span>Partner</span></h2>
+                    <p>Golf Kenya is your premier destination for premium golf equipment and apparel in East Africa. We bring you the finest brands and latest collections from around the world, delivered right to your doorstep.</p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>100% Authentic Products</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Direct from Manufacturers</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Nationwide Delivery in Kenya</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Competitive Pricing & Bulk Orders</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image" data-aos="fade-left">
+                    <div class="image-frame">
+                        <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600" alt="Golf Course">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Get In Touch</span>
+                <h2 class="section-title">Contact <span>Us</span></h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp</h3>
+                    <p>Chat with us instantly</p>
+                    <a href="https://wa.me/8613262570197" target="_blank">+254 700 000 000</a>
+                </div>
+                <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp QR</h3>
+                    <p>Scan to chat with us</p>
+                    <img src="/images/whatsapp-qr.png" alt="WhatsApp QR" style="width:120px;height:120px;border-radius:12px;margin-top:8px;">
+                </div>
+                <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Location</h3>
+                    <p>Visit our showroom</p>
+                    <span>Nairobi, Kenya</span>
+                </div>
+                <div class="contact-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="contact-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Catalogue</h3>
+                    <p>Browse our full collection</p>
+                    <a href="/catalogue.pdf" target="_blank">Download PDF</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo">
+                        <img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;">
+                    </a>
+                    <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#products">Shop</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/#brands">Brands</a></li>
+                        
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Brands</h4>
+                    <ul>
+                        <li><a href="#">TaylorMade</a></li>
+                        <li><a href="#">Callaway</a></li>
+                        <li><a href="#">J.Lindeberg</a></li>
+                        <li><a href="#">Titleist</a></li>
+                        <li><a href="#">Ping</a></li>
+                        <li><a href="#">FootJoy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Contact Us on WhatsApp</h4>
+                    <p>Scan the QR code or tap to chat</p>
+                    <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;">
+                        <img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;">
+                    </a>
+                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Karibu. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+</body>
+</html>

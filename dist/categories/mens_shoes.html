@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Men's Shoes - Karibu</title>
+    <meta name="description" content="Shop Men's Shoes at Karibu. Walk the course in comfort">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    
+        <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                                <li><a href="/categories/" class="nav-link">Categories</a></li>
+                <li><a href="/#products" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Category Header -->
+    <section class="category-hero">
+        <div class="category-hero-bg">
+            <img src="/images/categories/cat_mens_shoes.jpg" alt="Men's Shoes" loading="lazy">
+        </div>
+        <div class="category-hero-content" data-aos="fade-up">
+            <i class="fas fa-shoe-prints category-hero-icon"></i>
+            <h1 class="category-hero-title">Men's Shoes</h1>
+            <p class="category-hero-description">Walk the course in comfort — 12 premium products</p>
+            <a class='btn btn-outline' href='/#products'>
+                <i class="fas fa-arrow-left"></i> Back to All Products
+            </a>
+            <a href="/catalogue.pdf" target="_blank" class="btn btn-primary" style="margin-left:10px;">
+                <i class="fas fa-download"></i> Download Catalogue
+            </a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Men's Shoes <span>Collection</span></h2>
+                <p class="section-description">12 products available</p>
+            </div>
+            <div class="products-grid">
+        <a href="/products/gk-sh001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/FootJoy_Pro_SL.jpg" alt="FootJoy Pro SL" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL', 'KES 38,270')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">FootJoy Pro SL</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH001</span>
+                </div>
+                <div class="product-price">KES 38,270</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL', 'KES 38,270')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh002.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/FootJoy_Fuel_Sport.jpg" alt="FootJoy Fuel Sport" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('FootJoy Fuel Sport', 'KES 31,892')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">FootJoy Fuel Sport</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH002</span>
+                </div>
+                <div class="product-price">KES 31,892</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('FootJoy Fuel Sport', 'KES 31,892')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh003.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/FootJoy_Pro_SL_XP.jpg" alt="FootJoy Pro SL XP" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL XP', 'KES 44,586')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">FootJoy Pro SL XP</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH003</span>
+                </div>
+                <div class="product-price">KES 44,586</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('FootJoy Pro SL XP', 'KES 44,586')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh004.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Nike_Air_Zoom_Infinity.jpg" alt="Nike Air Zoom Infinity" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Nike Air Zoom Infinity', 'KES 25,514')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Nike Air Zoom Infinity</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH004</span>
+                </div>
+                <div class="product-price">KES 25,514</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Nike Air Zoom Infinity', 'KES 25,514')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh005.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Nike_Infinity_G.jpg" alt="Nike Infinity G" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Nike Infinity G', 'KES 24,174')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Nike Infinity G</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH005</span>
+                </div>
+                <div class="product-price">KES 24,174</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Nike Infinity G', 'KES 24,174')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh006.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Nike_Infinity_Pro_2.jpg" alt="Nike Infinity Pro 2" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Nike Infinity Pro 2', 'KES 31,189')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Nike Infinity Pro 2</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH006</span>
+                </div>
+                <div class="product-price">KES 31,189</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Nike Infinity Pro 2', 'KES 31,189')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh007.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Nike_Infinity_Pro.jpg" alt="Nike Infinity Pro" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Nike Infinity Pro', 'KES 23,538')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Nike Infinity Pro</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH007</span>
+                </div>
+                <div class="product-price">KES 23,538</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Nike Infinity Pro', 'KES 23,538')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh008.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ecco_C4_BOA.jpg" alt="Ecco C4 BOA" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ecco C4 BOA', 'KES 14,670')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Ecco C4 BOA</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH008</span>
+                </div>
+                <div class="product-price">KES 14,670</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ecco C4 BOA', 'KES 14,670')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh009.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/PGM_Golf_Shoe.jpg" alt="PGM Golf Shoe" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('PGM Golf Shoe', 'KES 50,964')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">PGM Golf Shoe</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH009</span>
+                </div>
+                <div class="product-price">KES 50,964</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('PGM Golf Shoe', 'KES 50,964')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh010.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Under_Armour_Showdown_SL.jpg" alt="Under Armour Showdown SL" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Under Armour Showdown SL', 'KES 17,733')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Under Armour Showdown SL</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH010</span>
+                </div>
+                <div class="product-price">KES 17,733</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Under Armour Showdown SL', 'KES 17,733')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh011.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/New_Balance_Fresh_Foam_Contend.jpg" alt="New Balance Fresh Foam Contend" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('New Balance Fresh Foam Contend', 'KES 19,072')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">New Balance Fresh Foam Contend</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH011</span>
+                </div>
+                <div class="product-price">KES 19,072</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('New Balance Fresh Foam Contend', 'KES 19,072')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-sh012.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="mens_shoes" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Puma_Ignite_Pro.jpg" alt="Puma Ignite Pro" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Puma Ignite Pro', 'KES 12,694')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Shoes</span>
+                <h3 class="product-title">Puma Ignite Pro</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-SH012</span>
+                </div>
+                <div class="product-price">KES 12,694</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Puma Ignite Pro', 'KES 12,694')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+            </div>
+            <div class="text-center" style="text-align:center;margin-top:40px;" data-aos="fade-up">
+                <a href="/categories/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 40px;font-size:16px;">
+                    Browse All Categories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Interested in Bulk Orders?</h2>
+                <p>We offer special pricing for clubs, pros, and bulk purchases.</p>
+                <a href="https://wa.me/8613262570197?text=Hi!%20I'd%20like%20to%20inquire%20about%20bulk%20pricing" class="btn btn-primary btn-large" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo">
+                        <img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;">
+                    </a>
+                    <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#products">Shop</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/#brands">Brands</a></li>
+                        
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Brands</h4>
+                    <ul>
+                        <li><a href="#">TaylorMade</a></li>
+                        <li><a href="#">Callaway</a></li>
+                        <li><a href="#">J.Lindeberg</a></li>
+                        <li><a href="#">Titleist</a></li>
+                        <li><a href="#">Ping</a></li>
+                        <li><a href="#">FootJoy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Contact Us on WhatsApp</h4>
+                    <p>Scan the QR code or tap to chat</p>
+                    <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;">
+                        <img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;">
+                    </a>
+                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Karibu. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+</body>
+</html>

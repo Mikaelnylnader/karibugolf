@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PXG 0311 XP Gen 7 - KARIBU</title>
+    <meta name="description" content="PXG 0311 XP Gen 7 in Kenya - Ai Smart Face technology with multiple sweet spots for high-launch game improvement.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .product-detail { padding: 60px 0; background: #f8f5ee; min-height: calc(100vh - 400px); }
+        .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; max-width:1400px; margin:0 auto; padding:0 40px; }
+        .product-detail-image { background: transparent; border-radius: 0; overflow: visible; box-shadow: none; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.15)); position:relative; }
+        .product-detail-image img { width: 100%; height: auto; display: block; border-radius: 12px; }
+        .product-detail-info { padding-top: 10px; }
+        .product-detail-badge { display: inline-block; background: #1f5132; color: #c9a961; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .product-detail-title { font-family: 'Playfair Display', serif; font-size: 32px; color: #1a1a1a; margin-bottom: 10px; font-weight: 700; }
+        .product-detail-sku { font-size: 14px; color: #888; margin-bottom: 15px; }
+        .product-detail-price { font-size: 36px; font-weight: 800; color: #1f5132; margin: 20px 0; }
+        .product-detail-desc { color: #555; line-height: 1.8; margin-bottom: 30px; font-size: 15px; }
+        .pimage-main { width:100%; margin-bottom:12px; }
+        .pimage-main img { width:100% !important; height:auto !important; display:block !important; }
+        .pimage-thumbs { display:flex !important; gap:8px; margin-top:0; flex-wrap:wrap; }
+        .pthumb { width:70px !important; height:70px !important; object-fit:cover; border-radius:8px; border:2px solid #e0d8c8; cursor:pointer; transition:all 0.2s; }
+        .pthumb:hover { border-color:#c9a961; transform:scale(1.05); }
+        .configurator { background:#f8f5ee; border-radius:16px; padding:20px; margin:20px 0; border:1px solid #e8e0d0; }
+        .config-title { font-size:16px; font-weight:700; color:#1f5132; margin-bottom:16px; font-family:'Montserrat',sans-serif; }
+        .config-row { display:flex; gap:12px; margin-bottom:12px; }
+        .config-field { flex:1; min-width:0; }
+        .config-field label { display:block; font-size:11px; font-weight:600; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
+        .config-field select { width:100%; padding:10px 12px; border:2px solid #d0c8b8; border-radius:10px; background:#fff; color:#333; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s; appearance:auto; }
+        .config-field select:focus { border-color:#1f5132; outline:none; }
+        .config-summary { background:#fff; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:500; color:#1f5132; border:1px solid #e8e0d0; margin-top:12px; }
+        @media (max-width:500px) { .config-row { flex-direction:column; gap:10px; } }
+        .product-detail-actions { display: flex; gap: 15px; flex-wrap: wrap; margin: 20px 0; }
+        .btn-detail-inquire { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; padding: 15px 35px; border-radius: 50px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+        .btn-detail-inquire:hover { background: #1da851; transform: translateY(-2px); }
+        .btn-detail-cart { display: inline-flex; align-items: center; gap: 10px; background: #1f5132; color: #fff; padding: 15px 35px; border-radius: 50px; font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+        .btn-detail-cart:hover { background: #163d26; transform: translateY(-2px); }
+        .product-specs { margin: 20px 0; padding: 20px; background: #fff; border-radius: 16px; border: 1px solid #e8e0d0; }
+        .specs-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #1f5132; margin-bottom: 16px; }
+        .specs-title::after { content:""; display:block; width:50px; height:3px; background:#c9a961; margin-top:6px; }
+        .specs-list { list-style: none; padding: 0; margin: 0; }
+        .specs-list li { display: flex; padding: 10px 0; border-bottom: 1px solid #f0e8d8; font-size: 14px; }
+        .specs-list li:last-child { border-bottom: none; }
+        .spec-label { width: 45%; font-weight: 600; color: #1a1a1a; flex-shrink: 0; }
+        .spec-value { width: 55%; color: #555; }
+        .loft-table-wrapper { margin: 0; overflow-x: auto; }
+        .loft-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; font-size: 13px; }
+        .loft-table thead { background: #1f5132; }
+        .loft-table thead th { color: #c9a961; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .loft-table tbody tr:nth-child(odd) { background: #fff; }
+        .loft-table tbody tr:nth-child(even) { background: #e8f0ea; }
+        .loft-table tbody td { padding: 8px 12px; color: #333; border-bottom: 1px solid #d0d8d0; }
+        .pimage-specs { margin-top:24px; padding:20px; background:#f8f5ee; border-radius:16px; border:1px solid #e8e0d0; }
+        .pimage-specs .specs-title { font-size:16px; margin-bottom:12px; }
+        .pimage-specs .loft-table { font-size:12px; }
+        .pimage-specs .loft-table thead th { padding:7px 8px; font-size:10px; }
+        .pimage-specs .loft-table tbody td { padding:5px 8px; }
+        .back-to-shop { text-align: left; margin-bottom: 16px; max-width:1400px; margin-left: auto; margin-right: auto; padding:0 40px; }
+        .back-to-shop a { color: #1f5132; text-decoration: none; font-weight: 500; font-size: 15px; }
+        .back-to-shop a:hover { color: #c9a961; }
+        @media (max-width:768px) { .product-detail-grid { grid-template-columns: 1fr; gap: 30px; } .product-detail-title { font-size: 24px; } .product-detail-price { font-size: 28px; } .back-to-shop { padding:0 20px; } }
+        .lightbox-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:9999; justify-content:center; align-items:center; cursor:pointer; }
+        .lightbox-overlay.active { display:flex; }
+        .lightbox-overlay img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:8px; }
+        .lightbox-close { position:absolute; top:20px; right:30px; color:#fff; font-size:40px; cursor:pointer; font-weight:300; transition:all 0.2s; line-height:1; }
+        .lightbox-close:hover { color:#c9a961; transform:scale(1.1); }
+        .lightbox-prev, .lightbox-next { position:absolute; top:50%; transform:translateY(-50%); color:#fff; font-size:50px; cursor:pointer; font-weight:300; padding:20px; transition:all 0.2s; user-select:none; }
+        .lightbox-prev { left:20px; }
+        .lightbox-next { right:20px; }
+        .lightbox-prev:hover, .lightbox-next:hover { color:#c9a961; }
+    </style>
+</head>
+<body>
+    <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+        <span class="lightbox-prev" onclick="prevImage(event)">&#8249;</span>
+        <img id="lightboxImg" src="" alt="Product Image">
+        <span class="lightbox-next" onclick="nextImage(event)">&#8250;</span>
+    </div>
+    <nav class="navbar"><div class="nav-container">
+        <a href="/" class="nav-logo"><img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;"><span class="logo-text">KARIBU</span></a>
+        <ul class="nav-menu"><li><a href="/" class="nav-link">Home</a></li><li><a href="/categories/" class="nav-link">Categories</a></li><li><a href="/#products" class="nav-link">Shop</a></li><li><a href="/about.html" class="nav-link">About</a></li><li><a href="/#contact" class="nav-link">Contact</a></li></ul>
+        <div class="nav-actions"><a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;"><i class="fas fa-shopping-bag"></i><span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span></a><a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Chat</a></div>
+        <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    </div></nav>
+    <div class="back-to-shop"><a href="/categories/pxg-irons.html"><i class="fas fa-arrow-left"></i> Back to Callaway Irons</a></div>
+
+    <section class="product-detail">
+        <div class="product-detail-grid">
+            <!-- LEFT COLUMN -->
+            <div class="product-detail-image" data-aos="fade-right">
+                <div class="pimage-main"><img id="pmain" src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="PXG 0311 XP Gen 7"></div>
+                <div class="pimage-thumbs">
+                    <img class="pthumb" src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="Angle" onclick="document.getElementById('pmain').src=this.src">
+                    <img class="pthumb" src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="Sole" onclick="document.getElementById('pmain').src=this.src">
+                    <img class="pthumb" src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="Face" onclick="document.getElementById('pmain').src=this.src">
+                    <img class="pthumb" src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="Back" onclick="document.getElementById('pmain').src=this.src">
+                </div>
+                <div class="pimage-specs">
+                    <h3 class="specs-title">Loft and Length Specs</h3>
+                    <table class="loft-table">
+                        <thead>
+                            <tr><th>Club</th><th>Loft</th><th>Lie</th><th>Offset</th><th>Bounce</th><th>Length</th><th>Swing Wt</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4 Iron</td><td>21.0</td><td>59.75</td><td>5.3mm</td><td>2</td><td>39.75</td><td>C9</td></tr>
+                            <tr><td>5 Iron</td><td>24.0</td><td>60.5</td><td>4.7mm</td><td>3</td><td>39.00</td><td>C9</td></tr>
+                            <tr><td>6 Iron</td><td>27.0</td><td>61.0</td><td>4.2mm</td><td>5</td><td>38.50</td><td>C9</td></tr>
+                            <tr><td>7 Iron</td><td>30.0</td><td>62.0</td><td>3.5mm</td><td>5</td><td>37.75</td><td>D0</td></tr>
+                            <tr><td>8 Iron</td><td>34.0</td><td>63.0</td><td>3.0mm</td><td>6</td><td>37.25</td><td>D0</td></tr>
+                            <tr><td>9 Iron</td><td>38.5</td><td>63.5</td><td>2.5mm</td><td>7</td><td>36.75</td><td>D0</td></tr>
+                            <tr><td>PW</td><td>43.0</td><td>64.0</td><td>2.0mm</td><td>8</td><td>36.25</td><td>D1</td></tr>
+                            <tr><td>AW</td><td>49.0</td><td>64.0</td><td>1.5mm</td><td>9</td><td>36.00</td><td>D1</td></tr>
+                            <tr><td>SW</td><td>54.0</td><td>64.5</td><td>1.5mm</td><td>10</td><td>35.75</td><td>D2</td></tr>
+                            <tr><td>LW</td><td>59.0</td><td>64.5</td><td>1.5mm</td><td>9</td><td>35.50</td><td>D3</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="product-detail-info">
+                <span class="product-detail-badge">Irons</span>
+                <h1 class="product-detail-title">PXG 0311 XP Gen 7</h1>
+                <div class="product-detail-sku">SKU: GK-PXXG</div>
+                <div class="product-detail-price">KES 204,108</div>
+                <div class="product-detail-desc">
+                    <strong>Extreme Forgiveness.</strong> COR2 face technology and precision weighting deliver maximum ball speed and forgiveness in a premium package.
+                </div>
+
+                <div class="configurator">
+                    <h3 class="config-title">Customize Your Set</h3>
+                    <div class="config-row">
+                        <div class="config-field"><label>Set Composition</label>
+                            <select id="selSet" onchange="updateConfig()">
+                                <option value="4-PW+AW (8 Irons)" selected>4-PW+AW (8 Irons)</option>
+                                <option value="4-PW (7 Irons)">4-PW (7 Irons)</option>
+                                <option value="5-PW+AW+SW (8 Irons)">5-PW+AW+SW (8 Irons)</option>
+                                <option value="5-PW+SW (7 Irons)">5-PW+SW (7 Irons)</option>
+                                <option value="5-PW+AW (7 Irons)">5-PW+AW (7 Irons)</option>
+                                <option value="5-PW (6 Irons)">5-PW (6 Irons)</option>
+                            </select></div>
+                        <div class="config-field"><label>Shaft Type</label>
+                            <select id="selShaft" onchange="updateConfig()">
+                                <option value="steel" selected>Steel - KBS Max 85 MT</option>
+                                <option value="graphite">Graphite - Mitsubishi MMT</option>
+                            </select></div>
+                    </div>
+                    <div class="config-row">
+                        <div class="config-field"><label>Flex</label>
+                            <select id="selFlex" onchange="updateConfig()">
+                                <option value="Stiff (S)" selected>Stiff (S)</option>
+                                <option value="Regular (R)">Regular (R)</option>
+                                <option value="Senior (A)">Senior (A)</option>
+                            </select></div>
+                        <div class="config-field"><label>Hand</label>
+                            <select id="selHand" onchange="updateConfig()">
+                                <option value="Right Hand" selected>Right Hand</option>
+                            </select></div>
+                    </div>
+                    <div class="config-summary" id="configSummary">
+                        <i class="fas fa-check-circle" style="color:#c9a961;"></i>
+                        <span>4-PW+AW (8 Irons) - KBS Max 85 MT - Stiff (S) - Right Hand</span>
+                    </div>
+                </div>
+
+                <div class="product-detail-actions">
+                    <a href="javascript:void(0)" class="btn-detail-cart" onclick="addToCart('PXG 0311 XP Gen 7', 204108, '/images/products/PXG_0311_XP_Gen_7.jpg', document.getElementById('configSummary').querySelector('span').textContent)"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    <a href="https://wa.me/8613262570197?text=I%20am%20interested%20in%20the%20Callaway%20Paradym%20Ai%20Smoke%20HL%20(GK-PXXG)" target="_blank" class="btn-detail-inquire"><i class="fab fa-whatsapp"></i> Inquire via WhatsApp</a>
+                </div>
+
+                <div class="product-specs">
+                    <h3 class="specs-title">Product Specifications</h3>
+                    <ul class="specs-list">
+                        <li><span class="spec-label">Model</span><span class="spec-value">PXG 0311 XP Gen 7</span></li>
+                        <li><span class="spec-label">Style</span><span class="spec-value">Players Distance - HCP 3-20</span></li>
+                        <li><span class="spec-label">Forgiveness</span><span class="spec-value">High</span></li>
+                        <li><span class="spec-label">Trajectory</span><span class="spec-value">Mid-High</span></li>
+                        <li><span class="spec-label">Workability</span><span class="spec-value">Medium</span></li>
+                        <li><span class="spec-label">Face Material</span><span class="spec-value">Forged HT1770 Steel</span></li>
+                        <li><span class="spec-label">Set</span><span class="spec-value">4-PW+AW (8 Irons)</span></li>
+                        <li><span class="spec-label">Grip</span><span class="spec-value">Lamkin Crossline 360</span></li>
+                        <li><span class="spec-label">Shaft Steel</span><span class="spec-value">KBS Max 85 MT (S/R)</span></li>
+                        <li><span class="spec-label">Shaft Graphite</span><span class="spec-value">Fujikura Ventus TR Blue (S/R/A)</span></li>
+                        <li><span class="spec-label">Status</span><span class="spec-value">In Stock</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"><div class="container"><div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="footer-logo"><img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;"><span class="logo-text">KARIBU</span></a><p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
+            <div class="social-links"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div></div>
+        <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="/#products">Shop</a></li><li><a href="/about.html">About Us</a></li><li><a href="/#brands">Brands</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+        <div class="footer-links"><h4>Brands</h4><ul><li><a href="#">TaylorMade</a></li><li><a href="#">Callaway</a></li><li><a href="#">J.Lindeberg</a></li><li><a href="#">Titleist</a></li><li><a href="#">Ping</a></li><li><a href="#">FootJoy</a></li></ul></div>
+        <div class="footer-newsletter"><h4>Contact Us on WhatsApp</h4><p>Scan the QR code or tap to chat</p>
+            <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;"><img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;"></a>
+            <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Karibu. All rights reserved.</p></div></div></footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+    <script src="/script.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
+    <script>
+        function updateConfig() {
+            var setComp = document.getElementById('selSet').value;
+            var shaft = document.getElementById('selShaft').value;
+            var flex = document.getElementById('selFlex').value;
+            var hand = document.getElementById('selHand').value;
+            var shaftName = shaft === 'steel' ? 'KBS Max 85 MT' : 'Mitsubishi MMT';
+            document.getElementById('configSummary').innerHTML =
+                '<i class="fas fa-check-circle" style="color:#c9a961;"></i> <span>' +
+                setComp + ' - ' + shaftName + ' - ' + flex + ' - ' + hand + '</span>';
+        }
+var lightboxImages = [];
+var currentIndex = 0;
+var lightbox = document.getElementById('lightbox');
+var lightboxImg = document.getElementById('lightboxImg');
+function openLightbox(index) { currentIndex = index; lightboxImg.src = lightboxImages[currentIndex]; lightbox.classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeLightbox(e) { if (e.target === lightbox || e.target.className === 'lightbox-close') { lightbox.classList.remove('active'); document.body.style.overflow = ''; } }
+function prevImage(e) { e.stopPropagation(); currentIndex = (currentIndex - 1 + lightboxImages.length) % lightboxImages.length; lightboxImg.src = lightboxImages[currentIndex]; }
+function nextImage(e) { e.stopPropagation(); currentIndex = (currentIndex + 1) % lightboxImages.length; lightboxImg.src = lightboxImages[currentIndex]; }
+document.addEventListener('DOMContentLoaded', function() {
+    var thumbs = document.querySelectorAll('.pthumb');
+    thumbs.forEach(function(img, i) { lightboxImages.push(img.src); img.style.cursor = 'pointer'; img.addEventListener('click', function(e) { e.stopPropagation(); document.getElementById('pmain').src = this.src; openLightbox(i); }); });
+    var mainImg = document.getElementById('pmain');
+    if (mainImg) { if (lightboxImages.indexOf(mainImg.src) === -1) { lightboxImages.unshift(mainImg.src); } mainImg.style.cursor = 'pointer'; mainImg.addEventListener('click', function(e) { var idx = lightboxImages.indexOf(this.src); if (idx === -1) { idx = 0; } openLightbox(idx); }); }
+});
+    </script>
+</body>
+</html>

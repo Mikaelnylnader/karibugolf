@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — Karibu Golf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .checkout-page { padding: 120px 0 60px; }
+        .checkout-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+        @media(max-width:768px){ .checkout-grid { grid-template-columns:1fr; } }
+        .form-section { background:#fff; border-radius:16px; padding:30px; border:1px solid #e8e0d0; margin-bottom:20px; }
+        .form-section h2 { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; color:#1f5132; margin-bottom:20px; }
+        .form-group { margin-bottom:16px; }
+        .form-group label { display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:5px; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 16px; border:2px solid #e0d8c8; border-radius:10px; font-size:15px; font-family:'Bricolage Grotesque',sans-serif; transition:border 0.2s; box-sizing:border-box; }
+        .form-group input:focus, .form-group select:focus { border-color:#1f5132; outline:none; }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .payment-option { display:flex; align-items:center; gap:14px; padding:16px; border:2px solid #e0d8c8; border-radius:12px; cursor:pointer; transition:all 0.2s; margin-bottom:10px; }
+        .payment-option:hover { border-color:#c89848; }
+        .payment-option.selected { border-color:#1f5132; background:#f0f8f0; }
+        .payment-option input[type="radio"] { accent-color:#1f5132; width:18px; height:18px; }
+        .payment-option img { height:32px; }
+        .payment-option span { font-weight:600; color:#1a1a1a; font-size:15px; }
+        .payment-detail { display:none; margin-top:12px; padding:16px; background:#f8f5ee; border-radius:10px; font-size:14px; color:#555; }
+        .payment-detail.active { display:block; }
+        .order-review-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0e8d8; font-size:14px; }
+        .order-review-total { font-size:20px; font-weight:700; color:#1f5132; padding-top:12px; margin-top:8px; border-top:2px solid #e8e0d0; display:flex; justify-content:space-between; }
+        .btn-place-order { width:100%; padding:18px; background:#1f5132; color:#fff; border:none; border-radius:12px; font-size:18px; font-weight:600; cursor:pointer; transition:all 0.3s; margin-top:20px; }
+        .btn-place-order:hover { background:#143d24; }
+        .btn-place-order:disabled { background:#999; cursor:not-allowed; }
+        .payment-icons { display:flex; gap:8px; flex-wrap:wrap; }
+        .payment-icons img { height:28px; border:1px solid #e0d8c8; border-radius:6px; padding:4px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/categories/" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:20px;padding:8px 12px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;"><i class="fas fa-shopping-bag"></i><span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span></a><a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Chat</a>
+            </div>
+            <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="checkout-page">
+        <div class="container" style="max-width:1100px;margin:0 auto;padding:0 20px;">
+            <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:36px;color:#1f5132;margin-bottom:30px;">
+                <i class="fas fa-lock" style="color:#c89848;margin-right:12px;"></i> Checkout
+            </h1>
+            <div class="checkout-grid">
+                <div>
+                    <div class="form-section">
+                        <h2><i class="fas fa-user" style="color:#c89848;margin-right:8px;"></i> Contact Information</h2>
+                        <div class="form-group"><label>Full Name *</label><input type="text" id="fullName" placeholder="John Kamau" required></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" placeholder="0712 345 678" required></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="john@example.com"></div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h2><i class="fas fa-map-marker-alt" style="color:#c89848;margin-right:8px;"></i> Delivery Address</h2>
+                        <div class="form-group"><label>Town / City *</label><input type="text" id="city" placeholder="Nairobi" required></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>County</label><input type="text" id="county" placeholder="Nairobi"></div>
+                            <div class="form-group"><label>Delivery Method</label>
+                                <select id="delivery">
+                                    <option value="pickup">Pick up — Karen Showroom (Free)</option>
+                                    <option value="courier">Courier — Within Nairobi (KES 500)</option>
+                                    <option value="upcountry">Courier — Upcountry (KES 1,000)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Delivery Address</label><textarea id="address" rows="2" placeholder="E.g. Karen Shopping Centre, Ground Floor"></textarea></div>
+                    </div>
+                    <div class="form-section">
+                        <h2><i class="fas fa-credit-card" style="color:#c89848;margin-right:8px;"></i> Payment Method</h2>
+                        <label class="payment-option selected" onclick="selectPayment('mpesa')">
+                            <input type="radio" name="payment" value="mpesa" checked>
+                            <span style="flex:1;">M-Pesa</span>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='22' fill='%2349b84d'/%3E%3Ctext x='24' y='30' text-anchor='middle' fill='white' font-size='10' font-weight='bold'%3EMPESA%3C/text%3E%3C/svg%3E" alt="M-Pesa">
+                        </label>
+                        <div class="payment-detail active" id="mpesaDetail">
+                            <strong>Pay with M-Pesa</strong><br>
+                            After placing your order, you will receive an M-Pesa STK Push to your phone. Simply enter your PIN to confirm payment.<br><br>
+                            <small style="color:#888;">Or send to Paybill: <strong>247247</strong> Account: <strong>KARIBU-[OrderID]</strong></small>
+                        </div>
+                        <label class="payment-option" onclick="selectPayment('airtel')">
+                            <input type="radio" name="payment" value="airtel">
+                            <span style="flex:1;">Airtel Money</span>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='2' y='8' width='44' height='32' rx='4' fill='%23e30613'/%3E%3Ctext x='24' y='28' text-anchor='middle' fill='white' font-size='8' font-weight='bold'%3EAIRTEL%3C/text%3E%3C/svg%3E" alt="Airtel Money">
+                        </label>
+                        <div class="payment-detail" id="airtelDetail">
+                            <strong>Pay with Airtel Money</strong><br>
+                            After placing your order, you will receive an Airtel Money prompt on your phone.
+                        </div>
+                        <label class="payment-option" onclick="selectPayment('card')">
+                            <input type="radio" name="payment" value="card">
+                            <span style="flex:1;">Credit / Debit Card</span>
+                            <span class="payment-icons">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 32'%3E%3Crect width='48' height='32' rx='4' fill='%231a1f71'/%3E%3Ccircle cx='20' cy='16' r='8' fill='%23f7a600'/%3E%3C/svg%3E">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 32'%3E%3Crect width='48' height='32' rx='4' fill='%23e0e0e0'/%3E%3Ctext x='24' y='20' text-anchor='middle' fill='%23cc0000' font-size='10' font-weight='bold'%3EVISA%3C/text%3E%3C/svg%3E">
+                            </span>
+                        </label>
+                        <div class="payment-detail" id="cardDetail">
+                            <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"></div>
+                                <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+                            </div>
+                        </div>
+                        <label class="payment-option" onclick="selectPayment('bank')">
+                            <input type="radio" name="payment" value="bank">
+                            <span style="flex:1;">Bank Transfer</span>
+                            <i class="fas fa-university" style="font-size:24px;color:#1f5132;"></i>
+                        </label>
+                        <div class="payment-detail" id="bankDetail">
+                            <strong>Bank Transfer Details</strong><br>
+                            <small>
+                                Bank: Equity Bank Kenya<br>
+                                Account Name: Karibu Golf Ltd<br>
+                                Account: 1234567890<br>
+                                Branch: Karen<br>
+                                <em>Please include your order number as reference.</em>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-section">
+                        <h2><i class="fas fa-receipt" style="color:#c89848;margin-right:8px;"></i> Order Review</h2>
+                        <div id="orderItems"></div>
+                        <div id="orderSummary">
+                            <div class="order-review-item"><span>Subtotal</span><span id="reviewSubtotal">KES 0</span></div>
+                            <div class="order-review-item"><span>Shipping</span><span id="reviewShipping">KES 0</span></div>
+                            <div class="order-review-total"><span>Total</span><span id="reviewTotal">KES 0</span></div>
+                        </div>
+                        <button class="btn-place-order" id="placeOrder" onclick="placeOrder()">
+                            <i class="fas fa-lock"></i> Place Order
+                        </button>
+                        <p style="text-align:center;font-size:12px;color:#888;margin-top:10px;">
+                            <i class="fas fa-shield-alt"></i> Your information is secure and encrypted
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo"><img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;"></a>
+                    <p>Premium golf equipment for the discerning Kenyan golfer. Visit our Karen showroom or shop online.</p>
+                    <div class="social-links"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div>
+                </div>
+                <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="/#products">Shop</a></li><li><a href="/about.html">About Us</a></li><li><a href="/cart.html">Cart</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+                <div class="footer-links"><h4>Brands</h4><ul><li><a href="#">TaylorMade</a></li><li><a href="#">Callaway</a></li><li><a href="#">Titleist</a></li><li><a href="#">Ping</a></li><li><a href="#">FootJoy</a></li></ul></div>
+                <div class="footer-newsletter"><h4>Contact Us</h4><p>WhatsApp: +86 13262570197</p><a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;"><img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;"></a></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Karibu Golf. All rights reserved.</p></div>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/cart.js"></script>
+    <script>
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-option').forEach(function(el) { el.classList.remove('selected'); });
+            document.querySelectorAll('.payment-detail').forEach(function(el) { el.classList.remove('active'); });
+            event.target.closest('.payment-option').classList.add('selected');
+            document.getElementById(method + 'Detail').classList.add('active');
+        }
+        function renderOrderReview() {
+            var container = document.getElementById('orderItems');
+            container.innerHTML = '';
+            if (!cart || cart.length === 0) { window.location.href = '/cart.html'; return; }
+            var subtotal = 0;
+            for (var i = 0; i < cart.length; i++) {
+                var item = cart[i];
+                var total = (item.price || 0) * (item.qty || 1);
+                subtotal += total;
+                container.innerHTML += '<div class="order-review-item"><span>' + item.name + ' x' + (item.qty||1) + '</span><span>KES ' + total.toLocaleString() + '</span></div>';
+            }
+            document.getElementById('reviewSubtotal').textContent = 'KES ' + subtotal.toLocaleString();
+            var shipping = subtotal >= 5000 ? 0 : 500;
+            document.getElementById('reviewShipping').textContent = shipping === 0 ? 'Free' : 'KES ' + shipping.toLocaleString();
+            document.getElementById('reviewTotal').textContent = 'KES ' + (subtotal + shipping).toLocaleString();
+        }
+        function placeOrder() {
+            var name = document.getElementById('fullName').value.trim();
+            var phone = document.getElementById('phone').value.trim();
+            if (!name || !phone) { alert('Please fill in your name and phone number.'); return; }
+            var payment = document.querySelector('input[name="payment"]:checked');
+            var method = payment ? payment.value : 'mpesa';
+            var orderId = 'KG-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2,4).toUpperCase();
+            var total = document.getElementById('reviewTotal').textContent;
+            var msg = 'Hi! I\'d like to place an order.\n\n*Order:* ' + orderId + '\n*Total:* ' + total + '\n*Payment:* ' + method.toUpperCase() + '\n*Items:* ' + getCartCount() + '\n\nName: ' + name + '\nPhone: ' + phone;
+            if (method === 'mpesa') {
+                msg += '\n\nPlease send M-Pesa STK Push to ' + phone;
+                alert('STK Push sent to ' + phone + '\n\nCheck your phone and enter M-Pesa PIN to complete payment.');
+            }
+            var encoded = encodeURIComponent(msg);
+            window.open('https://wa.me/8613262570197?text=' + encoded, '_blank');
+            clearCart();
+            localStorage.setItem('lastOrder', JSON.stringify({ id: orderId, total: total, method: method }));
+            window.location.href = '/order-confirmed.html?id=' + orderId;
+        }
+        document.addEventListener('DOMContentLoaded', renderOrderReview);
+    </script>
+    <script>AOS.init({ duration: 800, once: true });</script>
+</body>
+</html>

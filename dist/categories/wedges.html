@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedges - Karibu</title>
+    <meta name="description" content="Shop Wedges at Karibu. Scoring shots around the green">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    
+        <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                                <li><a href="/categories/" class="nav-link">Categories</a></li>
+                <li><a href="/#products" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Category Header -->
+    <section class="category-hero">
+        <div class="category-hero-bg">
+            <img src="/images/categories/cat_wedges.jpg" alt="Wedges" loading="lazy">
+        </div>
+        <div class="category-hero-content" data-aos="fade-up">
+            <i class="fas fa-golf-ball-tee category-hero-icon"></i>
+            <h1 class="category-hero-title">Wedges</h1>
+            <p class="category-hero-description">Scoring shots around the green — 9 premium products</p>
+            <a class='btn btn-outline' href='/#products'>
+                <i class="fas fa-arrow-left"></i> Back to All Products
+            </a>
+            <a href="/catalogue.pdf" target="_blank" class="btn btn-primary" style="margin-left:10px;">
+                <i class="fas fa-download"></i> Download Catalogue
+            </a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Wedges <span>Collection</span></h2>
+                <p class="section-description">9 products available</p>
+            </div>
+            <div class="products-grid">
+        <a href="/products/gk-wg001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Taylor_Made_MG4_Wedge.jpg" alt="Taylor Made MG4 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Taylor Made MG4 Wedge', 'KES 16,456')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Taylor Made MG4 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG001</span>
+                </div>
+                <div class="product-price">KES 16,456</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Taylor Made MG4 Wedge', 'KES 16,456')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg002.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_MD6_Wedge.jpg" alt="Callaway MD6 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway MD6 Wedge', 'KES 11,991')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Callaway MD6 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG002</span>
+                </div>
+                <div class="product-price">KES 11,991</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway MD6 Wedge', 'KES 11,991')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg003.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_Jaws_Raw_Wedge.jpg" alt="Callaway Jaws Raw Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Jaws Raw Wedge', 'KES 12,565')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Callaway Jaws Raw Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG003</span>
+                </div>
+                <div class="product-price">KES 12,565</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Jaws Raw Wedge', 'KES 12,565')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg004.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_SM9_Wedge.jpg" alt="Titleist SM9 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist SM9 Wedge', 'KES 11,928')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Titleist SM9 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG004</span>
+                </div>
+                <div class="product-price">KES 11,928</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist SM9 Wedge', 'KES 11,928')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg005.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_SM10_Wedge.jpg" alt="Titleist SM10 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist SM10 Wedge', 'KES 11,799')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Titleist SM10 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG005</span>
+                </div>
+                <div class="product-price">KES 11,799</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist SM10 Wedge', 'KES 11,799')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg006.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Cleveland_RTX6_Wedge.jpg" alt="Cleveland RTX6 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Cleveland RTX6 Wedge', 'KES 12,694')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Cleveland RTX6 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG006</span>
+                </div>
+                <div class="product-price">KES 12,694</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Cleveland RTX6 Wedge', 'KES 12,694')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg007.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Cleveland_RTX4_Wedge.jpg" alt="Cleveland RTX4 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Cleveland RTX4 Wedge', 'KES 14,544')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">Cleveland RTX4 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG007</span>
+                </div>
+                <div class="product-price">KES 14,544</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Cleveland RTX4 Wedge', 'KES 14,544')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg008.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/PXG_Sugar_Daddy_2_Wedge.jpg" alt="PXG Sugar Daddy 2 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('PXG Sugar Daddy 2 Wedge', 'KES 31,126')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Featured</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">PXG Sugar Daddy 2 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG008</span>
+                </div>
+                <div class="product-price">KES 31,126</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('PXG Sugar Daddy 2 Wedge', 'KES 31,126')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-wg009.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="wedges" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade MG5 Wedge" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade MG5 Wedge', 'KES 18,243')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                
+            </div>
+            <div class="product-details">
+                <span class="product-category">Wedges</span>
+                <h3 class="product-title">TaylorMade MG5 Wedge</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-WG009</span>
+                </div>
+                <div class="product-price">KES 18,243</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade MG5 Wedge', 'KES 18,243')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+            </div>
+            <div class="text-center" style="text-align:center;margin-top:40px;" data-aos="fade-up">
+                <a href="/categories/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 40px;font-size:16px;">
+                    Browse All Categories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="fade-up">
+                <h2>Interested in Bulk Orders?</h2>
+                <p>We offer special pricing for clubs, pros, and bulk purchases.</p>
+                <a href="https://wa.me/8613262570197?text=Hi!%20I'd%20like%20to%20inquire%20about%20bulk%20pricing" class="btn btn-primary btn-large" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo">
+                        <img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;">
+                    </a>
+                    <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#products">Shop</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/#brands">Brands</a></li>
+                        
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Brands</h4>
+                    <ul>
+                        <li><a href="#">TaylorMade</a></li>
+                        <li><a href="#">Callaway</a></li>
+                        <li><a href="#">J.Lindeberg</a></li>
+                        <li><a href="#">Titleist</a></li>
+                        <li><a href="#">Ping</a></li>
+                        <li><a href="#">FootJoy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Contact Us on WhatsApp</h4>
+                    <p>Scan the QR code or tap to chat</p>
+                    <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;">
+                        <img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;">
+                    </a>
+                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Karibu. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/script.js"></script>
+    <script src="/cart.js"></script>
+</body>
+</html>

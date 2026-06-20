@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed — Karibu Golf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .confirmed-page { padding: 140px 0 80px; text-align:center; min-height:60vh; }
+        .confirmed-icon { font-size:80px; color:#1f5132; margin-bottom:20px; }
+        .confirmed-page h1 { font-family:'Bricolage Grotesque',sans-serif; font-size:42px; color:#1f5132; margin-bottom:10px; }
+        .confirmed-order-id { font-family:'DM Mono',monospace; font-size:18px; color:#c89848; margin-bottom:20px; }
+        .confirmed-details { max-width:500px; margin:30px auto; background:#fff; border-radius:16px; padding:30px; border:1px solid #e8e0d0; }
+        .btn-continue { display:inline-block; padding:16px 40px; background:#1f5132; color:#fff; border-radius:12px; font-weight:600; text-decoration:none; margin-top:20px; transition:all 0.3s; }
+        .btn-continue:hover { background:#143d24; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/categories/" class="nav-link">Shop</a></li>
+                <li><a href="/about.html" class="nav-link">About</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:20px;padding:8px 12px;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;"><i class="fas fa-shopping-bag"></i><span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span></a><a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Chat</a>
+            </div>
+            <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <section class="confirmed-page">
+        <div class="container">
+            <div class="confirmed-icon"><i class="fas fa-check-circle"></i></div>
+            <h1>Karibu Sana!</h1>
+            <p style="font-size:18px;color:#555;">Your order has been placed successfully.</p>
+            <div class="confirmed-order-id" id="orderIdDisplay">Order: KG-XXXX</div>
+            <div class="confirmed-details">
+                <p style="color:#888;margin-bottom:10px;">What happens next?</p>
+                <p style="font-size:14px;line-height:1.8;">1. Check your phone for payment prompt (M-Pesa/Airtel)<br>
+                2. Confirm payment to complete your order<br>
+                3. We'll WhatsApp you with delivery details<br>
+                4. Your gear will arrive within 1-3 business days</p>
+                <p style="margin-top:16px;font-size:14px;">Questions? <a href="https://wa.me/8613262570197" style="color:#1f5132;font-weight:600;" target="_blank">WhatsApp us</a></p>
+            </div>
+            <a href="/" class="btn-continue"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo"><img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;"></a>
+                    <p>Premium golf equipment for the discerning Kenyan golfer. Visit our Karen showroom or shop online.</p>
+                    <div class="social-links"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div>
+                </div>
+                <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="/#products">Shop</a></li><li><a href="/about.html">About Us</a></li><li><a href="/cart.html">Cart</a></li><li><a href="/#contact">Contact</a></li></ul></div>
+                <div class="footer-links"><h4>Brands</h4><ul><li><a href="#">TaylorMade</a></li><li><a href="#">Callaway</a></li><li><a href="#">Titleist</a></li><li><a href="#">Ping</a></li><li><a href="#">FootJoy</a></li></ul></div>
+                <div class="footer-newsletter"><h4>Contact Us</h4><p>WhatsApp: +86 13262570197</p><a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;"><img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;"></a></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Karibu Golf. All rights reserved.</p></div>
+        </div>
+    </footer>
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var orderId = params.get('id') || 'KG-' + Date.now().toString(36).toUpperCase();
+        document.getElementById('orderIdDisplay').textContent = 'Order: ' + orderId;
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
+</body>
+</html>

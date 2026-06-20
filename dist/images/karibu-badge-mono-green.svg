@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <title>Karibu Golf — Badge, Monochrome Green</title>
+  <circle cx="50" cy="50" r="50" fill="none" stroke="#1f5132" stroke-width="3"></circle>
+  <rect x="49" y="38" width="2" height="32" fill="#1f5132"></rect>
+  <ellipse cx="50" cy="36" rx="24" ry="5.5" fill="#1f5132"></ellipse>
+  <ellipse cx="50" cy="30" rx="18" ry="4.5" fill="#1f5132"></ellipse>
+  <ellipse cx="50" cy="24" rx="12" ry="3" fill="#1f5132"></ellipse>
+  <circle cx="50" cy="56" r="13" fill="none" stroke="#1f5132" stroke-width="2.5"></circle>
+  <rect x="14" y="68" width="72" height="2.5" fill="#1f5132"></rect>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 160" width="420" height="160">
+  <title>Karibu Golf — Mark B, Horizontal Lockup</title>
+  
+  <defs>
+    <clipPath id="bcB"><circle cx="80" cy="80" r="48"></circle></clipPath>
+  </defs>
+  
+  <circle cx="80" cy="80" r="50" fill="#1f5132"></circle>
+  <circle cx="80" cy="80" r="44" fill="#efe3cc"></circle>
+  <g clip-path="url(#bcB)">
+    <circle cx="80" cy="84" r="26" fill="#c89947"></circle>
+    <rect x="79" y="68" width="2" height="32" fill="#1f5132"></rect>
+    <ellipse cx="80" cy="66" rx="24" ry="5.5" fill="#1f5132"></ellipse>
+    <ellipse cx="80" cy="60" rx="18" ry="4.5" fill="#1f5132"></ellipse>
+    <ellipse cx="80" cy="54" rx="12" ry="3" fill="#1f5132"></ellipse>
+    <rect x="30" y="98" width="100" height="2.5" fill="#1f5132"></rect>
+  </g>
+  
+  <text x="158" y="74" class="wm" font-size="48" fill="#14110e">KARIBU</text>
+  <text x="158" y="120" class="wm" font-size="48" fill="#1f5132">GOLF<tspan fill="#c89947">.</tspan></text>
+</svg>

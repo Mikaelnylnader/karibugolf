@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120" width="600" height="120">
+  <title>Karibu Golf — Website Logo (single row)</title>
+  
+  <defs>
+    <clipPath id="bcW"><circle cx="60" cy="60" r="48"></circle></clipPath>
+  </defs>
+  
+  <circle cx="60" cy="60" r="50" fill="#1f5132"></circle>
+  <circle cx="60" cy="60" r="44" fill="#efe3cc"></circle>
+  <g clip-path="url(#bcW)">
+    <circle cx="60" cy="64" r="26" fill="#c89947"></circle>
+    <rect x="59" y="48" width="2" height="32" fill="#1f5132"></rect>
+    <ellipse cx="60" cy="46" rx="24" ry="5.5" fill="#1f5132"></ellipse>
+    <ellipse cx="60" cy="40" rx="18" ry="4.5" fill="#1f5132"></ellipse>
+    <ellipse cx="60" cy="34" rx="12" ry="3" fill="#1f5132"></ellipse>
+    <rect x="10" y="78" width="100" height="2.5" fill="#1f5132"></rect>
+  </g>
+  
+  <text x="130" y="78" class="wm" font-size="62" fill="#14110e">KARIBU <tspan fill="#1f5132">GOLF</tspan><tspan fill="#c89947">.</tspan></text>
+</svg>

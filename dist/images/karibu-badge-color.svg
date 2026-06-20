@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <title>Karibu Golf — Primary Badge</title>
+  <defs>
+    <clipPath id="bc"><circle cx="50" cy="50" r="48"></circle></clipPath>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="#1f5132"></circle>
+  <circle cx="50" cy="50" r="44" fill="#efe3cc"></circle>
+  <g clip-path="url(#bc)">
+    <circle cx="50" cy="54" r="26" fill="#c89947"></circle>
+    <rect x="49" y="38" width="2" height="32" fill="#1f5132"></rect>
+    <ellipse cx="50" cy="36" rx="24" ry="5.5" fill="#1f5132"></ellipse>
+    <ellipse cx="50" cy="30" rx="18" ry="4.5" fill="#1f5132"></ellipse>
+    <ellipse cx="50" cy="24" rx="12" ry="3" fill="#1f5132"></ellipse>
+    <rect x="0" y="68" width="100" height="2.5" fill="#1f5132"></rect>
+  </g>
+</svg>
