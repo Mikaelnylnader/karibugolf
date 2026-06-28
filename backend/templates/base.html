@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Karibu Golf Admin{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f1f3f5;
+            overflow-x: hidden;
+        }
+
+        /* ── Shopify-style Sidebar ── */
+        .sidebar {
+            position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
+            background: #1a1a2e; z-index: 1000;
+            display: flex; flex-direction: column;
+            transition: transform 0.3s;
+        }
+        .sidebar-brand {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sidebar-brand .logo-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            background: linear-gradient(135deg, #1f5132, #2d7a4a);
+            display: flex; align-items: center; justify-content: center;
+            color: #c89848; font-weight: 800; font-size: 16px;
+        }
+        .sidebar-brand span {
+            color: #fff; font-weight: 700; font-size: 16px; letter-spacing: -0.3px;
+        }
+        .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+        .sidebar-nav .nav-section {
+            padding: 8px 24px 4px; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.3);
+        }
+        .sidebar-nav .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 24px; color: rgba(255,255,255,0.6);
+            text-decoration: none; font-size: 14px; font-weight: 500;
+            border-left: 3px solid transparent; transition: all 0.15s;
+            cursor: pointer;
+        }
+        .sidebar-nav .nav-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+        .sidebar-nav .nav-item.active {
+            background: rgba(255,255,255,0.06); color: #fff;
+            border-left-color: #c89848;
+        }
+        .sidebar-nav .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar-nav .nav-item .badge {
+            margin-left: auto; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+            font-size: 11px; border-radius: 100px; padding: 2px 10px;
+        }
+        .sidebar-bottom {
+            border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 24px;
+        }
+        .sidebar-bottom a {
+            color: rgba(255,255,255,0.4); text-decoration: none;
+            font-size: 13px; transition: color 0.15s;
+        }
+        .sidebar-bottom a:hover { color: rgba(255,255,255,0.7); }
+
+        /* ── Main Content ── */
+        .main-content {
+            margin-left: 260px; min-height: 100vh;
+            padding: 0;
+        }
+        .topbar {
+            background: #fff; border-bottom: 1px solid #e1e3e5;
+            padding: 16px 32px; display: flex; align-items: center;
+            justify-content: space-between; position: sticky; top: 0; z-index: 100;
+        }
+        .topbar h1 {
+            font-size: 20px; font-weight: 600; color: #202223;
+            margin: 0; display: flex; align-items: center; gap: 10px;
+        }
+        .topbar h1 .subtitle {
+            font-size: 14px; font-weight: 400; color: #6d7175;
+        }
+        .topbar-actions { display: flex; gap: 8px; align-items: center; }
+        .content-wrapper { padding: 24px 32px; }
+
+        /* ── Cards ── */
+        .card {
+            border: 1px solid #e1e3e5; border-radius: 8px;
+            box-shadow: none; background: #fff;
+            margin-bottom: 16px;
+        }
+        .card-header {
+            background: #fff; border-bottom: 1px solid #f1f3f5;
+            padding: 16px 20px; font-weight: 600; font-size: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .card-body { padding: 20px; }
+        .card-body-sm { padding: 12px 20px; }
+
+        /* ── Stat Cards ── */
+        .stat-row { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 24px; }
+        .stat-card {
+            background: #fff; border: 1px solid #e1e3e5; border-radius: 8px;
+            padding: 20px; display: flex; align-items: center; gap: 16px;
+        }
+        .stat-card .icon {
+            width: 44px; height: 44px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            flex-shrink: 0;
+        }
+        .stat-card .icon.green { background: #e3f1df; color: #1f5132; }
+        .stat-card .icon.gold { background: #faf1db; color: #c89848; }
+        .stat-card .icon.blue { background: #dfebf4; color: #2c6ecb; }
+        .stat-card .icon.teal { background: #d9f1f0; color: #168a7a; }
+        .stat-card .num { font-size: 26px; font-weight: 700; color: #202223; line-height: 1.1; }
+        .stat-card .label { font-size: 13px; color: #6d7175; margin: 0; }
+
+        /* ── Buttons ── */
+        .btn { border-radius: 6px; font-weight: 500; font-size: 14px; padding: 8px 16px; transition: all 0.12s; }
+        .btn-primary {
+            background: #1f5132; border-color: #1f5132;
+        }
+        .btn-primary:hover { background: #163d26; border-color: #163d26; }
+        .btn-gold { background: #c89848; border-color: #c89848; color: #fff; }
+        .btn-gold:hover { background: #b8862e; color: #fff; }
+        .btn-outline-primary { border-color: #d2d5d8; color: #202223; }
+        .btn-outline-primary:hover { background: #f6f6f7; border-color: #202223; }
+        .btn-danger { background: #d82c0d; border-color: #d82c0d; }
+        .btn-sm { padding: 4px 10px; font-size: 13px; }
+
+        /* ── Tables ── */
+        .table { margin: 0; font-size: 14px; }
+        .table th {
+            border-top: none; border-bottom: 1px solid #e1e3e5;
+            color: #6d7175; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px;
+        }
+        .table td {
+            padding: 12px 16px; vertical-align: middle;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .table tr:hover { background: #fafbfb; }
+        .product-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: #f6f6f7; }
+
+        /* ── Forms ── */
+        .form-control, .form-select {
+            border-radius: 6px; border: 1px solid #c9cccf; padding: 8px 12px;
+            font-size: 14px; font-family: 'Inter', sans-serif;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #1f5132; box-shadow: 0 0 0 3px rgba(31,81,50,0.12);
+        }
+        .form-label { font-weight: 500; font-size: 13px; color: #202223; margin-bottom: 4px; }
+        textarea.form-control { min-height: 100px; }
+
+        /* ── Badges ── */
+        .badge { font-weight: 500; font-size: 12px; padding: 3px 10px; border-radius: 100px; }
+        .badge-success { background: #e3f1df; color: #1f5132; }
+        .badge-warning { background: #faf1db; color: #9c6f1a; }
+        .badge-danger { background: #fce4e0; color: #b33a1f; }
+        .badge-info { background: #dfebf4; color: #2c6ecb; }
+        .badge-gk { background: #1f5132; color: #c89848; }
+
+        /* ── Flash ── */
+        .flash-container {
+            position: fixed; top: 16px; right: 16px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 8px; max-width: 420px;
+        }
+        .flash-msg {
+            background: #fff; border: 1px solid #e1e3e5; border-radius: 8px;
+            padding: 12px 20px; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 10px;
+            animation: slideIn 0.25s ease;
+        }
+        .flash-msg .icon { font-size: 18px; }
+        .flash-msg .close-btn { margin-left: auto; cursor: pointer; color: #6d7175; background: none; border: none; padding: 0; font-size: 16px; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* ── Misc ── */
+        .search-box { position: relative; }
+        .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+        .search-box input { padding-left: 36px; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #6d7175; }
+        .empty-state i { font-size: 48px; display: block; margin-bottom: 12px; color: #d2d5d8; }
+        .tag { display: inline-block; padding: 2px 8px; background: #f1f3f5; border-radius: 4px; font-size: 12px; color: #6d7175; }
+        .text-muted { color: #6d7175 !important; }
+        a { color: #1f5132; text-decoration: none; }
+        a:hover { color: #163d26; }
+        .divider { border: none; border-top: 1px solid #f1f3f5; margin: 16px 0; }
+
+        /* ── Toggle Switch (Shopify style) ── */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch .slider {
+            position: absolute; cursor: pointer; inset: 0;
+            background: #c9cccf; border-radius: 24px; transition: 0.2s;
+        }
+        .switch .slider:before {
+            content: ""; position: absolute; height: 18px; width: 18px;
+            left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.2s;
+        }
+        .switch input:checked + .slider { background: #1f5132; }
+        .switch input:checked + .slider:before { transform: translateX(20px); }
+
+        /* ── Deploy Status ── */
+        .deploy-status { font-size: 13px; color: #6d7175; display: flex; align-items: center; gap: 6px; }
+        .deploy-status .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .dot-green { background: #1f5132; }
+        .dot-red { background: #d82c0d; }
+        .dot-gray { background: #c9cccf; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .content-wrapper { padding: 16px; }
+            .topbar { padding: 12px 16px; }
+            .stat-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Flash Messages -->
+<div class="flash-container" id="flashContainer">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="flash-msg">
+        <span class="icon">
+            {% if category == 'success' %}✅{% elif category == 'danger' %}❌{% elif category == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+        </span>
+        <span>{{ message }}</span>
+        <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="logo-icon">K</div>
+        <span>Karibu Admin</span>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-section">Overview</div>
+        <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="/orders" class="nav-item {% if '/orders' in request.path %}active{% endif %}">
+            <i class="bi bi-truck"></i> Orders
+            <span class="badge" id="orderCount">0</span>
+        </a>
+
+        <div class="nav-section">Catalog</div>
+        <a href="/products" class="nav-item {% if '/products' in request.path and request.path != '/products/new' %}active{% endif %}">
+            <i class="bi bi-box-seam"></i> Products
+            <span class="badge" id="productCount">···</span>
+        </a>
+        <a href="/products/new" class="nav-item {% if '/products/new' in request.path %}active{% endif %}">
+            <i class="bi bi-plus-circle"></i> Add Product
+        </a>
+        <a href="/categories" class="nav-item {% if '/categories' in request.path and request.path != '/' %}active{% endif %}">
+            <i class="bi bi-tags"></i> Categories
+        </a>
+
+        <div class="nav-section">Import / Export</div>
+        <a href="/csv/import" class="nav-item {% if '/csv/import' in request.path %}active{% endif %}">
+            <i class="bi bi-upload"></i> CSV Import
+        </a>
+        <a href="/import-sheet" class="nav-item">
+            <i class="bi bi-google"></i> From Google Sheet
+        </a>
+
+        <div class="nav-section">Publishing</div>
+        <a href="/generate-now" class="nav-item">
+            <i class="bi bi-gear"></i> Generate Site
+        </a>
+        <form action="/deploy-now" method="POST" style="display:inline;">
+            <button type="submit" class="nav-item" style="background:none;border:none;width:100%;text-align:left;">
+                <i class="bi bi-cloud-upload"></i> Deploy to Netlify
+            </button>
+        </form>
+
+        <div class="nav-section">Settings</div>
+        <a href="/settings" class="nav-item {% if '/settings' in request.path %}active{% endif %}">
+            <i class="bi bi-gear-wide"></i> Settings
+        </a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="https://golfklcubskenya.netlify.app" target="_blank">
+            <i class="bi bi-box-arrow-up-right"></i> View Store
+        </a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Auto-dismiss flashes after 6s
+    setTimeout(() => {
+        document.querySelectorAll('.flash-msg').forEach(el => {
+            el.style.transition = 'opacity 0.3s';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 300);
+        });
+    }, 6000);
+
+    // Confirm dialogs
+    document.querySelectorAll('[data-confirm]').forEach(el => {
+        el.addEventListener('click', function(e) {
+            if (!confirm(this.dataset.confirm)) e.preventDefault();
+        });
+    });
+
+    // Fetch product count for sidebar badge
+    fetch('/api/stats').then(r => r.json()).then(data => {
+        const badge = document.getElementById('productCount');
+        if (badge) badge.textContent = data.total_products;
+        const orderBadge = document.getElementById('orderCount');
+        if (orderBadge && data.total_orders !== undefined) orderBadge.textContent = data.total_orders;
+    }).catch(() => {});
+
+    // Mobile sidebar toggle (if hamburger added)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('sidebar').classList.remove('open');
+        }
+    });
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

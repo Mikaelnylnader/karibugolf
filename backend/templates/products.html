@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Products — Karibu Golf Admin{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1><i class="bi bi-box-seam"></i> Products</h1>
+    <div class="topbar-actions">
+        <a href="/csv/import" class="btn btn-outline-primary btn-sm"><i class="bi bi-upload"></i> Import</a>
+        <a href="/products/new" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Product</a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <!-- Search & Filter -->
+    <div class="card">
+        <div class="card-body">
+            <form method="GET" class="row g-2">
+                <div class="col-md-5">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" name="search" class="form-control" placeholder="Search by name or SKU..." value="{{ search }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if cat.slug == selected_category %}selected{% endif %}>
+                            {{ cat.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-funnel"></i> Filter</button>
+                </div>
+                <div class="col-md-2">
+                    {% if search or selected_category %}
+                    <a href="/products" class="btn btn-outline-primary w-100"><i class="bi bi-x"></i> Clear</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+        <div class="card-header">
+            <span>{{ products|length }} products</span>
+            <span class="text-muted" style="font-size:13px;">Sorted by last updated</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;"></th>
+                            <th>Product</th>
+                            <th>SKU</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Cost</th>
+                            <th>Margin</th>
+                            <th>Status</th>
+                            <th style="width:80px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if products %}
+                        {% for p in products %}
+                        <tr>
+                            <td>
+                                {% if p.image %}
+                                <img src="{{ p.image }}" alt="" class="product-thumb"
+                                     onerror="this.style.display='none'">
+                                {% else %}
+                                <div class="product-thumb d-flex align-items-center justify-content-center bg-light">
+                                    <i class="bi bi-image text-muted" style="font-size:14px;"></i>
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ p.name }}</strong></td>
+                            <td><code>{{ p.sku }}</code></td>
+                            <td><span class="badge badge-gk">{{ p.category_label }}</span></td>
+                            <td><strong>KES {{ "{:,}".format(p.price_kes) }}</strong></td>
+                            <td>
+                                {% set _cny = p.cost_cny|int %}
+                                {% set _kes = p.cost_kes|int %}
+                                {% set _total = (_cny * 18) + _kes %}
+                                {% if _total > 0 %}KES {{ "{:,}".format(_total) }}{% else %}—{% endif %}
+                            </td>
+                            <td>
+                                {% if p.price_kes > 0 and _total > 0 %}
+                                {% set _profit = p.price_kes - _total %}
+                                {% set _margin = (_profit / p.price_kes * 100)|round(1) %}
+                                <span style="font-weight:600;{% if _margin >= 40 %}color:#1f5132{% elif _margin >= 20 %}color:#c89848{% else %}color:#d82c0d{% endif %}">
+                                    {{ _margin }}%
+                                </span>
+                                {% else %}—{% endif %}
+                            </td>
+                            <td>
+                                {% if p.status == 'In Stock' %}
+                                <span class="badge badge-success">In Stock</span>
+                                {% elif p.status == 'Low Stock' %}
+                                <span class="badge badge-warning">Low Stock</span>
+                                {% elif p.status == 'Discontinued' %}
+                                <span class="badge badge-danger">Discontinued</span>
+                                {% else %}
+                                <span class="badge badge-info">{{ p.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="POST" action="/products/{{ p.sku }}/delete" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"
+                                                onclick="return confirm('Delete {{ p.name|escape }}?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="bi bi-box-seam"></i>
+                                    <h5>No products yet</h5>
+                                    <p>Import from CSV, sync from Google Sheet, or add your first product.</p>
+                                    <div class="d-flex gap-2 justify-content-center mt-3">
+                                        <a href="/products/new" class="btn btn-primary">Add Product</a>
+                                        <a href="/csv/import" class="btn btn-outline-primary">Import CSV</a>
+                                        <a href="/import-sheet" class="btn btn-outline-primary">Sync Sheet</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Settings — Karibu Golf{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1><i class="bi bi-gear-wide"></i> Settings</h1>
+</div>
+
+<div class="content-wrapper">
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-shop"></i> Store Settings</div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Store Name</label>
+                                <input type="text" name="shop_name" class="form-control"
+                                       value="{{ settings.get('shop_name', 'Karibu Golf') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Store URL</label>
+                                <input type="text" name="shop_url" class="form-control"
+                                       value="{{ settings.get('shop_url', 'https://golfklcubskenya.netlify.app') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">WhatsApp Number</label>
+                                <input type="text" name="whatsapp_number" class="form-control"
+                                       value="{{ settings.get('whatsapp_number', '') }}"
+                                       placeholder="+254700000000">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Business Email</label>
+                                <input type="email" name="business_email" class="form-control"
+                                       value="{{ settings.get('business_email', '') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <input type="text" name="business_location" class="form-control"
+                                       value="{{ settings.get('business_location', 'Nairobi, Kenya') }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Currency</label>
+                                <input type="text" name="currency" class="form-control"
+                                       value="{{ settings.get('currency', 'KES') }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tax Rate (%)</label>
+                                <input type="text" name="tax_rate" class="form-control"
+                                       value="{{ settings.get('tax_rate', '16') }}">
+                            </div>
+                            <div class="col-12">
+                                <hr class="divider">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-lg"></i> Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-info-circle"></i> About This Admin</div>
+                <div class="card-body" style="font-size:13px;color:#555;">
+                    <p><strong>Version:</strong> 1.0.0</p>
+                    <p><strong>Database:</strong> SQLite (<code>golf_kenya.db</code>)</p>
+                    <p><strong>Frontend:</strong> Static site on Netlify</p>
+                    <hr class="divider">
+                    <h6>How it works</h6>
+                    <ol style="padding-left:18px;line-height:2;">
+                        <li>Products are stored in a local SQLite database</li>
+                        <li>You can also sync from Google Sheet</li>
+                        <li>Save a product → auto-generates the static site</li>
+                        <li>With auto-publish ON → deploys to Netlify automatically</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

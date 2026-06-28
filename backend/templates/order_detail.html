@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.order_number }} — Karibu Golf Admin{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1>
+        <i class="bi bi-truck"></i> Order {{ order.order_number }}
+        <span class="subtitle">{{ order.created_at[:16] }}</span>
+    </h1>
+    <div class="topbar-actions">
+        <a href="/orders" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-left"></i> All Orders</a>
+        <form method="POST" action="/orders/{{ order.id }}/delete" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger btn-sm"
+                    onclick="return confirm('Delete order {{ order.order_number }}?')">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="row g-4">
+        <!-- Left: Customer + Order Info -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-info-circle"></i> Order Info</div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Order Number</label>
+                            <div style="font-size:16px;font-weight:600;">{{ order.order_number }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Status</label>
+                            <div>
+                                <form method="POST" action="/orders/{{ order.id }}/status" style="display:flex;gap:8px;">
+                                    <select name="status" class="form-select form-select-sm" style="width:auto;">
+                                        <option value="new" {% if order.status == 'new' %}selected{% endif %}>🆕 New</option>
+                                        <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>✅ Confirmed</option>
+                                        <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>⚙️ Processing</option>
+                                        <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>🚚 Shipped</option>
+                                        <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>📦 Delivered</option>
+                                        <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>❌ Cancelled</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Source</label>
+                            <div>
+                                {% if order.source == 'website' %}
+                                <span class="badge badge-info">🌐 Website</span>
+                                {% elif order.source == 'whatsapp' %}
+                                <span class="badge" style="background:#e3f1df;color:#1f5132;">💬 WhatsApp</span>
+                                {% else %}
+                                <span class="badge" style="background:#f6f6f7;color:#202223;">📝 Admin</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Customer</label>
+                            <div style="font-size:16px;font-weight:600;">{{ order.customer_name }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Phone</label>
+                            <div>
+                                {% if order.customer_phone %}
+                                <a href="https://wa.me/{{ order.customer_phone|replace('+','')|replace(' ','') }}" target="_blank">
+                                    {{ order.customer_phone }} <i class="bi bi-whatsapp" style="color:#25D366;"></i>
+                                </a>
+                                {% else %}—{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Email</label>
+                            <div>{{ order.customer_email or '—' }}</div>
+                        </div>
+                        <div class="col-12">
+                            <label style="font-size:11px;color:#6d7175;text-transform:uppercase;">Notes</label>
+                            <div>{{ order.notes or '—' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="card">
+                <div class="card-header"><i class="bi bi-cart"></i> Items ({{ order.items_parsed|length }})</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Product</th>
+                                <th>Options</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items_parsed %}
+                            <tr>
+                                <td><code>{{ item.sku }}</code></td>
+                                <td>{{ item.name }}</td>
+                                <td style="font-size:13px;color:#6d7175;">{{ item.options or '—' }}</td>
+                                <td>{{ item.qty }}</td>
+                                <td>KES {{ "{:,}".format(item.price) }}</td>
+                                <td><strong>KES {{ "{:,}".format(item.price * item.qty) }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body" style="border-top:2px solid #1f5132;">
+                    <div style="display:flex;justify-content:flex-end;gap:40px;">
+                        <div>
+                            <span style="font-size:14px;color:#6d7175;">Items:</span>
+                            <strong>{{ order.items_parsed|length }}</strong>
+                        </div>
+                        <div>
+                            <span style="font-size:14px;color:#6d7175;">Total:</span>
+                            <strong style="font-size:20px;color:#1f5132;">KES {{ "{:,}".format(order.total_kes) }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-lightning"></i> Quick Actions</div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <form method="POST" action="/orders/{{ order.id }}/status">
+                            <input type="hidden" name="status" value="confirmed">
+                            <button type="submit" class="btn btn-success w-100 mb-1">
+                                <i class="bi bi-check-lg"></i> Mark Confirmed
+                            </button>
+                        </form>
+                        <form method="POST" action="/orders/{{ order.id }}/status">
+                            <input type="hidden" name="status" value="processing">
+                            <button type="submit" class="btn btn-primary w-100 mb-1">
+                                <i class="bi bi-gear"></i> Start Processing
+                            </button>
+                        </form>
+                        <form method="POST" action="/orders/{{ order.id }}/status">
+                            <input type="hidden" name="status" value="shipped">
+                            <button type="submit" class="btn btn-info w-100 mb-1">
+                                <i class="bi bi-truck"></i> Mark Shipped
+                            </button>
+                        </form>
+                        <form method="POST" action="/orders/{{ order.id }}/status">
+                            <input type="hidden" name="status" value="delivered">
+                            <button type="submit" class="btn btn-gold w-100 mb-1">
+                                <i class="bi bi-box"></i> Mark Delivered
+                            </button>
+                        </form>
+                        <form method="POST" action="/orders/{{ order.id }}/status">
+                            <input type="hidden" name="status" value="cancelled">
+                            <button type="submit" class="btn btn-outline-danger w-100"
+                                    onclick="return confirm('Cancel this order?')">
+                                <i class="bi bi-x-circle"></i> Cancel Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="bi bi-whatsapp"></i> Contact</div>
+                <div class="card-body">
+                    {% if order.customer_phone %}
+                    <a href="https://wa.me/{{ order.customer_phone|replace('+','')|replace(' ','') }}" target="_blank"
+                       class="btn btn-success w-100" style="background:#25D366;border-color:#25D366;">
+                        <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                    {% else %}
+                    <p class="text-muted mb-0">No phone number</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

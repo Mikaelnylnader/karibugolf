@@ -18,3 +18,5 @@ dist/images/products/TaylorMade_P790_*.mp4
 dist/images/products/p790_*
 dist/images/products/QiMax_*
 dist/deploy.zip
+backend/golf_kenya.db
+backend/credentials/

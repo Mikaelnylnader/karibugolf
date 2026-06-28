@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}New Order — Karibu Golf Admin{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1><i class="bi bi-plus-lg"></i> New Order</h1>
+    <div class="topbar-actions">
+        <a href="/orders" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="card">
+        <div class="card-header"><i class="bi bi-info-circle"></i> Order Details</div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="row g-3">
+                    <!-- Customer Info -->
+                    <div class="col-md-6">
+                        <label class="form-label">Customer Name <span class="text-danger">*</span></label>
+                        <input type="text" name="customer_name" class="form-control" required placeholder="John Doe">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="customer_phone" class="form-control" placeholder="+254 7XX XXX XXX">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="customer_email" class="form-control" placeholder="john@example.com">
+                    </div>
+
+                    <!-- Order Meta -->
+                    <div class="col-md-4">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="new">🆕 New</option>
+                            <option value="confirmed">✅ Confirmed</option>
+                            <option value="processing">⚙️ Processing</option>
+                            <option value="shipped">🚚 Shipped</option>
+                            <option value="delivered">📦 Delivered</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Source</label>
+                        <select name="source" class="form-select">
+                            <option value="admin">Admin (manual entry)</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="website">Website</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Notes</label>
+                        <input type="text" name="notes" class="form-control" placeholder="Order notes...">
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <h6 style="font-weight:600;margin-bottom:12px;">
+                    <i class="bi bi-cart"></i> Order Items
+                    <button type="button" class="btn btn-sm btn-outline-primary ms-2" onclick="addItemRow()">
+                        <i class="bi bi-plus-lg"></i> Add Item
+                    </button>
+                </h6>
+
+                <div id="itemsContainer">
+                    <div class="item-row row g-2 mb-2">
+                        <div class="col-md-4">
+                            <label class="form-label" style="font-size:11px;">Product SKU</label>
+                            <select name="item_sku[]" class="form-select form-select-sm item-sku" onchange="itemSkuChanged(this)">
+                                <option value="">— Select product —</option>
+                                {% for p in products %}
+                                <option value="{{ p.sku }}" data-name="{{ p.name }}" data-price="{{ p.price_kes }}">
+                                    {{ p.sku }} — {{ p.name[:40] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" style="font-size:11px;">Product Name</label>
+                            <input type="text" name="item_name[]" class="form-control form-control-sm item-name" placeholder="Product name" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" style="font-size:11px;">Qty</label>
+                            <input type="number" name="item_qty[]" class="form-control form-control-sm item-qty" value="1" min="1" onchange="calcTotal()">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" style="font-size:11px;">Price (KES)</label>
+                            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()">
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button type="button" class="btn btn-sm btn-outline-danger mb-1" onclick="this.closest('.item-row').remove();calcTotal();">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div style="background:#f8f9fa;border-radius:8px;padding:12px 16px;">
+                            <div style="display:flex;justify-content:space-between;font-size:14px;">
+                                <span>Total:</span>
+                                <strong id="orderTotal" style="font-size:18px;">KES 0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="divider">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Create Order
+                </button>
+                <a href="/orders" class="btn btn-outline-primary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="itemTemplate" style="display:none;">
+    <div class="item-row row g-2 mb-2">
+        <div class="col-md-4">
+            <select name="item_sku[]" class="form-select form-select-sm item-sku" onchange="itemSkuChanged(this)">
+                <option value="">— Select product —</option>
+                {% for p in products %}
+                <option value="{{ p.sku }}" data-name="{{ p.name }}" data-price="{{ p.price_kes }}">
+                    {{ p.sku }} — {{ p.name[:40] }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="item_name[]" class="form-control form-control-sm item-name" placeholder="Product name" readonly>
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="item_qty[]" class="form-control form-control-sm item-qty" value="1" min="1" onchange="calcTotal()">
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()">
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="button" class="btn btn-sm btn-outline-danger mb-1" onclick="this.closest('.item-row').remove();calcTotal();">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function itemSkuChanged(sel) {
+    const row = sel.closest('.item-row');
+    const nameInput = row.querySelector('.item-name');
+    const priceInput = row.querySelector('.item-price');
+    const option = sel.options[sel.selectedIndex];
+    if (option.value) {
+        nameInput.value = option.dataset.name || '';
+        priceInput.value = option.dataset.price || '0';
+    } else {
+        nameInput.value = '';
+        priceInput.value = '';
+    }
+    calcTotal();
+}
+
+function addItemRow() {
+    const template = document.getElementById('itemTemplate');
+    const clone = template.content.cloneNode(true);
+    document.getElementById('itemsContainer').appendChild(clone);
+    calcTotal();
+}
+
+function calcTotal() {
+    let total = 0;
+    document.querySelectorAll('.item-row').forEach(row => {
+        const qty = parseInt(row.querySelector('.item-qty').value) || 0;
+        const price = parseInt(row.querySelector('.item-price').value.replace(/[^\d]/g, '')) || 0;
+        total += qty * price;
+    });
+    document.getElementById('orderTotal').textContent = 'KES ' + total.toLocaleString();
+}
+
+document.addEventListener('DOMContentLoaded', calcTotal);
+</script>
+{% endblock %}

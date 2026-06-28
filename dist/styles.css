@@ -1,15 +1,15 @@
 /* Golf Kenya - Premium Styles */
 :root {
-    --primary: #1f5132;
-    --primary-light: #2a6b3e;
+    --primary: #185838;
+    --primary-light: #286e46;
     --primary-dark: #102010;
     --accent: #c89848;
     --accent-light: #d4b060;
     --text-dark: #181808;
     --text-light: #7a7a6a;
     --text-muted: #999;
-    --bg-light: #efe3cc;
-    --bg-cream: #efe3cc;
+    --bg-light: #f2e8cf;
+    --bg-cream: #ede4c8;
     --white: #ffffff;
     --black: #000000;
     --gradient-dark: linear-gradient(135deg, #185838 0%, #102010 100%);
@@ -65,12 +65,12 @@ body { font-family:'Montserrat',sans-serif; color:var(--text-dark); line-height:
 /* Hero */
 .hero { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg-cream); position:relative; overflow:hidden; }
 .hero-bg { position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat; }
-.hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.5) 100%); }
+.hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%); }
 .hero-content { text-align:center; max-width:800px; padding:0 20px; z-index:1; }
-.hero-subtitle { font-size:14px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); font-weight:600; text-shadow:0 1px 4px rgba(0,0,0,0.4); font-family:var(--font-mono); }
+.hero-subtitle { font-size:14px; letter-spacing:3px; text-transform:uppercase; color:var(--accent); font-weight:600; }
 .hero-title { font-family:'Playfair Display',serif; font-size:clamp(48px, 10vw, 96px); font-weight:700; color:var(--primary); line-height:1.1; margin:20px 0; }
 .hero-title span { color:var(--accent); }
-.hero-description { font-size:18px; color:#fff; max-width:500px; margin:0 auto 40px; line-height:1.8; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
+.hero-description { font-size:18px; color:var(--text-light); max-width:500px; margin:0 auto 40px; line-height:1.8; }
 .hero-buttons { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
 .hero-scroll { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:10px; }
 .hero-scroll span { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); }

@@ -9,6 +9,7 @@ import io
 import os
 import re
 import shutil
+import sqlite3
 import urllib.request
 import urllib.parse
 from datetime import datetime
@@ -120,6 +121,62 @@ def fetch_data():
         })
     print(f"   ✅ {len(products)} products loaded")
     return products
+
+
+def fetch_data_from_db():
+    """Fetch product data from SQLite database (admin backend)."""
+    db_path = os.path.join(os.path.dirname(__file__), "backend", "golf_kenya.db")
+    print("📥 Fetching product data from SQLite database...")
+    
+    if not os.path.exists(db_path):
+        print("   ⚠️  SQLite database not found. Falling back to Google Sheet.")
+        return fetch_data()
+    
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute("""
+            SELECT p.*, c.label as category_label
+            FROM products p
+            JOIN categories c ON p.category_slug = c.slug
+            ORDER BY p.category_slug, p.name
+        """).fetchall()
+        conn.close()
+        
+        products = []
+        for row in rows:
+            cat = row["category_slug"]
+            # Find the raw category for display
+            raw_cat = None
+            for k, v in CATEGORY_MAP.items():
+                if v == cat:
+                    raw_cat = k
+                    break
+            
+            price = row["price_kes"] or 0
+            products.append({
+                "sku": row["sku"],
+                "name": row["name"],
+                "category_raw": raw_cat or cat,
+                "category_slug": cat,
+                "category_display": SHEET_CATEGORY_DISPLAY.get(raw_cat or "", row["category_label"] or cat.title()),
+                "description": row["description"] or "",
+                "sizes": row["sizes"] or "",
+                "colors": row["colors"] or "",
+                "price_kes": price,
+                "price_display": f"KES {price:,}" if price else "Inquire",
+                "cost_cny": row["cost_cny"] or "",
+                "cost_kes": row["cost_kes"] or "",
+                "status": row["status"] or "",
+                "stock": row["stock"] or "",
+                "image": row["image"] or "",
+            })
+        
+        print(f"   ✅ {len(products)} products loaded from SQLite")
+        return products
+    except Exception as e:
+        print(f"   ⚠️  SQLite error: {e}. Falling back to Google Sheet.")
+        return fetch_data()
 
 
 def safe_filename(name):
@@ -1585,14 +1642,25 @@ def generate_pdf(products, groups):
     return pdf_path
 
 
-def main():
+def main(use_db=False):
+    """Generate the static site.
+    
+    Args:
+        use_db: If True, read from SQLite database instead of Google Sheet.
+    
+    Returns:
+        Summary string of what was generated.
+    """
     print("=" * 50)
     print(f"  🏌️  {SITE_TITLE} Site Generator")
     print(f"  {datetime.now().strftime('%B %d, %Y at %H:%M')}")
     print("=" * 50)
 
     # Fetch data
-    products = fetch_data()
+    if use_db:
+        products = fetch_data_from_db()
+    else:
+        products = fetch_data()
     groups = group_by_category(products)
 
     if not products:
@@ -1676,6 +1744,8 @@ def main():
     pdf_path = generate_pdf(products, groups)
 
     # Summary
+    summary = (f"✅ Generated {len(products)} products, {prod_count} product pages, "
+               f"{cat_count} category pages, + PDF catalogue")
     print("\n" + "=" * 50)
     print(f"  ✅ Generation Complete!")
     print(f"  [Location] Output: {OUTPUT_DIR}")
@@ -1684,10 +1754,14 @@ def main():
     print(f"  📕 PDF catalogue generated")
     print("=" * 50)
     print(f"\n  To deploy: upload the 'dist/' folder to Netlify")
-    print(f"  To update: edit your Google Sheet, then run:")
-    print(f"    python generate.py")
+    if not use_db:
+        print(f"  To update: edit your Google Sheet, then run:")
+        print(f"    python generate.py")
     print()
+    return summary
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    use_db = "--db" in sys.argv or "-d" in sys.argv
+    main(use_db=use_db)

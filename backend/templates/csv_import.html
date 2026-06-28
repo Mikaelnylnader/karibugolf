@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}CSV Import — Karibu Golf{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1><i class="bi bi-upload"></i> CSV Import</h1>
+    <div class="topbar-actions">
+        <a href="/csv/template" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-download"></i> Download Template
+        </a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-file-earmark-spreadsheet"></i> Upload CSV</div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Select CSV file</label>
+                            <input type="file" class="form-control" name="csv_file" accept=".csv" required>
+                        </div>
+                        <div class="alert alert-success" style="background:#e3f1df;border:1px solid #c8e0c1;color:#1f5132;font-size:13px;border-radius:6px;">
+                            <i class="bi bi-info-circle"></i>
+                            Required columns: <code>SKU, Name, Category, Price Kenya (Ksh)</code>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload"></i> Import Products
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-info-circle"></i> Instructions</div>
+                <div class="card-body" style="font-size:13px;color:#555;">
+                    <h6 style="font-weight:600;">Required Columns</h6>
+                    <ul style="padding-left:18px;line-height:2;">
+                        <li><code>SKU</code> — Unique identifier (required)</li>
+                        <li><code>Name</code> — Product name (required)</li>
+                        <li><code>Category</code> — e.g., irons, drivers, putters</li>
+                        <li><code>Price Kenya (Ksh)</code> — Price in KES</li>
+                    </ul>
+                    <h6 style="font-weight:600;margin-top:16px;">Valid Categories</h6>
+                    <p style="line-height:1.8;">
+                        <code>irons, drivers, woods, putters, wedges, hybrids, bags, balls, gloves,
+                        grips, shoes, apparel, accessories, range finders, hats &amp; caps</code>
+                    </p>
+                    <h6 style="font-weight:600;margin-top:16px;">Tips</h6>
+                    <ul style="padding-left:18px;line-height:1.8;">
+                        <li>Existing SKUs get updated</li>
+                        <li>Non-matching categories → accessories</li>
+                        <li>Import auto-triggers site generation + deploy if auto-publish is ON</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

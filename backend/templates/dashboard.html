@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Karibu Golf{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1>
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        <span class="subtitle">— Karibu Golf Admin</span>
+    </h1>
+    <div class="topbar-actions">
+        <form action="/toggle-auto-deploy" method="POST" style="display:flex;align-items:center;gap:10px;margin-right:12px;">
+            <label class="switch" title="Auto-publish: when ON, every save generates + deploys to Netlify">
+                <input type="checkbox" name="auto_deploy" {% if auto_deploy %}checked{% endif %}
+                       onchange="this.form.submit()">
+                <span class="slider"></span>
+            </label>
+            <span style="font-size:13px;color:#6d7175;">Auto-publish</span>
+        </form>
+        <a href="/generate-now" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-gear"></i> Generate
+        </a>
+        <form action="/deploy-now" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-cloud-upload"></i> Deploy
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <!-- Stats -->
+    <div class="stat-row">
+        <div class="stat-card">
+            <div class="icon green"><i class="bi bi-box-seam"></i></div>
+            <div>
+                <div class="num">{{ product_count }}</div>
+                <p class="label">Total Products</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon gold"><i class="bi bi-tag"></i></div>
+            <div>
+                <div class="num">{{ category_count }}</div>
+                <p class="label">Categories</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon blue"><i class="bi bi-check-circle"></i></div>
+            <div>
+                <div class="num">{{ in_stock }}</div>
+                <p class="label">In Stock</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon teal"><i class="bi bi-truck"></i></div>
+            <div>
+                <div class="num">{{ total_orders }}</div>
+                <p class="label">Orders ({{ new_orders }} new)</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon teal"><i class="bi bi-clock-history"></i></div>
+            <div>
+                <div class="num" style="font-size:15px;font-weight:500;">
+                    {{ last_updated[:10] if last_updated else '—' }}
+                </div>
+                <p class="label">Last Updated</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deploy Status -->
+    {% if last_deploy_time %}
+    <div class="card">
+        <div class="card-body-sm" style="display:flex;align-items:center;gap:16px;">
+            <span class="deploy-status">
+                <span class="dot dot-green"></span>
+                {% if auto_deploy %}Auto-publish is ON — site updates when you save{% else %}Auto-publish OFF{% endif %}
+            </span>
+            <span class="text-muted" style="font-size:13px;">
+                Last deploy: {{ last_deploy_time.strftime('%H:%M') }}
+            </span>
+            {% if last_deploy_result %}
+            <span class="text-muted" style="font-size:12px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                {{ last_deploy_result[:150] }}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if sheet_status and sheet_status.configured %}
+    <div class="card">
+        <div class="card-body-sm" style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:14px;">
+                <i class="bi bi-google" style="color:#1f5132;"></i>
+                <strong>Google Sheet</strong>
+            </span>
+            <span class="text-muted" style="font-size:13px;">
+                {{ sheet_status.message }}
+            </span>
+            <span class="badge badge-success">{{ sheet_status.row_count }} rows</span>
+        </div>
+    </div>
+    {% elif sheet_status and not sheet_status.configured %}
+    <div class="card">
+        <div class="card-body-sm" style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:14px;">
+                <i class="bi bi-google" style="color:#9ca3af;"></i>
+                Google Sheet
+            </span>
+            <span class="text-muted" style="font-size:12px;">
+                {{ sheet_status.message }}
+            </span>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row g-3">
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <span><i class="bi bi-lightning-fill" style="color:#c89848;"></i> Quick Actions</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/products/new" class="btn btn-primary">
+                            <i class="bi bi-plus-lg"></i> Add New Product
+                        </a>
+                        <a href="/csv/import" class="btn btn-outline-primary">
+                            <i class="bi bi-upload"></i> Import from CSV
+                        </a>
+                        <a href="/import-sheet" class="btn btn-outline-primary">
+                            <i class="bi bi-google"></i> Sync from Google Sheet
+                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="/csv/export" class="btn btn-outline-primary flex-fill">
+                                <i class="bi bi-download"></i> Export CSV
+                            </a>
+                            <a href="/csv/template" class="btn btn-outline-primary flex-fill">
+                                <i class="bi bi-file-text"></i> CSV Template
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Breakdown -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <span><i class="bi bi-pie-chart"></i> Categories</span>
+                    <a href="/categories" class="btn btn-sm btn-outline-primary">Manage</a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        {% for cat in categories %}
+                        <tr>
+                            <td style="padding:10px 20px;"><strong>{{ cat.label }}</strong></td>
+                            <td style="padding:10px 20px;text-align:right;">
+                                <span class="badge badge-gk">{{ cat.count }} products</span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="2" class="text-center text-muted py-3">No categories</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Products -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="bi bi-clock-history"></i> Recently Updated</span>
+                    <a href="/products" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>SKU</th>
+                                <th>Price</th>
+                                <th>Updated</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in recent %}
+                            <tr>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        {% if p.image %}
+                                        <img src="{{ p.image }}" alt="" class="product-thumb"
+                                             onerror="this.style.display='none'">
+                                        {% else %}
+                                        <div class="product-thumb d-flex align-items-center justify-content-center bg-light">
+                                            <i class="bi bi-image text-muted" style="font-size:14px;"></i>
+                                        </div>
+                                        {% endif %}
+                                        <strong>{{ p.name }}</strong>
+                                    </div>
+                                </td>
+                                <td><code>{{ p.sku }}</code></td>
+                                <td><strong>KES {{ "{:,}".format(p.price_kes) }}</strong></td>
+                                <td class="text-muted">{{ p.updated_at[:16] if p.updated_at else '—' }}</td>
+                                <td>
+                                    <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" class="text-center text-muted py-4">No products yet — import from CSV or the Google Sheet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,485 @@
+{% extends "base.html" %}
+{% block title %}{% if product %}Edit: {{ product.name }}{% else %}New Product{% endif %}{% endblock %}
+
+{% block content %}
+{% set is_new = not product %}
+{% set m = product.margin if product and product.margin else {'profit_kes':0,'margin_pct':0,'cost_kes_total':0,'cost_kes_from_cny':0} %}
+<div class="topbar">
+    <h1>
+        {% if product %}
+        <i class="bi bi-pencil"></i> {{ product.name }}
+        <span class="subtitle">SKU: {{ product.sku }}</span>
+        {% else %}
+        <i class="bi bi-plus-lg"></i> New Product
+        {% endif %}
+    </h1>
+    <div class="topbar-actions">
+        <a href="/products" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <div class="row g-4">
+        <!-- ═══ MAIN FORM ═══ -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="bi bi-info-circle"></i> Details</span>
+                    {% if product %}
+                    <span class="text-muted" style="font-size:12px;">
+                        Updated: {{ (product.updated_at or '')[:16] }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <form method="POST"
+                          {% if is_new %}action="/products/new"{% else %}action="/products/{{ product.sku }}/edit"{% endif %}>
+
+                        <div class="row g-3">
+                            <!-- Name -->
+                            <div class="col-md-8">
+                                <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control"
+                                       value="{{ product.name if product else '' }}" required
+                                       placeholder="TaylorMade Qi35 Driver"
+                                       id="productName" {% if is_new %}onchange="autoGenerateSku()"{% endif %}>
+                            </div>
+                            <!-- SKU -->
+                            <div class="col-md-4">
+                                <label class="form-label">SKU</label>
+                                <div class="input-group">
+                                    <input type="text" name="sku" class="form-control"
+                                           value="{{ product.sku if product else '' }}"
+                                           {% if not is_new %}readonly{% endif %}
+                                           placeholder="gk-dr001" id="skuInput">
+                                    {% if is_new %}
+                                    <button type="button" class="btn btn-outline-primary" onclick="autoGenerateSku()" title="Auto-generate SKU">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                                {% if is_new %}
+                                <small class="text-muted">Leave blank to auto-generate</small>
+                                {% endif %}
+                            </div>
+
+                            <!-- Category -->
+                            <div class="col-md-4">
+                                <label class="form-label">Category</label>
+                                <select name="category_slug" class="form-select" id="categorySelect"
+                                        onchange="{% if is_new %}autoGenerateSku();{% endif %}updateAttributes()">
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.slug }}"
+                                        data-type="{{ cat.category_type or 'accessory' }}"
+                                        {% if product and product.category_slug == cat.slug %}selected{% endif %}>
+                                        {{ cat.label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!-- Price -->
+                            <div class="col-md-3">
+                                <label class="form-label">Selling Price (KES)</label>
+                                <input type="text" name="price_kes" class="form-control"
+                                       value="{{ product.price_kes if product else '' }}"
+                                       placeholder="85000" id="priceInput" oninput="calcMargin()">
+                            </div>
+                            <!-- Status -->
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="In Stock" {% if product and product.status == 'In Stock' %}selected{% endif %}>In Stock</option>
+                                    <option value="Low Stock" {% if product and product.status == 'Low Stock' %}selected{% endif %}>Low Stock</option>
+                                    <option value="Pre-order" {% if product and product.status == 'Pre-order' %}selected{% endif %}>Pre-order</option>
+                                    <option value="Discontinued" {% if product and product.status == 'Discontinued' %}selected{% endif %}>Discontinued</option>
+                                </select>
+                            </div>
+                            <!-- Featured -->
+                            <div class="col-md-2 d-flex align-items-end">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" name="featured" class="form-check-input" id="chkFeatured"
+                                        {% if product and product.featured %}checked{% endif %}>
+                                    <label class="form-check-label" for="chkFeatured">Featured</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ═══ MARGIN CALCULATOR ═══ -->
+                        <div class="card" style="background:#f8f9fa;border:1px solid #e1e3e5;border-radius:8px;margin:16px 0;">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="bi bi-currency-exchange" style="color:#1f5132;"></i>
+                                    <strong style="font-size:14px;">Pricing &amp; Margin</strong>
+                                </div>
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-md-2">
+                                        <label style="font-size:11px;color:#6d7175;">Cost (CNY)</label>
+                                        <input type="text" name="cost_cny" class="form-control form-control-sm"
+                                               value="{{ product.cost_cny if product else '' }}"
+                                               placeholder="1200" id="costCnyInput" oninput="calcMargin()">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label style="font-size:11px;color:#6d7175;">Cost (KES)</label>
+                                        <input type="text" name="cost_kes" class="form-control form-control-sm"
+                                               value="{{ product.cost_kes if product else '' }}"
+                                               placeholder="21600" id="costKesInput" oninput="calcMargin()">
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <label style="font-size:11px;color:#6d7175;">Total Cost</label>
+                                        <div id="totalCostDisplay" style="font-size:16px;font-weight:700;color:#202223;">
+                                            KES {{ "{:,}".format(m.cost_kes_total) if m.cost_kes_total else '0' }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <label style="font-size:11px;color:#6d7175;">Profit</label>
+                                        <div id="profitDisplay" style="font-size:16px;font-weight:700;{% if m.profit_kes > 0 %}color:#1f5132{% else %}color:#d82c0d{% endif %};">
+                                            KES {{ "{:,}".format(m.profit_kes) if m.profit_kes else '0' }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <label style="font-size:11px;color:#6d7175;">Margin %</label>
+                                        <div id="marginDisplay" style="font-size:22px;font-weight:800;{% if m.margin_pct >= 40 %}color:#1f5132{% elif m.margin_pct >= 20 %}color:#c89848{% else %}color:#d82c0d{% endif %};">
+                                            {{ m.margin_pct }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted" style="font-size:11px;">Exchange rate: 1 CNY ≈ 18 KES</small>
+                            </div>
+                        </div>
+
+                        <!-- ═══ COLORS + SIZES (always visible) ═══ -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-palette"></i> Colors</label>
+                                <div class="d-flex flex-wrap gap-1 mb-1" id="colorSwatches">
+                                    {% set colors_val = product.colors if product else '' %}
+                                    {% for c in ['White','Black','Navy','Red','Blue','Green','Grey','Brown','Yellow','Pink','Orange','Purple','Beige','Cream','Khaki'] %}
+                                    <span class="color-swatch" data-color="{{ c }}"
+                                          style="display:inline-block;width:28px;height:28px;border-radius:50%;
+                                                 border:2px solid #ddd;cursor:pointer;
+                                                 background:{{ c|lower }};{% if c in ['White','Beige','Cream'] %}border-color:#bbb;{% endif %}
+                                                 {% if colors_val and c in colors_val.split(',') %}border-color:#1f5132;outline:2px solid #1f5132;{% endif %}"
+                                          title="{{ c }}" onclick="toggleColor(this)"></span>
+                                    {% endfor %}
+                                </div>
+                                <input type="text" name="colors" class="form-control" id="colorsInput"
+                                       value="{{ colors_val }}"
+                                       placeholder="White, Black, Navy" oninput="syncColorSwatches()">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-rulers"></i> Sizes</label>
+                                <div class="d-flex flex-wrap gap-2 mb-1" id="sizeCheckboxes">
+                                    {% set sizes_val = product.sizes if product else '' %}
+                                    {% for s in ['XS','S','M','L','XL','XXL','3XL','One Size'] %}
+                                    <label class="size-chip" style="cursor:pointer;padding:4px 14px;border:2px solid #ddd;border-radius:100px;font-size:13px;font-weight:500;transition:all 0.15s;
+                                           {% if sizes_val and s in sizes_val.split(',') %}background:#1f5132;color:#fff;border-color:#1f5132;{% endif %}">
+                                        <input type="checkbox" class="size-checkbox" value="{{ s }}"
+                                               style="display:none;"
+                                               onchange="this.parentElement.style.background=this.checked?'#1f5132':'transparent';this.parentElement.style.color=this.checked?'#fff':'#202223';this.parentElement.style.borderColor=this.checked?'#1f5132':'#ddd';updateSizesInput()"
+                                               {% if sizes_val and s in sizes_val.split(',') %}checked{% endif %}>
+                                        {{ s }}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <input type="text" name="sizes" class="form-control" id="sizesInput"
+                                       value="{{ sizes_val }}"
+                                       placeholder="S, M, L, XL, XXL">
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="row g-3 mt-2">
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" class="form-control" rows="3"
+                                    placeholder="Product description...">{{ product.description if product else '' }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Stock Qty</label>
+                                <input type="text" name="stock" class="form-control"
+                                       value="{{ product.stock if product else '' }}" placeholder="10">
+                            </div>
+                        </div>
+
+                        <!-- ═══ DYNAMIC CATEGORY ATTRIBUTES ═══ -->
+                        <hr class="divider">
+                        <h6 style="font-weight:600;margin-bottom:12px;">
+                            <i class="bi bi-sliders"></i>
+                            <span id="attrsSectionTitle">Category Attributes</span>
+                        </h6>
+                        <div id="dynamicAttributes" class="row g-3">
+                            <!-- Filled by JS -->
+                        </div>
+
+                        <input type="hidden" name="extra_attrs_json" id="extraAttrsJson" value="">
+
+                        <!-- Submit -->
+                        <hr class="divider">
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i>
+                                {% if product %}Save Changes{% else %}Create Product{% endif %}
+                            </button>
+                            <a href="/products" class="btn btn-outline-primary">Cancel</a>
+                        </div>
+                        <small class="text-muted" style="display:block;margin-top:8px;">
+                            <i class="bi bi-info-circle"></i>
+                            {% if auto_deploy %}Auto-publish ON — saving will deploy to the live site.{% else %}Save first, then generate + deploy.{% endif %}
+                        </small>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ RIGHT SIDEBAR ═══ -->
+        <div class="col-lg-4">
+            <!-- Main Product Image -->
+            <div class="card">
+                <div class="card-header"><i class="bi bi-image"></i> Main Image</div>
+                <div class="card-body text-center">
+                    {% if product and product.image %}
+                    <a href="{{ product.image }}" target="_blank">
+                        <img src="{{ product.image }}" alt="{{ product.name }}"
+                             style="max-width:100%;max-height:180px;border-radius:6px;margin-bottom:8px;object-fit:contain;background:#f6f6f7;"
+                             onerror="this.style.display='none'">
+                    </a>
+                    <form method="POST" action="/products/{{ product.sku }}/delete-image" class="mb-2">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Remove main image?')">
+                            <i class="bi bi-trash"></i> Remove
+                        </button>
+                    </form>
+                    {% else %}
+                    <div style="padding:20px 0;color:#9ca3af;">
+                        <i class="bi bi-image" style="font-size:36px;display:block;margin-bottom:6px;"></i>
+                        <p style="margin:0;font-size:13px;">No main image</p>
+                    </div>
+                    {% endif %}
+                    {% if product %}
+                    <form method="POST" action="/products/{{ product.sku }}/image" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <input type="file" name="image" class="form-control form-control-sm" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-upload"></i> Upload Main Image
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ═══ IMAGE GALLERY ═══ -->
+            {% if product %}
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="bi bi-images"></i> Gallery ({{ product.gallery_list|length }})</span>
+                </div>
+                <div class="card-body">
+                    {% if product.gallery_list %}
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                        {% for gimg in product.gallery_list %}
+                        <div style="position:relative;border-radius:6px;overflow:hidden;background:#f6f6f7;border:2px solid transparent;">
+                            <img src="/images/products/{{ gimg }}" alt="Gallery"
+                                 style="width:100%;height:100px;object-fit:cover;display:block;"
+                                 onerror="this.parentElement.innerHTML='<div style=height:100px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:12px;>Not found</div>'">
+                            <div style="position:absolute;top:4px;right:4px;display:flex;gap:3px;">
+                                <form method="POST" action="/products/{{ product.sku }}/promote-image">
+                                    <input type="hidden" name="filename" value="{{ gimg }}">
+                                    <button type="submit" class="btn btn-sm btn-success py-0 px-1"
+                                            style="font-size:9px;border-radius:4px;"
+                                            title="Set as main image">
+                                        <i class="bi bi-star-fill"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="/products/{{ product.sku }}/gallery-delete">
+                                    <input type="hidden" name="filename" value="{{ gimg }}">
+                                    <button type="submit" class="btn btn-sm btn-dark py-0 px-1"
+                                            style="font-size:10px;opacity:0.8;border-radius:4px;"
+                                            onclick="return confirm('Remove this image?')">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div style="text-align:center;padding:12px;color:#9ca3af;font-size:13px;">
+                        <i class="bi bi-images" style="font-size:24px;display:block;margin-bottom:4px;"></i>
+                        No gallery images yet. The site shows these as additional product photos.
+                    </div>
+                    {% endif %}
+                    <form method="POST" action="/products/{{ product.sku }}/gallery-upload" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <input type="file" name="image" class="form-control form-control-sm" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="bi bi-plus-lg"></i> Add to Gallery
+                        </button>
+                    </form>
+                    <small class="text-muted" style="display:block;margin-top:4px;font-size:11px;">
+                        Gallery images appear as thumbnails on the product page
+                    </small>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quick Help -->
+            <div class="card">
+                <div class="card-header"><i class="bi bi-info-circle"></i> Quick Help</div>
+                <div class="card-body" style="font-size:13px;color:#6d7175;">
+                    <p><strong>💰 Margin</strong> — Enter cost in CNY (China) and/or KES. Profit and margin % calculate live.</p>
+                    <p><strong>🎨 Colors</strong> — Click a color swatch to toggle it into the list. Type custom colors manually.</p>
+                    <p><strong>📏 Sizes</strong> — Check the boxes for available sizes. Also supports manual entry.</p>
+                    <p><strong>🖼️ Gallery</strong> — Upload up to 10 additional photos. They show as clickable thumbnails on the product page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ── Attribute Templates ──
+const ATTR_TEMPLATES = {{ CATEGORY_ATTR_TEMPLATES|tojson|safe }};
+const CATEGORY_TYPES = {};
+document.querySelectorAll('#categorySelect option').forEach(opt => {
+    CATEGORY_TYPES[opt.value] = opt.dataset.type || 'accessory';
+});
+let existingAttrs = {{ (product.extra_attrs_parsed|tojson) if product and product.extra_attrs_parsed else '{}' }};
+
+function getCategoryType() {
+    return CATEGORY_TYPES[document.getElementById('categorySelect').value] || 'accessory';
+}
+
+function renderAttributes() {
+    const ctype = getCategoryType();
+    const tmpl = ATTR_TEMPLATES[ctype] || ATTR_TEMPLATES['accessory'];
+    const container = document.getElementById('dynamicAttributes');
+    document.getElementById('attrsSectionTitle').textContent =
+        ctype.charAt(0).toUpperCase() + ctype.slice(1) + ' Attributes';
+
+    if (!tmpl || !tmpl.attributes || tmpl.attributes.length === 0) {
+        container.innerHTML = '<div class="col-12"><p class="text-muted" style="font-size:13px;">No special attributes for this category type.</p></div>';
+        return;
+    }
+    let html = '';
+    tmpl.attributes.forEach(attr => {
+        const key = attr.key;
+        const val = existingAttrs[key] || '';
+        if (attr.type === 'select' && attr.options) {
+            let optsHtml = '<option value="">— Select —</option>';
+            attr.options.split(',').forEach(o => {
+                const t = o.trim();
+                optsHtml += `<option value="${t}" ${val === t ? 'selected' : ''}>${t}</option>`;
+            });
+            html += `<div class="col-md-4">
+                <label class="form-label">${attr.label}</label>
+                <select name="attr_${key}" class="form-select attr-field" data-key="${key}">${optsHtml}</select>
+            </div>`;
+        } else {
+            html += `<div class="col-md-4">
+                <label class="form-label">${attr.label}</label>
+                <input type="text" name="attr_${key}" class="form-control attr-field"
+                       value="${val}" placeholder="${attr.placeholder || ''}" data-key="${key}">
+            </div>`;
+        }
+    });
+    container.innerHTML = html;
+}
+
+function autoGenerateSku() {
+    const skuInput = document.getElementById('skuInput');
+    if (skuInput.value.trim() !== '') return;
+    const cat = document.getElementById('categorySelect').value || 'accessories';
+    fetch('/api/generate-sku?category=' + encodeURIComponent(cat))
+        .then(r => r.json())
+        .then(d => { skuInput.value = d.sku; })
+        .catch(() => {});
+}
+
+// ── Margin Calculator ──
+function calcMargin() {
+    const price = parseInt(document.getElementById('priceInput').value.replace(/[^\d]/g,'')) || 0;
+    const cny = parseInt(document.getElementById('costCnyInput').value.replace(/[^\d]/g,'')) || 0;
+    const kes = parseInt(document.getElementById('costKesInput').value.replace(/[^\d]/g,'')) || 0;
+    const fromCny = cny * 18;
+    const total = fromCny + kes;
+    document.getElementById('totalCostDisplay').textContent = 'KES ' + total.toLocaleString();
+
+    if (price > 0 && total > 0) {
+        const profit = price - total;
+        const margin = Math.round((profit / price) * 1000) / 10;
+        document.getElementById('profitDisplay').textContent = 'KES ' + profit.toLocaleString();
+        document.getElementById('profitDisplay').style.color = profit > 0 ? '#1f5132' : '#d82c0d';
+        document.getElementById('marginDisplay').textContent = margin + '%';
+        document.getElementById('marginDisplay').style.color = margin >= 40 ? '#1f5132' : (margin >= 20 ? '#c89848' : '#d82c0d');
+    } else {
+        document.getElementById('profitDisplay').textContent = 'KES 0';
+        document.getElementById('marginDisplay').textContent = '0%';
+    }
+}
+
+// ── Color Swatches ──
+function toggleColor(el) {
+    const color = el.dataset.color;
+    const input = document.getElementById('colorsInput');
+    let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
+    const idx = vals.indexOf(color);
+    if (idx > -1) {
+        vals.splice(idx, 1);
+        el.style.outline = 'none';
+        el.style.borderColor = '#ddd';
+    } else {
+        vals.push(color);
+        el.style.outline = '2px solid #1f5132';
+        el.style.borderColor = '#1f5132';
+    }
+    input.value = vals.join(', ');
+}
+
+function syncColorSwatches() {
+    const input = document.getElementById('colorsInput');
+    const vals = input.value.split(',').map(s => s.trim());
+    document.querySelectorAll('.color-swatch').forEach(el => {
+        const c = el.dataset.color;
+        if (vals.indexOf(c) > -1) {
+            el.style.outline = '2px solid #1f5132';
+            el.style.borderColor = '#1f5132';
+        } else {
+            el.style.outline = 'none';
+            el.style.borderColor = '#ddd';
+        }
+    });
+}
+
+// ── Size checkboxes ──
+function updateSizesInput() {
+    const checked = [];
+    document.querySelectorAll('.size-checkbox:checked').forEach(cb => {
+        checked.push(cb.value);
+    });
+    document.getElementById('sizesInput').value = checked.join(', ');
+}
+
+// ── Build extra_attrs JSON on submit ──
+document.querySelector('form').addEventListener('submit', function(e) {
+    const fields = document.querySelectorAll('.attr-field');
+    const attrs = {};
+    fields.forEach(f => {
+        const key = f.dataset.key || f.name.replace('attr_', '');
+        if (f.value.trim()) attrs[key] = f.value.trim();
+    });
+    document.getElementById('extraAttrsJson').value = JSON.stringify(attrs);
+});
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+    renderAttributes();
+    calcMargin();
+});
+</script>
+{% endblock %}

@@ -6,7 +6,7 @@
     <title>Golf Irons - Karibu</title>
     <meta name="description" content="Shop Golf Irons at Karibu. Precision and control for approach shots">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
@@ -16,7 +16,8 @@
         <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="nav-logo">
-                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
+                <img src="/images/karibu-logo-small.png" alt="Karibu" style="height:32px;width:32px;border-radius:50%;">
+                <span class="logo-text">KARIBU</span>
             </a>
             <ul class="nav-menu">
                 <li><a href="/" class="nav-link">Home</a></li>
@@ -26,10 +27,6 @@
                 <li><a href="/#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="/cart.html" class="btn-nav-cart" style="position:relative;color:#fff;font-size:18px;padding:8px 10px;">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span class="cart-badge" style="position:absolute;top:-2px;right:-4px;background:#c89848;color:#1f5132;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;">0</span>
-                </a>
                 <a href="https://wa.me/8613262570197" class="btn-nav-cta" target="_blank">
                     <i class="fab fa-whatsapp"></i> Chat
                 </a>
@@ -40,145 +37,499 @@
         </div>
     </nav>
 
-    <section class="category-hero" style="background:linear-gradient(135deg,#0d2818 0%,#1a4a2e 50%,#0d2818 100%);padding:140px 0 60px;">
-        <div class="container">
-            <div class="breadcrumb" style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:20px;">
-                <a href="/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a>
-                <span style="margin:0 8px;">›</span>
-                <a href="/categories/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Categories</a>
-                <span style="margin:0 8px;">›</span>
-                <span style="color:#c9a961;">Golf Irons</span>
-            </div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:48px;color:#fff;margin-bottom:12px;">Golf Irons</h1>
-            <p style="color:rgba(255,255,255,0.8);font-size:18px;max-width:600px;">Choose a brand below to explore their iron lineup.</p>
+    <!-- Category Header -->
+    <section class="category-hero">
+        <div class="category-hero-bg">
+            <img src="/images/categories/cat_golf_irons.jpg" alt="Golf Irons" loading="lazy">
         </div>
-    </section>
-    <section class="products-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Browse by Brand</h2>
-                <p class="section-description">6 brands, 6 iron families</p>
-            </div>
-<div class="brand-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;padding:20px 0;">
-        <a href="/categories/callaway-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <img src="/images/brands/brand_callaway.svg" alt="Callaway" style="max-height:100px;max-width:75%;object-fit:contain;" loading="lazy">
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">Callaway</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">3 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Innovative game-improvement and players distance irons.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse Callaway Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-        <a href="/categories/mizuno-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <div style="font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#1f5132;letter-spacing:3px;">Mizuno</div><div style="font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-top:2px;">Grain Flow Forged</div>
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">Mizuno</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">3 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Grain flow forged irons with exceptional feel.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse Mizuno Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-        <a href="/categories/ping-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <img src="/images/brands/brand_ping.svg" alt="Ping" style="max-height:100px;max-width:75%;object-fit:contain;" loading="lazy">
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">Ping</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">5 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Engineered forgiveness for every handicap.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse Ping Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-        <a href="/categories/pxg-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <div style="font-family:'Montserrat',sans-serif;font-size:40px;font-weight:800;color:#1a1a1a;letter-spacing:6px;">PXG</div><div style="font-size:11px;color:#888;letter-spacing:1.5px;text-transform:uppercase;">Parsons Xtreme Golf</div>
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">PXG</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">1 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Extreme performance with precision weighting.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse PXG Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-        <a href="/categories/taylormade-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <img src="/images/brands/brand_taylormade.svg" alt="TaylorMade" style="max-height:100px;max-width:75%;object-fit:contain;" loading="lazy">
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">TaylorMade</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">5 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Tour-proven distance and forgiveness.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse TaylorMade Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-        <a href="/categories/titleist-irons.html" style="text-decoration:none;color:inherit;display:block;">
-        <div class="brand-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;border:1px solid #e8e0d0;" 
-             onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(0,0,0,0.12)'"
-             onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <div style="height:160px;background:linear-gradient(135deg,#f8f5ee,#e8f0ea);display:flex;align-items:center;justify-content:center;padding:20px;">
-                <img src="/images/brands/brand_titleist.svg" alt="Titleist" style="max-height:100px;max-width:75%;object-fit:contain;" loading="lazy">
-            </div>
-            <div style="padding:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <h3 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a1a;margin:0;">Titleist</h3>
-                    <span style="background:#1f5132;color:#c9a961;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;">2 irons</span>
-                </div>
-                <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">Players irons trusted by the world's best.</p>
-                <div style="margin-top:12px;color:#1f5132;font-weight:600;font-size:13px;">
-                    Browse Titleist Irons <i class="fas fa-arrow-right" style="margin-left:6px;"></i>
-                </div>
-            </div>
-        </div>
-        </a>
-</div>
+        <div class="category-hero-content" data-aos="fade-up">
+            <i class="fas fa-golf-ball-tee category-hero-icon"></i>
+            <h1 class="category-hero-title">Golf Irons</h1>
+            <p class="category-hero-description">Precision and control for approach shots — 19 premium products</p>
+            <a class='btn btn-outline' href='/#products'>
+                <i class="fas fa-arrow-left"></i> Back to All Products
+            </a>
+            <a href="/catalogue.pdf" target="_blank" class="btn btn-primary" style="margin-left:10px;">
+                <i class="fas fa-download"></i> Download Catalogue
+            </a>
         </div>
     </section>
 
-<section class="cta-section">
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Golf Irons <span>Collection</span></h2>
+                <p class="section-description">19 products available</p>
+            </div>
+            <div class="products-grid">
+        <a href="/products/gk-ir004.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="Callaway Ai Smoke HL Irons" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Ai Smoke HL Irons', 'KES 89,297')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Callaway Ai Smoke HL Irons</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR004</span>
+                </div>
+                <div class="product-price">KES 89,297</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Ai Smoke HL Irons', 'KES 89,297')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-cla.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_Apex.jpg" alt="Callaway Apex" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Apex', 'KES 60,595')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Callaway Apex</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-CLA</span>
+                </div>
+                <div class="product-price">KES 60,595</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Apex', 'KES 60,595')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-clp.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Callaway_Paradym.jpg" alt="Callaway Paradym" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Callaway Paradym', 'KES 114,174')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Callaway Paradym</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-CLP</span>
+                </div>
+                <div class="product-price">KES 114,174</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Callaway Paradym', 'KES 114,174')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir003.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="Mizuno JPX 923 Forged Irons" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Mizuno JPX 923 Forged Irons', 'KES 89,297')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Mizuno JPX 923 Forged Irons</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR003</span>
+                </div>
+                <div class="product-price">KES 89,297</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Mizuno JPX 923 Forged Irons', 'KES 89,297')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-mzj.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Mizuno_JPX923.jpg" alt="Mizuno JPX923" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Mizuno JPX923', 'KES 66,973')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Mizuno JPX923</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-MZJ</span>
+                </div>
+                <div class="product-price">KES 66,973</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Mizuno JPX923', 'KES 66,973')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-mzp.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Mizuno_Pro_225.jpg" alt="Mizuno Pro 225" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Mizuno Pro 225', 'KES 95,676')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Mizuno Pro 225</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-MZP</span>
+                </div>
+                <div class="product-price">KES 95,676</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Mizuno Pro 225', 'KES 95,676')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pxxg.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/PXG_0311_XP_Gen_7.jpg" alt="PXG 0311 XP Gen 7" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('PXG 0311 XP Gen 7', 'KES 204,108')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">PXG 0311 XP Gen 7</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PXXG</span>
+                </div>
+                <div class="product-price">KES 204,108</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('PXG 0311 XP Gen 7', 'KES 204,108')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pgbt.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ping_Blueprint_T.jpg" alt="Ping Blueprint T" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ping Blueprint T', 'KES 75,775')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Ping Blueprint T</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PGBT</span>
+                </div>
+                <div class="product-price">KES 75,775</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ping Blueprint T', 'KES 75,775')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pgg.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ping_G425.jpg" alt="Ping G425" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ping G425', 'KES 66,973')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Ping G425</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PGG</span>
+                </div>
+                <div class="product-price">KES 66,973</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ping G425', 'KES 66,973')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pggg.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ping_G430_G.jpg" alt="Ping G430 G" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ping G430 G', 'KES 95,613')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Ping G430 G</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PGGG</span>
+                </div>
+                <div class="product-price">KES 95,613</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ping G430 G', 'KES 95,613')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pggs.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ping_G430_Steel.jpg" alt="Ping G430 Steel" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ping G430 Steel', 'KES 82,793')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Ping G430 Steel</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PGGS</span>
+                </div>
+                <div class="product-price">KES 82,793</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ping G430 Steel', 'KES 82,793')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-pgi.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Ping_i530.jpg" alt="Ping i530" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Ping i530', 'KES 124,378')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Ping i530</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-PGI</span>
+                </div>
+                <div class="product-price">KES 124,378</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Ping i530', 'KES 124,378')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-tmp.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade P790" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade P790', 'KES 82,153')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">TaylorMade P790</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-TMP</span>
+                </div>
+                <div class="product-price">KES 82,153</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade P790', 'KES 82,153')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir002.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade Qi Max Irons" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade Qi Max Irons', 'KES 95,676')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">TaylorMade Qi Max Irons</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR002</span>
+                </div>
+                <div class="product-price">KES 95,676</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade Qi Max Irons', 'KES 95,676')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-tmqi.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade Qi10 Iron" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade Qi10 Iron', 'KES 95,676')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">TaylorMade Qi10 Iron</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-TMQI</span>
+                </div>
+                <div class="product-price">KES 95,676</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade Qi10 Iron', 'KES 95,676')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-tmsm.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade SIM Max" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade SIM Max', 'KES 86,108')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">TaylorMade SIM Max</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-TMSM</span>
+                </div>
+                <div class="product-price">KES 86,108</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade SIM Max', 'KES 86,108')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-tms.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="TaylorMade Stealth" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('TaylorMade Stealth', 'KES 79,922')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">TaylorMade Stealth</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-TMS</span>
+                </div>
+                <div class="product-price">KES 79,922</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('TaylorMade Stealth', 'KES 79,922')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir001.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/__cat_golf_generic.jpg" alt="Titleist T100 Irons" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist T100 Irons', 'KES 178,595')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Titleist T100 Irons</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR001</span>
+                </div>
+                <div class="product-price">KES 178,595</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist T100 Irons', 'KES 178,595')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+        <a href="/products/gk-ir-ttt.html" class="product-card-link" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-card" data-category="golf_irons" data-aos="fade-up">
+            <div class="product-image-wrapper">
+                <img src="/images/products/Titleist_T200.jpg" alt="Titleist T200" loading="lazy">
+                <div class="product-actions">
+                    <button class="btn-wishlist" onclick="event.stopPropagation();inquireProduct('Titleist T200', 'KES 62,508')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                </div>
+                <span class="product-badge">Premium</span>
+            </div>
+            <div class="product-details">
+                <span class="product-category">Irons</span>
+                <h3 class="product-title">Titleist T200</h3>
+                <div class="product-meta">
+                    <span class="product-sku">SKU: GK-IR-TTT</span>
+                </div>
+                <div class="product-price">KES 62,508</div>
+                <button class="btn-inquire" onclick="event.stopPropagation();inquireProduct('Titleist T200', 'KES 62,508')">
+                    <i class="fab fa-whatsapp"></i> Inquire Now
+                </button>
+            </div>
+        </div>
+        </a>
+            </div>
+            <div class="text-center" style="text-align:center;margin-top:40px;" data-aos="fade-up">
+                <a href="/categories/" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 40px;font-size:16px;">
+                    Browse All Categories <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="container">
             <div class="cta-content" data-aos="fade-up">
                 <h2>Interested in Bulk Orders?</h2>
@@ -190,12 +541,13 @@
         </div>
     </section>
 
-<footer class="footer">
+        <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="/" class="footer-logo">
-                        <img src="/images/karibu-markB-horizontal.svg" alt="Karibu Golf" style="height:36px;width:auto;vertical-align:middle;margin-right:8px;">
+                        <img src="/images/karibu-logo-small.png" alt="Karibu" style="height:24px;width:24px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+                        <span class="logo-text">KARIBU</span>
                     </a>
                     <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
                     <div class="social-links">
@@ -241,11 +593,6 @@
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="/script.js"></script>
-    <script src="/cart.js"></script>
-</body>
-</html>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/script.js"></script>
 </body>
 </html>

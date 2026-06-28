@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Orders — Karibu Golf Admin{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <h1><i class="bi bi-truck"></i> Orders <span class="subtitle">({{ orders|length }})</span></h1>
+    <div class="topbar-actions">
+        <a href="/orders/new" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> New Order</a>
+    </div>
+</div>
+
+<div class="content-wrapper">
+    <!-- Filters -->
+    <div class="card">
+        <div class="card-body">
+            <form method="GET" class="row g-2">
+                <div class="col-md-4">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" name="search" class="form-control" placeholder="Search by name, order #, or phone..." value="{{ search }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Statuses</option>
+                        <option value="new" {% if status_filter == 'new' %}selected{% endif %}>🆕 New</option>
+                        <option value="confirmed" {% if status_filter == 'confirmed' %}selected{% endif %}>✅ Confirmed</option>
+                        <option value="processing" {% if status_filter == 'processing' %}selected{% endif %}>⚙️ Processing</option>
+                        <option value="shipped" {% if status_filter == 'shipped' %}selected{% endif %}>🚚 Shipped</option>
+                        <option value="delivered" {% if status_filter == 'delivered' %}selected{% endif %}>📦 Delivered</option>
+                        <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>❌ Cancelled</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-funnel"></i> Filter</button>
+                </div>
+                <div class="col-md-2">
+                    {% if search or status_filter %}
+                    <a href="/orders" class="btn btn-outline-primary w-100"><i class="bi bi-x"></i> Clear</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order List -->
+    <div class="card">
+        <div class="card-header">
+            <span><i class="bi bi-truck"></i> Orders</span>
+            <span class="text-muted" style="font-size:13px;">Newest first</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
+                        {% for o in orders %}
+                        <tr>
+                            <td><code>{{ o.order_number }}</code></td>
+                            <td><strong>{{ o.customer_name }}</strong></td>
+                            <td>{{ o.customer_phone or '—' }}</td>
+                            <td>
+                                {% set item_count = o.items_parsed|sum(attribute='qty') if o.items_parsed else 0 %}
+                                {{ o.items_parsed|length }} items ({{ item_count }} units)
+                            </td>
+                            <td><strong>KES {{ "{:,}".format(o.total_kes) }}</strong></td>
+                            <td>
+                                {% if o.status == 'new' %}
+                                <span class="badge" style="background:#dbeafe;color:#1e40af;">🆕 New</span>
+                                {% elif o.status == 'confirmed' %}
+                                <span class="badge" style="background:#e3f1df;color:#1f5132;">✅ Confirmed</span>
+                                {% elif o.status == 'processing' %}
+                                <span class="badge" style="background:#fef3c7;color:#92400e;">⚙️ Processing</span>
+                                {% elif o.status == 'shipped' %}
+                                <span class="badge" style="background:#dbeafe;color:#1e40af;">🚚 Shipped</span>
+                                {% elif o.status == 'delivered' %}
+                                <span class="badge" style="background:#e3f1df;color:#1f5132;">📦 Delivered</span>
+                                {% elif o.status == 'cancelled' %}
+                                <span class="badge" style="background:#fce4e0;color:#b33a1f;">❌ Cancelled</span>
+                                {% else %}
+                                <span class="badge badge-info">{{ o.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted" style="font-size:13px;">{{ o.created_at[:16] }}</td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="/orders/{{ o.id }}" class="btn btn-sm btn-outline-primary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <form method="POST" action="/orders/{{ o.id }}/delete" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"
+                                                onclick="return confirm('Delete order {{ o.order_number }}?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="8">
+                                <div class="empty-state">
+                                    <i class="bi bi-truck"></i>
+                                    <h5>No orders yet</h5>
+                                    <p>Orders will appear here when customers place them, or you can create one manually.</p>
+                                    <a href="/orders/new" class="btn btn-primary">Create Order</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
