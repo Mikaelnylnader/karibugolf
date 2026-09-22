@@ -2,6 +2,7 @@ import os
 import csv
 import io
 import re
+import secrets
 import json
 import sqlite3
 import urllib.request
@@ -9,7 +10,9 @@ import urllib.parse
 import subprocess
 import threading
 import sys
+import shutil
 from datetime import datetime, timedelta
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
 from flask import (
@@ -27,6 +30,9 @@ except ImportError:
 BASE_DIR = Path(__file__).resolve().parent
 DIST_DIR = BASE_DIR.parent / "dist"
 PROJECT_DIR = BASE_DIR.parent
+if str(PROJECT_DIR) not in sys.path:
+    sys.path.insert(0, str(PROJECT_DIR))
+from site_contact import WHATSAPP_DISPLAY
 DATABASE = BASE_DIR / "golf_kenya.db"
 
 UPLOAD_FOLDER = DIST_DIR / "images" / "products"
@@ -34,7 +40,8 @@ CATEGORY_IMG_FOLDER = DIST_DIR / "images" / "categories"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
 CSV_COLUMNS = [
-    "SKU", "Name", "Category", "Price Kenya (Ksh)", "Cost China (CNY)",
+    "SKU", "Name", "Category", "Selling Price (CNY)", "Price Kenya (Ksh)",
+    "Selling Price (USD)", "Cost China (CNY)",
     "Cost China (Ksh)", "Sizes", "Colors", "Description", "Image", "Status", "Stock"
 ]
 
@@ -76,10 +83,15 @@ CATEGORY_ATTR_TEMPLATES = {
     "accessory": {"attributes": [
         {"key": "colors", "label": "Colors", "type": "text", "placeholder": "Black, White"},
     ]},
+    "putter": {"attributes": [
+        {"key": "length", "label": "Length (inches)", "type": "select", "options": "32,33,34,35,36"},
+        {"key": "hand", "label": "Hand", "type": "select", "options": "Right,Left"},
+        {"key": "loft", "label": "Loft", "type": "select", "options": "1°,2°,3°,4°,5°"},
+    ]},
 }
 
 CATEGORY_TYPES = {
-    "drivers": "club", "golf_irons": "club", "putters": "club",
+    "drivers": "club", "golf_irons": "club", "putters": "putter",
     "woods": "club", "wedges": "club", "hybrids": "club",
     "mens_polos": "apparel", "mens_pants": "apparel", "mens_jackets": "apparel",
     "mens_shorts": "apparel", "womens_polos": "apparel", "womens_skirts": "apparel",
@@ -105,7 +117,7 @@ CATEGORY_SKU_PREFIXES = {
 }
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET", "gk-admin-secret-2024")
+app.secret_key = os.environ.get("FLASK_SECRET") or secrets.token_hex(32)
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_FOLDER)
 app.config["CATEGORY_IMG_FOLDER"] = str(CATEGORY_IMG_FOLDER)
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
@@ -115,16 +127,44 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(CATEGORY_IMG_FOLDER, exist_ok=True)
 
 # ── Auto Deploy State ──
-_auto_deploy_enabled = False
+# Product saves publish by default. The setting is persisted in SQLite so a
+# backend restart does not silently disconnect inventory from the live site.
+_auto_deploy_enabled = True
 _last_deploy_result = ""
 _last_deploy_time = None
 
 def set_auto_deploy(enabled: bool):
     global _auto_deploy_enabled
     _auto_deploy_enabled = enabled
+    try:
+        conn = get_db()
+        conn.execute(
+            "INSERT OR REPLACE INTO settings (key, value) VALUES ('auto_publish', ?)",
+            ("1" if enabled else "0",),
+        )
+        conn.commit()
+        conn.close()
+    except sqlite3.Error:
+        # init_db may not have created the settings table during first import.
+        pass
 
 def is_auto_deploy_enabled() -> bool:
+    global _auto_deploy_enabled
+    try:
+        conn = get_db()
+        row = conn.execute("SELECT value FROM settings WHERE key='auto_publish'").fetchone()
+        conn.close()
+        if row is not None:
+            _auto_deploy_enabled = str(row[0]).strip().lower() in ("1", "true", "yes", "on")
+    except sqlite3.Error:
+        pass
     return _auto_deploy_enabled
+
+
+@app.context_processor
+def inject_publish_state():
+    """Make the persistent publish state visible on every admin page."""
+    return {"auto_deploy": is_auto_deploy_enabled()}
 
 # ── Database ──
 
@@ -137,6 +177,8 @@ def get_db():
 
 def init_db():
     conn = get_db()
+    from blog_admin import blog
+    blog.ensure_schema(conn)
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -159,7 +201,9 @@ def init_db():
             name TEXT NOT NULL,
             category_slug TEXT NOT NULL,
             description TEXT DEFAULT '',
+            price_cny REAL DEFAULT 0,
             price_kes INTEGER DEFAULT 0,
+            price_usd INTEGER DEFAULT 0,
             cost_cny TEXT DEFAULT '',
             cost_kes TEXT DEFAULT '',
             sizes TEXT DEFAULT '',
@@ -207,11 +251,44 @@ def init_db():
         "ALTER TABLE categories ADD COLUMN category_type TEXT DEFAULT 'accessory'",
         "ALTER TABLE products ADD COLUMN extra_attrs TEXT DEFAULT '{}'",
         "ALTER TABLE products ADD COLUMN gallery TEXT DEFAULT '[]'",
+        "ALTER TABLE products ADD COLUMN price_cny REAL DEFAULT 0",
+        "ALTER TABLE products ADD COLUMN price_usd INTEGER DEFAULT 0",
+        "ALTER TABLE products ADD COLUMN feature_rows TEXT DEFAULT '[]'",
     ]:
         try:
             conn.execute(col_sql)
         except sqlite3.OperationalError:
             pass  # column already exists
+    # Existing catalog rows were historically KES-led. Seed their RMB selling
+    # price once, using the saved rate (or the Karibu default of 19 KES/CNY).
+    rate_rows = conn.execute(
+        "SELECT key, value FROM settings WHERE key IN ('cny_to_kes', 'usd_to_kes')"
+    ).fetchall()
+    migration_rates = {row["key"]: row["value"] for row in rate_rows}
+    try:
+        migration_cny_to_kes = float(migration_rates.get("cny_to_kes", 19.0))
+        if migration_cny_to_kes <= 0:
+            migration_cny_to_kes = 19.0
+    except (TypeError, ValueError):
+        migration_cny_to_kes = 19.0
+    try:
+        migration_usd_to_kes = float(migration_rates.get("usd_to_kes", 129.5))
+        if migration_usd_to_kes <= 0:
+            migration_usd_to_kes = 129.5
+    except (TypeError, ValueError):
+        migration_usd_to_kes = 129.5
+    conn.execute(
+        """UPDATE products
+           SET price_cny = ROUND(price_kes / ?, 2)
+           WHERE (price_cny IS NULL OR price_cny <= 0) AND price_kes > 0""",
+        (migration_cny_to_kes,),
+    )
+    conn.execute(
+        """UPDATE products
+           SET price_usd = ROUND(price_kes / ?, 2)
+           WHERE (price_usd IS NULL OR price_usd <= 0) AND price_kes > 0""",
+        (migration_usd_to_kes,),
+    )
     conn.commit()
     conn.close()
 
@@ -258,6 +335,11 @@ def seed_categories():
             "UPDATE categories SET sku_prefix=?, category_type=? WHERE slug=? AND (sku_prefix IS NULL OR sku_prefix='')",
             (prefix, ctype, slug)
         )
+        # Always update category_type for every category (so changes to CATEGORY_TYPES apply)
+        conn.execute(
+            "UPDATE categories SET category_type=? WHERE slug=? AND category_type!=?",
+            (ctype, slug, ctype)
+        )
     conn.commit()
     conn.close()
 
@@ -274,24 +356,96 @@ def parse_kes(s):
     clean = re.sub(r"[^\d]", "", str(s))
     return int(clean) if clean else 0
 
-def calc_margin(price_kes, cost_cny_str, cost_kes_str, exchange_rate=18.0):
-    """Calculate profit and margin percentage.
-    Returns dict with profit_kes, margin_pct, cost_kes_total.
-    """
-    cost_cny = parse_kes(cost_cny_str)
-    cost_kes_input = parse_kes(cost_kes_str)
-    cost_kes_from_cny = int(cost_cny * exchange_rate)
-    total_cost = cost_kes_from_cny + cost_kes_input
-    if price_kes and total_cost:
-        profit = price_kes - total_cost
-        margin = round((profit / price_kes) * 100, 1)
-    else:
-        profit, margin = 0, 0
+DEFAULT_EXCHANGE_RATES = {
+    "cny_to_kes": 19.0,
+    "usd_to_kes": 129.5,
+}
+
+def parse_decimal(value):
+    """Parse a user-entered money value while preserving decimal CNY/USD values."""
+    clean = re.sub(r"[^\d.\-]", "", str(value or ""))
+    if clean in ("", ".", "-", "-."):
+        return Decimal("0")
+    try:
+        return Decimal(clean)
+    except InvalidOperation:
+        return Decimal("0")
+
+def decimal_text(value):
+    """Store a decimal without currency symbols, commas, or trailing zeroes."""
+    normalized = value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    return format(normalized, "f").rstrip("0").rstrip(".") or "0"
+
+def get_exchange_rates(conn=None):
+    """Load positive exchange rates from settings with safe local defaults."""
+    owns_connection = conn is None
+    if owns_connection:
+        conn = get_db()
+    rows = conn.execute(
+        "SELECT key, value FROM settings WHERE key IN ('cny_to_kes', 'usd_to_kes')"
+    ).fetchall()
+    if owns_connection:
+        conn.close()
+    stored = {row["key"]: row["value"] for row in rows}
+    rates = {}
+    for key, fallback in DEFAULT_EXCHANGE_RATES.items():
+        value = parse_decimal(stored.get(key, fallback))
+        rates[key] = float(value) if value > 0 else fallback
+    return rates
+
+def normalize_pricing(form, rates):
+    """Use RMB as the selling-price source and derive KES plus USD."""
+    cny_to_kes = Decimal(str(rates["cny_to_kes"]))
+    usd_to_kes = Decimal(str(rates["usd_to_kes"]))
+    price_cny = parse_decimal(form.get("price_cny"))
+
+    # Backward compatibility for old CSV/Google Sheet rows that only have KES/USD.
+    if price_cny <= 0:
+        legacy_kes = parse_decimal(form.get("price_kes"))
+        legacy_usd = parse_decimal(form.get("price_usd"))
+        if legacy_kes > 0:
+            price_cny = legacy_kes / cny_to_kes
+        elif legacy_usd > 0:
+            price_cny = (legacy_usd * usd_to_kes) / cny_to_kes
+
+    price_cny = price_cny.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    price_kes = (price_cny * cny_to_kes).quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+    price_usd = (price_kes / usd_to_kes).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
     return {
-        "profit_kes": profit,
-        "margin_pct": margin,
-        "cost_kes_from_cny": cost_kes_from_cny,
-        "cost_kes_total": total_cost,
+        "price_cny": float(price_cny),
+        "price_kes": int(price_kes.quantize(Decimal("1"), rounding=ROUND_HALF_UP)),
+        "price_usd": float(price_usd.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)),
+        "cost_cny": decimal_text(parse_decimal(form.get("cost_cny"))),
+        "cost_kes": decimal_text(parse_decimal(form.get("cost_kes"))),
+    }
+
+def calc_margin(price_kes, cost_cny_str, cost_kes_str, rates=None):
+    """Calculate converted purchase cost, landed cost, profit, and margin."""
+    rates = rates or DEFAULT_EXCHANGE_RATES
+    cny_to_kes = Decimal(str(rates["cny_to_kes"]))
+    usd_to_kes = Decimal(str(rates["usd_to_kes"]))
+    price = parse_decimal(price_kes)
+    cost_cny = parse_decimal(cost_cny_str)
+    local_cost_kes = parse_decimal(cost_kes_str)
+    cost_kes_from_cny = cost_cny * cny_to_kes
+    total_cost = cost_kes_from_cny + local_cost_kes
+    profit = price - total_cost if price > 0 else Decimal("0")
+    margin = (profit / price * Decimal("100")) if price > 0 else Decimal("0")
+
+    def rounded_kes(value):
+        return int(value.quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+    return {
+        "cost_cny": float(cost_cny),
+        "cost_usd_from_cny": round(float(cost_kes_from_cny / usd_to_kes), 2),
+        "cost_kes_from_cny": rounded_kes(cost_kes_from_cny),
+        "local_cost_kes": rounded_kes(local_cost_kes),
+        "cost_kes_total": rounded_kes(total_cost),
+        "cost_usd_total": round(float(total_cost / usd_to_kes), 2),
+        "profit_kes": rounded_kes(profit),
+        "profit_usd": round(float(profit / usd_to_kes), 2),
+        "margin_pct": round(float(margin), 1),
     }
 
 def generate_sku(category_slug):
@@ -335,24 +489,31 @@ def import_from_google_sheet():
             raw = resp.read().decode("utf-8-sig")
         reader = csv.DictReader(io.StringIO(raw))
         conn = get_db()
+        rates = get_exchange_rates(conn)
         count = 0
         for row in reader:
             name = (row.get("Name") or "").strip()
             if not name:
                 continue
             cat = (row.get("Category") or "").strip().lower()
+            pricing = normalize_pricing({
+                "price_cny": row.get("Selling Price (CNY)"),
+                "price_kes": row.get("Price Kenya (Ksh)"),
+                "price_usd": row.get("Selling Price (USD)"),
+                "cost_cny": row.get("Cost China (CNY)"),
+                "cost_kes": row.get("Cost China (Ksh)"),
+            }, rates)
             conn.execute(
                 """INSERT OR REPLACE INTO products
-                   (sku, name, category_slug, description, price_kes, cost_cny, cost_kes,
-                    sizes, colors, status, stock, image)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                   (sku, name, category_slug, description, price_cny, price_kes, price_usd, cost_cny, cost_kes,
+                     sizes, colors, status, stock, image)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (
                     (row.get("SKU") or "").strip(), name,
                     CATEGORY_MAP.get(cat, "accessories"),
                     (row.get("Description") or "").strip(),
-                    parse_kes(row.get("Price Kenya (Ksh)")),
-                    (row.get("Cost China (CNY)") or "").strip(),
-                    (row.get("Cost China (Ksh)") or "").strip(),
+                    pricing["price_cny"], pricing["price_kes"], pricing["price_usd"],
+                    pricing["cost_cny"], pricing["cost_kes"],
                     (row.get("Sizes") or "").strip(),
                     (row.get("Colors") or "").strip(),
                     (row.get("Status") or "In Stock").strip(),
@@ -387,20 +548,19 @@ def generate_site_sync():
 
 def deploy_to_netlify():
     try:
-        os.chdir(str(DIST_DIR))
+        netlify_cli = shutil.which("netlify.cmd" if os.name == "nt" else "netlify")
+        if not netlify_cli:
+            return False, "Netlify CLI was not found on PATH"
         result = subprocess.run(
-            ["npx", "netlify", "deploy", "--dir", ".", "--site", "925395d9",
-             "--prod", "--message", f"Admin auto-deploy {datetime.now().strftime('%Y-%m-%d %H:%M')}"],
-            capture_output=True, text=True, timeout=180
+            [netlify_cli, "deploy", "--dir", "dist", "--site", "925395d9-2336-4f0d-81e0-21a72b3c9074",
+             "--prod", "--no-build", "--message", f"Admin auto-deploy {datetime.now().strftime('%Y-%m-%d %H:%M')}"],
+            cwd=str(PROJECT_DIR), capture_output=True, text=True, timeout=180
         )
-        os.chdir(str(PROJECT_DIR))
         output = (result.stdout + result.stderr)[:2000]
         return result.returncode == 0, output
     except subprocess.TimeoutExpired:
-        os.chdir(str(PROJECT_DIR))
         return False, "Deploy timed out"
     except Exception as e:
-        os.chdir(str(PROJECT_DIR))
         return False, str(e)
 
 def auto_publish():
@@ -410,8 +570,10 @@ def auto_publish():
     if ok:
         deploy_ok, deploy_msg = deploy_to_netlify()
         global _last_deploy_result, _last_deploy_time
-        _last_deploy_result = deploy_msg[:500]
+        _last_deploy_result = deploy_msg[:500] if deploy_ok else f"FAILED: {deploy_msg[:490]}"
         _last_deploy_time = datetime.now()
+        if not deploy_ok:
+            print(f"❌ Auto-deploy failed: {deploy_msg}")
     else:
         print(f"❌ Auto-generation failed: {msg}")
 
@@ -483,6 +645,7 @@ def dashboard():
 @app.route("/products")
 def product_list():
     conn = get_db()
+    rates = get_exchange_rates(conn)
     category = request.args.get("category", "")
     search = request.args.get("search", "")
     query = """SELECT p.*, c.label as category_label
@@ -494,22 +657,31 @@ def product_list():
     if search:
         query += " AND (p.name LIKE ? OR p.sku LIKE ?)"
         params.extend([f"%{search}%", f"%{search}%"])
-    products = conn.execute(query + " ORDER BY p.updated_at DESC", params).fetchall()
+    product_rows = conn.execute(query + " ORDER BY p.updated_at DESC", params).fetchall()
+    products = []
+    for row in product_rows:
+        item = dict(row)
+        item["margin"] = calc_margin(
+            item.get("price_kes", 0), item.get("cost_cny", ""), item.get("cost_kes", ""), rates
+        )
+        products.append(item)
     categories = conn.execute("SELECT * FROM categories ORDER BY display_order").fetchall()
     conn.close()
     return render_template("products.html", products=products, categories=categories,
-                          selected_category=category, search=search)
+                          selected_category=category, search=search, rates=rates)
 
 @app.route("/products/new", methods=["GET", "POST"])
 def product_new():
     conn = get_db()
+    rates = get_exchange_rates(conn)
     categories = conn.execute("SELECT * FROM categories ORDER BY display_order").fetchall()
     if request.method == "POST":
         sku = request.form.get("sku", "").strip()
         name = request.form.get("name", "").strip()
         if not name:
             flash("Product name is required!", "danger")
-            return render_template("product_form.html", categories=categories, product=None, attrs=None)
+            return render_template("product_form.html", categories=categories, product=None, attrs=None,
+                                   rates=rates, CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
         category_slug = request.form.get("category_slug", "accessories")
 
         # Auto-generate SKU if empty
@@ -528,20 +700,26 @@ def product_new():
         sizes = extra_attrs.get("sizes", request.form.get("sizes", "").strip())
         colors = extra_attrs.get("colors", request.form.get("colors", "").strip())
 
+        feature_rows = request.form.get("feature_rows", "[]").strip()
+        pricing = normalize_pricing(request.form, rates)
+        
         try:
             conn.execute(
-                """INSERT INTO products (sku, name, category_slug, description, price_kes,
-                   sizes, colors, extra_attrs, status, stock, cost_cny, cost_kes, featured)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                """INSERT INTO products (sku, name, category_slug, description, price_cny, price_kes, price_usd,
+                   sizes, colors, extra_attrs, status, stock, cost_cny, cost_kes, featured, feature_rows)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (sku, name, category_slug,
                  request.form.get("description", "").strip(),
-                 parse_kes(request.form.get("price_kes")),
+                 pricing["price_cny"],
+                 pricing["price_kes"],
+                 pricing["price_usd"],
                  sizes, colors, json.dumps(extra_attrs),
-                 request.form.get("status", "In Stock"),
+                 request.form.get("status", "Out of Stock"),
                  request.form.get("stock", "").strip(),
-                 request.form.get("cost_cny", "").strip(),
-                 request.form.get("cost_kes", "").strip(),
-                 1 if request.form.get("featured") else 0)
+                 pricing["cost_cny"],
+                 pricing["cost_kes"],
+                 1 if request.form.get("featured") else 0,
+                 feature_rows)
             )
             conn.commit()
             conn.close()
@@ -554,11 +732,13 @@ def product_new():
 
     conn.close()
     return render_template("product_form.html", categories=categories, product=None,
-                          attrs=None, category_attrs=None, CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
+                          attrs=None, category_attrs=None, rates=rates,
+                          CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
 
 @app.route("/products/<sku>/edit", methods=["GET", "POST"])
 def product_edit(sku):
     conn = get_db()
+    rates = get_exchange_rates(conn)
     product = conn.execute("SELECT * FROM products WHERE sku = ?", (sku,)).fetchone()
     if not product:
         flash("Product not found!", "danger")
@@ -569,7 +749,8 @@ def product_edit(sku):
         name = request.form.get("name", "").strip()
         if not name:
             flash("Name is required!", "danger")
-            return render_template("product_form.html", categories=categories, product=product)
+            return render_template("product_form.html", categories=categories, product=product, rates=rates,
+                                   CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
         category_slug = request.form.get("category_slug", product["category_slug"])
 
         # Collect extra attributes
@@ -582,17 +763,21 @@ def product_edit(sku):
 
         sizes = extra_attrs.get("sizes", request.form.get("sizes", "").strip())
         colors = extra_attrs.get("colors", request.form.get("colors", "").strip())
+        feature_rows = request.form.get("feature_rows", "[]").strip()
+        pricing = normalize_pricing(request.form, rates)
 
         conn.execute(
-            """UPDATE products SET name=?, category_slug=?, description=?, price_kes=?,
+            """UPDATE products SET name=?, category_slug=?, description=?, price_cny=?, price_kes=?, price_usd=?,
                sizes=?, colors=?, extra_attrs=?, status=?, stock=?, cost_cny=?, cost_kes=?, featured=?,
-               updated_at=CURRENT_TIMESTAMP WHERE sku=?""",
+               feature_rows=?, updated_at=CURRENT_TIMESTAMP WHERE sku=?""",
             (name, category_slug,
-             request.form.get("description", "").strip(), parse_kes(request.form.get("price_kes")),
+             request.form.get("description", "").strip(), pricing["price_cny"], pricing["price_kes"],
+             pricing["price_usd"],
              sizes, colors, json.dumps(extra_attrs),
-             request.form.get("status", "In Stock"), request.form.get("stock", "").strip(),
-             request.form.get("cost_cny", "").strip(), request.form.get("cost_kes", "").strip(),
-             1 if request.form.get("featured") else 0, sku)
+             request.form.get("status", "Out of Stock"), request.form.get("stock", "").strip(),
+             pricing["cost_cny"], pricing["cost_kes"],
+             1 if request.form.get("featured") else 0,
+             feature_rows, sku)
         )
         conn.commit()
         conn.close()
@@ -618,9 +803,10 @@ def product_edit(sku):
         product_dict.get("price_kes", 0),
         product_dict.get("cost_cny", ""),
         product_dict.get("cost_kes", ""),
+        rates,
     )
     return render_template("product_form.html", categories=categories, product=product_dict,
-                          CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
+                          rates=rates, CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
 
 @app.route("/products/<sku>/delete", methods=["POST"])
 def product_delete(sku):
@@ -660,6 +846,29 @@ def product_upload_image(sku):
     else:
         flash("Invalid file type!", "danger")
     return redirect(url_for("product_edit", sku=sku))
+
+@app.route("/products/<sku>/feature-image", methods=["POST"])
+def product_feature_image(sku):
+    """Upload an image for a feature row. Returns JSON with the URL."""
+    if "image" not in request.files:
+        return {"success": False, "error": "No file"}, 400
+    file = request.files["image"]
+    if file.filename == "":
+        return {"success": False, "error": "Empty file"}, 400
+    if file and allowed_file(file.filename):
+        ext = file.filename.rsplit(".", 1)[1].lower()
+        idx = request.args.get("idx", "0")
+        filename = f"{safe_filename(sku)}_feature_{idx}.{ext}"
+        file.save(str(UPLOAD_FOLDER / filename))
+        url = f"/images/products/{filename}"
+        return {"success": True, "url": url}
+        file.save(str(UPLOAD_FOLDER / filename))
+        url = f"/images/products/{filename}"
+        return {"success": True, "url": url}
+    return {"success": False, "error": "Invalid file type"}, 400
+
+
+
 
 @app.route("/products/<sku>/delete-image", methods=["POST"])
 def product_delete_image(sku):
@@ -809,6 +1018,7 @@ def csv_import():
             stream = io.StringIO(file.stream.read().decode("utf-8-sig"))
             reader = csv.DictReader(stream)
             conn = get_db()
+            rates = get_exchange_rates(conn)
             imported, errors = 0, []
             for i, row in enumerate(reader, 2):
                 name = (row.get("Name") or "").strip()
@@ -820,16 +1030,22 @@ def csv_import():
                     continue
                 cat = (row.get("Category") or "").strip().lower()
                 try:
+                    pricing = normalize_pricing({
+                        "price_cny": row.get("Selling Price (CNY)"),
+                        "price_kes": row.get("Price Kenya (Ksh)"),
+                        "price_usd": row.get("Selling Price (USD)"),
+                        "cost_cny": row.get("Cost China (CNY)"),
+                        "cost_kes": row.get("Cost China (Ksh)"),
+                    }, rates)
                     conn.execute(
                         """INSERT OR REPLACE INTO products
-                           (sku, name, category_slug, description, price_kes,
+                           (sku, name, category_slug, description, price_cny, price_kes, price_usd,
                             cost_cny, cost_kes, sizes, colors, status, stock)
-                           VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                         (sku, name, CATEGORY_MAP.get(cat, "accessories"),
                          (row.get("Description") or "").strip(),
-                         parse_kes(row.get("Price Kenya (Ksh)")),
-                         (row.get("Cost China (CNY)") or "").strip(),
-                         (row.get("Cost China (Ksh)") or "").strip(),
+                         pricing["price_cny"], pricing["price_kes"], pricing["price_usd"],
+                         pricing["cost_cny"], pricing["cost_kes"],
                          (row.get("Sizes") or "").strip(),
                          (row.get("Colors") or "").strip(),
                          (row.get("Status") or "In Stock").strip(),
@@ -853,7 +1069,7 @@ def csv_template():
     output = io.StringIO()
     w = csv.writer(output)
     w.writerow(CSV_COLUMNS)
-    w.writerow(["gk-dr001", "TaylorMade Qi35 Driver", "irons", "85000", "1200", "21600",
+    w.writerow(["gk-dr001", "TaylorMade Qi35 Driver", "irons", "4500", "85500", "660.23", "1200", "21600",
                  "S,M,L,XL", "White/Black", "Premium driver", "driver.jpg", "In Stock", "10"])
     return app.response_class(
         output.getvalue(), mimetype="text/csv",
@@ -869,8 +1085,8 @@ def csv_export():
     w = csv.writer(output)
     w.writerow(CSV_COLUMNS)
     for p in products:
-        w.writerow([p["sku"], p["name"], p["category_slug"], p["price_kes"],
-                     p["cost_cny"], p["cost_kes"], p["sizes"], p["colors"],
+        w.writerow([p["sku"], p["name"], p["category_slug"], p["price_cny"], p["price_kes"],
+                     p["price_usd"], p["cost_cny"], p["cost_kes"], p["sizes"], p["colors"],
                      p["description"], p["image_filename"], p["status"], p["stock"]])
     return app.response_class(
         output.getvalue(), mimetype="text/csv",
@@ -888,6 +1104,7 @@ def import_sheet():
 
 @app.route("/categories")
 def category_list():
+    """Main categories page showing only top-level groups."""
     conn = get_db()
     cats = conn.execute("""
         SELECT c.*, COUNT(p.id) as product_count
@@ -895,8 +1112,66 @@ def category_list():
         GROUP BY c.id ORDER BY c.display_order
     """).fetchall()
     conn.close()
-    return render_template("categories.html", categories=cats,
+    total = len(cats)
+
+    CATEGORY_GROUPS = [
+        ("clubs", "🏌️ Clubs", ["drivers", "golf_irons", "putters", "woods", "wedges", "hybrids"]),
+        ("apparel", "👕 Apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts",
+                       "womens_polos", "womens_skirts", "womens_pants", "womens_dresses",
+                       "womens_jackets", "womens_tops"]),
+        ("shoes", "👟 Shoes", ["mens_shoes", "womens_shoes"]),
+        ("equipment", "🎒 Equipment", ["bags", "balls", "gloves", "grips", "range_finders", "hats_and_caps"]),
+        ("accessories", "🔧 Accessories", ["accessories"]),
+    ]
+    cat_dict = {c["slug"]: c for c in cats}
+    
+    # Build main groups with product counts
+    main_groups = []
+    for group_slug, group_name, slugs in CATEGORY_GROUPS:
+        items = [cat_dict[s] for s in slugs if s in cat_dict]
+        if items:
+            total_products = sum(c["product_count"] or 0 for c in items)
+            img = items[0]["image"] or ""
+            main_groups.append({
+                "slug": group_slug,
+                "name": group_name,
+                "count": len(items),
+                "products": total_products,
+                "image": img,
+            })
+
+    return render_template("categories.html", main_groups=main_groups, total_categories=total,
                           CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
+
+
+@app.route("/categories/group/<group_name>")
+def category_group(group_name):
+    """Show individual categories within a group."""
+    CATEGORY_GROUPS = {
+        "clubs": ("🏌️ Clubs", ["drivers", "golf_irons", "putters", "woods", "wedges", "hybrids"]),
+        "apparel": ("👕 Apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts",
+                       "womens_polos", "womens_skirts", "womens_pants", "womens_dresses",
+                       "womens_jackets", "womens_tops"]),
+        "shoes": ("👟 Shoes", ["mens_shoes", "womens_shoes"]),
+        "equipment": ("🎒 Equipment", ["bags", "balls", "gloves", "grips", "range_finders", "hats_and_caps"]),
+        "accessories": ("🔧 Accessories", ["accessories"]),
+    }
+    if group_name not in CATEGORY_GROUPS:
+        flash("Group not found!", "danger")
+        return redirect(url_for("category_list"))
+    
+    group_label, slugs = CATEGORY_GROUPS[group_name]
+    conn = get_db()
+    cats = conn.execute(f"""
+        SELECT c.*, COUNT(p.id) as product_count
+        FROM categories c LEFT JOIN products p ON c.slug = p.category_slug
+        WHERE c.slug IN ({','.join('?' * len(slugs))})
+        GROUP BY c.id ORDER BY c.display_order
+    """, slugs).fetchall()
+    conn.close()
+    
+    return render_template("categories_group.html", group_name=group_label, group_slug=group_name,
+                          categories=cats, CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
 
 @app.route("/categories/<slug>/edit", methods=["POST"])
 def category_edit(slug):
@@ -926,9 +1201,8 @@ def category_upload_image(slug):
         flash("No file selected!", "danger")
         return redirect(url_for("category_list"))
     if file and allowed_file(file.filename):
-        ext = file.filename.rsplit(".", 1)[1].lower()
-        # Use the category image naming convention: cat_{slug}.jpg
-        filename = f"cat_{slug}.{ext}"
+        # Always save as .jpg so generate.py finds it (cat_{slug}.jpg)
+        filename = f"cat_{slug}.jpg"
         file.save(str(CATEGORY_IMG_FOLDER / filename))
         conn = get_db()
         conn.execute("UPDATE categories SET image_filename=?, image=? WHERE slug=?",
@@ -936,6 +1210,7 @@ def category_upload_image(slug):
         conn.commit()
         conn.close()
         flash(f"📸 Category image uploaded!", "success")
+        trigger_auto_publish()
     else:
         flash("Invalid file type!", "danger")
     return redirect(url_for("category_list"))
@@ -1019,14 +1294,24 @@ def serve_image(filename):
 def serve_category_image(filename):
     return send_from_directory(str(CATEGORY_IMG_FOLDER), filename)
 
+@app.route("/brand-assets/<path:filename>")
+def serve_brand_asset(filename):
+    return send_from_directory(str(DIST_DIR / "images"), filename)
+
 # ── Settings ──
 
 @app.route("/settings", methods=["GET", "POST"])
 def shop_settings():
     if request.method == "POST":
+        cny_to_kes = parse_decimal(request.form.get("cny_to_kes"))
+        usd_to_kes = parse_decimal(request.form.get("usd_to_kes"))
+        if cny_to_kes <= 0 or usd_to_kes <= 0:
+            flash("Exchange rates must be positive numbers.", "danger")
+            return redirect(url_for("shop_settings"))
         conn = get_db()
         for key in ["shop_name", "shop_url", "whatsapp_number", "business_email",
-                     "business_location", "currency", "tax_rate", "shipping_flat_rate"]:
+                     "business_location", "currency", "tax_rate", "shipping_flat_rate",
+                     "cny_to_kes", "usd_to_kes"]:
             val = request.form.get(key, "").strip()
             conn.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", (key, val))
         conn.commit()
@@ -1040,7 +1325,9 @@ def shop_settings():
     conn.close()
     defaults = {
         "shop_name": "Karibu Golf", "shop_url": "https://golfklcubskenya.netlify.app",
-        "whatsapp_number": "+861****0197", "currency": "KES",
+        "whatsapp_number": WHATSAPP_DISPLAY, "currency": "KES",
+        "cny_to_kes": str(DEFAULT_EXCHANGE_RATES["cny_to_kes"]),
+        "usd_to_kes": str(DEFAULT_EXCHANGE_RATES["usd_to_kes"]),
     }
     for k, v in defaults.items():
         settings.setdefault(k, v)
@@ -1216,6 +1503,10 @@ def api_create_order():
     return jsonify({"success": True, "order_number": order_number, "total": total})
 
 
+# Blog publishing is local-only and separate from the existing product auto-deploy toggle.
+from blog_admin import register_blog
+register_blog(app, get_db, DIST_DIR, lambda: DATABASE)
+
 # ── Main ──
 if __name__ == "__main__":
     init_db()
@@ -1225,7 +1516,7 @@ if __name__ == "__main__":
     debug = os.environ.get("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
 
     print(f"\n{'='*50}")
-    print(f"  🏌️  Golf Kenya Admin Panel")
+    print("  Golf Kenya Admin Panel")
     print(f"  http://localhost:{port}")
     print(f"  Auto-publish: {'ON' if is_auto_deploy_enabled() else 'OFF'}")
     print(f"{'='*50}\n")

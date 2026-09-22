@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-KE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="robots" content="{{ 'noindex, nofollow' if preview else 'index, follow, max-image-preview:large' }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta property="og:type" content="{{ 'article' if post else 'website' }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:site_name" content="Karibu Golf">
+  <meta property="og:locale" content="en_KE">
+  <meta name="twitter:card" content="{{ 'summary_large_image' if image else 'summary' }}">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:description" content="{{ description }}">
+  {% if image %}<meta property="og:image" content="{{ image }}"><meta name="twitter:image" content="{{ image }}">{% endif %}
+  {% if post %}
+  {% if post.published_at %}<meta property="article:published_time" content="{{ post.published_at }}">{% endif %}
+  <meta property="article:modified_time" content="{{ post.updated_at }}">
+  {% endif %}
+  {% if not preview %}<script type="application/ld+json">{{ schema_json }}</script>{% endif %}
+  <link rel="alternate" type="application/rss+xml" title="Karibu Golf Journal" href="/blog/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  {% if not preview %}<link rel="stylesheet" href="/styles.css">{% endif %}
+  <link rel="stylesheet" href="{{ '/blog-assets/blog.css' if preview else '/blog/blog.css' }}">
+</head>
+<body class="journal">
+  <a href="#journal-main" class="skip-link">Skip to content</a>
+  {% if preview %}<div class="preview-banner">EDITOR PREVIEW · Not indexed · <a href="/blog/{{ post.id }}/edit">Back to editor</a></div>
+  {% else %}{{ nav }}{% endif %}
+  <main id="journal-main">
+  {% if post %}
+    <header class="journal-article-head journal-wrap">
+      <nav class="journal-crumb" aria-label="Breadcrumb"><a href="{{ 'http://localhost:8080' if preview else '' }}/">Home</a><span>/</span><a href="{{ 'http://localhost:8080' if preview else '' }}/blog/">Journal</a><span>/</span>{{ post.category }}</nav>
+      <p class="journal-kicker">{{ post.category }}</p>
+      <h1>{{ post.title }}</h1>
+      <p class="journal-deck">{{ post.excerpt }}</p>
+      <div class="journal-byline"><span>By {{ post.author }}</span><span>{{ post.date_label }}</span><span>{{ post.reading_minutes }} min read</span></div>
+      {% if post.cover_image %}<figure class="journal-cover"><img src="{{ post.cover_image }}" alt="{{ post.cover_alt }}" width="1400" height="800" fetchpriority="high"></figure>{% endif %}
+    </header>
+    <div class="journal-article-layout journal-wrap">
+      <aside class="journal-toc" aria-label="In this guide"><p class="journal-kicker">In this guide</p>{% for heading in post.toc %}<a href="#{{ heading.id }}">{{ heading.title }}</a>{% endfor %}</aside>
+      <div>
+        <article class="journal-prose">{{ post.body_html }}</article>
+        <div class="journal-note">Local advice, kept useful. Course access, prices and policies can change. Confirm booking details directly with the club before travelling.</div>
+        <section class="journal-cta"><p class="journal-kicker">Your next round starts here</p><h2>Find the right gear for your game.</h2><p>Explore the Karibu collection, or ask us a question before choosing your equipment.</p><a class="journal-button" href="{{ 'http://localhost:8080' if preview else '' }}/categories/">Explore golf equipment <span aria-hidden="true">↗</span></a></section>
+      </div>
+    </div>
+    {% if posts|length > 1 %}<section class="journal-wrap journal-related"><p class="journal-kicker">Keep reading</p><h2>More from the journal</h2><div class="journal-grid">{% for item in posts if item.slug != post.slug %}{% if loop.index <= 3 %}{% include 'card.html' %}{% endif %}{% endfor %}</div></section>{% endif %}
+  {% else %}
+    <header class="journal-hero journal-wrap">
+      <div><p class="journal-kicker">Karibu Golf / Field notes</p><h1>The Kenya<br>Golf Journal<span>.</span></h1><p class="journal-deck">A little local knowledge.<br>A better day on the course.</p><p class="journal-intro">Practical guides on getting started, choosing your equipment and making the most of golf in Kenya.</p><a href="#guides" class="journal-text-link">Explore the guides ↓</a></div>
+      <figure><img src="/images/hero-golf-africa.jpg" alt="Golf course landscape" width="900" height="800" fetchpriority="high"><figcaption>Good company. Better rounds. Karibu sana.</figcaption></figure>
+    </header>
+    <section id="guides" class="journal-wrap journal-guides">
+      <div class="journal-section-heading"><div><p class="journal-kicker">The reading room</p><h2>Advice for your next round</h2></div><a href="/blog/feed.xml" class="journal-text-link">RSS feed ↗</a></div>
+      {% if posts %}
+      <div class="journal-filter" aria-label="Filter guides"><button type="button" data-category="all" aria-pressed="true">All guides</button>{% for category in categories %}<button type="button" data-category="{{ category }}" aria-pressed="false">{{ category }}</button>{% endfor %}</div>
+      <div class="journal-grid">{% for item in posts %}{% include 'card.html' %}{% endfor %}</div>
+      <p id="no-guides" hidden role="status">No guides in this category yet. Try All guides.</p>
+      {% else %}
+      <div class="journal-empty"><p class="journal-kicker">The first chapter is on its way</p><h3>Useful guides. Written with Kenya in mind.</h3><p>We're preparing our first stories on starting golf, planning your budget and finding your first clubs. Explore the collection while we get the journal ready.</p><a class="journal-button" href="/categories/">Browse the collection ↗</a></div>
+      {% endif %}
+    </section>
+    <section class="journal-wrap journal-values"><div><span>01 / START</span><h3>New to the game?</h3><p>Clear answers to the questions you might not know who to ask.</p></div><div><span>02 / CHOOSE</span><h3>Buy with confidence.</h3><p>Understand fit, features and the trade-offs before you choose.</p></div><div><span>03 / PLAY</span><h3>Make a day of it.</h3><p>Local context and practical preparation for your next round.</p></div></section>
+  {% endif %}
+  </main>
+  {% if not preview %}{{ footer }}<script src="/script.js" defer></script>{% endif %}
+  <script>
+  document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => {
+    document.querySelectorAll('[data-category]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));
+    let count = 0;
+    document.querySelectorAll('[data-guide-category]').forEach(card => {card.hidden = button.dataset.category !== 'all' && card.dataset.guideCategory !== button.dataset.category; if (!card.hidden) count++;});
+    document.getElementById('no-guides').hidden = count > 0;
+  }));
+  </script>
+</body>
+</html>

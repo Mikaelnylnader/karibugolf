@@ -8,5 +8,5 @@ echo ========================================
 echo.
 echo Auto-publish: OFF by default. Toggle it in the Dashboard.
 echo.
-pip install -q Flask 2>nul
-python app.py
+if not exist "%~dp0.venv\Scripts\python.exe" powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0setup-dev.ps1"
+"%~dp0.venv\Scripts\python.exe" app.py

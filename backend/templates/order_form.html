@@ -81,11 +81,11 @@
                         </div>
                         <div class="col-md-2">
                             <label class="form-label" style="font-size:11px;">Qty</label>
-                            <input type="number" name="item_qty[]" class="form-control form-control-sm item-qty" value="1" min="1" onchange="calcTotal()">
+                            <input type="number" name="item_qty[]" class="form-control form-control-sm item-qty" value="1" min="1" onchange="calcTotal()" onfocus="calcTotal()">
                         </div>
                         <div class="col-md-2">
                             <label class="form-label" style="font-size:11px;">Price (KES)</label>
-                            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()">
+                            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()" onfocus="calcTotal()" onchange="calcTotal()">
                         </div>
                         <div class="col-md-1 d-flex align-items-end">
                             <button type="button" class="btn btn-sm btn-outline-danger mb-1" onclick="this.closest('.item-row').remove();calcTotal();">
@@ -136,7 +136,7 @@
             <input type="number" name="item_qty[]" class="form-control form-control-sm item-qty" value="1" min="1" onchange="calcTotal()">
         </div>
         <div class="col-md-2">
-            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()">
+            <input type="text" name="item_price[]" class="form-control form-control-sm item-price" placeholder="85000" oninput="calcTotal()" onfocus="calcTotal()" onchange="calcTotal()">
         </div>
         <div class="col-md-1 d-flex align-items-end">
             <button type="button" class="btn btn-sm btn-outline-danger mb-1" onclick="this.closest('.item-row').remove();calcTotal();">
@@ -157,10 +157,14 @@ function itemSkuChanged(sel) {
     if (option.value) {
         nameInput.value = option.dataset.name || '';
         priceInput.value = option.dataset.price || '0';
+        // Trigger input event so oninput chain fires too
+        priceInput.dispatchEvent(new Event('input'));
     } else {
         nameInput.value = '';
         priceInput.value = '';
+        priceInput.dispatchEvent(new Event('input'));
     }
+    // Always recalculate
     calcTotal();
 }
 

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit post' if post.id else 'New post' }}{% endblock %}
+{% block content %}
+<div class="topbar"><h1>{{ 'Edit post' if post.id else 'Write a blog post' }}</h1><div class="topbar-actions"><a href="/blog" class="btn btn-outline-primary btn-sm">All posts</a>{% if post.id %}<a href="/blog/{{ post.id }}/preview" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">Preview saved post</a>{% endif %}</div></div>
+<div class="content-wrapper">
+{% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+<form method="post" enctype="multipart/form-data" id="blogForm">
+<input type="hidden" name="csrf_token" value="{{ blog_csrf_token() }}">
+<div class="row g-4"><div class="col-lg-8">
+  <div class="card"><div class="card-body">
+    <div class="mb-3"><label for="title" class="form-label">Post title</label><input id="title" name="title" value="{{ post.title }}" class="form-control" maxlength="140" required placeholder="A beginner's guide to golf in Nairobi"></div>
+    <div class="mb-3"><label for="excerpt" class="form-label">Short summary</label><textarea id="excerpt" name="excerpt" class="form-control" maxlength="350" rows="3" placeholder="What will the reader learn?">{{ post.excerpt }}</textarea><small class="text-muted">Shown on blog cards and below the title. Required to publish.</small></div>
+    <label for="content" class="form-label">Article</label>
+    <div class="d-flex gap-2 flex-wrap mb-2" role="toolbar" aria-label="Article formatting"><button type="button" class="btn btn-sm btn-outline-primary" data-insert="## Heading\n\n">Heading</button><button type="button" class="btn btn-sm btn-outline-primary" data-insert="### Subheading\n\n">Subheading</button><button type="button" class="btn btn-sm btn-outline-primary" data-wrap="**">Bold</button><button type="button" class="btn btn-sm btn-outline-primary" data-insert="- List item\n">Bullet</button><button type="button" class="btn btn-sm btn-outline-primary" data-insert="[Link text](https://example.com)">Link</button></div>
+    <textarea id="content" name="content" class="form-control" rows="23" maxlength="100000" style="font-family:monospace;font-size:14px;line-height:1.8">{{ post.content }}</textarea>
+    <p class="small text-muted mt-2">Use the buttons to add formatting. Blank lines separate paragraphs. Headings use ##, bold uses **text**, links use [text](URL). Raw HTML is shown as text. <span id="wordCount"></span></p>
+  </div></div>
+  <div class="card mt-4"><div class="card-header">Search appearance</div><div class="card-body">
+    <div class="mb-3"><label for="seo_title" class="form-label">SEO title (optional)</label><input id="seo_title" name="seo_title" value="{{ post.seo_title }}" maxlength="90" class="form-control"><small class="text-muted">Defaults to the post title. Aim for a useful, specific title around 50–60 characters.</small></div>
+    <div class="mb-3"><label for="meta_description" class="form-label">Search description (optional)</label><textarea id="meta_description" name="meta_description" rows="3" maxlength="200" class="form-control">{{ post.meta_description }}</textarea><small class="text-muted">Defaults to the summary. Aim for about 140–160 characters. Google may show different text.</small></div>
+    <div class="p-3 rounded bg-light"><span class="small">Search preview · illustration only</span><div id="seoPreviewTitle" style="color:#1a0dab;font-size:20px"></div><div id="seoPreviewDescription" class="small"></div></div>
+  </div></div>
+</div><div class="col-lg-4">
+  <div class="card"><div class="card-header">Publishing</div><div class="card-body">
+    <p>Currently: <strong>{{ post.status|title }}</strong></p>
+    <p class="small text-muted">Publish updates the local website. It does not deploy to Netlify. Preview shows the last saved version.</p>
+    <button name="action" value="draft" class="btn btn-outline-primary w-100 mb-2">{{ 'Unpublish to draft' if post.status == 'published' else 'Save draft' }}</button>
+    <button name="action" value="publish" class="btn btn-primary w-100">{{ 'Update published post' if post.status == 'published' else 'Publish to local blog' }}</button>
+    {% if post.published_at %}<p class="small text-muted mt-3">First published {{ post.published_at[:10] }}. The URL is locked to protect existing links.</p>{% endif %}
+  </div></div>
+  <div class="card mt-4"><div class="card-body">
+    <div class="mb-3"><label for="slug" class="form-label">URL slug</label><input name="slug" id="slug" value="{{ post.slug }}" maxlength="100" class="form-control" {% if post.published_at %}readonly{% endif %}><small class="text-muted">Leave blank to create from title. /blog/your-post/</small></div>
+    <div class="mb-3"><label for="category" class="form-label">Category</label><select id="category" name="category" class="form-select">{% for category in categories %}<option {% if category == post.category %}selected{% endif %}>{{ category }}</option>{% endfor %}</select></div>
+    <div class="mb-3"><label for="author" class="form-label">Author / editorial team</label><input id="author" name="author" value="{{ post.author }}" maxlength="100" required class="form-control"></div>
+    <div class="mb-3"><label for="cover_upload" class="form-label">Cover image</label><input id="cover_upload" name="cover_upload" type="file" accept="image/jpeg,image/png,image/webp" class="form-control"><small class="text-muted">JPG, PNG or WebP. Use a photo you own or have permission to use.</small></div>
+    {% if post.cover_image %}<img src="{{ post.cover_image }}" alt="{{ post.cover_alt }}" class="img-fluid rounded mb-2"><label class="d-block mb-3"><input type="checkbox" name="remove_cover"> Remove cover from this post</label>{% endif %}
+    <div><label for="cover_alt" class="form-label">Describe the image (alt text)</label><input name="cover_alt" id="cover_alt" value="{{ post.cover_alt }}" maxlength="200" class="form-control"></div>
+  </div></div>
+  <div class="card mt-4"><div class="card-body"><h2 class="h6">Before you publish</h2><ul class="small"><li>Answer one clear question.</li><li>Check Kenyan prices and club policies.</li><li>Add official sources and relevant shop links.</li><li>Use your own experience only when genuine.</li><li>Preview and proofread.</li></ul><a href="/blog/plan" target="_blank" rel="noopener">Open the researched content plan ↗</a></div></div>
+</div></div>
+</form></div>
+<script>
+const article = document.getElementById('content');
+document.querySelectorAll('[data-insert],[data-wrap]').forEach(button => button.addEventListener('click', () => {
+  const selection = article.value.slice(article.selectionStart, article.selectionEnd);
+  const text = button.dataset.wrap ? '**' + (selection || 'bold text') + '**' : button.dataset.insert.replace(/\\n/g, '\n');
+  article.setRangeText(text, article.selectionStart, article.selectionEnd, 'end'); article.focus(); updatePreview();
+}));
+function updatePreview(){const value = id => document.getElementById(id).value;
+  document.getElementById('seoPreviewTitle').textContent = value('seo_title') || value('title') || 'Your post title';
+  document.getElementById('seoPreviewDescription').textContent = value('meta_description') || value('excerpt') || 'Your useful summary appears here.';
+  document.getElementById('wordCount').textContent = (article.value.trim().match(/\S+/g) || []).length + ' words';
+}
+document.querySelectorAll('input,textarea').forEach(field => field.addEventListener('input',updatePreview));updatePreview();
+</script>
+{% endblock %}

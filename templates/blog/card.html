@@ -1,0 +1,4 @@
+<article class="journal-card" data-guide-category="{{ item.category }}">
+  {% if item.cover_image %}<a href="{{ item.path }}" tabindex="-1" aria-hidden="true"><img src="{{ item.cover_image }}" alt="" width="660" height="420" loading="lazy"></a>{% endif %}
+  <div class="journal-card-body"><p class="journal-kicker">{{ item.category }} <span>· {{ item.reading_minutes }} min</span></p><h3><a href="{{ item.path }}">{{ item.title }}</a></h3><p>{{ item.excerpt }}</p><a class="journal-text-link" href="{{ item.path }}">Read the guide <span aria-hidden="true">↗</span></a></div>
+</article>

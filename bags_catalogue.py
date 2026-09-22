@@ -2,13 +2,18 @@
 """Bags Catalogue - Karibu brand, centered logo everywhere."""
 
 import os
+from pathlib import Path
+from site_contact import WHATSAPP_DISPLAY
+
 from fpdf import FPDF
 
-OUTPUT = r"C:\Users\mikae\workspace\golf-kenya\dist\bags_catalogue.pdf"
-IMG_DIR = r"C:\Users\mikae\workspace\golf-kenya\dist\images\products"
-THUMB_DIR = r"C:\Users\mikae\workspace\golf-kenya\dist\images\pdf_thumbs"
-LOGO = r"C:\Users\mikae\workspace\golf-kenya\dist\images\karibu-logo.png"
-QR = r"C:\Users\mikae\workspace\golf-kenya\dist\images\whatsapp-qr-pdf.png"
+PROJECT_DIR = Path(__file__).resolve().parent
+DIST_DIR = PROJECT_DIR / "dist"
+OUTPUT = str(DIST_DIR / "bags_catalogue.pdf")
+IMG_DIR = str(DIST_DIR / "images" / "products")
+THUMB_DIR = str(DIST_DIR / "images" / "pdf_thumbs")
+LOGO = str(DIST_DIR / "images" / "karibu-logo.png")
+QR = str(DIST_DIR / "images" / "whatsapp-qr-pdf.png")
 
 DARK = (24, 24, 8)
 GREEN = (31, 81, 50)
@@ -17,7 +22,7 @@ GOLD = (200, 153, 71)
 WHITE = (255, 255, 255)
 WARM = (136, 104, 72)
 
-WHATSNR = "+86 13262570197"
+WHATSNR = WHATSAPP_DISPLAY
 
 bags = [
 ("GK-BG007","Callaway Duffle Bag with Shoe Compartment","Black",9000),

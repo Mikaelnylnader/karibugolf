@@ -244,3 +244,63 @@ body { font-family:'Montserrat',sans-serif; color:var(--text-dark); line-height:
     .products-grid { grid-template-columns:1fr; }
     .categories-grid { grid-template-columns:1fr; }
 }
+
+/* ── Enhanced Mobile Responsiveness ── */
+@media (max-width:1024px) {
+    .hero { min-height:70vh; }
+    .hero-title { font-size:clamp(36px,6vw,56px); }
+    .nav-container { padding:0 24px; }
+}
+@media (max-width:768px) {
+    .navbar { top:36px; }
+    .nav-container { padding:0 16px; height:64px; }
+    .nav-actions .btn-nav-cta { font-size:12px; padding:8px 14px; }
+    .hero { min-height:60vh; padding-top:80px; }
+    .hero-title { font-size:clamp(32px,8vw,48px); }
+    .hero-description { font-size:15px; }
+    .section-title { font-size:28px; }
+    .product-card { margin-bottom:12px; }
+    .product-price { font-size:18px; }
+    .category-card-link { margin-bottom:12px; }
+    .category-card { padding:20px; }
+    .footer { padding:40px 0; }
+    .footer-section h4 { font-size:16px; }
+    .footer-section p, .footer-section a { font-size:13px; }
+    .stats-grid { gap:20px; padding:20px; }
+    .stat-number { font-size:32px; }
+    .stat-label { font-size:13px; }
+    .contact-section { padding:40px 0; }
+    .product-detail { padding:30px 0; }
+    .product-detail-title { font-size:24px !important; }
+    .product-detail-price { font-size:28px !important; }
+    .product-detail-grid { grid-template-columns:1fr; gap:24px; }
+    .back-to-shop { padding-top:70px; }
+    .feature-row-text { padding:30px; }
+    .feature-row-text h3 { font-size:22px; }
+}
+@media (max-width:480px) {
+    .hero-title { font-size:clamp(28px,10vw,36px) !important; }
+    .hero-subtitle { font-size:12px; }
+    .hero-description { font-size:14px; }
+    .nav-container { height:56px; }
+    .nav-logo img { height:32px !important; }
+    .product-detail-title { font-size:20px !important; }
+    .product-detail-price { font-size:24px !important; }
+    .product-detail-meta { flex-direction:column; gap:12px; }
+    .feature-row-text { padding:20px; }
+    .feature-row-text h3 { font-size:20px; }
+}
+@media (hover:none) and (pointer:coarse) {
+    .btn-detail-inquire, .btn-detail-back { padding:16px 28px; }
+}
+@media (max-width:900px) and (orientation:landscape) {
+    .hero { min-height:80vh; padding-top:70px; }
+}
+/* ── Scroll Animation (replaces AOS) ── */
+[data-anim] { opacity:0; transform:translateY(30px); transition:opacity 0.6s ease, transform 0.6s ease; }
+[data-anim].anim-left { opacity:0; transform:translateX(-40px); transition:opacity 0.6s ease, transform 0.6s ease; }
+[data-anim].anim-right { opacity:0; transform:translateX(40px); transition:opacity 0.6s ease, transform 0.6s ease; }
+@media (prefers-reduced-motion:reduce) {
+    * { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+    [data-anim] { opacity:1; transform:none; }
+}

@@ -29,7 +29,9 @@ COLUMN_MAP = [
     ("sku", "SKU"),
     ("name", "Name"),
     ("category_slug", "Category"),
+    ("price_cny", "Selling Price (CNY)"),
     ("price_kes", "Price Kenya (Ksh)"),
+    ("price_usd", "Selling Price (USD)"),
     ("cost_cny", "Cost China (CNY)"),
     ("cost_kes", "Cost China (Ksh)"),
     ("sizes", "Sizes"),
@@ -69,7 +71,6 @@ def get_client():
     return gspread.oauth(
         credentials_filename=str(DEFAULT_CRED),
         authorized_user_filename=str(AUTHORIZED_USER),
-        open_browser=True,
     )
 
 

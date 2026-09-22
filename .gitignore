@@ -1,14 +1,27 @@
-.netlify/
-*.pyc
-__pycache__/
+# Environment and credentials
 .env
+credentials.json
+token.json
+backend/credentials/
+
+# Local databases and generated state
+backend/golf_kenya.db
+backend/golf_kenya.db-shm
+backend/golf_kenya.db-wal
+.tmp/
+.firecrawl/
+.venv/
+
+# Python and JavaScript dependencies
+__pycache__/
+*.pyc
+node_modules/
+
+# Deployment state and generated archives
+.netlify/
 *.zip
 *.mp4
-node_modules/
-.DS_Store
-Thumbs.db
-brand-guidelines/*.pdf
-brand-guidelines/*.html
+dist/deploy.zip
 dist/images/*.mp4
 dist/images/p790_*.mp4
 dist/images/QiMax_feel.mp4
@@ -17,6 +30,25 @@ dist/images/products/QiMax_feel.mp4
 dist/images/products/TaylorMade_P790_*.mp4
 dist/images/products/p790_*
 dist/images/products/QiMax_*
-dist/deploy.zip
-backend/golf_kenya.db
-backend/credentials/
+
+# Large local brand references
+brand-guidelines/*.pdf
+brand-guidelines/*.html
+
+# Editor and operating-system files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local assistant state, scratch exports, and Windows/FUSE placeholders
+.claude/
+Claude outputs/
+_skill-backup-*/
+_skill-updates/
+memory/
+product_images_to_upload/
+backend/.fuse_hidden*
+nul

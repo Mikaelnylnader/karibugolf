@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Blog & Journal{% endblock %}
+{% block content %}
+<div class="topbar"><h1>Blog &amp; Journal</h1><div class="topbar-actions"><a href="/blog/plan" class="btn btn-outline-primary btn-sm">Kenya content plan</a><a href="/blog/new" class="btn btn-primary btn-sm">Write a post</a></div></div>
+<div class="content-wrapper">
+  <div class="alert alert-info">Publish here to update the <a href="http://localhost:8080/blog/" target="_blank" rel="noopener">local journal</a> immediately. Drafts stay out of the public pages, RSS feed and sitemap. Publishing online still requires a separate Netlify deployment.</div>
+  <div class="card"><div class="card-header"><span>{{ posts|length }} posts</span><form method="post" action="/blog/rebuild"><input type="hidden" name="csrf_token" value="{{ blog_csrf_token() }}"><button class="btn btn-outline-primary btn-sm">Rebuild local blog</button></form></div>
+  <div class="table-responsive"><table class="table"><thead><tr><th>Post</th><th>Category</th><th>Status</th><th>Updated</th><th>Actions</th></tr></thead><tbody>
+  {% for post in posts %}<tr><td><a href="/blog/{{ post.id }}/edit"><strong>{{ post.title }}</strong></a><div class="small text-muted">/blog/{{ post.slug }}/</div></td><td>{{ post.category }}</td><td><span class="badge {{ 'badge-success' if post.status == 'published' else 'badge-warning' }}">{{ post.status|title }}</span></td><td>{{ post.updated_at[:10] }}</td><td><a href="/blog/{{ post.id }}/edit" class="btn btn-sm btn-outline-primary">Edit</a> <a href="/blog/{{ post.id }}/preview" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Preview</a></td></tr>
+  {% else %}<tr><td colspan="5" class="text-center p-5">Your journal starts here. <a href="/blog/new">Write your first post</a>.</td></tr>{% endfor %}
+  </tbody></table></div></div>
+  <p class="text-muted mt-3">Google cannot index localhost. When the articles are reviewed and deployed, submit the website sitemap in Google Search Console. Good SEO helps discovery but does not guarantee rankings.</p>
+</div>
+{% endblock %}

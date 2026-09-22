@@ -2,6 +2,15 @@
 {% block title %}Products — Karibu Golf Admin{% endblock %}
 
 {% block content %}
+<style>
+.product-row { cursor: pointer; transition: background 0.15s; }
+.product-row:hover { background: rgba(239, 227, 204, 0.32) !important; }
+.product-row td { vertical-align: middle; }
+.btn-action { pointer-events: auto; }
+.modal-edit-iframe { width:100%; height:80vh; border:none; border-radius:0; }
+.modal-edit-loading { display:flex; align-items:center; justify-content:center; height:200px; }
+</style>
+
 <div class="topbar">
     <h1><i class="bi bi-box-seam"></i> Products</h1>
     <div class="topbar-actions">
@@ -58,7 +67,9 @@
                             <th>Product</th>
                             <th>SKU</th>
                             <th>Category</th>
-                            <th>Price</th>
+                            <th>Sell RMB</th>
+                            <th>Sell KSh</th>
+                            <th>Sell USD</th>
                             <th>Cost</th>
                             <th>Margin</th>
                             <th>Status</th>
@@ -68,7 +79,7 @@
                     <tbody>
                         {% if products %}
                         {% for p in products %}
-                        <tr>
+                        <tr class="product-row" onclick="openEditModal('{{ p.sku }}')">
                             <td>
                                 {% if p.image %}
                                 <img src="{{ p.image }}" alt="" class="product-thumb"
@@ -82,25 +93,27 @@
                             <td><strong>{{ p.name }}</strong></td>
                             <td><code>{{ p.sku }}</code></td>
                             <td><span class="badge badge-gk">{{ p.category_label }}</span></td>
+                            <td>{% if p.price_cny %}<strong>¥{{ "{:,.2f}".format(p.price_cny) }}</strong>{% else %}—{% endif %}</td>
                             <td><strong>KES {{ "{:,}".format(p.price_kes) }}</strong></td>
+                            <td>{% if p.price_usd %}<strong>${{ "{:,}".format(p.price_usd) }}</strong>{% else %}—{% endif %}</td>
                             <td>
-                                {% set _cny = p.cost_cny|int %}
-                                {% set _kes = p.cost_kes|int %}
-                                {% set _total = (_cny * 18) + _kes %}
-                                {% if _total > 0 %}KES {{ "{:,}".format(_total) }}{% else %}—{% endif %}
+                                {% if p.margin.cost_kes_total > 0 %}
+                                <strong>KES {{ "{:,}".format(p.margin.cost_kes_total) }}</strong>
+                                <div class="text-muted" style="font-size:11px;">USD {{ "{:,.2f}".format(p.margin.cost_usd_total) }} landed</div>
+                                {% else %}—{% endif %}
                             </td>
                             <td>
-                                {% if p.price_kes > 0 and _total > 0 %}
-                                {% set _profit = p.price_kes - _total %}
-                                {% set _margin = (_profit / p.price_kes * 100)|round(1) %}
-                                <span style="font-weight:600;{% if _margin >= 40 %}color:#1f5132{% elif _margin >= 20 %}color:#c89848{% else %}color:#d82c0d{% endif %}">
-                                    {{ _margin }}%
+                                {% if p.price_kes > 0 and p.margin.cost_kes_total > 0 %}
+                                <span style="font-weight:600;{% if p.margin.margin_pct >= 40 %}color:#1f5132{% elif p.margin.margin_pct >= 20 %}color:#c89947{% else %}color:#a04e2c{% endif %}">
+                                    {{ p.margin.margin_pct }}%
                                 </span>
                                 {% else %}—{% endif %}
                             </td>
                             <td>
                                 {% if p.status == 'In Stock' %}
                                 <span class="badge badge-success">In Stock</span>
+                                {% elif p.status == 'Out of Stock' %}
+                                <span class="badge badge-danger">Out of Stock</span>
                                 {% elif p.status == 'Low Stock' %}
                                 <span class="badge badge-warning">Low Stock</span>
                                 {% elif p.status == 'Discontinued' %}
@@ -109,13 +122,13 @@
                                 <span class="badge badge-info">{{ p.status }}</span>
                                 {% endif %}
                             </td>
-                            <td>
+                            <td onclick="event.stopPropagation()">
                                 <div class="d-flex gap-1">
-                                    <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary" title="Edit">
+                                    <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary btn-action" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form method="POST" action="/products/{{ p.sku }}/delete" style="display:inline;">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"
+                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-action" title="Delete"
                                                 onclick="return confirm('Delete {{ p.name|escape }}?')">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -126,7 +139,7 @@
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="7">
+                            <td colspan="11">
                                 <div class="empty-state">
                                     <i class="bi bi-box-seam"></i>
                                     <h5>No products yet</h5>
@@ -146,4 +159,135 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0" id="editModalBody">
+        <div class="modal-edit-loading">
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <p class="text-muted">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentEditSku = null;
+
+function openEditModal(sku) {
+    currentEditSku = sku;
+    document.getElementById('editModalTitle').textContent = 'Loading ' + sku + '...';
+    document.getElementById('editModalBody').innerHTML =
+        '<div class="modal-edit-loading"><div class="text-center py-5">' +
+        '<div class="spinner-border text-primary mb-3" role="status"></div>' +
+        '<p class="text-muted">Loading...</p></div></div>';
+
+    var modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+
+    fetch('/products/' + sku + '/edit?modal=1')
+        .then(r => r.text())
+        .then(html => {
+            // Extract just the form content (skip nav/sidebar)
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var content = doc.querySelector('.content-wrapper') ||
+                          doc.querySelector('.main-content') ||
+                          doc.querySelector('[role="main"]') ||
+                          doc.body;
+
+            // Remove the topbar (back button + title)
+            var topbar = content.querySelector('.topbar');
+            if (topbar) topbar.remove();
+
+            // Fix form action to submit via AJAX
+            var form = content.querySelector('form');
+            if (form) {
+                var origAction = form.getAttribute('action');
+                form.setAttribute('action', origAction + (origAction.indexOf('?') > -1 ? '&' : '?') + '_modal=1');
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(form);
+                    fetch(form.getAttribute('action'), {
+                        method: 'POST',
+                        body: formData,
+                        redirect: 'manual'
+                    })
+                    .then(function(r) {
+                        // 302 = success (redirect back to product list)
+                        if (r.status === 302 || r.status === 303 || r.status === 301) {
+                            modal.hide();
+                            location.reload();
+                            return;
+                        }
+                        // 200 = validation error, re-inject form
+                        return r.text();
+                    })
+                    .then(function(text) {
+                        if (!text) return;
+                        var d2 = new DOMParser().parseFromString(text, 'text/html');
+                        var c2 = d2.querySelector('.content-wrapper') || d2.body;
+                        var tb2 = c2.querySelector('.topbar');
+                        if (tb2) tb2.remove();
+                        document.getElementById('editModalBody').innerHTML = c2.innerHTML;
+                        // Re-run scripts from full document
+                        var allScripts = d2.querySelectorAll('script');
+                        allScripts.forEach(function(oldScript) {
+                            var ns = document.createElement('script');
+                            Array.from(oldScript.attributes).forEach(function(a) {
+                                if (a.name) ns.setAttribute(a.name, a.value);
+                            });
+                            ns.textContent = oldScript.textContent;
+                            document.body.appendChild(ns).parentNode.removeChild(ns);
+                        });
+                        if (typeof renderAttributes === 'function') renderAttributes();
+                        if (typeof calcMargin === 'function') calcMargin();
+                        if (typeof renderFeatureRows === 'function') renderFeatureRows();
+                    })
+                    .catch(function(err) {
+                        console.error('Modal save error:', err);
+                    });
+                });
+            }
+
+            // Fix image upload form
+            var imgForm = content.querySelector('form[enctype="multipart/form-data"]');
+            if (imgForm) {
+                var imgAction = imgForm.getAttribute('action');
+                imgForm.setAttribute('action', imgAction + (imgAction.indexOf('?') > -1 ? '&' : '?') + '_modal=1');
+            }
+
+            document.getElementById('editModalBody').innerHTML = content.innerHTML;
+            document.getElementById('editModalTitle').textContent = 'Edit: ' + sku;
+
+            // Re-run scripts from the full fetched page (not just content-wrapper)
+            var allScripts = doc.querySelectorAll('script');
+            allScripts.forEach(function(oldScript) {
+                var ns = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(function(a) {
+                    if (a.name) ns.setAttribute(a.name, a.value);
+                });
+                ns.textContent = oldScript.textContent;
+                document.body.appendChild(ns).parentNode.removeChild(ns);
+            });
+            // Trigger init functions (DOMContentLoaded already fired)
+            if (typeof renderAttributes === 'function') renderAttributes();
+            if (typeof calcMargin === 'function') calcMargin();
+            if (typeof renderFeatureRows === 'function') renderFeatureRows();
+        })
+        .catch(function(err) {
+            document.getElementById('editModalBody').innerHTML =
+                '<div class="text-center py-5 text-danger"><p>Failed to load: ' + err + '</p></div>';
+        });
+}
+</script>
 {% endblock %}

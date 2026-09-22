@@ -13,14 +13,13 @@ import sqlite3
 import urllib.request
 import urllib.parse
 from datetime import datetime
+from site_contact import WHATSAPP_NUMBER, WHATSAPP_DISPLAY, WHATSAPP_LINK, WHATSAPP_QR_PATH
 
 # ── Config ──
 SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY/export?format=csv"
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "dist")
 SITE_TITLE = "Karibu"
 SITE_URL = "https://golfklcubskenya.netlify.app"
-WHATSAPP_NUMBER = "8613262570197"
-WHATSAPP_LINK = f"https://wa.me/{WHATSAPP_NUMBER}"
 BUSINESS_EMAIL = ""
 BUSINESS_LOCATION = "Nairobi, Kenya"
 
@@ -238,16 +237,17 @@ def group_by_category(products):
 
 def render_nav(active_page="home"):
     home_active = " active" if active_page == "home" else ""
+    blog_active = " active" if active_page == "blog" else ""
     return f"""    <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="nav-logo">
-                <img src="/images/karibu-logo-small.png" alt="Karibu" style="height:32px;width:32px;border-radius:50%;">
-                <span class="logo-text">KARIBU</span>
+                <img src="/images/karibu-web-logo.png" alt="Karibu Golf" style="height:40px;width:auto;">
             </a>
             <ul class="nav-menu">
                 <li><a href="/" class="nav-link{home_active}">Home</a></li>
                                 <li><a href="/categories/" class="nav-link">Categories</a></li>
                 <li><a href="/#products" class="nav-link">Shop</a></li>
+                <li><a href="/blog/" class="nav-link{blog_active}">Journal</a></li>
                 <li><a href="/about.html" class="nav-link">About</a></li>
                 <li><a href="/#contact" class="nav-link">Contact</a></li>
             </ul>
@@ -273,7 +273,7 @@ def render_footer():
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="/" class="footer-logo">
-                        <img src="/images/karibu-logo-small.png" alt="Karibu" style="height:24px;width:24px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+                        <img src="/images/karibu-badge-color.svg" alt="Karibu" style="height:24px;width:24px;border-radius:50%;vertical-align:middle;margin-right:8px;">
                         <span class="logo-text">KARIBU</span>
                     </a>
                     <p>Premium golf equipment and lifestyle products for the discerning golfer in Kenya.</p>
@@ -287,6 +287,7 @@ def render_footer():
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="/#products">Shop</a></li>
+                        <li><a href="/blog/">Golf Journal</a></li>
                         <li><a href="/about.html">About Us</a></li>
                         <li><a href="/#brands">Brands</a></li>
                         
@@ -307,10 +308,10 @@ def render_footer():
                 <div class="footer-newsletter">
                     <h4>Contact Us on WhatsApp</h4>
                     <p>Scan the QR code or tap to chat</p>
-                    <a href="https://wa.me/8613262570197" target="_blank" style="display:inline-block;">
-                        <img src="/images/whatsapp-qr.png" alt="WhatsApp" style="width:100px;height:100px;border-radius:12px;">
+                    <a href="{WHATSAPP_LINK}" target="_blank" rel="noopener" style="display:inline-block;">
+                        <img src="{WHATSAPP_QR_PATH}" alt="Scan to chat on WhatsApp: {WHATSAPP_DISPLAY}" style="width:124px;height:124px;">
                     </a>
-                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">+86 13262570197</p>
+                    <p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">{WHATSAPP_DISPLAY}</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -323,10 +324,11 @@ def render_footer():
 def render_product_card(p):
     img = get_product_image(p)
     img_html = f'<img src="{img}" alt="{p["name"]}" loading="lazy">' if img else '<div class="product-placeholder"><i class="fas fa-golf-ball"></i></div>'
-    badge = ""
-    if p["price_kes"] >= 50000:
+    stock_status = normalize_stock_status(p.get("status"))
+    badge = f'<span class="product-badge" style="background:#a04e2c">{stock_status}</span>'
+    if stock_status == "In Stock" and p["price_kes"] >= 50000:
         badge = '<span class="product-badge">Premium</span>'
-    elif p["price_kes"] >= 20000:
+    elif stock_status == "In Stock" and p["price_kes"] >= 20000:
         badge = '<span class="product-badge">Featured</span>'
 
     sku_html = f'<span class="product-sku">SKU: {p["sku"]}</span>' if p['sku'] else ''
@@ -356,10 +358,156 @@ def render_product_card(p):
             </div>
         </div>
         </a>"""
+        
+
+def render_feature_rows(json_str):
+    """Render 50/50 image + text feature rows from JSON."""
+    if not json_str or json_str == "[]":
+        return ""
+    try:
+        rows = json.loads(json_str)
+    except (json.JSONDecodeError, TypeError):
+        return ""
+    if not rows:
+        return ""
+    
+    parts = []
+    for row in rows:
+        img = row.get("image", "")
+        text = row.get("text", "")
+        rev = " reverse" if row.get("reverse") else ""
+        if not img and not text:
+            continue
+        img_tag = f'<div class="feature-row-img"><img src="{img}" alt="" loading="lazy" decoding="async"></div>' if img else ""
+        text_tag = f'<div class="feature-row-text">{text}</div>' if text else ""
+        parts.append(f'<div class="feature-row{rev}">{img_tag}{text_tag}</div>')
+    
+    if not parts:
+        return ""
+    return f'<section class="full-features"><div class="container">{"".join(parts)}</div></section>'
+
+
+# ── SEO & Performance Helpers ──
+
+def seo_meta(title, description, url, image=""):
+    """Generate SEO meta tags including OG and Twitter Card."""
+    site_name = "Karibu Golf"
+    desc_esc = description.replace('"', "'")[:200]
+    return f"""
+    <meta property="og:title" content="{title[:100]}">
+    <meta property="og:description" content="{desc_esc}">
+    <meta property="og:url" content="{url}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{site_name}">
+    <meta property="og:locale" content="en_KE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{title[:100]}">
+    <meta name="twitter:description" content="{desc_esc}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{url}">
+    {f'<meta property="og:image" content="{image}"><meta name="twitter:image" content="{image}">' if image else ''}"""
+
+
+def seo_jsonld_product(name, description, sku, price, currency="KES", category="", image="", status="In Stock"):
+    """Generate JSON-LD structured data for a product."""
+    desc_esc = description.replace('"', "'").replace("\n", " ")[:200]
+    price_str = str(price) if price else "0"
+    availability = "InStock" if normalize_stock_status(status) == "In Stock" else "OutOfStock"
+    return f"""
+    <script type="application/ld+json">
+    {{"@context":"https://schema.org/","@type":"Product","name":"{name}","description":"{desc_esc}","sku":"{sku}","brand":{{"@type":"Brand","name":"Karibu Golf"}}{f',"image":"{image}"' if image else ''},"offers":{{"@type":"Offer","url":"{SITE_URL}/products/{sku}.html","priceCurrency":"{currency}","price":"{price_str}","availability":"https://schema.org/{availability}"}}}}
+    </script>"""
+
+
+def seo_jsonld_website():
+    """Generate JSON-LD for the website itself."""
+    return f"""
+    <script type="application/ld+json">
+    {{"@context":"https://schema.org","@type":"WebSite","url":"{SITE_URL}","name":"Karibu Golf - Premium Golf Equipment Kenya","potentialAction":{{"@type":"SearchAction","target":"{{search_term_string}}","query-input":"required name=search_term_string"}}}}
+    </script>"""
+
+
+def seo_jsonld_breadcrumb(items):
+    """Generate JSON-LD breadcrumb. items is list of (name, url) tuples."""
+    item_list = ",".join(f'{{"@type":"ListItem","position":{i+1},"name":"{n}","item":"{u}"}}' for i, (n, u) in enumerate(items))
+    return f'<script type="application/ld+json">{{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{item_list}]}}</script>'
+
+
+def seo_jsonld_organization():
+    """Generate LocalBusiness JSON-LD for the store."""
+    return f"""
+    <script type="application/ld+json">
+    {{"@context":"https://schema.org","@type":"Store","name":"Karibu Golf","url":"{SITE_URL}","description":"Premium golf equipment store in Kenya. Shop TaylorMade, Callaway, Titleist and more.","address":{{"@type":"PostalAddress","addressLocality":"Nairobi","addressCountry":"KE"}},"contactPoint":{{"@type":"ContactPoint","telephone":"+{WHATSAPP_NUMBER}","contactType":"customer service","areaServed":"KE","availableLanguage":"English"}},"sameAs":["https://wa.me/{WHATSAPP_NUMBER}"]}}
+    </script>"""
+
+
+def seo_keywords(category="", name="", brand=""):
+    """Generate a relevant meta keywords string."""
+    base = "golf equipment kenya, golf clubs kenya, premium golf, karibu golf, nairobi golf"
+    cat_kw = {
+        "drivers": "golf drivers, best drivers, taylormade driver, callaway driver",
+        "golf_irons": "golf irons, best irons, taylormade irons, callaway irons, titleist irons",
+        "wedges": "wedges, golf wedges, titleist wedges, taylormade wedges",
+        "putters": "putters, golf putters, scotty cameron, odyssey putter",
+        "bags": "golf bags, stand bags, cart bags, titleist bags",
+        "balls": "golf balls, pro v1, titleist golf balls, callaway golf balls",
+        "gloves": "golf gloves, golf pride, footjoy gloves",
+        "mens_jackets": "golf jackets, mens golf outerwear, malbon golf",
+        "mens_shoes": "golf shoes, footjoy shoes, mens golf shoes",
+        "hats_and_caps": "golf hats, golf caps, taylormade hats, titleist hats",
+        "accessories": "golf accessories, belts, golf gear",
+        "grips": "golf grips, golf pride grips, superstroke grips",
+        "range_finders": "golf range finders, golf laser, distance finder",
+    }
+    extra = cat_kw.get(category, "")
+    if brand:
+        brand_lower = brand.lower()
+        extra += f", {brand_lower} golf, {brand_lower} kenya"
+    if name:
+        extra += f", {name.lower()}"
+    return f"{base}, {extra}"
+
+
+def generate_sitemap(products, active_cats):
+    """Generate sitemap.xml for search engines."""
+    from xml.sax.saxutils import escape
+    urls = []
+    urls.append(f"  <url><loc>{SITE_URL}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>")
+    urls.append(f"  <url><loc>{SITE_URL}/categories/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>")
+    for slug, info, _cp in active_cats:
+        urls.append(f"  <url><loc>{SITE_URL}/categories/{slug}.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>")
+    for p in products:
+        sku = escape(p.get("sku", ""))
+        urls.append(f"  <url><loc>{SITE_URL}/products/{sku}.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>")
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{chr(10).join(urls)}
+</urlset>"""
+
+
+def generate_robots():
+    """Generate robots.txt."""
+    return f"""User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: {SITE_URL}/sitemap.xml
+"""
+
+
+def preload_hero():
+    """HTML for preloading the hero image for faster LCP."""
+    return '<link rel="preload" href="/images/hero-karen.jpg" as="image" fetchpriority="high">'
+
+
+
+def normalize_stock_status(status):
+    """Return the public availability label used by HTML and structured data."""
+    return "In Stock" if str(status or "").strip().lower() == "in stock" else "Out of Stock"
 
 
 def render_product_page(p):
-    """Generate a full product detail page."""
     img = get_product_image(p)
     import os as _gio
     _base_dir = _gio.path.dirname(__file__)
@@ -374,7 +522,7 @@ def render_product_page(p):
     _thumbs = " ".join(f'<img src="{s}" alt="{p["name"]}" class="pthumb" onclick="document.getElementById(\'pmain\').src=this.src" loading="lazy">' for s in _all_imgs[1:])
     img_html = ""
     if _main:
-        img_html = f'<div class="pimage-main"><img id="pmain" src="{_main}" alt="{p["name"]}"></div>'
+        img_html = f'<div class="pimage-main"><img id="pmain" src="{_main}" alt="{p["name"]}" loading="lazy" decoding="async"></div>'
     if _thumbs:
         img_html += f'<div class="pimage-thumbs">{_thumbs}</div>'
     if not img_html:
@@ -382,7 +530,7 @@ def render_product_page(p):
     desc = (p['description'] or f'Premium quality {p["name"]}. Designed for performance and comfort on the course.').replace("'", "\\'")
     colors = (p['colors'] or '').replace("'", "\\'")
     sizes = (p['sizes'] or '').replace("'", "\\'")
-    stock_status = "In Stock" if (p['status'] or '') == "In Stock" else "Low Stock"
+    stock_status = normalize_stock_status(p.get("status"))
     
     wa_msg = f"I'm interested in the {p['name']} ({p['sku']}) - {p['price_display']}"
     cat_link = f"/categories/{p['category_slug']}.html"
@@ -391,19 +539,44 @@ def render_product_page(p):
     
     sizes_block = f'<p class="product-detail-size">Sizes: {sizes}</p>' if sizes else ''
 
+    # ── Feature Rows (50/50 Image + Text) ──
+    feature_rows_html = render_feature_rows(p.get("feature_rows", ""))
+
+    # ── SEO ──
+    page_url = f"{SITE_URL}/products/{p['sku']}.html"
+    seo_title = f"{p['name']} - Karibu Golf Kenya"
+    seo_desc = (p['description'] or f'Shop {p["name"]} at Karibu Golf Kenya. Premium quality golf equipment with nationwide delivery.').replace("'", "\\'")[:200]
+    seo_img = f"{SITE_URL}{img}" if img else ""
+    seo_meta_tags = seo_meta(seo_title, seo_desc, page_url, seo_img)
+    kw = seo_keywords(p.get("category_slug", ""), p["name"])
+    jsonld_product = seo_jsonld_product(p['name'], seo_desc, p['sku'], p.get('price_display', '').replace('KES ', '').replace(',', ''), image=seo_img, status=p.get('status'))
+    jsonld_breadcrumb = seo_jsonld_breadcrumb([
+        ("Home", SITE_URL),
+        (p['category_display'], f"{SITE_URL}/categories/{p['category_slug']}.html"),
+        (p['name'], page_url)
+    ])
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{p['name']} - KARIBU</title>
-    <meta name="description" content="{desc[:150]}">
+    <title>{seo_title}</title>
+    <meta name="description" content="{seo_desc[:200]}">
+    <meta name="keywords" content="{kw[:300]}">
+    {seo_meta_tags}
+    {jsonld_product}
+    {jsonld_breadcrumb}
+    {seo_jsonld_organization()}
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="/styles.css">
     <style>
+        *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+        html{{scroll-behavior:smooth}}
+        img{{max-width:100%;height:auto}}
         .product-detail {{ padding: 60px 0; background: #f8f5ee; min-height: calc(100vh - 400px); }}
         .product-detail-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; max-width: 1100px; margin: 0 auto; padding: 0 20px; }}
         .product-detail-image {{ background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }}
@@ -433,6 +606,17 @@ def render_product_page(p):
         .pthumb {{ width:70px !important; height:70px !important; object-fit:cover; border-radius:8px; border:2px solid #e0d8c8; cursor:pointer; transition:all 0.2s; }}
         .pthumb:hover {{ border-color:#c9a961; transform:scale(1.05); }}
         @media (max-width: 768px) {{ .product-detail-grid {{ grid-template-columns: 1fr; gap: 30px; }} .product-detail-title {{ font-size: 24px; }} .product-detail-price {{ font-size: 28px; }} }}
+        /* ── Feature Rows (50/50 Image + Text) ── */
+        .full-features {{ padding: 60px 0; background: #f8f5ee; }}
+        .full-features .container {{ max-width: 1100px; margin: 0 auto; padding: 0 20px; }}
+        .feature-row {{ display: flex; align-items: center; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.08); margin-bottom: 30px; }}
+        .feature-row-img {{ width: 50%; flex-shrink: 0; overflow: hidden; }}
+        .feature-row-img img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+        .feature-row-text {{ width: 50%; padding: 50px 60px; box-sizing: border-box; }}
+        .feature-row-text h3 {{ font-family: 'Playfair Display', serif; font-size: 28px; color: #1f5132; margin-bottom: 15px; font-weight: 600; }}
+        .feature-row-text p {{ color: #555; line-height: 1.8; font-size: 15px; max-width: 520px; }}
+        .feature-row.reverse {{ flex-direction: row-reverse; }}
+        @media (max-width: 768px) {{ .feature-row {{ flex-direction: column !important; }} .feature-row-img {{ width: 100%; }} .feature-row-text {{ width: 100%; padding: 30px; }} }}
     </style>
 </head>
 <body>
@@ -444,10 +628,10 @@ def render_product_page(p):
     <section class="product-detail">
         <div class="container">
             <div class="product-detail-grid">
-                <div class="product-detail-image" data-aos="fade-right">
+                <div class="product-detail-image">
                     {img_html}
                 </div>
-                <div class="product-detail-info" data-aos="fade-left">
+                <div class="product-detail-info">
                     <span class="product-detail-badge">{p['category_display']}</span>
                     <h1 class="product-detail-title">{p['name']}</h1>
                     <p class="product-detail-sku">SKU: {p['sku']}</p>
@@ -509,10 +693,10 @@ def render_product_page(p):
         </div>
     </section>
 
+    {feature_rows_html}
+
     {render_footer()}
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/script.js"></script>
-    <script>AOS.init({{ duration: 800, once: true }});</script>
 </body>
 </html>"""
 
@@ -549,7 +733,7 @@ def render_index(products, groups):
             continue
         delay = i * 50
         first_img = f"/images/categories/cat_{slug}.jpg"
-        cat_links.append(f"""            <a class='category-card-link' data-aos-delay='{delay}' data-aos='fade-up' href='/categories/{slug}.html'>
+        cat_links.append(f"""            <a class='category-card-link' data-anim href='/categories/{slug}.html'>
                 <div class="category-card">
                     <div class="category-image">
                         <img src="{first_img}" alt="{info['label']}" loading="lazy">
@@ -598,12 +782,17 @@ def render_index(products, groups):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{SITE_TITLE} - Premium Golf Equipment & Lifestyle</title>
-    <meta name="description" content="Premium golf equipment, apparel and accessories from top brands. Shop TaylorMade, Callaway, J.Lindeberg, Titleist and more in Kenya.">
+    <title>Karibu Golf Kenya - Premium Golf Equipment & Lifestyle</title>
+    <meta name="description" content="Premium golf equipment, apparel and accessories from top brands. Shop TaylorMade, Callaway, J.Lindeberg, Titleist and more in Kenya. Nationwide delivery.">
+    <meta name="keywords" content="golf equipment kenya, golf clubs kenya, premium golf, karibu golf, nairobi golf, taylormade kenya, callaway kenya, titleist kenya">
+    {seo_meta("Karibu Golf Kenya - Premium Golf Equipment & Lifestyle", "Premium golf equipment, apparel and accessories from top brands. Shop TaylorMade, Callaway, J.Lindeberg, Titleist and more in Kenya.", SITE_URL)}
+    {seo_jsonld_website()}
+    {seo_jsonld_organization()}
+    {preload_hero()}
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -612,11 +801,11 @@ def render_index(products, groups):
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-bg" style="background-image:url(/images/hero-golf-africa.jpg);"></div>
-        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
-            <span class="hero-subtitle">Premium Golf Lifestyle</span>
-            <h1 class="hero-title">Elevate Your<br><span>Game</span></h1>
-            <p class="hero-description">Curated collection of premium golf equipment and apparel from the world's finest brands. Delivered across Kenya.</p>
+        <div class="hero-bg" style="background-image:url(/images/hero-karen.jpg);"></div>
+        <div class="hero-content" data-anim>
+            <span class="hero-subtitle">Karibu sana — Welcome to</span>
+            <h1 class="hero-title">A Golf Shop<br><span>for Everyone</span></h1>
+            <p class="hero-description">Curated collection of premium golf equipment and apparel from the world's finest brands. Delivered across Kenya with expert service.</p>
             <div class="hero-buttons">
                 <a href="#products" class="btn btn-primary">
                     Shop Collection <i class="fas fa-arrow-right"></i>
@@ -832,7 +1021,7 @@ def render_index(products, groups):
                     </div>
                     <h3>WhatsApp</h3>
                     <p>Chat with us instantly</p>
-                    <a href="{WHATSAPP_LINK}" target="_blank">+254 700 000 000</a>
+                    <a href="{WHATSAPP_LINK}" target="_blank">{WHATSAPP_DISPLAY}</a>
                 </div>
                 <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="contact-icon">
@@ -840,7 +1029,7 @@ def render_index(products, groups):
                     </div>
                     <h3>WhatsApp QR</h3>
                     <p>Scan to chat with us</p>
-                    <img src="/images/whatsapp-qr.png" alt="WhatsApp QR" style="width:120px;height:120px;border-radius:12px;margin-top:8px;">
+                    <a href="{WHATSAPP_LINK}" target="_blank" rel="noopener"><img src="{WHATSAPP_QR_PATH}" alt="Scan to chat on WhatsApp: {WHATSAPP_DISPLAY}" style="width:124px;height:124px;margin-top:8px;"></a>
                 </div>
                 <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="contact-icon">
@@ -1197,69 +1386,209 @@ body { font-family:'Montserrat',sans-serif; color:var(--text-dark); line-height:
     .products-grid { grid-template-columns:1fr; }
     .categories-grid { grid-template-columns:1fr; }
 }
+
+/* ── Enhanced Mobile Responsiveness ── */
+@media (max-width:1024px) {
+    .hero { min-height:70vh; }
+    .hero-title { font-size:clamp(36px,6vw,56px); }
+    .nav-container { padding:0 24px; }
+}
+@media (max-width:768px) {
+    .navbar { top:36px; }
+    .nav-container { padding:0 16px; height:64px; }
+    .nav-actions .btn-nav-cta { font-size:12px; padding:8px 14px; }
+    .hero { min-height:60vh; padding-top:80px; }
+    .hero-title { font-size:clamp(32px,8vw,48px); }
+    .hero-description { font-size:15px; }
+    .section-title { font-size:28px; }
+    .product-card { margin-bottom:12px; }
+    .product-price { font-size:18px; }
+    .category-card-link { margin-bottom:12px; }
+    .category-card { padding:20px; }
+    .footer { padding:40px 0; }
+    .footer-section h4 { font-size:16px; }
+    .footer-section p, .footer-section a { font-size:13px; }
+    .stats-grid { gap:20px; padding:20px; }
+    .stat-number { font-size:32px; }
+    .stat-label { font-size:13px; }
+    .contact-section { padding:40px 0; }
+    .product-detail { padding:30px 0; }
+    .product-detail-title { font-size:24px !important; }
+    .product-detail-price { font-size:28px !important; }
+    .product-detail-grid { grid-template-columns:1fr; gap:24px; }
+    .back-to-shop { padding-top:70px; }
+    .feature-row-text { padding:30px; }
+    .feature-row-text h3 { font-size:22px; }
+}
+@media (max-width:480px) {
+    .hero-title { font-size:clamp(28px,10vw,36px) !important; }
+    .hero-subtitle { font-size:12px; }
+    .hero-description { font-size:14px; }
+    .nav-container { height:56px; }
+    .nav-logo img { height:32px !important; }
+    .product-detail-title { font-size:20px !important; }
+    .product-detail-price { font-size:24px !important; }
+    .product-detail-meta { flex-direction:column; gap:12px; }
+    .feature-row-text { padding:20px; }
+    .feature-row-text h3 { font-size:20px; }
+}
+@media (hover:none) and (pointer:coarse) {
+    .btn-detail-inquire, .btn-detail-back { padding:16px 28px; }
+}
+@media (max-width:900px) and (orientation:landscape) {
+    .hero { min-height:80vh; padding-top:70px; }
+}
+/* ── Scroll Animation (replaces AOS) ── */
+[data-anim] { opacity:0; transform:translateY(30px); transition:opacity 0.6s ease, transform 0.6s ease; }
+[data-anim].anim-left { opacity:0; transform:translateX(-40px); transition:opacity 0.6s ease, transform 0.6s ease; }
+[data-anim].anim-right { opacity:0; transform:translateX(40px); transition:opacity 0.6s ease, transform 0.6s ease; }
+@media (prefers-reduced-motion:reduce) {
+    * { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+    [data-anim] { opacity:1; transform:none; }
+}
 """
 
 
 def generate_script():
-    return """// Golf Kenya - Script
-AOS.init({ duration:800, easing:'ease-out-cubic', once:true, offset:100 });
+    return """// Golf Kenya - Script v2 (Optimized)
 
-// Navbar scroll
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.pageYOffset > 100);
+// ── Lightweight Scroll Animation (replaces AOS) ──
+document.addEventListener('DOMContentLoaded', function() {
+    if ('IntersectionObserver' in window) {
+        var animEls = document.querySelectorAll('[data-anim]');
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        animEls.forEach(function(el) { observer.observe(el); });
+    } else {
+        document.querySelectorAll('[data-anim]').forEach(function(el) {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        });
+    }
 });
 
-// Mobile nav toggle
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.querySelector('.nav-menu');
-if (navToggle) {
-    navToggle.addEventListener('click', () => {
+// ── Navbar scroll ──
+(function() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                navbar.classList.toggle('scrolled', window.pageYOffset > 100);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+})();
+
+// ── Mobile nav toggle ──
+(function() {
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.querySelector('.nav-menu');
+    if (!navToggle || !navMenu) return;
+
+    navToggle.addEventListener('click', function() {
         navMenu.classList.toggle('active');
         navToggle.classList.toggle('active');
+        document.body.classList.toggle('nav-open');
+    });
+
+    navMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            document.body.classList.remove('nav-open');
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+            document.body.classList.remove('nav-open');
+        }
+    });
+})();
+
+// ── Product filtering ──
+(function() {
+    var filterBtns = document.querySelectorAll('.filter-btn');
+    var productCards = document.querySelectorAll('.product-card');
+    if (!filterBtns.length || !productCards.length) return;
+
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            var filter = btn.dataset.filter;
+            productCards.forEach(function(card) {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = 'block';
+                    setTimeout(function() {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(function() { card.style.display = 'none'; }, 300);
+                }
+            });
+        });
+    });
+})();
+
+// ── WhatsApp inquiry ──
+function inquireProduct(productName, price) {
+    var msg = encodeURIComponent("Hi! I'm interested in:\\n\\n*" + productName + "*\\nPrice: " + price + "\\n\\nPlease provide more details.");
+    window.open('__KARIBU_WHATSAPP_URL__?text=' + msg, '_blank');
+}
+
+// ── Smooth scroll for anchor links ──
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// ── Lazy loading fallback for older browsers ──
+if (!('loading' in HTMLImageElement.prototype)) {
+    document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
+        var src = img.getAttribute('data-src');
+        if (src) img.src = src;
     });
 }
 
-// Product filtering
-const filterBtns = document.querySelectorAll('.filter-btn');
-const productCards = document.querySelectorAll('.product-card');
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        productCards.forEach(card => {
-            if (filter === 'all' || card.dataset.category === filter) {
-                card.style.display = 'block';
-                setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
-            } else {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => { card.style.display = 'none'; }, 300);
+// ── IntersectionObserver lazy loading ──
+if ('IntersectionObserver' in window) {
+    var lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    var imgObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var img = entry.target;
+                if (img.dataset.src) img.src = img.dataset.src;
+                imgObserver.unobserve(img);
             }
         });
     });
-});
-
-// WhatsApp inquiry
-function inquireProduct(productName, price) {
-    const message = encodeURIComponent(
-        'Hi! I\\'m interested in:\\n\\n*' + productName + '*\\nPrice: ' + price + '\\n\\nPlease provide more details.'
-    );
-    window.open('https://wa.me/254700000000?text=' + message, '_blank');
+    lazyImages.forEach(function(img) { imgObserver.observe(img); });
 }
 
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
-    });
-});
-"""
-
-
+console.log('Karibu Golf - Optimized v2');
+""".replace("__KARIBU_WHATSAPP_URL__", WHATSAPP_LINK)
 def generate_pdf(products, groups):
     """Generate a professional multi-page PDF catalogue with images and prices."""
     try:
@@ -1359,7 +1688,7 @@ def generate_pdf(products, groups):
     pdf.set_text_color(*WHITE)
     pdf.set_font("Helvetica", "", 11)
     pdf.ln(8)
-    pdf.cell(0, 7, "[WhatsApp] WhatsApp: +254 700 000 000", align="C")
+    pdf.cell(0, 7, f"[WhatsApp] WhatsApp: {WHATSAPP_DISPLAY}", align="C")
     pdf.cell(0, 7, "[Email] Email: info@golfkenya.com", align="C")
     pdf.cell(0, 7, "[Location] Nairobi, Kenya", align="C")
 
@@ -1592,7 +1921,7 @@ def generate_pdf(products, groups):
 
     pdf.set_y(140)
     contact_items = [
-        ("[WhatsApp]", "WhatsApp", "+254 700 000 000", "Quickest response"),
+        ("[WhatsApp]", "WhatsApp", WHATSAPP_DISPLAY, "Quickest response"),
         ("[Email]", "Email", "info@golfkenya.com", "For bulk orders"),
         ("[Location]", "Location", "Nairobi, Kenya", "By appointment"),
     ]
@@ -1642,6 +1971,73 @@ def generate_pdf(products, groups):
     return pdf_path
 
 
+def render_categories_index(active_cats):
+    """Generate the /categories/ index page listing all available categories."""
+    cat_cards = []
+    for slug, info, products in active_cats:
+        img = f"/images/categories/cat_{slug}.jpg"
+        count = len(products)
+        cat_cards.append(f"""
+            <a class='category-card-link' href='/categories/{slug}.html' data-anim>
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="{img}" alt="{info['label']}" loading="lazy">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h3>{info['label']}</h3>
+                        <span class="product-count">{count} products</span>
+                        <span class="category-cta">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </a>""")
+    
+    cards_html = "\n".join(cat_cards)
+    
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Categories - Karibu Golf Kenya</title>
+    <meta name="description" content="Browse all golf equipment categories at Karibu Golf Kenya. Drivers, irons, wedges, putters, apparel and more.">
+    <meta name="keywords" content="golf categories, golf clubs kenya, golf equipment nairobi, buy golf kenya">
+    {seo_meta("All Categories - Karibu Golf Kenya", "Browse all golf categories at Karibu Golf Kenya", SITE_URL + "/categories/")}
+    {seo_jsonld_website()}
+    {seo_jsonld_organization()}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .categories-page {{ padding: 120px 0 60px; background: #f8f5ee; min-height: 100vh; }}
+        .categories-page .section-title {{ text-align: center; margin-bottom: 40px; }}
+        .categories-page .section-title h1 {{ font-family: 'Playfair Display', serif; font-size: 48px; color: #1f5132; margin-bottom: 10px; }}
+        .categories-page .section-title p {{ color: #666; font-size: 16px; }}
+        .categories-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }}
+        @media (max-width: 768px) {{ .categories-page {{ padding: 100px 0 40px; }} .categories-page .section-title h1 {{ font-size: 32px; }} .categories-grid {{ grid-template-columns: repeat(2, 1fr); gap: 16px; }} }}
+        @media (max-width: 480px) {{ .categories-grid {{ grid-template-columns: 1fr; }} }}
+    </style>
+</head>
+<body>
+    {render_announcement()}
+    {render_nav("category")}
+    <section class="categories-page">
+        <div class="section-title">
+            <h1>Shop by Category</h1>
+            <p>Find the perfect equipment for your game</p>
+        </div>
+        <div class="categories-grid">
+            {cards_html}
+        </div>
+    </section>
+    {render_footer()}
+    <script src="/script.js"></script>
+</body>
+</html>"""
+
+
 def main(use_db=False):
     """Generate the static site.
     
@@ -1672,7 +2068,7 @@ def main(use_db=False):
 
     if os.path.exists(OUTPUT_DIR):
         for item in os.listdir(OUTPUT_DIR):
-            if item == "images":
+            if item in ("images", "blog"):
                 continue  # Preserve images if already there
             item_path = os.path.join(OUTPUT_DIR, item)
             try:
@@ -1705,14 +2101,22 @@ def main(use_db=False):
 
     # Generate category pages
     cat_count = 0
+    active_cats = []
     for slug, info in CATEGORIES.items():
         cat_products = groups.get(slug, [])
         if not cat_products:
             continue
+        active_cats.append((slug, info, cat_products))
         cat_html = render_category_page(slug, info, cat_products)
         with open(os.path.join(OUTPUT_DIR, "categories", f"{slug}.html"), "w", encoding="utf-8") as f:
             f.write(cat_html)
         cat_count += 1
+    
+    # Generate categories index page
+    cat_index = render_categories_index(active_cats)
+    with open(os.path.join(OUTPUT_DIR, "categories", "index.html"), "w", encoding="utf-8") as f:
+        f.write(cat_index)
+    print(f"   ✅ categories/index.html")
     print(f"   ✅ {cat_count} category pages")
 
     # Generate individual product pages
@@ -1741,7 +2145,28 @@ def main(use_db=False):
 
     # Generate PDF catalogue
     print("\n📕 Generating PDF catalogue...")
-    pdf_path = generate_pdf(products, groups)
+    try:
+        pdf_path = generate_pdf(products, groups)
+        pdf_ok = True
+    except Exception as e:
+        print(f"   ⚠️ PDF generation skipped: {e}")
+        pdf_ok = False
+
+    # Generate sitemap.xml
+    sitemap = generate_sitemap(products, active_cats)
+    with open(os.path.join(OUTPUT_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(sitemap)
+    print("   ✅ sitemap.xml")
+
+    # Generate robots.txt
+    robots = generate_robots()
+    with open(os.path.join(OUTPUT_DIR, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(robots)
+    print("   ✅ robots.txt")
+
+    from blog_engine import build_blog
+    blog_count = build_blog(os.path.join(os.path.dirname(__file__), "backend", "golf_kenya.db"), OUTPUT_DIR, SITE_URL)
+    print(f"   ✅ Blog: {blog_count} published posts")
 
     # Summary
     summary = (f"✅ Generated {len(products)} products, {prod_count} product pages, "

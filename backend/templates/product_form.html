@@ -3,7 +3,8 @@
 
 {% block content %}
 {% set is_new = not product %}
-{% set m = product.margin if product and product.margin else {'profit_kes':0,'margin_pct':0,'cost_kes_total':0,'cost_kes_from_cny':0} %}
+{% set fx = rates if rates else {'cny_to_kes':19.0,'usd_to_kes':129.5} %}
+{% set m = product.margin if product and product.margin else {'profit_kes':0,'profit_usd':0,'margin_pct':0,'cost_kes_total':0,'cost_usd_total':0,'cost_kes_from_cny':0,'cost_usd_from_cny':0,'local_cost_kes':0} %}
 <div class="topbar">
     <h1>
         {% if product %}
@@ -47,7 +48,7 @@
                                        id="productName" {% if is_new %}onchange="autoGenerateSku()"{% endif %}>
                             </div>
                             <!-- SKU -->
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label class="form-label">SKU</label>
                                 <div class="input-group">
                                     <input type="text" name="sku" class="form-control"
@@ -79,17 +80,11 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <!-- Price -->
-                            <div class="col-md-3">
-                                <label class="form-label">Selling Price (KES)</label>
-                                <input type="text" name="price_kes" class="form-control"
-                                       value="{{ product.price_kes if product else '' }}"
-                                       placeholder="85000" id="priceInput" oninput="calcMargin()">
-                            </div>
                             <!-- Status -->
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label class="form-label">Status</label>
                                 <select name="status" class="form-select">
+                                    <option value="Out of Stock" {% if not product or product.status == 'Out of Stock' %}selected{% endif %}>Out of Stock</option>
                                     <option value="In Stock" {% if product and product.status == 'In Stock' %}selected{% endif %}>In Stock</option>
                                     <option value="Low Stock" {% if product and product.status == 'Low Stock' %}selected{% endif %}>Low Stock</option>
                                     <option value="Pre-order" {% if product and product.status == 'Pre-order' %}selected{% endif %}>Pre-order</option>
@@ -97,7 +92,7 @@
                                 </select>
                             </div>
                             <!-- Featured -->
-                            <div class="col-md-2 d-flex align-items-end">
+                            <div class="col-md-3 d-flex align-items-end">
                                 <div class="form-check mb-2">
                                     <input type="checkbox" name="featured" class="form-check-input" id="chkFeatured"
                                         {% if product and product.featured %}checked{% endif %}>
@@ -107,45 +102,100 @@
                         </div>
 
                         <!-- ═══ MARGIN CALCULATOR ═══ -->
-                        <div class="card" style="background:#f8f9fa;border:1px solid #e1e3e5;border-radius:8px;margin:16px 0;">
+                        <div class="card" style="background:rgba(239,227,204,.24);border:1px solid var(--karibu-line);border-radius:12px;margin:20px 0;">
                             <div class="card-body py-3">
-                                <div class="d-flex align-items-center gap-2 mb-2">
-                                    <i class="bi bi-currency-exchange" style="color:#1f5132;"></i>
-                                    <strong style="font-size:14px;">Pricing &amp; Margin</strong>
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-currency-exchange" style="color:var(--karibu-green);"></i>
+                                        <strong style="font-size:15px;">CNY purchase &amp; selling price</strong>
+                                    </div>
+                                    <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(20,17,14,.62);">
+                                        CNY 1 = KES {{ fx.cny_to_kes }} &nbsp;·&nbsp; USD 1 = KES {{ fx.usd_to_kes }}
+                                        <a href="/settings" style="margin-left:8px;">Edit rates</a>
+                                    </div>
                                 </div>
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-md-2">
-                                        <label style="font-size:11px;color:#6d7175;">Cost (CNY)</label>
-                                        <input type="text" name="cost_cny" class="form-control form-control-sm"
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-6 col-xl">
+                                        <label class="form-label">🇨🇳 Purchase cost (CNY)</label>
+                                        <input type="number" min="0" step="0.01" name="cost_cny" class="form-control"
                                                value="{{ product.cost_cny if product else '' }}"
-                                               placeholder="1200" id="costCnyInput" oninput="calcMargin()">
+                                               placeholder="1200" id="costCnyInput" oninput="calcPricing()">
+                                        <small class="text-muted">Your supplier price in China</small>
                                     </div>
-                                    <div class="col-md-2">
-                                        <label style="font-size:11px;color:#6d7175;">Cost (KES)</label>
-                                        <input type="text" name="cost_kes" class="form-control form-control-sm"
+                                    <div class="col-md-6 col-xl">
+                                        <label class="form-label">🇰🇪 Local costs (KES)</label>
+                                        <input type="number" min="0" step="0.01" name="cost_kes" class="form-control"
                                                value="{{ product.cost_kes if product else '' }}"
-                                               placeholder="21600" id="costKesInput" oninput="calcMargin()">
+                                               placeholder="2500" id="costKesInput" oninput="calcPricing()">
+                                        <small class="text-muted">Freight, duty, delivery, or handling</small>
                                     </div>
-                                    <div class="col-md-2 text-center">
-                                        <label style="font-size:11px;color:#6d7175;">Total Cost</label>
-                                        <div id="totalCostDisplay" style="font-size:16px;font-weight:700;color:#202223;">
-                                            KES {{ "{:,}".format(m.cost_kes_total) if m.cost_kes_total else '0' }}
+                                    <div class="col-md-6 col-xl">
+                                        <label class="form-label">🇨🇳 Selling price (RMB/CNY)</label>
+                                        <input type="number" min="0" step="0.01" name="price_cny" class="form-control"
+                                               value="{{ product.price_cny if product else '' }}"
+                                               placeholder="4500" id="priceCnyInput" oninput="calcPricing()">
+                                        <small class="text-muted">Enter your selling price here</small>
+                                    </div>
+                                    <div class="col-md-6 col-xl">
+                                        <label class="form-label">🇰🇪 Selling price (KES)</label>
+                                        <input type="number" min="0" step="1" name="price_kes" class="form-control bg-light"
+                                               value="{{ product.price_kes if product else '' }}"
+                                               placeholder="85500" id="priceInput" readonly>
+                                        <small class="text-muted">Calculated from RMB</small>
+                                    </div>
+                                    <div class="col-md-6 col-xl">
+                                        <label class="form-label">🇺🇸 Selling price (USD)</label>
+                                        <input type="number" min="0" step="0.01" name="price_usd" class="form-control bg-light"
+                                               value="{{ product.price_usd if product else '' }}"
+                                               placeholder="660.23" id="priceUsdInput" readonly>
+                                        <small class="text-muted">Calculated from RMB</small>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-3">
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded" style="background:var(--karibu-white);border:1px solid var(--karibu-line);">
+                                            <label style="font-size:10px;color:#6d7175;">CNY PURCHASE IN KES</label>
+                                            <div id="purchaseKesDisplay" style="font-size:17px;font-weight:750;">KES {{ "{:,}".format(m.cost_kes_from_cny) }}</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 text-center">
-                                        <label style="font-size:11px;color:#6d7175;">Profit</label>
-                                        <div id="profitDisplay" style="font-size:16px;font-weight:700;{% if m.profit_kes > 0 %}color:#1f5132{% else %}color:#d82c0d{% endif %};">
-                                            KES {{ "{:,}".format(m.profit_kes) if m.profit_kes else '0' }}
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded" style="background:var(--karibu-white);border:1px solid var(--karibu-line);">
+                                            <label style="font-size:10px;color:#6d7175;">CNY PURCHASE IN USD</label>
+                                            <div id="purchaseUsdDisplay" style="font-size:17px;font-weight:750;">USD {{ "{:,.2f}".format(m.cost_usd_from_cny) }}</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 text-center">
-                                        <label style="font-size:11px;color:#6d7175;">Margin %</label>
-                                        <div id="marginDisplay" style="font-size:22px;font-weight:800;{% if m.margin_pct >= 40 %}color:#1f5132{% elif m.margin_pct >= 20 %}color:#c89848{% else %}color:#d82c0d{% endif %};">
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded" style="background:var(--karibu-white);border:1px solid var(--karibu-line);">
+                                            <label style="font-size:10px;color:#6d7175;">LANDED COST IN KES</label>
+                                            <div id="totalCostDisplay" style="font-size:17px;font-weight:750;">KES {{ "{:,}".format(m.cost_kes_total) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded" style="background:var(--karibu-white);border:1px solid var(--karibu-line);">
+                                            <label style="font-size:10px;color:#6d7175;">LANDED COST IN USD</label>
+                                            <div id="totalCostUsdDisplay" style="font-size:17px;font-weight:750;">USD {{ "{:,.2f}".format(m.cost_usd_total) }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-2">
+                                    <div class="col-md-4 text-center"><div class="p-2">
+                                        <label style="font-size:10px;color:#6d7175;">PROFIT (KES)</label>
+                                        <div id="profitDisplay" style="font-size:18px;font-weight:750;{% if m.profit_kes >= 0 %}color:#1f5132{% else %}color:#a04e2c{% endif %};">KES {{ "{:,}".format(m.profit_kes) }}</div>
+                                    </div></div>
+                                    <div class="col-md-4 text-center"><div class="p-2">
+                                        <label style="font-size:10px;color:#6d7175;">PROFIT (USD)</label>
+                                        <div id="profitUsdDisplay" style="font-size:18px;font-weight:750;{% if m.profit_kes >= 0 %}color:#1f5132{% else %}color:#a04e2c{% endif %};">USD {{ "{:,.2f}".format(m.profit_usd) }}</div>
+                                    </div></div>
+                                    <div class="col-md-4 text-center"><div class="p-2">
+                                        <label style="font-size:10px;color:#6d7175;">MARGIN</label>
+                                        <div id="marginDisplay" style="font-size:22px;font-weight:800;{% if m.margin_pct >= 40 %}color:#1f5132{% elif m.margin_pct >= 20 %}color:#c89947{% else %}color:#a04e2c{% endif %};">
                                             {{ m.margin_pct }}%
                                         </div>
-                                    </div>
+                                    </div></div>
                                 </div>
-                                <small class="text-muted" style="font-size:11px;">Exchange rate: 1 CNY ≈ 18 KES</small>
+                                <small class="text-muted" style="font-size:11px;">
+                                    Formula: landed cost = (CNY purchase × CNY/KES rate) + local KES costs. Profit and margin use the landed cost.
+                                </small>
                             </div>
                         </div>
 
@@ -214,6 +264,25 @@
                         </div>
 
                         <input type="hidden" name="extra_attrs_json" id="extraAttrsJson" value="">
+
+                        <!-- ═══ FEATURE ROWS (50/50 Image + Text) ═══ -->
+                        <hr class="divider">
+                        <h6 style="font-weight:600;margin-bottom:12px;">
+                            <i class="bi bi-layout-three-columns"></i>
+                            Feature Rows (50/50 Image + Text)
+                            <button type="button" class="btn btn-sm btn-outline-primary ms-2" onclick="addFeatureRow()">
+                                <i class="bi bi-plus-lg"></i> Add Row
+                            </button>
+                        </h6>
+                        <p style="font-size:12px;color:#6d7175;margin-bottom:12px;">
+                            Each row shows an image on one side and text on the other, alternating left/right.
+                            Upload images and write HTML content for each row.
+                        </p>
+                        <div id="featureRowsContainer">
+                            <!-- Filled by JS -->
+                        </div>
+                        <input type="hidden" name="feature_rows" id="featureRowsInput"
+                               value='{{ product.feature_rows|safe if product and product.feature_rows else "[]" }}'>
 
                         <!-- Submit -->
                         <hr class="divider">
@@ -401,26 +470,69 @@ function autoGenerateSku() {
         .catch(() => {});
 }
 
-// ── Margin Calculator ──
-function calcMargin() {
-    const price = parseInt(document.getElementById('priceInput').value.replace(/[^\d]/g,'')) || 0;
-    const cny = parseInt(document.getElementById('costCnyInput').value.replace(/[^\d]/g,'')) || 0;
-    const kes = parseInt(document.getElementById('costKesInput').value.replace(/[^\d]/g,'')) || 0;
-    const fromCny = cny * 18;
-    const total = fromCny + kes;
-    document.getElementById('totalCostDisplay').textContent = 'KES ' + total.toLocaleString();
+// ── Currency and Margin Calculator ──
+const CNY_TO_KES = {{ (rates.cny_to_kes if rates else 19.0) | tojson }};
+const USD_TO_KES = {{ (rates.usd_to_kes if rates else 129.5) | tojson }};
+let _pricingUpdating = false;
 
-    if (price > 0 && total > 0) {
-        const profit = price - total;
-        const margin = Math.round((profit / price) * 1000) / 10;
-        document.getElementById('profitDisplay').textContent = 'KES ' + profit.toLocaleString();
-        document.getElementById('profitDisplay').style.color = profit > 0 ? '#1f5132' : '#d82c0d';
-        document.getElementById('marginDisplay').textContent = margin + '%';
-        document.getElementById('marginDisplay').style.color = margin >= 40 ? '#1f5132' : (margin >= 20 ? '#c89848' : '#d82c0d');
-    } else {
-        document.getElementById('profitDisplay').textContent = 'KES 0';
-        document.getElementById('marginDisplay').textContent = '0%';
-    }
+function moneyValue(element) {
+    if (!element) return 0;
+    const value = Number.parseFloat(String(element.value).replace(/,/g, ''));
+    return Number.isFinite(value) ? value : 0;
+}
+
+function formatKes(value) {
+    return 'KES ' + Math.round(value).toLocaleString();
+}
+
+function formatUsd(value) {
+    return 'USD ' + value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
+function setMetric(id, text, color) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    element.textContent = text;
+    if (color) element.style.color = color;
+}
+
+function calcPricing() {
+    if (_pricingUpdating) return;
+    _pricingUpdating = true;
+
+    const cnyInput = document.getElementById('costCnyInput');
+    const localKesInput = document.getElementById('costKesInput');
+    const priceCnyInput = document.getElementById('priceCnyInput');
+    const priceKesInput = document.getElementById('priceInput');
+    const priceUsdInput = document.getElementById('priceUsdInput');
+
+    const purchaseCny = moneyValue(cnyInput);
+    const localCostKes = moneyValue(localKesInput);
+    const sellingCny = moneyValue(priceCnyInput);
+    const sellingKes = Math.round(sellingCny * CNY_TO_KES);
+    const sellingUsd = sellingKes / USD_TO_KES;
+    priceKesInput.value = sellingCny > 0 ? sellingKes : '';
+    priceUsdInput.value = sellingCny > 0 ? sellingUsd.toFixed(2) : '';
+
+    const purchaseKes = purchaseCny * CNY_TO_KES;
+    const purchaseUsd = purchaseKes / USD_TO_KES;
+    const landedKes = purchaseKes + localCostKes;
+    const landedUsd = landedKes / USD_TO_KES;
+    const profitKes = sellingKes - landedKes;
+    const profitUsd = profitKes / USD_TO_KES;
+    const margin = sellingKes > 0 ? (profitKes / sellingKes) * 100 : 0;
+    const profitColor = profitKes >= 0 ? '#1f5132' : '#a04e2c';
+    const marginColor = margin >= 40 ? '#1f5132' : (margin >= 20 ? '#c89947' : '#a04e2c');
+
+    setMetric('purchaseKesDisplay', formatKes(purchaseKes));
+    setMetric('purchaseUsdDisplay', formatUsd(purchaseUsd));
+    setMetric('totalCostDisplay', formatKes(landedKes));
+    setMetric('totalCostUsdDisplay', formatUsd(landedUsd));
+    setMetric('profitDisplay', formatKes(profitKes), profitColor);
+    setMetric('profitUsdDisplay', formatUsd(profitUsd), profitColor);
+    setMetric('marginDisplay', margin.toFixed(1) + '%', marginColor);
+
+    _pricingUpdating = false;
 }
 
 // ── Color Swatches ──
@@ -479,7 +591,147 @@ document.querySelector('form').addEventListener('submit', function(e) {
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
     renderAttributes();
-    calcMargin();
+    calcPricing();
+    renderFeatureRows();
 });
+
+// ── Feature Rows (50/50 Image + Text) ──
+function renderFeatureRows() {
+    var input = document.getElementById('featureRowsInput');
+    var container = document.getElementById('featureRowsContainer');
+    if (!input || !container) return;
+    var rows = [];
+    try { rows = JSON.parse(input.value || '[]'); } catch(e) { rows = []; }
+    
+    if (rows.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:#9ca3af;font-size:13px;">' +
+            '<i class="bi bi-layout-three-columns" style="font-size:28px;display:block;margin-bottom:6px;"></i>' +
+            'No feature rows yet. Click "Add Row" to create 50/50 image + text sections.</div>';
+        return;
+    }
+    
+    var html = '';
+    rows.forEach(function(row, idx) {
+        var isRev = row.reverse ? true : false;
+        var imgHtml = row.image ? '<div style="margin-bottom:6px;position:relative;display:inline-block;">' +
+            '<img src="' + row.image + '" alt="Feature" style="max-height:100px;max-width:100%;border-radius:6px;border:1px solid #e1e3e5;">' +
+            '<button type="button" class="btn btn-sm btn-dark py-0 px-1" style="position:absolute;top:2px;right:2px;font-size:10px;border-radius:4px;opacity:0.8;" onclick="removeFeatureRowImage(' + idx + ')" title="Remove image"><i class="bi bi-x"></i></button></div>' : '';
+        
+        var textVal = (row.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
+        html += '<div class="card mb-3" style="border:1px solid #e1e3e5;" data-feature-index="' + idx + '">' +
+            '<div class="card-header d-flex justify-content-between align-items-center py-2">' +
+            '<span style="font-weight:600;font-size:13px;"><i class="bi bi-' + (isRev ? 'arrow-left-right' : 'layout-three-columns') + '"></i> Row ' + (idx + 1) + (isRev ? ' (Image Right)' : ' (Image Left)') + '</span>' +
+            '<div class="d-flex gap-1">' +
+            (idx > 0 ? '<button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="moveFeatureRow(' + idx + ', -1)" title="Move up"><i class="bi bi-chevron-up"></i></button>' : '') +
+            (idx < rows.length - 1 ? '<button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="moveFeatureRow(' + idx + ', 1)" title="Move down"><i class="bi bi-chevron-down"></i></button>' : '') +
+            '<button type="button" class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteFeatureRow(' + idx + ')" title="Delete"><i class="bi bi-trash"></i></button></div></div>' +
+            '<div class="card-body"><div class="row g-3">' +
+            '<div class="col-md-6"><label style="font-size:12px;font-weight:500;">Image</label>' + imgHtml +
+            '<div class="input-group input-group-sm"><input type="text" class="form-control" id="frImg_' + idx + '" value="' + (row.image || '') + '" placeholder="/images/products/feature.jpg" onchange="updateFeatureRowsInput()">' +
+            '<button type="button" class="btn btn-outline-primary" onclick="document.getElementById(\'frFile_' + idx + '\').click()"><i class="bi bi-upload"></i></button></div>' +
+            '<input type="file" id="frFile_' + idx + '" accept="image/*" style="display:none" onchange="uploadFeatureImage(' + idx + ', this)">' +
+            '<small class="text-muted" style="font-size:11px;">Enter URL or upload a new image</small></div>' +
+            '<div class="col-md-6">' +
+            '<div class="form-check mb-2"><input type="checkbox" class="form-check-input" id="frRev_' + idx + '" ' + (isRev ? 'checked' : '') + ' onchange="updateFeatureRowsInput()">' +
+            '<label class="form-check-label" for="frRev_' + idx + '" style="font-size:13px;">Image on the <strong>' + (isRev ? 'Right' : 'Left') + '</strong></label></div>' +
+            '<label style="font-size:12px;font-weight:500;">Text Content (HTML)</label>' +
+            '<textarea class="form-control" rows="4" style="font-family:monospace;font-size:12px;" id="frText_' + idx + '" onchange="updateFeatureRowsInput()" placeholder="<h3>Title</h3><p>Description...</p>">' + textVal + '</textarea>' +
+            '<small class="text-muted" style="font-size:11px;">HTML supported — use &lt;h3&gt; for titles, &lt;p&gt; for paragraphs</small></div></div></div></div>';
+    });
+    container.innerHTML = html;
+}
+
+function updateFeatureRowsInput() {
+    var container = document.getElementById('featureRowsContainer');
+    var input = document.getElementById('featureRowsInput');
+    if (!container || !input) return;
+    var rows = [];
+    container.querySelectorAll('.card[data-feature-index]').forEach(function(card) {
+        var idx = parseInt(card.dataset.featureIndex);
+        var imgEl = document.getElementById('frImg_' + idx);
+        var textEl = document.getElementById('frText_' + idx);
+        var revEl = document.getElementById('frRev_' + idx);
+        if (imgEl) {
+            rows.push({
+                image: imgEl.value || '',
+                text: textEl ? textEl.value : '',
+                reverse: revEl ? revEl.checked : false
+            });
+        }
+    });
+    input.value = JSON.stringify(rows);
+}
+
+function addFeatureRow() {
+    var input = document.getElementById('featureRowsInput');
+    if (!input) return;
+    var rows = [];
+    try { rows = JSON.parse(input.value || '[]'); } catch(e) { rows = []; }
+    rows.push({ image: '', text: '<h3>New Feature</h3><p>Add your description here...</p>', reverse: false });
+    input.value = JSON.stringify(rows);
+    renderFeatureRows();
+}
+
+function deleteFeatureRow(idx) {
+    if (!confirm('Delete this feature row?')) return;
+    var input = document.getElementById('featureRowsInput');
+    if (!input) return;
+    var rows = JSON.parse(input.value || '[]');
+    rows.splice(idx, 1);
+    input.value = JSON.stringify(rows);
+    renderFeatureRows();
+}
+
+function moveFeatureRow(idx, dir) {
+    var input = document.getElementById('featureRowsInput');
+    if (!input) return;
+    var rows = JSON.parse(input.value || '[]');
+    var newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= rows.length) return;
+    var tmp = rows[idx];
+    rows[idx] = rows[newIdx];
+    rows[newIdx] = tmp;
+    input.value = JSON.stringify(rows);
+    renderFeatureRows();
+}
+
+function removeFeatureRowImage(idx) {
+    var input = document.getElementById('featureRowsInput');
+    if (!input) return;
+    var rows = JSON.parse(input.value || '[]');
+    if (rows[idx]) rows[idx].image = '';
+    input.value = JSON.stringify(rows);
+    renderFeatureRows();
+}
+
+function uploadFeatureImage(idx, fileInput) {
+    if (!fileInput.files || !fileInput.files[0]) return;
+    var formData = new FormData();
+    formData.append('image', fileInput.files[0]);
+    var skuInput = document.querySelector('[name="sku"]');
+    var sku = skuInput ? skuInput.value : '';
+    if (!sku) { alert('Save the product first to get a SKU for image upload.'); return; }
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/products/' + sku + '/feature-image?idx=' + idx, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var resp = JSON.parse(xhr.responseText);
+            if (resp.url) {
+                var input = document.getElementById('featureRowsInput');
+                if (!input) return;
+                var rows = JSON.parse(input.value || '[]');
+                if (rows[idx]) rows[idx].image = resp.url;
+                input.value = JSON.stringify(rows);
+                renderFeatureRows();
+            }
+        } else {
+            alert('Upload failed');
+        }
+    };
+    xhr.send(formData);
+    fileInput.value = '';
+}
 </script>
 {% endblock %}

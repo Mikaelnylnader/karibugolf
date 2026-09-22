@@ -1,0 +1,5 @@
+"""Public Karibu Golf contact details shared by generators and admin defaults."""
+WHATSAPP_NUMBER = "254116416105"
+WHATSAPP_DISPLAY = "+254 116 416 105"
+WHATSAPP_LINK = f"https://wa.me/{WHATSAPP_NUMBER}"
+WHATSAPP_QR_PATH = f"/images/whatsapp-{WHATSAPP_NUMBER}.png"
