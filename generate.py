@@ -19,7 +19,7 @@ from site_contact import WHATSAPP_NUMBER, WHATSAPP_DISPLAY, WHATSAPP_LINK, WHATS
 SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY/export?format=csv"
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "dist")
 SITE_TITLE = "Karibu"
-SITE_URL = "https://golfklcubskenya.netlify.app"
+SITE_URL = "https://karibugolf.com"
 BUSINESS_EMAIL = ""
 BUSINESS_LOCATION = "Nairobi, Kenya"
 

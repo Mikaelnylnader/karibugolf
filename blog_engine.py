@@ -14,7 +14,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
 ROOT = Path(__file__).resolve().parent
-SITE_URL = "https://golfklcubskenya.netlify.app"
+SITE_URL = "https://karibugolf.com"
 BLOG_CATEGORIES = ("Getting started", "Buying guides", "Where to play", "Golf life")
 BUILD_LOCK = threading.RLock()
 GENERATED_MARKER = "<!-- karibu-blog-generated -->"

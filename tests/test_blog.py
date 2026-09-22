@@ -87,7 +87,7 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(len(re.findall(r"<h1[ >]", html)), 1)
         self.assertIn('<meta property="og:type" content="article">', html)
         self.assertIn('<title>Golf in Nairobi | Karibu</title>', html)
-        self.assertIn('rel="canonical" href="https://golfklcubskenya.netlify.app/blog/nairobi-golf/"', html)
+        self.assertIn('rel="canonical" href="https://karibugolf.com/blog/nairobi-golf/"', html)
         schemas = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)[1])
         article = schemas[1]
         self.assertEqual(article["@type"], "BlogPosting")
@@ -98,7 +98,8 @@ class BlogTests(unittest.TestCase):
         self.assertEqual(article["author"]["name"], post["author"])
         sitemap = ET.parse(self.output / "sitemap.xml")
         urls = [x.text for x in sitemap.iter("{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
-        self.assertIn(blog.SITE_URL + "/categories/", urls)
+        # Blog publishing preserves existing non-blog sitemap URLs verbatim.
+        self.assertIn("https://golfklcubskenya.netlify.app/categories/", urls)
         self.assertIn(blog.SITE_URL + "/blog/nairobi-golf/", urls)
         feed = ET.parse(self.output / "blog/feed.xml")
         self.assertEqual(feed.findtext("channel/item/title"), post["title"])
