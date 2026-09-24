@@ -250,6 +250,13 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .article-copy section { margin-bottom:36px; }
 .article-copy h2 { font-size:36px; line-height:1.15; margin-bottom:14px; }
 .article-copy p { font-size:17px; line-height:1.9; color:#344831; }
+.article-copy h2:not(:first-child) { margin-top:48px; }
+.article-copy h3 { font-family:var(--font-display),sans-serif; font-size:25px; line-height:1.2; margin:30px 0 10px; }
+.article-copy ul,.article-copy ol { margin:18px 0 28px; padding-left:26px; color:#344831; }
+.article-copy li { font-size:17px; line-height:1.75; margin:8px 0; padding-left:5px; }
+.article-copy a:not(.editorial-link) { color:#1d5a35; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
+.article-copy strong { color:#172617; font-weight:700; }
+.article-copy>.editorial-link { margin-top:48px; }
 .more-reading { padding:45px 6%; background:#dfe7d5; }
 .more-reading>.micro { margin-bottom:22px; }
 .more-reading a { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 0; border-top:1px solid #acbca6; font-size:22px; }

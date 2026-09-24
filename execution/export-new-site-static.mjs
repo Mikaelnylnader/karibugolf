@@ -6,6 +6,7 @@ const port = 4173;
 const origin = `http://127.0.0.1:${port}`;
 const publishDir = path.resolve("dist/static");
 const catalog = JSON.parse(await readFile(path.resolve("lib/catalog.generated.json"), "utf8"));
+const researchedArticles = JSON.parse(await readFile(path.resolve("content/seo-articles-2026.json"), "utf8"));
 const departments = {
   clubs: ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"],
   shoes: ["mens_shoes", "womens_shoes"],
@@ -19,13 +20,17 @@ const shopRoutes = Object.entries(departments).flatMap(([department, categories]
   ...categories.map((category) => `/shop/${department}/${category}`),
 ]);
 const productRoutes = catalog.products.map((product) => `/shop/product/${product.slug}`);
+const blogRoutes = [
+  ...researchedArticles.map((article) => `/blog/${article.slug}`),
+  "/blog/your-first-round",
+  "/blog/before-you-choose-your-gear",
+  "/blog/ready-for-a-day-on-the-course",
+];
 const routes = [
   "/",
   "/about",
   "/blog",
-  "/blog/your-first-round",
-  "/blog/before-you-choose-your-gear",
-  "/blog/ready-for-a-day-on-the-course",
+  ...blogRoutes,
   "/contact",
   "/shop",
   "/shop/taylormade-p790-irons",
