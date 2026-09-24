@@ -127,9 +127,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(CATEGORY_IMG_FOLDER, exist_ok=True)
 
 # ── Auto Deploy State ──
-# Product saves publish by default. The setting is persisted in SQLite so a
-# backend restart does not silently disconnect inventory from the live site.
-_auto_deploy_enabled = True
+# The active storefront is now the React/Vinext application. Keep the legacy
+# product generator disabled until its catalog export is migrated to that app;
+# otherwise a product save could redeploy the retired static storefront.
+_auto_deploy_enabled = False
 _last_deploy_result = ""
 _last_deploy_time = None
 
@@ -566,10 +567,15 @@ def deploy_to_netlify():
 def auto_publish():
     if not is_auto_deploy_enabled():
         return
+    if (PROJECT_DIR / "package.json").exists():
+        global _last_deploy_result, _last_deploy_time
+        _last_deploy_result = "PAUSED: React storefront catalog publishing is not connected yet."
+        _last_deploy_time = datetime.now()
+        print("⚠️ Auto-publish skipped: React storefront catalog publishing is not connected yet.")
+        return
     ok, msg = generate_site_sync()
     if ok:
         deploy_ok, deploy_msg = deploy_to_netlify()
-        global _last_deploy_result, _last_deploy_time
         _last_deploy_result = deploy_msg[:500] if deploy_ok else f"FAILED: {deploy_msg[:490]}"
         _last_deploy_time = datetime.now()
         if not deploy_ok:
