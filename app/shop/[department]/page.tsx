@@ -44,49 +44,41 @@ export default async function DepartmentPage({
       <main className="department-scroll-page" id="page-content">
         <section
           className="department-object-hero"
-          id={firstCategory.slug}
-          data-kit-category={firstCategory.slug}
           data-sc-act="flow"
         >
-          <figure>
-            <a
-              className="department-picture-link"
-              href={`/shop/${selected.slug}/${firstCategory.slug}`}
-              aria-label={`Shop ${firstCategory.label}`}
-            >
-              <img
-                src={firstCategory.image}
-                alt={`${firstCategory.label} at Karibu Golf`}
-                fetchPriority="high"
-                data-sc-parallax="-1.05"
-              />
-            </a>
+          <figure aria-hidden="true">
+            <img
+              src={selected.image}
+              alt=""
+              fetchPriority="high"
+              data-sc-parallax="-1.05"
+            />
           </figure>
           <div className="department-hero-shade" aria-hidden="true" />
           <div className="department-object-copy">
             <a className="department-back-link" href="/shop">
               <ArrowLeft size={17} /> All departments
             </a>
-            <p className="micro">{selected.label.toUpperCase()} COLLECTION</p>
-            <h1>{firstCategory.label.toUpperCase()}.</h1>
-            <p>{firstCategory.description}</p>
+            <p className="micro">{selected.eyebrow}</p>
+            <h1>{selected.label.toUpperCase()}.</h1>
+            <p>{selected.description}</p>
             <div className="department-object-meta">
-              <span>{productsForCategory(firstCategory.slug).length} products listed</span>
-              <a href={`/shop/${selected.slug}/${firstCategory.slug}`}>
-                Shop {firstCategory.label} <ArrowUpRight size={18} />
+              <span>{selected.categories.length} categories / {departmentProducts.length} products</span>
+              <a href={`#${firstCategory.slug}`}>
+                View the categories <ArrowUpRight size={18} />
               </a>
             </div>
           </div>
           <aside className="department-hero-intro">
-            <p>{selected.eyebrow}</p>
-            <span>{selected.description}</span>
+            <p>KARIBU GOLF SHOP</p>
+            <span>Choose a category below, then open any product for prices, details and availability.</span>
           </aside>
         </section>
 
-        {selected.categories.slice(1).map((category, index) => {
+        {selected.categories.map((category, index) => {
           const categoryProducts = productsForCategory(category.slug);
-          const number = String(index + 2).padStart(2, "0");
-          const reveal = index === selected.categories.length - 2
+          const number = String(index + 1).padStart(2, "0");
+          const reveal = index === selected.categories.length - 1
             ? "iris"
             : index % 2 === 0
               ? "left"

@@ -49,6 +49,13 @@ for (const [department, categories] of Object.entries(departments)) {
   await page.waitForTimeout(180);
   const result = await page.evaluate(() => ({
     overflow: document.documentElement.scrollWidth - innerWidth,
+    heroTitle: document.querySelector(".department-object-hero h1")?.textContent?.trim(),
+    firstCategory: document.querySelector("[data-kit-category]")?.getAttribute("data-kit-category"),
+    categoryFollowsHero: Boolean(
+      document.querySelector(".department-object-hero")?.compareDocumentPosition(
+        document.querySelector("[data-kit-category]"),
+      ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ),
     ledgerCount: document.querySelectorAll(".kit-ledger-items a").length,
     visitedCount: document.querySelectorAll(".kit-ledger-items a.visited").length,
     categoryCount: document.querySelectorAll("[data-kit-category]").length,
@@ -62,6 +69,9 @@ for (const [department, categories] of Object.entries(departments)) {
   if (result.ledgerCount !== categories.length) failures.push(`${department}: ledger count ${result.ledgerCount}`);
   if (result.visitedCount !== categories.length) failures.push(`${department}: ledger incomplete ${result.visitedCount}/${categories.length}`);
   if (result.categoryCount !== categories.length) failures.push(`${department}: category count ${result.categoryCount}`);
+  if (result.heroTitle !== `${department.toUpperCase()}.`) failures.push(`${department}: department hero title ${result.heroTitle}`);
+  if (result.firstCategory !== categories[0]) failures.push(`${department}: first category ${result.firstCategory}`);
+  if (!result.categoryFollowsHero) failures.push(`${department}: category does not follow department hero`);
   const expectedPictureLinks = categories.map((category) => `/shop/${department}/${category}`);
   if (JSON.stringify(result.pictureLinks) !== JSON.stringify(expectedPictureLinks)) {
     failures.push(`${department}: category picture links`);
