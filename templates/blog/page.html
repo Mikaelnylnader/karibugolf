@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Playfair+Display:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  {% if not preview %}<link rel="stylesheet" href="/styles.css">{% endif %}
+  {% if not preview %}<link rel="stylesheet" href="/styles.css?v=20260924">{% endif %}
   <link rel="stylesheet" href="{{ '/blog-assets/blog.css' if preview else '/blog/blog.css' }}">
 </head>
 <body class="journal">
@@ -71,7 +71,7 @@
     <section class="journal-wrap journal-values"><div><span>01 / START</span><h3>New to the game?</h3><p>Clear answers to the questions you might not know who to ask.</p></div><div><span>02 / CHOOSE</span><h3>Buy with confidence.</h3><p>Understand fit, features and the trade-offs before you choose.</p></div><div><span>03 / PLAY</span><h3>Make a day of it.</h3><p>Local context and practical preparation for your next round.</p></div></section>
   {% endif %}
   </main>
-  {% if not preview %}{{ footer }}<script src="/script.js" defer></script>{% endif %}
+  {% if not preview %}{{ footer }}<script src="/script.js?v=20260924" defer></script>{% endif %}
   <script>
   document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('[data-category]').forEach(other => other.setAttribute('aria-pressed', String(other === button)));

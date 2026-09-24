@@ -498,7 +498,7 @@ Sitemap: {SITE_URL}/sitemap.xml
 
 def preload_hero():
     """HTML for preloading the hero image for faster LCP."""
-    return '<link rel="preload" href="/images/hero-karen.jpg" as="image" fetchpriority="high">'
+    return '<link rel="preload" href="/images/hero-karen.jpg?v=20260924" as="image" fetchpriority="high">'
 
 
 
@@ -572,7 +572,7 @@ def render_product_page(p):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260924">
     <style>
         *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
         html{{scroll-behavior:smooth}}
@@ -696,7 +696,7 @@ def render_product_page(p):
     {feature_rows_html}
 
     {render_footer()}
-    <script src="/script.js"></script>
+    <script src="/script.js?v=20260924"></script>
 </body>
 </html>"""
 
@@ -793,7 +793,7 @@ def render_index(products, groups):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260924">
 </head>
 <body>
     {render_announcement()}
@@ -801,7 +801,7 @@ def render_index(products, groups):
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-bg" style="background-image:url(/images/hero-karen.jpg);"></div>
+        <div class="hero-bg" style="background-image:url(/images/hero-karen.jpg?v=20260924);"></div>
         <div class="hero-content" data-anim>
             <span class="hero-subtitle">Karibu sana — Welcome to</span>
             <h1 class="hero-title">A Golf Shop<br><span>for Everyone</span></h1>
@@ -1054,7 +1054,7 @@ def render_index(products, groups):
     {render_footer()}
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="/script.js"></script>
+    <script src="/script.js?v=20260924"></script>
 </body>
 </html>"""
     return html
@@ -1075,7 +1075,7 @@ def render_category_page(slug, info, cat_products):
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260924">
 </head>
 <body>
     {render_announcement()}
@@ -1133,7 +1133,7 @@ def render_category_page(slug, info, cat_products):
     {render_footer()}
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="/script.js"></script>
+    <script src="/script.js?v=20260924"></script>
 </body>
 </html>"""
     return html
@@ -2009,7 +2009,7 @@ def render_categories_index(active_cats):
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css?v=20260924">
     <style>
         .categories-page {{ padding: 120px 0 60px; background: #f8f5ee; min-height: 100vh; }}
         .categories-page .section-title {{ text-align: center; margin-bottom: 40px; }}
@@ -2033,7 +2033,7 @@ def render_categories_index(active_cats):
         </div>
     </section>
     {render_footer()}
-    <script src="/script.js"></script>
+    <script src="/script.js?v=20260924"></script>
 </body>
 </html>"""
 

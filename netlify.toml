@@ -29,31 +29,32 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Static assets caching (1 year)
+# Revalidate assets on every visit. These filenames are updated in place by the
+# catalog generator, so immutable caching can leave customers on an old design.
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "*.svg"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "*.webp"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "*.woff2"
