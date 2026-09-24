@@ -52,6 +52,7 @@ for (const [department, categories] of Object.entries(departments)) {
     ledgerCount: document.querySelectorAll(".kit-ledger-items a").length,
     visitedCount: document.querySelectorAll(".kit-ledger-items a.visited").length,
     categoryCount: document.querySelectorAll("[data-kit-category]").length,
+    pictureLinks: [...document.querySelectorAll(".department-picture-link")].map((link) => link.getAttribute("href")),
     brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
     whatsapp: document.querySelector(".department-inquiry a")?.getAttribute("href"),
   }));
@@ -61,6 +62,10 @@ for (const [department, categories] of Object.entries(departments)) {
   if (result.ledgerCount !== categories.length) failures.push(`${department}: ledger count ${result.ledgerCount}`);
   if (result.visitedCount !== categories.length) failures.push(`${department}: ledger incomplete ${result.visitedCount}/${categories.length}`);
   if (result.categoryCount !== categories.length) failures.push(`${department}: category count ${result.categoryCount}`);
+  const expectedPictureLinks = categories.map((category) => `/shop/${department}/${category}`);
+  if (JSON.stringify(result.pictureLinks) !== JSON.stringify(expectedPictureLinks)) {
+    failures.push(`${department}: category picture links`);
+  }
   if (result.brokenImages.length) failures.push(`${department}: broken images`);
   if (!result.whatsapp?.includes("254116416105")) failures.push(`${department}: WhatsApp link`);
   if (department === "apparel") await page.screenshot({ path: `${out}/apparel-mobile.png`, fullPage: false });

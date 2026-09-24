@@ -463,10 +463,22 @@ video[data-sc-scrub].sc-has-clip { opacity: 1; }
   max-width:none;
   object-fit:cover;
 }
+.department-picture-link {
+  position:absolute;
+  inset:0;
+  display:block;
+  cursor:pointer;
+}
+.department-picture-link:focus-visible {
+  outline:3px solid #c89947;
+  outline-offset:-7px;
+  border-radius:0;
+}
 .department-hero-shade {
   position:absolute;
   inset:0;
   z-index:-2;
+  pointer-events:none;
   background:
     linear-gradient(90deg,#14110e 0%,#14110ef5 26%,#14110e9e 48%,transparent 74%),
     linear-gradient(0deg,#14110ecc 0%,transparent 44%);

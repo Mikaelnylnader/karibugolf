@@ -48,8 +48,19 @@ export default async function DepartmentPage({
           data-kit-category={firstCategory.slug}
           data-sc-act="flow"
         >
-          <figure aria-hidden="true">
-            <img src={firstCategory.image} alt="" fetchPriority="high" data-sc-parallax="-1.05" />
+          <figure>
+            <a
+              className="department-picture-link"
+              href={`/shop/${selected.slug}/${firstCategory.slug}`}
+              aria-label={`Shop ${firstCategory.label}`}
+            >
+              <img
+                src={firstCategory.image}
+                alt={`${firstCategory.label} at Karibu Golf`}
+                fetchPriority="high"
+                data-sc-parallax="-1.05"
+              />
+            </a>
           </figure>
           <div className="department-hero-shade" aria-hidden="true" />
           <div className="department-object-copy">
@@ -93,12 +104,18 @@ export default async function DepartmentPage({
                 data-sc-reveal-at="0.04 0.52"
                 data-sc-tilt={index % 3 === 1 ? "5" : undefined}
               >
-                <img
-                  src={category.image}
-                  alt={`${category.label} at Karibu Golf`}
-                  loading="lazy"
-                  data-sc-parallax={index % 2 === 0 ? "-0.42" : "0.38"}
-                />
+                <a
+                  className="department-picture-link"
+                  href={`/shop/${selected.slug}/${category.slug}`}
+                  aria-label={`Shop ${category.label}`}
+                >
+                  <img
+                    src={category.image}
+                    alt={`${category.label} at Karibu Golf`}
+                    loading="lazy"
+                    data-sc-parallax={index % 2 === 0 ? "-0.42" : "0.38"}
+                  />
+                </a>
               </figure>
               <div className="department-chapter-copy" data-sc-in data-sc-stagger="65">
                 <p className="micro">{selected.label.toUpperCase()} / {number}</p>
