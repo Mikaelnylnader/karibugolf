@@ -96,7 +96,7 @@ export default function Home() {
     <nav className="journey-nav" aria-label="Explore services">{topics.map((topic,i)=><button key={topic} className={active===i?"current":""} aria-current={active===i?"step":undefined} onClick={()=>goToPanel(i)}>{topic}<ArrowUpRight size={14}/></button>)}</nav>
    </div>
   </section>
-  <section className="shop-announcement" aria-labelledby="webshop-heading"><div><p className="micro">THE KARIBU WEBSHOP</p><h2 id="webshop-heading">YOUR NEXT FIND.<br/><em>JUST A CLICK AWAY.</em></h2><p>TaylorMade P790 irons are now in stock. Explore the 4–PW steel set in Regular or Stiff flex for KSh 130,000.</p></div><a href="/shop">Explore the shop <ArrowUpRight size={25}/></a></section>
+  <section className="shop-announcement" aria-labelledby="webshop-heading"><div><p className="micro">THE KARIBU WEBSHOP</p><h2 id="webshop-heading">YOUR NEXT FIND.<br/><em>JUST A CLICK AWAY.</em></h2><p>Clubs, shoes, apparel, bags, balls and round essentials—organised into a dedicated store that makes the growing Karibu collection easy to explore.</p></div><a href="/shop" target="_blank" rel="noopener">Open the webshop <ArrowUpRight size={25}/></a></section>
   <section className="people" id="people">
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>
    <div className="people-body"><div className="people-title"><h2>GOOD GOLF.<br/><em>REAL PEOPLE.</em></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across Kenya.</p></div></div>

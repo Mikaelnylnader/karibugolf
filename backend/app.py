@@ -35,8 +35,8 @@ if str(PROJECT_DIR) not in sys.path:
 from site_contact import WHATSAPP_DISPLAY
 DATABASE = BASE_DIR / "golf_kenya.db"
 
-UPLOAD_FOLDER = DIST_DIR / "images" / "products"
-CATEGORY_IMG_FOLDER = DIST_DIR / "images" / "categories"
+UPLOAD_FOLDER = PROJECT_DIR / "images" / "products"
+CATEGORY_IMG_FOLDER = PROJECT_DIR / "images" / "categories"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
 CSV_COLUMNS = [
@@ -127,10 +127,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(CATEGORY_IMG_FOLDER, exist_ok=True)
 
 # ── Auto Deploy State ──
-# The active storefront is now the React/Vinext application. Keep the legacy
-# product generator disabled until its catalog export is migrated to that app;
-# otherwise a product save could redeploy the retired static storefront.
-_auto_deploy_enabled = False
+# Product saves export the catalog into the React storefront, rebuild it and
+# publish the resulting static site to the existing Netlify project.
+_auto_deploy_enabled = True
 _last_deploy_result = ""
 _last_deploy_time = None
 
@@ -532,6 +531,23 @@ def import_from_google_sheet():
 
 def generate_site_sync():
     try:
+        if (PROJECT_DIR / "package.json").exists():
+            python_exe = sys.executable
+            npm_cli = shutil.which("npm.cmd" if os.name == "nt" else "npm")
+            if not npm_cli:
+                return False, "npm was not found on PATH"
+            export_result = subprocess.run(
+                [python_exe, str(PROJECT_DIR / "execution" / "export_react_catalog.py")],
+                cwd=str(PROJECT_DIR), capture_output=True, text=True, timeout=60,
+            )
+            if export_result.returncode != 0:
+                return False, (export_result.stdout + export_result.stderr)[:2000]
+            build_result = subprocess.run(
+                [npm_cli, "run", "build"], cwd=str(PROJECT_DIR),
+                capture_output=True, text=True, timeout=300,
+            )
+            output = (export_result.stdout + build_result.stdout + build_result.stderr)[:3000]
+            return build_result.returncode == 0, output
         import importlib.util as _util
         import sys as _sys
         root = str(PROJECT_DIR)
@@ -553,7 +569,7 @@ def deploy_to_netlify():
         if not netlify_cli:
             return False, "Netlify CLI was not found on PATH"
         result = subprocess.run(
-            [netlify_cli, "deploy", "--dir", "dist", "--site", "925395d9-2336-4f0d-81e0-21a72b3c9074",
+            [netlify_cli, "deploy", "--dir", "dist/static", "--site", "925395d9-2336-4f0d-81e0-21a72b3c9074",
              "--prod", "--no-build", "--message", f"Admin auto-deploy {datetime.now().strftime('%Y-%m-%d %H:%M')}"],
             cwd=str(PROJECT_DIR), capture_output=True, text=True, timeout=180
         )
@@ -567,15 +583,10 @@ def deploy_to_netlify():
 def auto_publish():
     if not is_auto_deploy_enabled():
         return
-    if (PROJECT_DIR / "package.json").exists():
-        global _last_deploy_result, _last_deploy_time
-        _last_deploy_result = "PAUSED: React storefront catalog publishing is not connected yet."
-        _last_deploy_time = datetime.now()
-        print("⚠️ Auto-publish skipped: React storefront catalog publishing is not connected yet.")
-        return
     ok, msg = generate_site_sync()
     if ok:
         deploy_ok, deploy_msg = deploy_to_netlify()
+        global _last_deploy_result, _last_deploy_time
         _last_deploy_result = deploy_msg[:500] if deploy_ok else f"FAILED: {deploy_msg[:490]}"
         _last_deploy_time = datetime.now()
         if not deploy_ok:
