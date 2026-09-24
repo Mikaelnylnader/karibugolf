@@ -84,12 +84,12 @@ const department = (
 ): Department => ({ slug, label, eyebrow, description, image, categories: categorySlugs.map(category) });
 
 export const departments: Department[] = [
-  department("clubs", "Clubs", "BUILD YOUR SET", "From the tee to the green, browse every club family in one place.", "/images/clubs.jpg", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]),
-  department("shoes", "Shoes", "WALK THE COURSE", "Golf footwear selected for grip, comfort and long days on the course.", "/images/categories/cat_mens_shoes.jpg", ["mens_shoes", "womens_shoes"]),
-  department("apparel", "Apparel", "WEAR YOUR GAME", "Performance layers and everyday golf style for women and men.", "/images/apparel.jpg", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts", "womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]),
-  department("bags", "Bags", "CARRY IT WELL", "Stand bags, travel bags and practical storage for every golf day.", "/images/bag.jpg", ["bags"]),
-  department("balls", "Balls", "PLAY YOUR BALL", "Golf balls for feel, control, distance and dependable performance.", "/images/categories/cat_balls.jpg", ["balls"]),
-  department("accessories", "Accessories", "ROUND ESSENTIALS", "Gloves, grips, hats, range finders and the details that complete your setup.", "/images/glove.jpg", ["gloves", "hats_and_caps", "grips", "range_finders", "accessories"]),
+  department("clubs", "Clubs", "BUILD YOUR SET", "From the tee to the green, browse every club family in one place.", "/images/shop/clubs-v2.webp", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]),
+  department("shoes", "Shoes", "WALK THE COURSE", "Golf footwear selected for grip, comfort and long days on the course.", "/images/shop/shoes-v2.webp", ["mens_shoes", "womens_shoes"]),
+  department("apparel", "Apparel", "WEAR YOUR GAME", "Performance layers and everyday golf style for women and men.", "/images/shop/apparel-v2.webp", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts", "womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]),
+  department("bags", "Bags", "CARRY IT WELL", "Stand bags, travel bags and practical storage for every golf day.", "/images/shop/bags-v2.webp", ["bags"]),
+  department("balls", "Balls", "PLAY YOUR BALL", "Golf balls for feel, control, distance and dependable performance.", "/images/shop/balls-v2.webp", ["balls"]),
+  department("accessories", "Accessories", "ROUND ESSENTIALS", "Gloves, grips, hats, range finders and the details that complete your setup.", "/images/shop/accessories-v2.webp", ["gloves", "hats_and_caps", "grips", "range_finders", "accessories"]),
 ];
 
 export const products = catalogData.products as CatalogProduct[];
