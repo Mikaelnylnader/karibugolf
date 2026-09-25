@@ -1,27 +1,67 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, MessageCircle } from "lucide-react";
-import { departmentForCategory, formatKes, productBySlug, products } from "@/lib/shop-catalog";
+import CatalogProductTemplate from "@/components/catalog-product-template";
+import { detailsForProduct } from "@/lib/product-page-details";
+import { departmentForCategory, productBySlug, products, productsForCategory, productsForDepartment } from "@/lib/shop-catalog";
 
-export function generateStaticParams() { return products.map((product) => ({ slug: product.slug })); }
+export function generateStaticParams() {
+  return products.map((product) => ({ slug: product.slug }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const product = productBySlug(slug);
-  return { title: product ? `${product.name} | Karibu Golf` : "Product | Karibu Golf", description: product?.description };
+  if (!product) return { title: "Product | Karibu Golf" };
+  const details = detailsForProduct(product);
+  const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
+  return {
+    title: `${product.name} | Karibu Golf Kenya`,
+    description: `${product.description} View price, stock, images, options and specifications from Karibu Golf Kenya.`,
+    alternates: { canonical },
+    openGraph: {
+      title: `${product.name} | Karibu Golf Kenya`,
+      description: product.description,
+      url: canonical,
+      type: "website",
+      images: details.gallery[0] ? [{ url: `https://karibugolf.com${details.gallery[0].src}`, alt: details.gallery[0].alt }] : undefined,
+    },
+  };
 }
 
 export default async function CatalogProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) notFound();
+  const details = detailsForProduct(product);
   const department = departmentForCategory(product.categorySlug);
+  const sameCategory = productsForCategory(product.categorySlug).filter((item) => item.slug !== product.slug);
+  const departmentFallback = department
+    ? productsForDepartment(department.slug).filter((item) => item.slug !== product.slug && !sameCategory.some((match) => match.slug === item.slug))
+    : [];
+  const related = [...sameCategory, ...departmentFallback].slice(0, 4);
   const available = product.status.toLowerCase() === "in stock" && Number(product.stock || 0) > 0;
-  const message = encodeURIComponent(`Hi Karibu Golf! I'd like to ask about ${product.name} (${product.sku}) at ${formatKes(product.priceKes)}.`);
-  return <main className="inner-page catalog-product-page" id="page-content">
-    <div className="product-breadcrumb"><a href={department ? `/shop/${department.slug}/${product.categorySlug}` : "/shop"}><ArrowLeft size={16}/> {product.categoryLabel}</a></div>
-    <section className="catalog-product-hero">
-      <div className="catalog-product-gallery">{product.images.map((image, index) => <figure className={index === 0 ? "primary" : ""} key={image}><img src={image} alt={`${product.name}${index ? ` view ${index + 1}` : ""}`}/></figure>)}</div>
-      <div className="catalog-product-summary"><p className="micro">{product.categoryLabel} · {product.sku}</p><h1>{product.name}</h1><div className={available ? "catalog-stock available" : "catalog-stock unavailable"}><span/>{available ? "In stock in Kenya" : "Currently out of stock"}</div><p className="catalog-description">{product.description}</p><p className="catalog-main-price">{formatKes(product.priceKes)}</p><p className="catalog-other-prices">Selling price: ¥{product.priceCny.toLocaleString("en-US")} RMB · ${product.priceUsd.toLocaleString("en-US")} USD</p>{product.sizes && <p><strong>Options:</strong> {product.sizes}</p>}{product.colors && <p><strong>Colours:</strong> {product.colors}</p>}<a className="contact-button" href={`https://wa.me/254116416105?text=${message}`}><MessageCircle size={19}/>{available ? "Order on WhatsApp" : "Ask about availability"}</a><p className="catalog-help">We’ll confirm the exact item, specification, delivery cost and payment details with you directly.</p></div>
-    </section>
-  </main>;
+  const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    sku: product.sku,
+    description: product.description,
+    image: details.gallery.map((image) => `https://karibugolf.com${image.src}`),
+    category: product.categoryLabel,
+    brand: { "@type": "Brand", name: details.brand === "Karibu Golf selection" ? product.name.split(" ")[0] : details.brand },
+    offers: {
+      "@type": "Offer",
+      url: canonical,
+      priceCurrency: "KES",
+      price: product.priceKes,
+      availability: available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "Karibu Golf" },
+    },
+  };
+
+  return <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/>
+    <CatalogProductTemplate product={product} details={details} department={department} related={related}/>
+  </>;
 }
