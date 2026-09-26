@@ -30,9 +30,9 @@ function safeEqual(left, right) {
 }
 
 export async function createSessionCookie() {
-  const expires = Date.now() + 1000 * 60 * 60 * 12;
+  const expires = Date.now() + 1000 * 60 * 60 * 24 * 365;
   const value = `${expires}.${await sign(String(expires))}`;
-  return `karibu_admin=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=43200`;
+  return `karibu_admin=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=31536000`;
 }
 
 export function clearSessionCookie() {

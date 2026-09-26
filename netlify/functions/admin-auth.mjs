@@ -1,7 +1,10 @@
 import { clearSessionCookie, createSessionCookie, isAuthorized, json, passwordMatches } from "./_shared/auth.mjs";
 
 export default async function handler(request) {
-  if (request.method === "GET") return json({ authenticated: await isAuthorized(request) });
+  if (request.method === "GET") {
+    const authenticated = await isAuthorized(request);
+    return json({ authenticated }, 200, authenticated ? { "set-cookie": await createSessionCookie() } : {});
+  }
   if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
   const body = await request.json().catch(() => ({}));
   if (body.action === "logout") return json({ authenticated: false }, 200, { "set-cookie": clearSessionCookie() });

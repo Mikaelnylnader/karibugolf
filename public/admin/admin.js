@@ -50,7 +50,13 @@ async function loadProducts() {
     populateCategoryFilter();
     const requestedCategory = new URL(location.href).searchParams.get("category") || "";
     if (requestedCategory && $("#category-filter").querySelector(`option[value="${CSS.escape(requestedCategory)}"]`)) $("#category-filter").value = requestedCategory;
-    renderProducts(); renderCategories(); showView(location.hash === "#categories" ? "categories" : "products", false);
+    renderProducts();
+    if (location.hash === "#categories") {
+      if (requestedCategory) showCategoryProducts(requestedCategory, false); else renderCategories();
+      showView("categories", false);
+    } else {
+      renderCategories(); showView("products", false);
+    }
   } catch (error) { showNotice(error.message, true); }
 }
 
@@ -105,6 +111,30 @@ function renderCategories() {
       <span>CATEGORY</span><strong>${escapeHtml(categoryLabel(slug))}</strong><small>${counts[slug] || 0} products →</small>
     </button>`).join("")}</div>
   </section>`).join("");
+}
+
+function showCategoryProducts(slug, updateUrl = true) {
+  const matches = products.filter((product) => product.categorySlug === slug);
+  $("#category-groups").innerHTML = `<section class="category-detail">
+    <header class="category-detail-head">
+      <div><p class="eyebrow">CATEGORY · ${matches.length} PRODUCTS</p><h2>${escapeHtml(categoryLabel(slug))}</h2></div>
+      <button class="category-back" type="button" data-all-categories>← All categories</button>
+    </header>
+    ${matches.length ? `<div class="category-product-grid">${matches.map((product) => `<article class="category-product">
+      ${product.image ? `<img src="${escapeHtml(product.image)}" alt="" onerror="this.outerHTML='<span class=thumb-placeholder>◇</span>'">` : '<span class="thumb-placeholder">◇</span>'}
+      <div><h3>${escapeHtml(product.name)}</h3><p>${escapeHtml(product.sku)} · ${escapeHtml(product.status)} · ${escapeHtml(product.stock)} in stock</p>
+      <footer><span>${money(product.priceKes)}</span><button type="button" class="edit-button" data-category-edit="${escapeHtml(product.sku)}">Edit</button></footer></div>
+    </article>`).join("")}</div>` : '<div class="empty-category">No products have been added to this category yet.</div>'}
+  </section>`;
+  if (updateUrl) {
+    const url = new URL(location.href); url.searchParams.set("category", slug); url.hash = "categories"; history.replaceState({}, "", url);
+  }
+  showView("categories", false);
+}
+
+function openAllCategories() {
+  const url = new URL(location.href); url.searchParams.delete("category"); url.hash = "categories"; history.replaceState({}, "", url);
+  renderCategories(); showView("categories", false);
 }
 
 function showView(view, updateHash = true) {
@@ -175,8 +205,14 @@ $("#login-form").addEventListener("submit", async (event) => { event.preventDefa
 $("#show-password").addEventListener("change", (event) => { $("#password").type = event.target.checked ? "text" : "password"; });
 $("#logout").addEventListener("click", async () => { await fetch("/api/admin-auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "logout" }) }); location.reload(); });
 $("#nav-products").addEventListener("click", (event) => { event.preventDefault(); showView("products"); });
-$("#nav-categories").addEventListener("click", (event) => { event.preventDefault(); showView("categories"); });
-$("#category-groups").addEventListener("click", (event) => { const category = event.target.closest("[data-category]"); if (category) selectCategory(category.dataset.category); });
+$("#nav-categories").addEventListener("click", (event) => { event.preventDefault(); openAllCategories(); });
+$("#category-groups").addEventListener("click", (event) => {
+  const edit = event.target.closest("[data-category-edit]");
+  const category = event.target.closest("[data-category]");
+  if (edit) openEditor(products.find((product) => product.sku === edit.dataset.categoryEdit));
+  else if (event.target.closest("[data-all-categories]")) openAllCategories();
+  else if (category) showCategoryProducts(category.dataset.category);
+});
 $("#new-product").addEventListener("click", () => openEditor()); $("#close-editor").addEventListener("click", () => $("#editor").close()); $("#cancel-editor").addEventListener("click", () => $("#editor").close());
 $("#product-form").addEventListener("submit", save); $("#image-url").addEventListener("input", updateImagePreview); $("#search").addEventListener("input", renderProducts); $("#category-filter").addEventListener("change", (event) => selectCategory(event.target.value)); $("#refresh").addEventListener("click", loadProducts);
 $("#product-form").elements.costCny.addEventListener("input", (event) => { $("#product-form").elements.costKes.value = Math.round(Number(event.target.value || 0) * 19); });

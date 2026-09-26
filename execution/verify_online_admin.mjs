@@ -25,6 +25,7 @@ const login = await fetch(`${baseUrl}/api/admin-auth`, {
 assert.equal(login.status, 200, `Login failed with HTTP ${login.status}`);
 const cookie = login.headers.getSetCookie?.()[0] || login.headers.get("set-cookie");
 assert(cookie, "Login did not return a session cookie");
+assert(cookie.includes("Max-Age=31536000"), "Admin session is not configured as a persistent one-year login");
 
 const productsResponse = await fetch(`${baseUrl}/api/admin-products`, {
   headers: { cookie: cookie.split(";")[0] },
@@ -40,6 +41,9 @@ assert.equal(visible[0].sku, "GK-IR-TMP");
 
 const adminHtml = await (await fetch(`${baseUrl}/admin/`)).text();
 assert(adminHtml.includes("Karibu Golf — Online Admin"), "Admin UI marker was not found");
+assert(adminHtml.includes('id="nav-categories"'), "Online categories navigation was not found");
+const adminJs = await (await fetch(`${baseUrl}/admin/admin.js`)).text();
+assert(adminJs.includes("function showCategoryProducts"), "Category product view was not found");
 
 const blogHtml = await (await fetch(`${baseUrl}/blog/`)).text();
 const articleSlugs = [...blogHtml.matchAll(/href="\/blog\/([^"#?]+)"/g)].map((match) => match[1]);
