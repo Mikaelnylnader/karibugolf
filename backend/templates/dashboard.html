@@ -38,6 +38,20 @@
             </div>
         </div>
         <div class="stat-card">
+            <div class="icon green"><i class="bi bi-globe2"></i></div>
+            <div>
+                <div class="num">{{ published_count }}</div>
+                <p class="label">Live on Website</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="icon gold"><i class="bi bi-eye-slash"></i></div>
+            <div>
+                <div class="num">{{ hidden_count }}</div>
+                <p class="label">Private Inventory</p>
+            </div>
+        </div>
+        <div class="stat-card">
             <div class="icon gold"><i class="bi bi-tag"></i></div>
             <div>
                 <div class="num">{{ category_count }}</div>
@@ -128,6 +142,9 @@
                         <a href="/products/new" class="btn btn-primary">
                             <i class="bi bi-plus-lg"></i> Add New Product
                         </a>
+                        <a href="/products?visibility=live" class="btn btn-outline-primary">
+                            <i class="bi bi-globe2"></i> View Live Website Products
+                        </a>
                         <a href="/csv/import" class="btn btn-outline-primary">
                             <i class="bi bi-upload"></i> Import from CSV
                         </a>
@@ -185,6 +202,7 @@
                                 <th>Product</th>
                                 <th>SKU</th>
                                 <th>Price</th>
+                                <th>Website</th>
                                 <th>Updated</th>
                                 <th></th>
                             </tr>
@@ -194,8 +212,8 @@
                             <tr>
                                 <td>
                                     <div style="display:flex;align-items:center;gap:10px;">
-                                        {% if p.image %}
-                                        <img src="{{ p.image }}" alt="" class="product-thumb"
+                                        {% if p.admin_image %}
+                                        <img src="{{ p.admin_image }}" alt="" class="product-thumb"
                                              onerror="this.style.display='none'">
                                         {% else %}
                                         <div class="product-thumb d-flex align-items-center justify-content-center bg-light">
@@ -207,6 +225,13 @@
                                 </td>
                                 <td><code>{{ p.sku }}</code></td>
                                 <td><strong>KES {{ "{:,}".format(p.price_kes) }}</strong></td>
+                                <td>
+                                    {% if p.website_visible %}
+                                    <span class="badge badge-success"><i class="bi bi-globe2"></i> Live</span>
+                                    {% else %}
+                                    <span class="badge badge-warning"><i class="bi bi-eye-slash"></i> Private</span>
+                                    {% endif %}
+                                </td>
                                 <td class="text-muted">{{ p.updated_at[:16] if p.updated_at else '—' }}</td>
                                 <td>
                                     <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary">
@@ -215,7 +240,7 @@
                                 </td>
                             </tr>
                             {% else %}
-                            <tr><td colspan="5" class="text-center text-muted py-4">No products yet — import from CSV or the Google Sheet</td></tr>
+                            <tr><td colspan="6" class="text-center text-muted py-4">No products yet — import from CSV or the Google Sheet</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>

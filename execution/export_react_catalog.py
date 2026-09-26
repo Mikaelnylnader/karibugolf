@@ -41,13 +41,18 @@ def export_catalog(database: Path, output: Path) -> tuple[int, int]:
                FROM categories ORDER BY display_order, label"""
         )
     ]
+    product_columns = {
+        row[1] for row in connection.execute("PRAGMA table_info(products)")
+    }
+    visibility_filter = "WHERE COALESCE(p.website_visible, 0) = 1" if "website_visible" in product_columns else ""
     rows = connection.execute(
-        """SELECT p.sku, p.name, p.category_slug, c.label AS category_label,
+        f"""SELECT p.sku, p.name, p.category_slug, c.label AS category_label,
                   p.description, p.price_kes, p.price_usd, p.price_cny,
                   p.sizes, p.colors, p.status, p.stock, p.image_filename,
                   p.gallery, p.featured, p.display_order
            FROM products p
            JOIN categories c ON c.slug = p.category_slug
+           {visibility_filter}
            ORDER BY p.featured DESC, p.display_order, p.name"""
     ).fetchall()
     connection.close()

@@ -175,6 +175,13 @@ def get_db():
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
+
+def admin_product_image(product):
+    """Return a local admin image URL only when the referenced file exists."""
+    raw = product.get("image_filename") or product.get("image") or ""
+    filename = Path(str(raw)).name
+    return f"/images/products/{filename}" if filename and (UPLOAD_FOLDER / filename).is_file() else ""
+
 def init_db():
     conn = get_db()
     from blog_admin import blog
@@ -214,6 +221,7 @@ def init_db():
             image TEXT DEFAULT '',
             image_filename TEXT DEFAULT '',
             featured INTEGER DEFAULT 0,
+            website_visible INTEGER DEFAULT 0,
             display_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -254,6 +262,7 @@ def init_db():
         "ALTER TABLE products ADD COLUMN price_cny REAL DEFAULT 0",
         "ALTER TABLE products ADD COLUMN price_usd INTEGER DEFAULT 0",
         "ALTER TABLE products ADD COLUMN feature_rows TEXT DEFAULT '[]'",
+        "ALTER TABLE products ADD COLUMN website_visible INTEGER DEFAULT 0",
     ]:
         try:
             conn.execute(col_sql)
@@ -495,6 +504,11 @@ def import_from_google_sheet():
             name = (row.get("Name") or "").strip()
             if not name:
                 continue
+            sku = (row.get("SKU") or "").strip()
+            existing = conn.execute(
+                "SELECT website_visible FROM products WHERE sku=?", (sku,)
+            ).fetchone()
+            website_visible = existing["website_visible"] if existing else 0
             cat = (row.get("Category") or "").strip().lower()
             pricing = normalize_pricing({
                 "price_cny": row.get("Selling Price (CNY)"),
@@ -506,10 +520,10 @@ def import_from_google_sheet():
             conn.execute(
                 """INSERT OR REPLACE INTO products
                    (sku, name, category_slug, description, price_cny, price_kes, price_usd, cost_cny, cost_kes,
-                     sizes, colors, status, stock, image)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                     sizes, colors, status, stock, image, website_visible)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (
-                    (row.get("SKU") or "").strip(), name,
+                    sku, name,
                     CATEGORY_MAP.get(cat, "accessories"),
                     (row.get("Description") or "").strip(),
                     pricing["price_cny"], pricing["price_kes"], pricing["price_usd"],
@@ -519,6 +533,7 @@ def import_from_google_sheet():
                     (row.get("Status") or "In Stock").strip(),
                     (row.get("Stock") or "").strip(),
                     (row.get("Image") or "").strip(),
+                    website_visible,
                 )
             )
             count += 1
@@ -633,6 +648,8 @@ def dashboard():
     conn = get_db()
     product_count = conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
     in_stock = conn.execute("SELECT COUNT(*) FROM products WHERE status='In Stock'").fetchone()[0]
+    published_count = conn.execute("SELECT COUNT(*) FROM products WHERE website_visible=1").fetchone()[0]
+    hidden_count = product_count - published_count
     category_count = conn.execute("SELECT COUNT(*) FROM categories").fetchone()[0]
     last_updated = conn.execute("SELECT MAX(updated_at) FROM products").fetchone()[0]
     categories = conn.execute("""
@@ -640,16 +657,22 @@ def dashboard():
         FROM categories c LEFT JOIN products p ON c.slug = p.category_slug
         GROUP BY c.id ORDER BY count DESC LIMIT 10
     """).fetchall()
-    recent = conn.execute("""
-        SELECT sku, name, price_kes, image, updated_at
+    recent_rows = conn.execute("""
+        SELECT sku, name, price_kes, image, image_filename, website_visible, updated_at
         FROM products ORDER BY updated_at DESC LIMIT 5
     """).fetchall()
+    recent = []
+    for row in recent_rows:
+        item = dict(row)
+        item["admin_image"] = admin_product_image(item)
+        recent.append(item)
     total_orders = conn.execute("SELECT COUNT(*) FROM orders").fetchone()[0]
     new_orders = conn.execute("SELECT COUNT(*) FROM orders WHERE status='new'").fetchone()[0]
     conn.close()
     sheet_status = get_sheet_status() if SHEET_SYNC_AVAILABLE else {"configured": False, "message": "Sheet sync not available"}
     return render_template("dashboard.html",
-        product_count=product_count, in_stock=in_stock, category_count=category_count,
+        product_count=product_count, in_stock=in_stock, published_count=published_count,
+        hidden_count=hidden_count, category_count=category_count,
         last_updated=last_updated, categories=categories, recent=recent,
         total_orders=total_orders, new_orders=new_orders,
         auto_deploy=is_auto_deploy_enabled(),
@@ -665,6 +688,7 @@ def product_list():
     rates = get_exchange_rates(conn)
     category = request.args.get("category", "")
     search = request.args.get("search", "")
+    visibility = request.args.get("visibility", "")
     query = """SELECT p.*, c.label as category_label
                FROM products p JOIN categories c ON p.category_slug = c.slug WHERE 1=1"""
     params = []
@@ -674,6 +698,10 @@ def product_list():
     if search:
         query += " AND (p.name LIKE ? OR p.sku LIKE ?)"
         params.extend([f"%{search}%", f"%{search}%"])
+    if visibility == "live":
+        query += " AND p.website_visible = 1"
+    elif visibility == "hidden":
+        query += " AND p.website_visible = 0"
     product_rows = conn.execute(query + " ORDER BY p.updated_at DESC", params).fetchall()
     products = []
     for row in product_rows:
@@ -681,11 +709,16 @@ def product_list():
         item["margin"] = calc_margin(
             item.get("price_kes", 0), item.get("cost_cny", ""), item.get("cost_kes", ""), rates
         )
+        item["admin_image"] = admin_product_image(item)
         products.append(item)
     categories = conn.execute("SELECT * FROM categories ORDER BY display_order").fetchall()
+    total_products = conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
+    live_products = conn.execute("SELECT COUNT(*) FROM products WHERE website_visible=1").fetchone()[0]
     conn.close()
     return render_template("products.html", products=products, categories=categories,
-                          selected_category=category, search=search, rates=rates)
+                          selected_category=category, selected_visibility=visibility,
+                          total_products=total_products, live_products=live_products,
+                          hidden_products=total_products-live_products, search=search, rates=rates)
 
 @app.route("/products/new", methods=["GET", "POST"])
 def product_new():
@@ -723,8 +756,8 @@ def product_new():
         try:
             conn.execute(
                 """INSERT INTO products (sku, name, category_slug, description, price_cny, price_kes, price_usd,
-                   sizes, colors, extra_attrs, status, stock, cost_cny, cost_kes, featured, feature_rows)
-                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                   sizes, colors, extra_attrs, status, stock, cost_cny, cost_kes, featured, website_visible, feature_rows)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (sku, name, category_slug,
                  request.form.get("description", "").strip(),
                  pricing["price_cny"],
@@ -736,6 +769,7 @@ def product_new():
                  pricing["cost_cny"],
                  pricing["cost_kes"],
                  1 if request.form.get("featured") else 0,
+                 1 if request.form.get("website_visible") else 0,
                  feature_rows)
             )
             conn.commit()
@@ -785,7 +819,7 @@ def product_edit(sku):
 
         conn.execute(
             """UPDATE products SET name=?, category_slug=?, description=?, price_cny=?, price_kes=?, price_usd=?,
-               sizes=?, colors=?, extra_attrs=?, status=?, stock=?, cost_cny=?, cost_kes=?, featured=?,
+               sizes=?, colors=?, extra_attrs=?, status=?, stock=?, cost_cny=?, cost_kes=?, featured=?, website_visible=?,
                feature_rows=?, updated_at=CURRENT_TIMESTAMP WHERE sku=?""",
             (name, category_slug,
              request.form.get("description", "").strip(), pricing["price_cny"], pricing["price_kes"],
@@ -794,6 +828,7 @@ def product_edit(sku):
              request.form.get("status", "Out of Stock"), request.form.get("stock", "").strip(),
              pricing["cost_cny"], pricing["cost_kes"],
              1 if request.form.get("featured") else 0,
+             1 if request.form.get("website_visible") else 0,
              feature_rows, sku)
         )
         conn.commit()
@@ -815,6 +850,12 @@ def product_edit(sku):
         product_dict["gallery_list"] = json.loads(product_dict.get("gallery", "[]"))
     except (json.JSONDecodeError, TypeError):
         product_dict["gallery_list"] = []
+    product_dict["admin_image"] = admin_product_image(product_dict)
+    product_dict["gallery_list"] = [
+        Path(str(filename)).name
+        for filename in product_dict["gallery_list"]
+        if filename and (UPLOAD_FOLDER / Path(str(filename)).name).is_file()
+    ]
     # Calculate margin
     product_dict["margin"] = calc_margin(
         product_dict.get("price_kes", 0),
@@ -824,6 +865,32 @@ def product_edit(sku):
     )
     return render_template("product_form.html", categories=categories, product=product_dict,
                           rates=rates, CATEGORY_ATTR_TEMPLATES=CATEGORY_ATTR_TEMPLATES)
+
+
+@app.route("/products/<sku>/visibility", methods=["POST"])
+def product_visibility(sku):
+    conn = get_db()
+    product = conn.execute(
+        "SELECT name, website_visible FROM products WHERE sku=?", (sku,)
+    ).fetchone()
+    if not product:
+        conn.close()
+        flash("Product not found!", "danger")
+        return redirect(url_for("product_list"))
+    visible = 0 if product["website_visible"] else 1
+    conn.execute(
+        "UPDATE products SET website_visible=?, updated_at=CURRENT_TIMESTAMP WHERE sku=?",
+        (visible, sku),
+    )
+    conn.commit()
+    conn.close()
+    flash(
+        f"{'Published' if visible else 'Hidden'}: {product['name']}",
+        "success" if visible else "warning",
+    )
+    trigger_auto_publish()
+    return redirect(request.form.get("return_to") or url_for("product_list"))
+
 
 @app.route("/products/<sku>/delete", methods=["POST"])
 def product_delete(sku):
@@ -1047,6 +1114,10 @@ def csv_import():
                     continue
                 cat = (row.get("Category") or "").strip().lower()
                 try:
+                    existing = conn.execute(
+                        "SELECT website_visible FROM products WHERE sku=?", (sku,)
+                    ).fetchone()
+                    website_visible = existing["website_visible"] if existing else 0
                     pricing = normalize_pricing({
                         "price_cny": row.get("Selling Price (CNY)"),
                         "price_kes": row.get("Price Kenya (Ksh)"),
@@ -1057,8 +1128,8 @@ def csv_import():
                     conn.execute(
                         """INSERT OR REPLACE INTO products
                            (sku, name, category_slug, description, price_cny, price_kes, price_usd,
-                            cost_cny, cost_kes, sizes, colors, status, stock)
-                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                            cost_cny, cost_kes, sizes, colors, status, stock, website_visible)
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                         (sku, name, CATEGORY_MAP.get(cat, "accessories"),
                          (row.get("Description") or "").strip(),
                          pricing["price_cny"], pricing["price_kes"], pricing["price_usd"],
@@ -1066,7 +1137,7 @@ def csv_import():
                          (row.get("Sizes") or "").strip(),
                          (row.get("Colors") or "").strip(),
                          (row.get("Status") or "In Stock").strip(),
-                         (row.get("Stock") or "").strip())
+                         (row.get("Stock") or "").strip(), website_visible)
                     )
                     imported += 1
                 except Exception as e:
@@ -1289,6 +1360,7 @@ def api_stats():
     conn = get_db()
     total = conn.execute("SELECT COUNT(*) FROM products").fetchone()[0]
     in_stock = conn.execute("SELECT COUNT(*) FROM products WHERE status='In Stock'").fetchone()[0]
+    published = conn.execute("SELECT COUNT(*) FROM products WHERE website_visible=1").fetchone()[0]
     by_cat = conn.execute("""
         SELECT c.label, c.slug, c.image, COUNT(p.id) as count
         FROM categories c LEFT JOIN products p ON c.slug = p.category_slug
@@ -1298,6 +1370,7 @@ def api_stats():
     new_orders = conn.execute("SELECT COUNT(*) FROM orders WHERE status='new'").fetchone()[0]
     conn.close()
     return jsonify({"total_products": total, "in_stock": in_stock,
+                    "published_products": published, "hidden_products": total-published,
                     "by_category": [dict(r) for r in by_cat],
                     "total_orders": total_orders,
                     "new_orders": new_orders,
@@ -1313,7 +1386,15 @@ def serve_category_image(filename):
 
 @app.route("/brand-assets/<path:filename>")
 def serve_brand_asset(filename):
-    return send_from_directory(str(DIST_DIR / "images"), filename)
+    return send_from_directory(str(PROJECT_DIR / "public" / "images"), filename)
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        str(PROJECT_DIR / "public" / "images"),
+        "karibu-badge.svg",
+        mimetype="image/svg+xml",
+    )
 
 # ── Settings ──
 

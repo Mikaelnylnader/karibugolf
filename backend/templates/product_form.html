@@ -91,8 +91,21 @@
                                     <option value="Discontinued" {% if product and product.status == 'Discontinued' %}selected{% endif %}>Discontinued</option>
                                 </select>
                             </div>
+                            <!-- Website visibility -->
+                            <div class="col-md-4">
+                                <label class="form-label d-block">Website</label>
+                                <label class="website-publish-control">
+                                    <input type="checkbox" name="website_visible" value="1"
+                                        {% if product and product.website_visible %}checked{% endif %}>
+                                    <span class="website-publish-icon"><i class="bi bi-globe2"></i></span>
+                                    <span>
+                                        <strong>Show in webshop</strong>
+                                        <small>Off keeps it private in the backend and Google Sheet.</small>
+                                    </span>
+                                </label>
+                            </div>
                             <!-- Featured -->
-                            <div class="col-md-3 d-flex align-items-end">
+                            <div class="col-md-4 d-flex align-items-end">
                                 <div class="form-check mb-2">
                                     <input type="checkbox" name="featured" class="form-check-input" id="chkFeatured"
                                         {% if product and product.featured %}checked{% endif %}>
@@ -308,9 +321,9 @@
             <div class="card">
                 <div class="card-header"><i class="bi bi-image"></i> Main Image</div>
                 <div class="card-body text-center">
-                    {% if product and product.image %}
-                    <a href="{{ product.image }}" target="_blank">
-                        <img src="{{ product.image }}" alt="{{ product.name }}"
+                    {% if product and product.admin_image %}
+                    <a href="{{ product.admin_image }}" target="_blank">
+                        <img src="{{ product.admin_image }}" alt="{{ product.name }}"
                              style="max-width:100%;max-height:180px;border-radius:6px;margin-bottom:8px;object-fit:contain;background:#f6f6f7;"
                              onerror="this.style.display='none'">
                     </a>

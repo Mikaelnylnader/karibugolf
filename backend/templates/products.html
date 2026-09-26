@@ -9,6 +9,13 @@
 .btn-action { pointer-events: auto; }
 .modal-edit-iframe { width:100%; height:80vh; border:none; border-radius:0; }
 .modal-edit-loading { display:flex; align-items:center; justify-content:center; height:200px; }
+.catalog-summary { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px; }
+.catalog-summary a { display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border:1px solid var(--karibu-line);border-radius:12px;background:var(--karibu-white);color:var(--karibu-coal); }
+.catalog-summary a.active { border-color:var(--karibu-green);box-shadow:inset 0 0 0 1px var(--karibu-green); }
+.catalog-summary strong { font-size:24px;line-height:1; }
+.catalog-summary span { font-size:12px;color:#6d7175; }
+.visibility-toggle { border:0;background:transparent;padding:0; }
+@media(max-width:700px){ .catalog-summary { grid-template-columns:1fr; } }
 </style>
 
 <div class="topbar">
@@ -20,11 +27,17 @@
 </div>
 
 <div class="content-wrapper">
+    <div class="catalog-summary">
+        <a href="/products" class="{% if not selected_visibility %}active{% endif %}"><span>All backend products</span><strong>{{ total_products }}</strong></a>
+        <a href="/products?visibility=live" class="{% if selected_visibility == 'live' %}active{% endif %}"><span>Live on website</span><strong>{{ live_products }}</strong></a>
+        <a href="/products?visibility=hidden" class="{% if selected_visibility == 'hidden' %}active{% endif %}"><span>Private inventory</span><strong>{{ hidden_products }}</strong></a>
+    </div>
+
     <!-- Search & Filter -->
     <div class="card">
         <div class="card-body">
             <form method="GET" class="row g-2">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="search-box">
                         <i class="bi bi-search"></i>
                         <input type="text" name="search" class="form-control" placeholder="Search by name or SKU..." value="{{ search }}">
@@ -41,11 +54,18 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-funnel"></i> Filter</button>
+                    <select name="visibility" class="form-select" onchange="this.form.submit()">
+                        <option value="">All visibility</option>
+                        <option value="live" {% if selected_visibility == 'live' %}selected{% endif %}>Live on website</option>
+                        <option value="hidden" {% if selected_visibility == 'hidden' %}selected{% endif %}>Private only</option>
+                    </select>
                 </div>
                 <div class="col-md-2">
-                    {% if search or selected_category %}
-                    <a href="/products" class="btn btn-outline-primary w-100"><i class="bi bi-x"></i> Clear</a>
+                    <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-funnel"></i> Filter</button>
+                </div>
+                <div class="col-md-1">
+                    {% if search or selected_category or selected_visibility %}
+                    <a href="/products" class="btn btn-outline-primary w-100"><i class="bi bi-x"></i></a>
                     {% endif %}
                 </div>
             </form>
@@ -55,7 +75,7 @@
     <!-- Products Table -->
     <div class="card">
         <div class="card-header">
-            <span>{{ products|length }} products</span>
+            <span>{{ products|length }} shown <span class="text-muted">· {{ total_products }} total</span></span>
             <span class="text-muted" style="font-size:13px;">Sorted by last updated</span>
         </div>
         <div class="card-body p-0">
@@ -73,6 +93,7 @@
                             <th>Cost</th>
                             <th>Margin</th>
                             <th>Status</th>
+                            <th>Website</th>
                             <th style="width:80px;"></th>
                         </tr>
                     </thead>
@@ -81,8 +102,8 @@
                         {% for p in products %}
                         <tr class="product-row" onclick="openEditModal('{{ p.sku }}')">
                             <td>
-                                {% if p.image %}
-                                <img src="{{ p.image }}" alt="" class="product-thumb"
+                                {% if p.admin_image %}
+                                <img src="{{ p.admin_image }}" alt="" class="product-thumb"
                                      onerror="this.style.display='none'">
                                 {% else %}
                                 <div class="product-thumb d-flex align-items-center justify-content-center bg-light">
@@ -123,6 +144,18 @@
                                 {% endif %}
                             </td>
                             <td onclick="event.stopPropagation()">
+                                <form method="POST" action="/products/{{ p.sku }}/visibility">
+                                    <input type="hidden" name="return_to" value="{{ request.full_path }}">
+                                    <button type="submit" class="visibility-toggle" title="{% if p.website_visible %}Hide from website{% else %}Show on website{% endif %}">
+                                        {% if p.website_visible %}
+                                        <span class="badge badge-success"><i class="bi bi-globe2"></i> Live</span>
+                                        {% else %}
+                                        <span class="badge badge-warning"><i class="bi bi-eye-slash"></i> Private</span>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td onclick="event.stopPropagation()">
                                 <div class="d-flex gap-1">
                                     <a href="/products/{{ p.sku }}/edit" class="btn btn-sm btn-outline-primary btn-action" title="Edit">
                                         <i class="bi bi-pencil"></i>
@@ -139,7 +172,7 @@
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="11">
+                            <td colspan="12">
                                 <div class="empty-state">
                                     <i class="bi bi-box-seam"></i>
                                     <h5>No products yet</h5>
