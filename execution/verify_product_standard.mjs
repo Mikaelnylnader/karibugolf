@@ -26,14 +26,26 @@ const browser = await chromium.launch({
 });
 
 const p790Page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+const p790ConsoleErrors = [];
+const p790FailedRequests = [];
+p790Page.on("console", (message) => {
+  if (message.type() === "error") p790ConsoleErrors.push(message.text());
+});
+p790Page.on("requestfailed", (request) => p790FailedRequests.push(`${request.method()} ${request.url()}`));
 const p790Response = await p790Page.goto(`${base}/shop/product/gk-ir-tmp/`, { waitUntil: "networkidle" });
 await p790Page.getByRole("button", { name: "Left handed" }).click();
+await p790Page.getByRole("button", { name: "Enlarge Cavity photo" }).click();
+const zoomOpened = await p790Page.getByRole("dialog").isVisible();
+await p790Page.keyboard.press("Escape");
 const p790 = await p790Page.evaluate(() => ({
   title: document.querySelector(".club-buy-panel h1")?.textContent?.trim(),
   status: document.querySelector(".catalog-stock")?.textContent?.trim(),
   price: document.querySelector(".club-price")?.textContent?.trim(),
   galleryCount: document.querySelectorAll(".club-thumbnails button").length,
-  featureCount: document.querySelectorAll(".club-feature-grid article").length,
+  featureCount: document.querySelectorAll(".product-tech-rail article").length,
+  scrollCraftMounted: document.querySelector(".product-scroll-shell")?.getAttribute("data-scrollcraft-mounted") === "true",
+  actSequence: [...document.querySelectorAll("[data-sc-act]")].map((act) => act.getAttribute("data-sc-act")),
+  loftTraceRows: document.querySelectorAll(".product-gap-trace li").length,
   specificationRows: document.querySelectorAll(".club-specs tbody tr").length,
   equipmentCards: document.querySelectorAll(".product-equipment-grid article").length,
   source: document.querySelector(".club-source")?.getAttribute("href"),
@@ -41,16 +53,50 @@ const p790 = await p790Page.evaluate(() => ({
   overflow: document.documentElement.scrollWidth - innerWidth,
   brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
 }));
+await p790Page.evaluate(() => {
+  if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  document.documentElement.style.scrollBehavior = "auto";
+  scrollTo(0, 0);
+});
+const focusAudit = [];
+const focusTargetCount = Math.min(await p790Page.locator('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])').count(), 60);
+for (let index = 0; index < focusTargetCount; index += 1) {
+  await p790Page.keyboard.press("Tab");
+  await p790Page.waitForTimeout(30);
+  focusAudit.push(await p790Page.evaluate(() => {
+    const element = document.activeElement;
+    if (!(element instanceof HTMLElement)) return { label: "unknown", visible: false, focusVisible: false };
+    if (!element.matches('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')) return { label: element.tagName, skip: true };
+    const rect = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    return {
+      label: element.getAttribute("aria-label") || element.textContent?.trim().slice(0, 60) || element.tagName,
+      visible: rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < innerHeight && style.visibility !== "hidden" && Number(style.opacity) > 0.85,
+      focusVisible: element.matches(":focus-visible") && style.outlineStyle !== "none",
+    };
+  }));
+}
+p790.zoomOpened = zoomOpened;
+p790.consoleErrors = p790ConsoleErrors;
+p790.failedRequests = p790FailedRequests;
+p790.focusAuditFailures = focusAudit.filter((item) => !item.skip && (!item.visible || !item.focusVisible));
 if (p790Response?.status() !== 200) failures.push(`P790: HTTP ${p790Response?.status()}`);
 if (p790.title !== "TaylorMade P790") failures.push(`P790: title ${p790.title}`);
 if (!p790.status?.includes("out of stock")) failures.push("P790: stock status");
 if (!p790.price?.includes("171,000")) failures.push("P790: current KES price");
 if (p790.galleryCount !== 4) failures.push(`P790: gallery count ${p790.galleryCount}`);
 if (p790.featureCount !== 4) failures.push(`P790: feature count ${p790.featureCount}`);
+if (!p790.scrollCraftMounted) failures.push("P790: Scroll Craft did not mount");
+if (!["pin", "pan", "flow"].every((device) => p790.actSequence.includes(device))) failures.push(`P790: incomplete Scroll Craft device set ${p790.actSequence.join(", ")}`);
+if (p790.loftTraceRows !== 7) failures.push(`P790: loft trace rows ${p790.loftTraceRows}`);
 if (p790.specificationRows !== 7) failures.push(`P790: specification rows ${p790.specificationRows}`);
 if (p790.equipmentCards !== 3) failures.push(`P790: equipment cards ${p790.equipmentCards}`);
 if (!p790.source?.includes("taylormadegolf.com")) failures.push("P790: official source link");
 if (!p790.whatsapp?.includes("Left%20handed")) failures.push("P790: configurable WhatsApp enquiry");
+if (!p790.zoomOpened) failures.push("P790: gallery zoom did not open");
+if (p790.consoleErrors.length) failures.push(`P790: console errors ${p790.consoleErrors.join(" | ")}`);
+if (p790.failedRequests.length) failures.push(`P790: failed requests ${p790.failedRequests.join(" | ")}`);
+if (p790.focusAuditFailures.length) failures.push(`P790: keyboard focus failures ${JSON.stringify(p790.focusAuditFailures)}`);
 if (p790.overflow > 0) failures.push(`P790: horizontal overflow ${p790.overflow}px`);
 if (p790.brokenImages.length) failures.push("P790: broken images");
 await p790Page.close();
@@ -78,7 +124,7 @@ for (const product of samples) {
   const result = await page.evaluate(() => ({
     standard: Boolean(document.querySelector(".catalog-standard-product")),
     galleryCount: document.querySelectorAll(".club-thumbnails button").length,
-    featureCount: document.querySelectorAll(".club-feature-grid article").length,
+    featureCount: document.querySelectorAll(".product-tech-rail article").length,
     specificationRows: document.querySelectorAll(".club-specs tbody tr").length,
     relatedCount: document.querySelectorAll(".product-related .store-product-card").length,
     overflow: document.documentElement.scrollWidth - innerWidth,

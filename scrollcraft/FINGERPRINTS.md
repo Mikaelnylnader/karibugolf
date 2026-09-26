@@ -30,6 +30,7 @@ changes only grammar and world will fail it.
 |---|---|---|---|---|---|---|---|---|
 | Karibu Shop | Gallery / catalog | Sticky six-department index plus Fairway Trail | Layered photographic shop window | flow+parallax > in-view index > reveal+tilt gallery > flow service, 5.1vh desktop / 8.0vh phone | Service ledger resolving with completed department trail | Clickable Fairway Trail grows and marks the active department | Kenyan golf editorial, Fairway / Sand / Brass | 4500 |
 | Karibu Departments | Gallery / catalog | Fixed accumulating Kit Ledger with direct category index | First category as a labelled full-bleed photographic object | object hero > 0-9 reveal/parallax chapters > product shelf > inquiry, 9.0vh desktop / 10.2vh phone / 13.0vh compact for Clubs | Collection-desk inquiry label after the live product shelf | Kit Ledger stamps visited categories and resolves as a completed kit | Kenyan golf editorial, Fairway / Sand / Coal / Brass | 4501 |
+| Karibu P790 Product | Product dossier | Sticky compact dossier tabs with a return-to-setup destination | Immediate split purchase sheet with gallery, price, stock and configuration | flow commerce > pin/parallax study > pan technology > flow silence > pin/reveal loft peak > flow reference and close, 14.4vh desktop / 17.9vh phone / 8.8vh reduced | Configuration return followed by a related-product shelf | Seven real 4–PW lofts assemble into the gapping spine beside the iron face | Technical golf workshop, Fairway / Coal / Sand / Brass | 4501 |
 
 ---
 
@@ -49,6 +50,7 @@ as a constraint, so writing them down is the whole point.
 - First-category object hero followed by alternating photographic chapters.
 - Product-shelf close resolving into a collection-desk inquiry label.
 - Representative 8-act range at 9.0 desktop viewport-heights and 10.2 phone viewport-heights.
+- Product dossier with commerce before narrative, a horizontal construction rail and an exact seven-club loft-trace peak.
 
 ---
 

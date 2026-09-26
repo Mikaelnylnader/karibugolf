@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import CatalogProductTemplate from "@/components/catalog-product-template";
 import { detailsForProduct } from "@/lib/product-page-details";
 import { departmentForCategory, productBySlug, products, productsForCategory, productsForDepartment } from "@/lib/shop-catalog";
+import "../../scrollcraft.css";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));

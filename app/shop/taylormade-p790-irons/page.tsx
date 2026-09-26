@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CatalogProductTemplate from "@/components/catalog-product-template";
 import { detailsForProduct } from "@/lib/product-page-details";
 import { departmentForCategory, productBySlug, productsForCategory } from "@/lib/shop-catalog";
+import "../scrollcraft.css";
 
 export const metadata: Metadata = {
   title: "TaylorMade P790 Irons | Karibu Golf Kenya",
