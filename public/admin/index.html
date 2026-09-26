@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Karibu Golf — Online Admin</title>
+  <link rel="icon" href="/images/karibu-badge.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div id="login" class="login-shell" hidden>
+    <main class="login-card">
+      <img src="/images/karibu-badge.svg" alt="Karibu Golf" class="login-mark">
+      <p class="eyebrow">PRIVATE OPERATIONS</p>
+      <h1>Your Karibu<br><em>control room.</em></h1>
+      <p class="login-copy">Manage inventory, prices and what appears in the live webshop.</p>
+      <form id="login-form">
+        <label for="password">Admin password</label>
+        <input id="password" type="password" autocomplete="current-password" required autofocus>
+        <button type="submit">Open admin <span>→</span></button>
+        <p id="login-error" class="form-error" role="alert"></p>
+      </form>
+    </main>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <a href="/admin/" class="brand"><img src="/images/karibu-badge.svg" alt=""><span>KARIBU<br>GOLF<i>.</i></span></a>
+      <nav>
+        <a class="active" href="#products"><span>◫</span> Products</a>
+        <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span> Live shop</a>
+        <a href="https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY" target="_blank" rel="noreferrer"><span>▦</span> Google Sheet</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="connected"><i></i> Google Sheet connected</span>
+        <button id="logout" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div><p class="eyebrow">ONLINE BACKEND</p><h1>Products</h1></div>
+        <button id="new-product" class="primary" type="button">＋ Add product</button>
+      </header>
+
+      <main class="content" id="products">
+        <section class="stats" aria-label="Product summary">
+          <button class="stat active" data-filter="all"><span>All products</span><strong id="stat-total">—</strong><small>Stored in backend and Sheet</small></button>
+          <button class="stat live" data-filter="live"><span>Live webshop</span><strong id="stat-live">—</strong><small>Visible at karibugolf.com</small></button>
+          <button class="stat private" data-filter="private"><span>Private inventory</span><strong id="stat-private">—</strong><small>Hidden from customers</small></button>
+          <button class="stat stock" data-filter="stock"><span>In stock</span><strong id="stat-stock">—</strong><small>Available inventory</small></button>
+        </section>
+
+        <section class="catalog-card">
+          <div class="catalog-tools">
+            <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search product name or SKU"></label>
+            <select id="category-filter" aria-label="Filter by category"><option value="">All categories</option></select>
+            <button id="refresh" type="button" class="secondary">Refresh</button>
+          </div>
+          <div id="notice" class="notice" hidden></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Website</th><th></th></tr></thead>
+              <tbody id="product-rows"><tr><td colspan="6" class="loading">Loading your catalog…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="editor">
+    <form id="product-form" method="dialog">
+      <header class="editor-head">
+        <div><p class="eyebrow">PRODUCT EDITOR</p><h2 id="editor-title">Add product</h2></div>
+        <button id="close-editor" class="icon-button" type="button" aria-label="Close">×</button>
+      </header>
+      <div class="editor-body">
+        <section class="form-card">
+          <h3>Product information</h3>
+          <div class="form-grid">
+            <label>SKU<input name="sku" required maxlength="40" placeholder="GK-IR-001"></label>
+            <label class="wide">Product name<input name="name" required placeholder="TaylorMade P790"></label>
+            <label>Category<select name="categorySlug" required></select></label>
+            <label>Status<select name="status"><option>Out of Stock</option><option>In Stock</option><option>Coming Soon</option><option>Discontinued</option></select></label>
+            <label>Stock<input name="stock" inputmode="numeric" value="0"></label>
+            <label class="wide">Description<textarea name="description" rows="4" placeholder="Describe the product for customers and search engines"></textarea></label>
+            <label>Sizes<input name="sizes" placeholder="4–PW or S, M, L"></label>
+            <label>Colours<input name="colors" placeholder="Silver, Black"></label>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <h3>Pricing</h3>
+          <p class="hint">Enter cost and selling price in RMB. Kenya and USD values calculate automatically.</p>
+          <div class="form-grid prices">
+            <label>Cost in RMB<input name="costCny" type="number" min="0" step="0.01"></label>
+            <label>Cost in KSh<input name="costKes" type="number" min="0" step="1"></label>
+            <label>Selling price in RMB<input name="priceCny" type="number" min="0" step="0.01"></label>
+            <label>Selling price in KSh<input name="priceKes" type="number" min="0" step="1"></label>
+            <label>Selling price in USD<input name="priceUsd" type="number" min="0" step="0.01"></label>
+          </div>
+          <p class="rate-note">Calculation: 1 RMB = 19 KSh · 1 USD = 129.5 KSh</p>
+        </section>
+
+        <section class="form-card media-card">
+          <h3>Product image</h3>
+          <div class="media-layout">
+            <div class="image-preview" id="image-preview"><span>No image</span></div>
+            <div>
+              <label>Image URL<input name="image" id="image-url" placeholder="https://… or upload below"></label>
+              <label class="upload">Upload a new image<input id="image-file" type="file" accept="image/*"></label>
+              <small>JPG, PNG or WebP, maximum 5 MB.</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="publish-card">
+          <label class="publish-toggle">
+            <input name="websiteVisible" type="checkbox">
+            <span class="switch"></span>
+            <span><strong>Show in live webshop</strong><small>Off keeps this product in the backend and Google Sheet only.</small></span>
+          </label>
+        </section>
+      </div>
+      <footer class="editor-actions">
+        <p id="save-status"></p>
+        <button id="cancel-editor" class="secondary" type="button">Cancel</button>
+        <button id="save-product" class="primary" type="submit">Save product</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script type="module" src="/admin/admin.js"></script>
+</body>
+</html>

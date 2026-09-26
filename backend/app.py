@@ -509,9 +509,12 @@ def import_from_google_sheet():
                 "SELECT website_visible FROM products WHERE sku=?", (sku,)
             ).fetchone()
             website_visible = existing["website_visible"] if existing else 0
+            sheet_visibility = (row.get("Website Visible") or "").strip().lower()
+            if sheet_visibility:
+                website_visible = 1 if sheet_visibility in {"true", "1", "yes", "live", "published"} else 0
             cat = (row.get("Category") or "").strip().lower()
             pricing = normalize_pricing({
-                "price_cny": row.get("Selling Price (CNY)"),
+                "price_cny": row.get("Selling Price (CNY)") or row.get("Price Kenya (CNY)"),
                 "price_kes": row.get("Price Kenya (Ksh)"),
                 "price_usd": row.get("Selling Price (USD)"),
                 "cost_cny": row.get("Cost China (CNY)"),
@@ -1118,8 +1121,11 @@ def csv_import():
                         "SELECT website_visible FROM products WHERE sku=?", (sku,)
                     ).fetchone()
                     website_visible = existing["website_visible"] if existing else 0
+                    sheet_visibility = (row.get("Website Visible") or "").strip().lower()
+                    if sheet_visibility:
+                        website_visible = 1 if sheet_visibility in {"true", "1", "yes", "live", "published"} else 0
                     pricing = normalize_pricing({
-                        "price_cny": row.get("Selling Price (CNY)"),
+                        "price_cny": row.get("Selling Price (CNY)") or row.get("Price Kenya (CNY)"),
                         "price_kes": row.get("Price Kenya (Ksh)"),
                         "price_usd": row.get("Selling Price (USD)"),
                         "cost_cny": row.get("Cost China (CNY)"),

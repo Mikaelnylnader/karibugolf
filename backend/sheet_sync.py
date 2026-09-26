@@ -39,6 +39,7 @@ COLUMN_MAP = [
     ("description", "Description"),
     ("status", "Status"),
     ("stock", "Stock"),
+    ("website_visible", "Website Visible"),
 ]
 
 REVERSE_CATEGORY = {
@@ -97,6 +98,8 @@ def sync_product_to_sheet(product_dict):
                 val = REVERSE_CATEGORY.get(val, val)
             elif db_field == "price_kes":
                 val = f"KES {int(val):,}" if val else ""
+            elif db_field == "website_visible":
+                val = "TRUE" if val else "FALSE"
             row_data[sheet_col] = str(val)
 
         sku = product_dict.get("sku", "")

@@ -7,13 +7,14 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build && node execution/export-new-site-static.mjs",
+    "build": "node execution/export_catalog_for_build.mjs && vinext build && node execution/export-new-site-static.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
+    "@netlify/blobs": "^11.1.1",
     "@shadcn/react": "0.3.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
