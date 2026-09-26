@@ -84,8 +84,11 @@ def sync_product_to_sheet(product_dict):
         return False
     try:
         sheet = get_sheet()
-        sku_column = sheet.col_values(1)
         headers = sheet.row_values(1)
+        if "SKU" not in headers:
+            raise ValueError("Sheet is missing the SKU header")
+        sku_column_index = headers.index("SKU") + 1
+        sku_column = sheet.col_values(sku_column_index)
 
         row_data = {}
         for db_field, sheet_col in COLUMN_MAP:
@@ -116,7 +119,10 @@ def sync_delete_from_sheet(sku):
         return False
     try:
         sheet = get_sheet()
-        sku_column = sheet.col_values(1)
+        headers = sheet.row_values(1)
+        if "SKU" not in headers:
+            raise ValueError("Sheet is missing the SKU header")
+        sku_column = sheet.col_values(headers.index("SKU") + 1)
         if sku in sku_column:
             row_num = sku_column.index(sku) + 1
             sheet.delete_rows(row_num)
@@ -131,7 +137,10 @@ def get_sheet_status():
         return {"configured": False, "message": "Not connected. Add credentials/google-sheet-key.json"}
     try:
         sheet = get_sheet()
-        row_count = len(sheet.col_values(1)) - 1
+        headers = sheet.row_values(1)
+        if "SKU" not in headers:
+            raise ValueError("Sheet is missing the SKU header")
+        row_count = len(sheet.col_values(headers.index("SKU") + 1)) - 1
         return {"configured": True, "row_count": max(0, row_count), "message": f"Connected ({max(0, row_count)} rows)"}
     except Exception as e:
         return {"configured": False, "message": f"Error: {e}"}
