@@ -80,6 +80,25 @@ export default function CatalogProductTemplate({ product, details, department, r
       </div>
     </section>
 
+    {isP790 && <section className="product-official-video" aria-labelledby="product-video-title" data-sc-act="flow">
+      <div className="product-official-video-copy" data-sc-in>
+        <p className="micro">OFFICIAL TAYLORMADE VIDEO</p>
+        <h2 id="product-video-title">SEE THE 2025 P·790 EXPLAINED.</h2>
+        <p>TaylorMade’s equipment team introduces the stronger 4340M forged face, progressive FLTD CG and the launch-and-gapping approach behind this generation.</p>
+        <a href="https://www.taylormadegolf.com/clubhouse/943387-video-this-new-face-material-makes-the-p-790-irons-a-game-changer.html?lang=en_US" target="_blank" rel="noreferrer">Read the official TaylorMade story <ArrowUpRight size={17}/></a>
+      </div>
+      <div className="product-official-video-frame" data-sc-in>
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/MhMeZNyzRrE?rel=0"
+          title="TaylorMade 2025 P790 official product video"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
+    </section>}
+
     <section className="club-detail-pair product-detail-silence" data-sc-act="flow">
       <div data-sc-reveal="left" data-sc-reveal-at="0.08 0.54"><Image unoptimized src={details.detailImage} alt={`${product.name} closer view`} width={900} height={900}/></div>
       <div><p className="micro">{details.detailEyebrow}</p><h2>{details.detailTitle}</h2>{details.detailBody.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}<a href="#product-order">Tell us what you need ↗</a></div>

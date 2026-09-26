@@ -50,13 +50,18 @@ Intended and felt curves matched after two fixes. The first contact-sheet pass s
   - Four gallery images, four verified technology notes, seven loft-trace rows and seven specification rows.
   - Gallery zoom opens and closes.
   - Configuration changes reach the WhatsApp URL.
+  - Graphite exposes Regular, Stiff and Senior; Steel exposes Regular and Stiff; X-Stiff is absent.
+  - Switching from Graphite Senior back to Steel resets the flex to a valid Regular selection.
+  - Selected option text measures 14.81:1 contrast against its background.
+  - The official TaylorMade YouTube embed and linked TaylorMade Clubhouse story are present.
   - Keyboard focus targets are visible and carry a focus ring.
   - No horizontal page overflow, broken images, failed requests or console errors.
   - Legacy P790 route and representative products from irons, shoes, bags, balls and gloves remain on the standard template.
 - Netlify preview `6ab6c962c7e6dc4995e6a2f9` passed the full verifier, then production deploy `6ab6c9bd6a9120564d9fa469` was promoted to `https://karibugolf.com` and passed the same checks.
+- Follow-up Netlify preview `6ab77d2a6a9120ff5c9fa4b2` passed the expanded selector and video checks. Production deploy `6ab77d5c53fa9827293521a3` was then published to `https://karibugolf.com` and passed the same zero-failure verifier.
 
 ## Assets and limits
 
-No generated assets were used and no generation credits were spent. The page uses the four supplied TaylorMade product photographs.
+No generated assets were used and no generation credits were spent. The page uses the four supplied TaylorMade product photographs and embeds TaylorMade's official YouTube video without copying or re-uploading it.
 
 Verified locally in installed Chrome. A physical iPhone Safari session and subjective scroll smoothness on low-power hardware could not be reproduced on this Windows build machine; there is no scrub video or decoder-dependent content in this build.

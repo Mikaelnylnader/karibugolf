@@ -21,16 +21,32 @@ export default function CatalogProductConfigurator({ name, sku, price, available
     `Hi Karibu Golf! I'd like to ask about ${name} (${sku}) at ${price}.${preferences ? ` My preferred configuration is ${preferences}.` : ""} Please confirm the exact item, availability and delivery options.`,
   );
 
+  const valuesFor = (group: ProductConfiguration) => {
+    if (group.label !== "Flex" || !selected.Shaft) return group.values;
+    if (selected.Shaft === "Steel") return group.values.filter((value) => !value.startsWith("Senior"));
+    return group.values;
+  };
+
+  const selectOption = (label: string, value: string) => {
+    setSelected((current) => {
+      const next = { ...current, [label]: value };
+      if (label === "Shaft" && value === "Steel" && next.Flex?.startsWith("Senior")) {
+        next.Flex = configuration.find((group) => group.label === "Flex")?.values.find((flex) => flex.startsWith("Regular")) ?? "";
+      }
+      return next;
+    });
+  };
+
   return <div className="catalog-configurator">
     {configuration.map((group) => <fieldset key={group.label}>
       <legend>{group.label}</legend>
       <div className="catalog-option-grid">
-        {group.values.map((value) => <button
+        {valuesFor(group).map((value) => <button
           type="button"
           key={value}
           className={selected[group.label] === value ? "selected" : ""}
           aria-pressed={selected[group.label] === value}
-          onClick={() => setSelected((current) => ({ ...current, [group.label]: value }))}
+          onClick={() => selectOption(group.label, value)}
         >{value}</button>)}
       </div>
     </fieldset>)}

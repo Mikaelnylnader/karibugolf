@@ -61,7 +61,7 @@ const p790: ProductPageDetails = {
   configuration: [
     { label: "Hand", values: ["Right handed", "Left handed"] },
     { label: "Shaft", values: ["Steel", "Graphite"] },
-    { label: "Flex", values: ["Regular (R)", "Stiff (S)", "X-Stiff (X)"] },
+    { label: "Flex", values: ["Regular (R)", "Stiff (S)", "Senior (A)"] },
     { label: "Set", values: ["4–PW"] },
   ],
   specTitle: "P·790 SPECIFICATIONS.",

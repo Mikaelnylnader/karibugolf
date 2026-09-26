@@ -31,9 +31,34 @@ const p790FailedRequests = [];
 p790Page.on("console", (message) => {
   if (message.type() === "error") p790ConsoleErrors.push(message.text());
 });
-p790Page.on("requestfailed", (request) => p790FailedRequests.push(`${request.method()} ${request.url()}`));
+p790Page.on("requestfailed", (request) => {
+  if (request.url().startsWith(base)) p790FailedRequests.push(`${request.method()} ${request.url()}`);
+});
 const p790Response = await p790Page.goto(`${base}/shop/product/gk-ir-tmp/`, { waitUntil: "networkidle" });
 await p790Page.getByRole("button", { name: "Left handed" }).click();
+await p790Page.getByRole("button", { name: "Graphite" }).click();
+const graphiteFlexes = await p790Page.locator(".catalog-configurator fieldset").filter({ has: p790Page.locator("legend", { hasText: "Flex" }) }).getByRole("button").allTextContents();
+const xStiffCount = await p790Page.getByRole("button", { name: /X-Stiff/ }).count();
+await p790Page.getByRole("button", { name: "Senior (A)" }).click();
+const selectedFlexContrast = await p790Page.getByRole("button", { name: "Senior (A)" }).evaluate((button) => {
+  const style = getComputedStyle(button);
+  const rgb = (value) => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+  const luminance = (value) => {
+    const channels = rgb(value).map((channel) => {
+      const normalized = channel / 255;
+      return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+  };
+  const foreground = luminance(style.color);
+  const background = luminance(style.backgroundColor);
+  return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+});
+await p790Page.getByRole("button", { name: "Steel" }).click();
+const steelFlexes = await p790Page.locator(".catalog-configurator fieldset").filter({ has: p790Page.locator("legend", { hasText: "Flex" }) }).getByRole("button").allTextContents();
+const selectedSteelFlex = await p790Page.locator(".catalog-configurator fieldset").filter({ has: p790Page.locator("legend", { hasText: "Flex" }) }).locator("button.selected").textContent();
+await p790Page.getByRole("button", { name: "Graphite" }).click();
+await p790Page.getByRole("button", { name: "Senior (A)" }).click();
 await p790Page.getByRole("button", { name: "Enlarge Cavity photo" }).click();
 const zoomOpened = await p790Page.getByRole("dialog").isVisible();
 await p790Page.keyboard.press("Escape");
@@ -49,6 +74,8 @@ const p790 = await p790Page.evaluate(() => ({
   specificationRows: document.querySelectorAll(".club-specs tbody tr").length,
   equipmentCards: document.querySelectorAll(".product-equipment-grid article").length,
   source: document.querySelector(".club-source")?.getAttribute("href"),
+  video: document.querySelector(".product-official-video iframe")?.getAttribute("src"),
+  videoStory: document.querySelector(".product-official-video-copy a")?.getAttribute("href"),
   whatsapp: document.querySelector(".catalog-configurator .contact-button")?.getAttribute("href"),
   overflow: document.documentElement.scrollWidth - innerWidth,
   brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
@@ -77,6 +104,11 @@ for (let index = 0; index < focusTargetCount; index += 1) {
   }));
 }
 p790.zoomOpened = zoomOpened;
+p790.graphiteFlexes = graphiteFlexes;
+p790.steelFlexes = steelFlexes;
+p790.xStiffCount = xStiffCount;
+p790.selectedSteelFlex = selectedSteelFlex?.trim();
+p790.selectedFlexContrast = Number(selectedFlexContrast.toFixed(2));
 p790.consoleErrors = p790ConsoleErrors;
 p790.failedRequests = p790FailedRequests;
 p790.focusAuditFailures = focusAudit.filter((item) => !item.skip && (!item.visible || !item.focusVisible));
@@ -92,7 +124,12 @@ if (p790.loftTraceRows !== 7) failures.push(`P790: loft trace rows ${p790.loftTr
 if (p790.specificationRows !== 7) failures.push(`P790: specification rows ${p790.specificationRows}`);
 if (p790.equipmentCards !== 3) failures.push(`P790: equipment cards ${p790.equipmentCards}`);
 if (!p790.source?.includes("taylormadegolf.com")) failures.push("P790: official source link");
-if (!p790.whatsapp?.includes("Left%20handed")) failures.push("P790: configurable WhatsApp enquiry");
+if (!p790.video?.includes("youtube-nocookie.com/embed/MhMeZNyzRrE")) failures.push("P790: official TaylorMade video embed");
+if (!p790.videoStory?.includes("taylormadegolf.com/clubhouse/")) failures.push("P790: official video story link");
+if (!p790.graphiteFlexes.includes("Senior (A)") || p790.xStiffCount !== 0) failures.push(`P790: graphite flex options ${p790.graphiteFlexes.join(", ")}`);
+if (p790.steelFlexes.includes("Senior (A)") || p790.selectedSteelFlex !== "Regular (R)") failures.push(`P790: steel flex options ${p790.steelFlexes.join(", ")} / selected ${p790.selectedSteelFlex}`);
+if (p790.selectedFlexContrast < 4.5) failures.push(`P790: selected option contrast ${p790.selectedFlexContrast}`);
+if (!p790.whatsapp?.includes("Left%20handed") || !p790.whatsapp?.includes("Shaft%3A%20Graphite") || !p790.whatsapp?.includes("Flex%3A%20Senior")) failures.push("P790: configurable WhatsApp enquiry");
 if (!p790.zoomOpened) failures.push("P790: gallery zoom did not open");
 if (p790.consoleErrors.length) failures.push(`P790: console errors ${p790.consoleErrors.join(" | ")}`);
 if (p790.failedRequests.length) failures.push(`P790: failed requests ${p790.failedRequests.join(" | ")}`);

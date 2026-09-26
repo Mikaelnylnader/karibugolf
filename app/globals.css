@@ -478,6 +478,11 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .product-scroll-dossier .club-gallery-stage,
 .product-scroll-dossier .club-thumbnails button,
 .product-scroll-dossier .catalog-option-grid button { background:#f8f6f0; }
+.product-scroll-dossier .catalog-option-grid button.selected {
+ border-color:#14110e;
+ background:#14110e;
+ color:#efe3cc;
+}
 .product-scroll-dossier .club-zoom-trigger { background:#f8f6f0; }
 .product-scroll-dossier .club-section-nav { border-bottom:1px solid #efe3cc30; background:#14110ef7; backdrop-filter:blur(12px); }
 
@@ -558,6 +563,22 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .product-tech-rail aside strong { font-size:clamp(110px,16vw,240px); line-height:.7; font-weight:400; }
 .product-tech-rail aside span { margin-top:38px; color:#efe3cc; font-size:13px; letter-spacing:.1em; text-transform:uppercase; }
 
+.product-official-video {
+ display:grid;
+ grid-template-columns:minmax(290px,.62fr) minmax(0,1.38fr);
+ gap:clamp(36px,6vw,96px);
+ align-items:center;
+ padding:clamp(78px,10vw,145px) clamp(28px,7vw,112px);
+ background:#14110e;
+ color:#efe3cc;
+}
+.product-official-video-copy .micro { color:#c89947; }
+.product-official-video-copy h2 { max-width:8ch; margin:22px 0 26px; font-size:clamp(54px,5.7vw,94px); line-height:.84; letter-spacing:-.045em; }
+.product-official-video-copy>p:not(.micro) { max-width:520px; color:#c9c0ad; font-size:17px; line-height:1.72; }
+.product-official-video-copy a { display:inline-flex; align-items:center; gap:10px; margin-top:30px; padding-bottom:9px; border-bottom:1px solid #c89947; font-size:13px; letter-spacing:.06em; text-transform:uppercase; }
+.product-official-video-frame { position:relative; aspect-ratio:16/9; overflow:hidden; border:1px solid #efe3cc2e; background:#050504; box-shadow:0 26px 65px #0007; }
+.product-official-video-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+
 .product-detail-silence { min-height:82svh; background:#efe3cc; }
 .product-detail-silence>div:first-child { align-self:stretch; overflow:hidden; padding:0; background:#fff; }
 .product-detail-silence>div:first-child img { width:100%; height:100%; min-height:620px; object-fit:contain; }
@@ -637,6 +658,8 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
  .product-tech-rail header h2 { font-size:clamp(56px,16vw,82px); }
  .product-tech-rail article h3 { font-size:clamp(42px,12vw,62px); }
  .product-tech-rail aside { flex-basis:70vw; }
+ .product-official-video { grid-template-columns:1fr; padding-inline:6%; }
+ .product-official-video-copy h2 { font-size:clamp(54px,15vw,78px); }
  .product-detail-silence { min-height:0; }
  .product-detail-silence>div:first-child img { min-height:0; height:390px; }
  .product-gap-stage { min-height:100svh; display:block; }
