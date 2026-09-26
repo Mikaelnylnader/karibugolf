@@ -7,6 +7,13 @@ const categories = [
   ["womens_pants","Women’s Trousers"],["womens_dresses","Women’s Dresses"],["womens_jackets","Women’s Jackets"],["womens_tops","Women’s Tops"],
   ["bags","Golf Bags"],["balls","Golf Balls"],["gloves","Gloves"],["hats_and_caps","Hats & Caps"],["grips","Grips"],["range_finders","Range Finders"],["accessories","Accessories"],
 ];
+const categoryGroups = [
+  ["Clubs", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]],
+  ["Shoes", ["mens_shoes", "womens_shoes"]],
+  ["Men’s apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts"]],
+  ["Women’s apparel", ["womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]],
+  ["Bags, balls & accessories", ["bags", "balls", "gloves", "hats_and_caps", "grips", "range_finders", "accessories"]],
+];
 let products = [];
 let activeFilter = "all";
 let editingSku = null;
@@ -43,7 +50,7 @@ async function loadProducts() {
     populateCategoryFilter();
     const requestedCategory = new URL(location.href).searchParams.get("category") || "";
     if (requestedCategory && $("#category-filter").querySelector(`option[value="${CSS.escape(requestedCategory)}"]`)) $("#category-filter").value = requestedCategory;
-    renderProducts();
+    renderProducts(); renderCategories(); showView(location.hash === "#categories" ? "categories" : "products", false);
   } catch (error) { showNotice(error.message, true); }
 }
 
@@ -81,8 +88,34 @@ function selectCategory(slug) {
   $("#category-filter").value = slug;
   const url = new URL(location.href);
   if (slug) url.searchParams.set("category", slug); else url.searchParams.delete("category");
+  url.hash = "products";
   history.replaceState({}, "", url);
+  showView("products", false);
   renderProducts();
+}
+
+function renderCategories() {
+  const counts = products.reduce((result, product) => {
+    result[product.categorySlug] = (result[product.categorySlug] || 0) + 1;
+    return result;
+  }, {});
+  $("#category-groups").innerHTML = categoryGroups.map(([group, slugs]) => `<section class="category-group">
+    <h2>${escapeHtml(group)}</h2>
+    <div class="category-grid">${slugs.map((slug) => `<button type="button" class="category-card" data-category="${slug}">
+      <span>CATEGORY</span><strong>${escapeHtml(categoryLabel(slug))}</strong><small>${counts[slug] || 0} products →</small>
+    </button>`).join("")}</div>
+  </section>`).join("");
+}
+
+function showView(view, updateHash = true) {
+  const categoriesOpen = view === "categories";
+  $("#products").hidden = categoriesOpen;
+  $("#categories").hidden = !categoriesOpen;
+  $("#view-title").textContent = categoriesOpen ? "Categories" : "Products";
+  $("#new-product").hidden = categoriesOpen;
+  $("#nav-products").classList.toggle("active", !categoriesOpen);
+  $("#nav-categories").classList.toggle("active", categoriesOpen);
+  if (updateHash) history.replaceState({}, "", `${location.pathname}${location.search}#${categoriesOpen ? "categories" : "products"}`);
 }
 
 function showNotice(message, error = false) {
@@ -138,8 +171,12 @@ async function toggleVisibility(sku) {
 
 const categoryOptions = categories.map(([value,label]) => `<option value="${value}">${label}</option>`).join("");
 $("#product-form").elements.categorySlug.innerHTML = categoryOptions;
-$("#login-form").addEventListener("submit", async (event) => { event.preventDefault(); $("#login-error").textContent = ""; try { await api("/api/admin-auth", { method: "POST", body: JSON.stringify({ password: $("#password").value }) }); showApp(); await loadProducts(); } catch (error) { $("#login-error").textContent = error.message; } });
+$("#login-form").addEventListener("submit", async (event) => { event.preventDefault(); $("#login-error").textContent = ""; try { await api("/api/admin-auth", { method: "POST", body: JSON.stringify({ password: $("#password").value.trim() }) }); showApp(); await loadProducts(); } catch (error) { $("#login-error").textContent = error.message; $("#password").focus(); $("#password").select(); } });
+$("#show-password").addEventListener("change", (event) => { $("#password").type = event.target.checked ? "text" : "password"; });
 $("#logout").addEventListener("click", async () => { await fetch("/api/admin-auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "logout" }) }); location.reload(); });
+$("#nav-products").addEventListener("click", (event) => { event.preventDefault(); showView("products"); });
+$("#nav-categories").addEventListener("click", (event) => { event.preventDefault(); showView("categories"); });
+$("#category-groups").addEventListener("click", (event) => { const category = event.target.closest("[data-category]"); if (category) selectCategory(category.dataset.category); });
 $("#new-product").addEventListener("click", () => openEditor()); $("#close-editor").addEventListener("click", () => $("#editor").close()); $("#cancel-editor").addEventListener("click", () => $("#editor").close());
 $("#product-form").addEventListener("submit", save); $("#image-url").addEventListener("input", updateImagePreview); $("#search").addEventListener("input", renderProducts); $("#category-filter").addEventListener("change", (event) => selectCategory(event.target.value)); $("#refresh").addEventListener("click", loadProducts);
 $("#product-form").elements.costCny.addEventListener("input", (event) => { $("#product-form").elements.costKes.value = Math.round(Number(event.target.value || 0) * 19); });

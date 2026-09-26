@@ -13,6 +13,18 @@
   <style>
     .category-link { border: 0; background: transparent; color: #1f5132; font: inherit; font-weight: 700; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(200,152,72,.55); text-underline-offset: 4px; }
     .category-link:hover { color: #c89848; }
+    .password-reveal { display: flex; align-items: center; gap: 8px; color: #746d63; font-size: 12px; font-weight: 600; }
+    .password-reveal input { width: auto; margin: 0; box-shadow: none; }
+    .view-panel[hidden] { display: none; }
+    .category-groups { display: grid; gap: 28px; }
+    .category-group h2 { margin: 0 0 12px; font-size: 18px; letter-spacing: -.02em; }
+    .category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .category-card { min-height: 138px; border: 1px solid rgba(23,19,15,.14); border-radius: 10px; background: #fffdf8; padding: 20px; text-align: left; cursor: pointer; color: #17130f; transition: transform .18s, border-color .18s, box-shadow .18s; }
+    .category-card:hover { transform: translateY(-2px); border-color: #1f5132; box-shadow: 0 9px 24px rgba(31,81,50,.1); }
+    .category-card span, .category-card strong, .category-card small { display: block; }
+    .category-card span { color: #c89848; font: 500 10px/1 "DM Mono", monospace; letter-spacing: .12em; }
+    .category-card strong { margin: 18px 0 8px; font-size: 22px; }
+    .category-card small { color: #746d63; }
     .login-mark-full { width: min(300px, 82%); height: auto; margin-bottom: 34px; }
     .brand-full { display: block; padding: 8px 10px; border-radius: 7px; background: #f0e3ca; }
     .brand-full .brand-wordmark-image { width: 100%; height: auto; display: block; }
@@ -21,6 +33,10 @@
       .brand-full { padding: 6px; background: transparent; }
       .brand-full .brand-wordmark-image { display: none; }
       .brand-full .brand-badge-image { display: block; width: 44px; height: 44px; }
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .category-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -34,6 +50,7 @@
       <form id="login-form">
         <label for="password">Admin password</label>
         <input id="password" type="password" autocomplete="current-password" required autofocus>
+        <label class="password-reveal"><input id="show-password" type="checkbox"> Show password</label>
         <button type="submit">Open admin <span>→</span></button>
         <p id="login-error" class="form-error" role="alert"></p>
       </form>
@@ -47,7 +64,8 @@
         <img class="brand-badge-image" src="/images/karibu-badge.svg" alt="">
       </a>
       <nav>
-        <a class="active" href="#products"><span>◫</span> Products</a>
+        <a id="nav-products" class="active" href="#products"><span>◫</span> Products</a>
+        <a id="nav-categories" href="#categories"><span>◇</span> Categories</a>
         <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span> Live shop</a>
         <a href="https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY" target="_blank" rel="noreferrer"><span>▦</span> Google Sheet</a>
       </nav>
@@ -59,11 +77,11 @@
 
     <div class="workspace">
       <header class="topbar">
-        <div><p class="eyebrow">ONLINE BACKEND</p><h1>Products</h1></div>
+        <div><p class="eyebrow">ONLINE BACKEND</p><h1 id="view-title">Products</h1></div>
         <button id="new-product" class="primary" type="button">＋ Add product</button>
       </header>
 
-      <main class="content" id="products">
+      <main class="content view-panel" id="products">
         <section class="stats" aria-label="Product summary">
           <button class="stat active" data-filter="all"><span>All products</span><strong id="stat-total">—</strong><small>Stored in backend and Sheet</small></button>
           <button class="stat live" data-filter="live"><span>Live webshop</span><strong id="stat-live">—</strong><small>Visible at karibugolf.com</small></button>
@@ -84,6 +102,15 @@
               <tbody id="product-rows"><tr><td colspan="6" class="loading">Loading your catalog…</td></tr></tbody>
             </table>
           </div>
+        </section>
+      </main>
+
+      <main class="content view-panel" id="categories" hidden>
+        <section class="catalog-card" style="padding:24px;">
+          <p class="eyebrow">CATALOG STRUCTURE</p>
+          <h2 style="margin:0 0 8px;font-size:30px;letter-spacing:-.04em;">Browse your categories</h2>
+          <p style="margin:0 0 26px;color:#746d63;">Choose a category to open only those products.</p>
+          <div id="category-groups" class="category-groups"></div>
         </section>
       </main>
     </div>

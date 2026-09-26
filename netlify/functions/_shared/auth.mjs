@@ -53,5 +53,5 @@ export async function passwordMatches(candidate) {
   const expected = env("KARIBU_ADMIN_PASSWORD");
   if (!expected) return false;
   const digest = async (value) => bytesToHex(await crypto.subtle.digest("SHA-256", encoder.encode(value)));
-  return safeEqual(await digest(String(candidate ?? "")), await digest(expected));
+  return safeEqual(await digest(String(candidate ?? "").trim()), await digest(expected));
 }
