@@ -53,6 +53,7 @@ Intended and felt curves matched after two fixes. The first contact-sheet pass s
   - Keyboard focus targets are visible and carry a focus ring.
   - No horizontal page overflow, broken images, failed requests or console errors.
   - Legacy P790 route and representative products from irons, shoes, bags, balls and gloves remain on the standard template.
+- Netlify preview `6ab6c962c7e6dc4995e6a2f9` passed the full verifier, then production deploy `6ab6c9bd6a9120564d9fa469` was promoted to `https://karibugolf.com` and passed the same checks.
 
 ## Assets and limits
 
