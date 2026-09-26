@@ -40,7 +40,10 @@ async function loadProducts() {
     $("#stat-live").textContent = data.summary.live;
     $("#stat-private").textContent = data.summary.private;
     $("#stat-stock").textContent = data.summary.inStock;
-    populateCategoryFilter(); renderProducts();
+    populateCategoryFilter();
+    const requestedCategory = new URL(location.href).searchParams.get("category") || "";
+    if (requestedCategory && $("#category-filter").querySelector(`option[value="${CSS.escape(requestedCategory)}"]`)) $("#category-filter").value = requestedCategory;
+    renderProducts();
   } catch (error) { showNotice(error.message, true); }
 }
 
@@ -66,10 +69,20 @@ function renderProducts() {
   const visible = filteredProducts();
   $("#product-rows").innerHTML = visible.length ? visible.map((product) => `<tr>
     <td><div class="product-cell">${product.image ? `<img class="thumb" src="${escapeHtml(product.image)}" alt="" onerror="this.outerHTML='<span class=thumb-placeholder>◇</span>'">` : '<span class="thumb-placeholder">◇</span>'}<div><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.sku)}</small></div></div></td>
-    <td>${escapeHtml(categoryLabel(product.categorySlug))}</td><td><strong>${money(product.priceKes)}</strong><br><small>¥${Number(product.priceCny || 0).toLocaleString()}</small></td>
+    <td><button type="button" class="category-link" data-category="${escapeHtml(product.categorySlug)}">${escapeHtml(categoryLabel(product.categorySlug))}</button></td><td><strong>${money(product.priceKes)}</strong><br><small>¥${Number(product.priceCny || 0).toLocaleString()}</small></td>
     <td>${escapeHtml(product.stock)} <small>${escapeHtml(product.status)}</small></td>
     <td><button class="badge ${product.websiteVisible ? "live" : "private"}" data-toggle="${escapeHtml(product.sku)}"><i></i>${product.websiteVisible ? "LIVE" : "PRIVATE"}</button></td>
     <td><button class="edit-button" data-edit="${escapeHtml(product.sku)}">Edit</button></td></tr>`).join("") : '<tr><td colspan="6" class="loading">No products match this view.</td></tr>';
+}
+
+function selectCategory(slug) {
+  activeFilter = "all";
+  $$('[data-filter]').forEach((item) => item.classList.toggle("active", item.dataset.filter === "all"));
+  $("#category-filter").value = slug;
+  const url = new URL(location.href);
+  if (slug) url.searchParams.set("category", slug); else url.searchParams.delete("category");
+  history.replaceState({}, "", url);
+  renderProducts();
 }
 
 function showNotice(message, error = false) {
@@ -128,9 +141,9 @@ $("#product-form").elements.categorySlug.innerHTML = categoryOptions;
 $("#login-form").addEventListener("submit", async (event) => { event.preventDefault(); $("#login-error").textContent = ""; try { await api("/api/admin-auth", { method: "POST", body: JSON.stringify({ password: $("#password").value }) }); showApp(); await loadProducts(); } catch (error) { $("#login-error").textContent = error.message; } });
 $("#logout").addEventListener("click", async () => { await fetch("/api/admin-auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "logout" }) }); location.reload(); });
 $("#new-product").addEventListener("click", () => openEditor()); $("#close-editor").addEventListener("click", () => $("#editor").close()); $("#cancel-editor").addEventListener("click", () => $("#editor").close());
-$("#product-form").addEventListener("submit", save); $("#image-url").addEventListener("input", updateImagePreview); $("#search").addEventListener("input", renderProducts); $("#category-filter").addEventListener("change", renderProducts); $("#refresh").addEventListener("click", loadProducts);
+$("#product-form").addEventListener("submit", save); $("#image-url").addEventListener("input", updateImagePreview); $("#search").addEventListener("input", renderProducts); $("#category-filter").addEventListener("change", (event) => selectCategory(event.target.value)); $("#refresh").addEventListener("click", loadProducts);
 $("#product-form").elements.costCny.addEventListener("input", (event) => { $("#product-form").elements.costKes.value = Math.round(Number(event.target.value || 0) * 19); });
 $("#product-form").elements.priceCny.addEventListener("input", (event) => { const kes = Math.round(Number(event.target.value || 0) * 19); $("#product-form").elements.priceKes.value = kes; $("#product-form").elements.priceUsd.value = (kes / 129.5).toFixed(2); });
-$("#product-rows").addEventListener("click", (event) => { const edit = event.target.closest("[data-edit]"); const toggle = event.target.closest("[data-toggle]"); if (edit) openEditor(products.find((product) => product.sku === edit.dataset.edit)); if (toggle) toggleVisibility(toggle.dataset.toggle); });
+$("#product-rows").addEventListener("click", (event) => { const edit = event.target.closest("[data-edit]"); const toggle = event.target.closest("[data-toggle]"); const category = event.target.closest("[data-category]"); if (edit) openEditor(products.find((product) => product.sku === edit.dataset.edit)); if (toggle) toggleVisibility(toggle.dataset.toggle); if (category) selectCategory(category.dataset.category); });
 $$('[data-filter]').forEach((button) => button.addEventListener("click", () => { activeFilter = button.dataset.filter; $$('[data-filter]').forEach((item) => item.classList.toggle("active", item === button)); renderProducts(); }));
 checkSession();

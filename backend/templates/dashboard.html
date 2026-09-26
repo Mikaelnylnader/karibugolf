@@ -2,6 +2,13 @@
 {% block title %}Dashboard — Karibu Golf{% endblock %}
 
 {% block content %}
+<style>
+.stat-card-link { color: inherit; text-decoration: none; }
+.stat-card-link:hover { color: inherit; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(31,81,50,.12); }
+.dashboard-category-link { display: block; color: inherit; text-decoration: none; }
+.dashboard-category-link:hover { color: #1f5132; }
+.dashboard-category-row:hover { background: #f7f3e9; }
+</style>
 <div class="topbar">
     <h1>
         <i class="bi bi-grid-1x2-fill"></i> Dashboard
@@ -51,13 +58,13 @@
                 <p class="label">Private Inventory</p>
             </div>
         </div>
-        <div class="stat-card">
+        <a class="stat-card stat-card-link" href="/categories" aria-label="Open categories">
             <div class="icon gold"><i class="bi bi-tag"></i></div>
             <div>
                 <div class="num">{{ category_count }}</div>
                 <p class="label">Categories</p>
             </div>
-        </div>
+        </a>
         <div class="stat-card">
             <div class="icon blue"><i class="bi bi-check-circle"></i></div>
             <div>
@@ -174,10 +181,14 @@
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         {% for cat in categories %}
-                        <tr>
-                            <td style="padding:10px 20px;"><strong>{{ cat.label }}</strong></td>
+                        <tr class="dashboard-category-row">
+                            <td style="padding:10px 20px;">
+                                <a class="dashboard-category-link" href="/products?category={{ cat.slug }}"><strong>{{ cat.label }}</strong></a>
+                            </td>
                             <td style="padding:10px 20px;text-align:right;">
-                                <span class="badge badge-gk">{{ cat.count }} products</span>
+                                <a class="dashboard-category-link" href="/products?category={{ cat.slug }}">
+                                    <span class="badge badge-gk">{{ cat.count }} products <i class="bi bi-chevron-right"></i></span>
+                                </a>
                             </td>
                         </tr>
                         {% else %}
