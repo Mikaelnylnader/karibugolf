@@ -13,12 +13,21 @@
   <style>
     .category-link { border: 0; background: transparent; color: #1f5132; font: inherit; font-weight: 700; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(200,152,72,.55); text-underline-offset: 4px; }
     .category-link:hover { color: #c89848; }
+    .login-mark-full { width: min(300px, 82%); height: auto; margin-bottom: 34px; }
+    .brand-full { display: block; padding: 8px 10px; border-radius: 7px; background: #f0e3ca; }
+    .brand-full .brand-wordmark-image { width: 100%; height: auto; display: block; }
+    .brand-full .brand-badge-image { display: none; }
+    @media (max-width: 950px) {
+      .brand-full { padding: 6px; background: transparent; }
+      .brand-full .brand-wordmark-image { display: none; }
+      .brand-full .brand-badge-image { display: block; width: 44px; height: 44px; }
+    }
   </style>
 </head>
 <body>
   <div id="login" class="login-shell" hidden>
     <main class="login-card">
-      <img src="/images/karibu-badge.svg" alt="Karibu Golf" class="login-mark">
+      <img src="/images/logo.png" alt="Karibu Golf" class="login-mark-full">
       <p class="eyebrow">PRIVATE OPERATIONS</p>
       <h1>Your Karibu<br><em>control room.</em></h1>
       <p class="login-copy">Manage inventory, prices and what appears in the live webshop.</p>
@@ -33,7 +42,10 @@
 
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar">
-      <a href="/admin/" class="brand"><img src="/images/karibu-badge.svg" alt=""><span>KARIBU<br>GOLF<i>.</i></span></a>
+      <a href="/admin/" class="brand brand-full" aria-label="Karibu Golf online admin">
+        <img class="brand-wordmark-image" src="/images/logo.png" alt="Karibu Golf">
+        <img class="brand-badge-image" src="/images/karibu-badge.svg" alt="">
+      </a>
       <nav>
         <a class="active" href="#products"><span>◫</span> Products</a>
         <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span> Live shop</a>

@@ -58,6 +58,15 @@
             font-family: 'DM Mono', monospace; font-size: 8px;
             letter-spacing: 0.2em; text-transform: uppercase;
         }
+        .sidebar-brand .karibu-full-logo {
+            width: 100%; height: auto; display: block; padding: 8px 10px;
+            border-radius: 7px; background: var(--karibu-sand);
+        }
+        .sidebar-brand .brand-caption {
+            position: absolute; right: 24px; bottom: 8px;
+            color: rgba(239,227,204,0.62); font: 500 8px/1 'DM Mono', monospace;
+            letter-spacing: 0.18em; text-transform: uppercase;
+        }
         .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
         .sidebar-nav .nav-section {
             padding: 12px 24px 5px; font-family: 'DM Mono', monospace;
@@ -285,12 +294,8 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <a href="/" class="sidebar-brand" aria-label="Karibu Golf admin dashboard">
-        <img class="brand-logo" src="/brand-assets/karibu-badge.svg" alt="Karibu Golf">
-        <span class="brand-wordmark">
-            <strong>KARIBU</strong>
-            <strong>GOLF<span>.</span></strong>
-            <small>Product admin</small>
-        </span>
+        <img class="karibu-full-logo" src="/brand-assets/logo.png" alt="Karibu Golf">
+        <small class="brand-caption">Product admin</small>
     </a>
     <div class="sidebar-nav">
         <div class="nav-section">Overview</div>
