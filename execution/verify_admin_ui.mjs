@@ -51,6 +51,9 @@ assert(await page.locator("#editor-preview").isVisible(), "Live product preview 
 await page.locator("#close-editor").click();
 
 await page.locator("#nav-inventory").click();
+const inventoryQuantities = await page.locator("#inventory-rows [data-inventory-sku]").evaluateAll((inputs) => inputs.map((input) => Number(input.value)));
+assert(inventoryQuantities.length > 0, "Inventory did not show any in-stock products");
+assert(inventoryQuantities.every((quantity) => quantity > 0), "Inventory included an out-of-stock product");
 await page.locator("#inventory-search").fill("P790");
 await page.waitForTimeout(100);
 const inventoryInput = page.locator("#inventory-rows [data-inventory-sku]").first();

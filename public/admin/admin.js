@@ -18,7 +18,7 @@ const categoryGroups = [
 const viewCopy = {
   dashboard: ["Dashboard", "Your catalogue, stock and live shop in one place."],
   products: ["Products", "Search, filter and manage every product in your catalogue."],
-  inventory: ["Inventory", "Update several stock quantities in one save."],
+  inventory: ["Inventory", "Review and update products that are currently in stock."],
   categories: ["Categories", "Browse the catalogue using the same structure as your shop."],
 };
 
@@ -103,7 +103,7 @@ function syncSummaries(summary) {
     "#dash-live": summary.live, "#dash-private": summary.private, "#dash-units": totalUnits,
     "#inventory-units": totalUnits, "#inventory-in": summary.inStock,
     "#inventory-low": products.filter((product) => isInStock(product) && stockNumber(product) <= 2).length,
-    "#inventory-out": out,
+    "#inventory-live": products.filter((product) => isInStock(product) && product.websiteVisible).length,
   };
   for (const [selector, value] of Object.entries(values)) $(selector).textContent = Number(value).toLocaleString("en-KE");
 }
@@ -231,7 +231,9 @@ function setBulkDisabled(disabled) { $$("#bulk-bar button").forEach((button) => 
 function inventoryProducts() {
   const query = $("#inventory-search").value.trim().toLowerCase();
   const category = $("#inventory-category").value;
-  return products.filter((product) => (!query || product.name.toLowerCase().includes(query) || product.sku.toLowerCase().includes(query)) && (!category || product.categorySlug === category));
+  return products.filter((product) => isInStock(product)
+    && (!query || product.name.toLowerCase().includes(query) || product.sku.toLowerCase().includes(query))
+    && (!category || product.categorySlug === category));
 }
 
 function renderInventory() {
@@ -248,7 +250,7 @@ function renderInventory() {
       <td><span class="badge ${product.websiteVisible ? "live" : "private"}"><i></i>${product.websiteVisible ? "LIVE" : "PRIVATE"}</span></td>
       <td><button class="edit-button" type="button" data-inventory-edit="${escapeHtml(product.sku)}">Edit details</button></td>
     </tr>`;
-  }).join("") : '<tr><td colspan="7" class="loading">No inventory matches this view.</td></tr>';
+  }).join("") : '<tr><td colspan="7" class="loading">No in-stock products match this view.</td></tr>';
   $("#save-inventory").disabled = inventoryChanges.size === 0;
   $("#save-inventory").textContent = inventoryChanges.size ? `Save ${inventoryChanges.size} change${inventoryChanges.size === 1 ? "" : "s"}` : "Save inventory changes";
 }
