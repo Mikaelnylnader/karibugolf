@@ -1,4 +1,6 @@
 import seoArticles from "../../content/seo-articles-2026.json";
+import productSeoArticles from "../../content/product-seo-articles-2026.json";
+import inStockIronArticles from "../../content/in-stock-iron-articles-2026.json";
 
 export type BlogPost = {
   slug: string;
@@ -10,6 +12,10 @@ export type BlogPost = {
   author?: string;
   seoTitle?: string;
   metaDescription?: string;
+  publishedAt?: string;
+  updatedAt?: string;
+  keywords?: string[];
+  productSlug?: string;
   content?: string;
   sections?: [string, string][];
 };
@@ -21,6 +27,25 @@ const articleImages: Record<string, string> = {
   "best-golf-courses-kenya": "/images/hero.jpg",
   "golf-etiquette-dress-code-kenya": "/images/shop/categories-v2/mens_polos.webp",
 };
+
+type ArticleSource = (typeof productSeoArticles)[number];
+
+const toPost = (article: ArticleSource): BlogPost => ({
+  slug: article.slug,
+  tag: article.category.toUpperCase(),
+  title: article.title,
+  intro: article.excerpt,
+  image: articleImages[article.slug] ?? article.cover_image,
+  alt: article.cover_alt,
+  author: article.author,
+  seoTitle: article.seo_title,
+  metaDescription: article.meta_description,
+  publishedAt: article.published_at,
+  updatedAt: article.updated_at,
+  keywords: article.keywords,
+  productSlug: article.product_slug,
+  content: article.content,
+});
 
 const researchedPosts: BlogPost[] = seoArticles.map((article) => ({
   slug: article.slug,
@@ -34,6 +59,16 @@ const researchedPosts: BlogPost[] = seoArticles.map((article) => ({
   metaDescription: article.meta_description,
   content: article.content,
 }));
+
+const productPosts: BlogPost[] = [
+  ...inStockIronArticles.map(toPost),
+  ...productSeoArticles
+    .filter((article) => [
+      "taylormade-p790-irons-kenya-buying-guide",
+      "steel-vs-graphite-iron-shafts-kenya",
+    ].includes(article.slug))
+    .map(toPost),
+];
 
 const legacyPosts: BlogPost[] = [
   {
@@ -80,4 +115,4 @@ const legacyPosts: BlogPost[] = [
   },
 ];
 
-export const posts: BlogPost[] = [...researchedPosts, ...legacyPosts];
+export const posts: BlogPost[] = [...productPosts, ...researchedPosts, ...legacyPosts];

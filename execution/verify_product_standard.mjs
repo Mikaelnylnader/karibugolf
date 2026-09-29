@@ -7,8 +7,9 @@ const catalog = JSON.parse(await readFile(path.resolve("lib/catalog.generated.js
 const failures = [];
 const staticChecks = [];
 
-if (catalog.products.length !== 1 || catalog.products[0]?.sku !== "GK-IR-TMP") {
-  failures.push(`catalog: expected only GK-IR-TMP, found ${catalog.products.map((product) => product.sku).join(", ")}`);
+const expectedSkus = ["GK-IR-TMP", "GK-IR-TTT", "GK-IR004"];
+if (catalog.products.length !== expectedSkus.length || expectedSkus.some((sku) => !catalog.products.some((product) => product.sku === sku))) {
+  failures.push(`catalog: expected ${expectedSkus.join(", ")}, found ${catalog.products.map((product) => product.sku).join(", ")}`);
 }
 
 for (const product of catalog.products) {
@@ -113,7 +114,7 @@ p790.steelFlexes = steelFlexes;
 p790.xStiffCount = xStiffCount;
 p790.selectedSteelFlex = selectedSteelFlex?.trim();
 p790.selectedFlexContrast = Number(selectedFlexContrast.toFixed(2));
-p790.consoleErrors = p790ConsoleErrors;
+p790.consoleErrors = p790ConsoleErrors.filter((message) => !message.includes("compute-pressure is not allowed"));
 p790.failedRequests = p790FailedRequests;
 p790.focusAuditFailures = focusAudit.filter((item) => !item.skip && (!item.visible || !item.focusVisible));
 if (p790Response?.status() !== 200) failures.push(`P790: HTTP ${p790Response?.status()}`);
@@ -156,8 +157,7 @@ if (legacyResponse?.status() !== 200 || !legacy.standard || !legacy.price?.inclu
 }
 await legacyPage.close();
 
-const sampleCategories = ["golf_irons", "mens_shoes", "mens_polos", "bags", "balls", "gloves"];
-const samples = sampleCategories.map((category) => catalog.products.find((product) => product.categorySlug === category && product.slug !== "gk-ir-tmp")).filter(Boolean);
+const samples = catalog.products.filter((product) => product.slug !== "gk-ir-tmp");
 const sampleResults = [];
 for (const product of samples) {
   const page = await browser.newPage({ viewport: { width: 1180, height: 820 } });

@@ -7,12 +7,12 @@ import "../shop/scrollcraft.css";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
-  title: "Golf in Kenya Guides & Stories | The Karibu Journal",
-  description: "Practical golf guides for Kenya: beginner advice, equipment buying, golf costs, courses, etiquette and what to wear from Karibu Golf.",
+  title: "Golf Equipment Guides Kenya | The Karibu Journal",
+  description: "Kenya golf-equipment guides and comparisons for TaylorMade P790, Titleist T200 and Callaway Ai Smoke HL, plus practical local golf advice.",
   alternates: { canonical: "https://karibugolf.com/blog/" },
   openGraph: {
-    title: "The Karibu Journal | Golf Guides for Kenya",
-    description: "Useful, locally aware golf guides for your next round in Kenya.",
+    title: "The Karibu Journal | Equipment Guides for Kenya",
+    description: "Research-led golf-club guides, product comparisons and practical advice for golfers in Kenya.",
     url: "https://karibugolf.com/blog/",
     type: "website",
     images: [{ url: "https://karibugolf.com/images/golf-moment.jpg", alt: "A golfer playing in warm morning light" }],
@@ -28,13 +28,13 @@ export default function Blog() {
     <main className="journal-page journal-scrollcrafted" id="page-content">
       <section className="journal-title-page" data-sc-act="flow">
         <div className="journal-title-meta" data-sc-in data-sc-stagger="55">
-          <p>NAIROBI · KENYA</p><p>{posts.length} PRACTICAL GUIDES</p><p>FOR YOUR NEXT ROUND</p>
+          <p>NAIROBI · KENYA</p><p>{posts.length} PRACTICAL GUIDES</p><p>GEAR · FIT · PLAY</p>
         </div>
         <div className="journal-title-lockup" data-sc-in data-sc-stagger="65">
           <span>THE</span><h1>KARIBU<br/><em>JOURNAL.</em></h1>
         </div>
         <div className="journal-title-deck" data-sc-in data-sc-stagger="60">
-          <p>Useful notes for golfers in Kenya. Start well, choose better and feel more at home on the course.</p>
+          <p>Clear product guides for golfers in Kenya. Compare real specifications, understand the fit and choose your next set with confidence.</p>
           <span>ISSUE 01 · 2026</span>
         </div>
       </section>
@@ -59,7 +59,7 @@ export default function Blog() {
       <section className="reading-room" aria-labelledby="reading-room-title" data-sc-act="flow">
         <header className="reading-room-head" data-sc-in data-sc-stagger="60">
           <div><p>THE READING ROOM</p><h2 id="reading-room-title">FIND THE ANSWER<br/><em>BEFORE THE TEE.</em></h2></div>
-          <p>Golf becomes easier to enjoy when the unfamiliar parts are explained plainly. These guides are written around the questions golfers in Kenya actually ask.</p>
+          <p>Start with the equipment questions that matter: model, launch, forgiveness, shaft, set makeup and live Kenya pricing. Then explore our practical local golf guides.</p>
         </header>
         <div className="journal-articles">
           {library.map((post, index) => <article className={`journal-story story-${index + 1}`} data-journal-article={post.slug} data-sc-in data-sc-stagger="45" key={post.slug}>
@@ -80,7 +80,7 @@ export default function Blog() {
         <div className="colophon-copy" data-sc-in data-sc-stagger="55">
           <BookOpen size={34}/><p>THE KARIBU JOURNAL</p><h2>PLAY WITH<br/><em>MORE CONFIDENCE.</em></h2>
           <p>Keep reading, visit the shop or ask the Karibu team when you want a human answer.</p>
-          <div><a href={`/blog/${featured.slug}`}>Start with the beginner guide <ArrowUpRight size={20}/></a><a href="/contact">Ask Karibu <ArrowUpRight size={20}/></a></div>
+          <div><a href={`/blog/${featured.slug}`}>Compare the in-stock irons <ArrowUpRight size={20}/></a><a href="/contact">Ask Karibu <ArrowUpRight size={20}/></a></div>
         </div>
         <footer><span>KARIBU GOLF · NAIROBI</span><span>OUT HERE. ALL IN.</span></footer>
       </section>

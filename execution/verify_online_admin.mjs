@@ -36,8 +36,8 @@ const products = Array.isArray(payload) ? payload : payload.products;
 assert(Array.isArray(products), "Products response was not an array");
 assert(products.length >= 153, `Expected at least 153 products, received ${products.length}`);
 const visible = products.filter((product) => product.websiteVisible === true || String(product.websiteVisible).toLowerCase() === "true");
-assert.equal(visible.length, 1, `Expected one visible product, received ${visible.length}`);
-assert.equal(visible[0].sku, "GK-IR-TMP");
+const expectedVisibleSkus = ["GK-IR-TMP", "GK-IR-TTT", "GK-IR004"];
+assert.deepEqual(visible.map((product) => product.sku).sort(), expectedVisibleSkus.sort(), `Expected ${expectedVisibleSkus.length} visible iron sets`);
 
 const adminHtml = await (await fetch(`${baseUrl}/admin/`)).text();
 assert(adminHtml.includes("Karibu Golf — Online Admin"), "Admin UI marker was not found");
@@ -48,7 +48,7 @@ assert(adminJs.includes("function showCategoryProducts"), "Category product view
 const blogHtml = await (await fetch(`${baseUrl}/blog/`)).text();
 const articleSlugs = [...blogHtml.matchAll(/href="\/blog\/([^"#?]+)"/g)].map((match) => match[1]);
 const uniqueSlugs = [...new Set(articleSlugs)];
-assert.equal(uniqueSlugs.length, 8, `Expected eight blog articles, received ${uniqueSlugs.length}`);
+assert.equal(uniqueSlugs.length, 13, `Expected thirteen blog articles, received ${uniqueSlugs.length}`);
 for (const slug of uniqueSlugs) {
   const response = await fetch(`${baseUrl}/blog/${slug}/`);
   assert.equal(response.status, 200, `Blog article ${slug} returned HTTP ${response.status}`);

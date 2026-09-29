@@ -7,6 +7,12 @@ const origin = `http://127.0.0.1:${port}`;
 const publishDir = path.resolve("dist/static");
 const catalog = JSON.parse(await readFile(path.resolve("lib/catalog.generated.json"), "utf8"));
 const researchedArticles = JSON.parse(await readFile(path.resolve("content/seo-articles-2026.json"), "utf8"));
+const productArticles = JSON.parse(await readFile(path.resolve("content/product-seo-articles-2026.json"), "utf8"));
+const inStockIronArticles = JSON.parse(await readFile(path.resolve("content/in-stock-iron-articles-2026.json"), "utf8"));
+const selectedProductSlugs = new Set([
+  "taylormade-p790-irons-kenya-buying-guide",
+  "steel-vs-graphite-iron-shafts-kenya",
+]);
 const departments = {
   clubs: ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"],
   shoes: ["mens_shoes", "womens_shoes"],
@@ -21,6 +27,8 @@ const shopRoutes = Object.entries(departments).flatMap(([department, categories]
 ]);
 const productRoutes = catalog.products.map((product) => `/shop/product/${product.slug}`);
 const blogRoutes = [
+  ...inStockIronArticles.map((article) => `/blog/${article.slug}`),
+  ...productArticles.filter((article) => selectedProductSlugs.has(article.slug)).map((article) => `/blog/${article.slug}`),
   ...researchedArticles.map((article) => `/blog/${article.slug}`),
   "/blog/your-first-round",
   "/blog/before-you-choose-your-gear",
@@ -88,6 +96,20 @@ try {
     await writeFile(path.join(outputDir, "index.html"), html, "utf8");
     process.stdout.write(`exported ${route}\n`);
   }
+
+  const canonicalRoutes = [...new Set(routes.filter((route) => route !== "/shop/taylormade-p790-irons"))];
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${canonicalRoutes
+    .map((route) => `  <url><loc>https://karibugolf.com${route === "/" ? "/" : `${route}/`}</loc></url>`)
+    .join("\n")}\n</urlset>\n`;
+  await writeFile(path.join(publishDir, "sitemap.xml"), sitemap, "utf8");
+  await writeFile(path.join(publishDir, "robots.txt"), [
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /admin/",
+    "Disallow: /api/",
+    "Sitemap: https://karibugolf.com/sitemap.xml",
+    "",
+  ].join("\n"), "utf8");
 } finally {
   server.kill("SIGTERM");
 }

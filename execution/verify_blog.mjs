@@ -2,11 +2,11 @@ import { chromium } from "playwright-core";
 
 const base = (process.argv[2] || "http://127.0.0.1:4501").replace(/\/$/, "");
 const expected = [
-  "beginner-golf-nairobi",
-  "cost-of-golf-kenya-budget",
-  "first-golf-clubs-kenya",
-  "best-golf-courses-kenya",
-  "golf-etiquette-dress-code-kenya",
+  "p790-vs-t200-vs-ai-smoke-hl-kenya",
+  "titleist-t200-irons-kenya-buying-guide",
+  "callaway-ai-smoke-hl-irons-kenya-guide",
+  "taylormade-p790-irons-kenya-buying-guide",
+  "steel-vs-graphite-iron-shafts-kenya",
 ];
 const browser = await chromium.launch({
   headless: true,
@@ -19,7 +19,7 @@ const index = await browser.newPage({ viewport: { width: 390, height: 844 } });
 const indexResponse = await index.goto(`${base}/blog/`, { waitUntil: "networkidle" });
 const indexResult = await index.evaluate((slugs) => ({
   statusLinks: slugs.map((slug) => Boolean(document.querySelector(`a[href="/blog/${slug}"]`))),
-  articleCount: document.querySelectorAll(".journal-list article").length,
+  articleCount: document.querySelectorAll(".journal-story").length + Number(Boolean(document.querySelector(".journal-opener-copy"))),
   overflow: document.documentElement.scrollWidth - innerWidth,
   brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
 }), expected);
@@ -39,7 +39,9 @@ for (const slug of expected) {
     paragraphs: document.querySelectorAll(".article-copy p").length,
     canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
     metaDescription: document.querySelector('meta[name="description"]')?.getAttribute("content"),
-    hasArticleSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"Article"')),
+    hasArticleSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"BlogPosting"')),
+    hasFaqSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"FAQPage"')),
+    hasProductLink: Boolean(document.querySelector('.article-copy a[href^="/shop/product/"]')),
     oldCategoryLinks: document.querySelectorAll('.article-copy a[href^="/categories/"]').length,
     overflow: document.documentElement.scrollWidth - innerWidth,
     brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
@@ -49,7 +51,9 @@ for (const slug of expected) {
   if (!result.title || result.headings < 3 || result.paragraphs < 3) failures.push(`${slug}: article content is incomplete`);
   if (result.canonical !== `https://karibugolf.com/blog/${slug}/`) failures.push(`${slug}: canonical URL`);
   if (!result.metaDescription) failures.push(`${slug}: missing meta description`);
-  if (!result.hasArticleSchema) failures.push(`${slug}: missing Article schema`);
+  if (!result.hasArticleSchema) failures.push(`${slug}: missing BlogPosting schema`);
+  if (!result.hasFaqSchema) failures.push(`${slug}: missing FAQ schema`);
+  if (!result.hasProductLink) failures.push(`${slug}: missing product link`);
   if (result.oldCategoryLinks) failures.push(`${slug}: old category links remain`);
   if (result.overflow > 0) failures.push(`${slug}: horizontal overflow ${result.overflow}px`);
   if (result.brokenImages.length) failures.push(`${slug}: broken images`);

@@ -86,6 +86,114 @@ const p790: ProductPageDetails = {
   source: { label: "TaylorMade P·790 official product page", url: "https://www.taylormadegolf.com/P%E2%88%99790-Irons/DW-TC635.html?lang=en_US" },
 };
 
+const t200: ProductPageDetails = {
+  brand: "Titleist",
+  intro: "A players-distance iron that pairs a clean, Tour-inspired shape with a forged face, hollow construction and modern launch technology.",
+  gallery: [
+    { src: "/images/products/Titleist_T200.jpg", alt: "Titleist T200 iron set available from Karibu Golf", label: "T200 set" },
+  ],
+  galleryNote: "Karibu Golf catalogue image. Ask us for current photographs of the exact set, shafts, faces and soles before ordering.",
+  overviewEyebrow: "TITLEIST T200 IRONS",
+  overviewTitle: "CLEAN SHAPE. CONTROLLED DISTANCE.",
+  overviewBody: [
+    "T200 is Titleist’s players-distance design: a forged face and hollow-body chassis in a compact shape with less offset.",
+    "This Karibu listing covers a 4–PW plus approach-wedge set. Confirm the model generation and installed shaft against the physical stock before payment.",
+  ],
+  overviewImage: "/images/products/Titleist_T200.jpg",
+  features: [
+    { title: "Forged face and Max Impact", text: "Titleist combines a dual-taper forged face with a reengineered chassis and Max Impact technology to support feel and performance across the face." },
+    { title: "Player-validated profile", text: "The head uses a clean Tour-inspired shape, less offset and proportions designed to frame the ball without looking oversized." },
+    { title: "Progressive tungsten weighting", text: "Dense D18 tungsten is positioned through the set to tune launch in the long irons and control in the scoring clubs." },
+    { title: "Variable-bounce sole", text: "A softened trailing edge, influenced by Vokey Design, is intended to help the sole move cleanly through the turf after impact." },
+  ],
+  detailEyebrow: "4-IRON THROUGH APPROACH WEDGE",
+  detailTitle: "EIGHT CLUBS. CHECK EVERY SPEC.",
+  detailBody: [
+    "The manufacturer reference lofts run from 21° in the 4-iron to 48° in the approach wedge.",
+    "The exact shaft, flex, handedness, condition and model generation must be confirmed with Karibu Golf before payment.",
+  ],
+  detailImage: "/images/products/Titleist_T200.jpg",
+  configuration: [
+    { label: "Set", values: ["4–PW + AW"] },
+    { label: "Shaft and flex", values: ["Confirm exact stock"] },
+    { label: "Hand", values: ["Confirm exact stock"] },
+  ],
+  specTitle: "T200 REFERENCE SPECIFICATIONS.",
+  specIntro: "Titleist reference lofts for the 2023 T200 generation. Confirm that the physical set matches this generation.",
+  specs: {
+    headers: ["Club", "Loft", "Lie", "Length"],
+    rows: [
+      ["4", "21°", "61.5°", '38.50"'],
+      ["5", "24°", "62°", '38.00"'],
+      ["6", "27°", "62.5°", '37.50"'],
+      ["7", "30.5°", "63°", '37.00"'],
+      ["8", "34.5°", "63.5°", '36.50"'],
+      ["9", "38.5°", "64°", '36.00"'],
+      ["PW", "43°", "64°", '35.75"'],
+      ["AW", "48°", "64°", '35.50"'],
+    ],
+  },
+  equipment: [
+    { title: "Steel and graphite", text: "Titleist lists a broad range of shaft weights and launch profiles. Ask for the exact brand, model, material, weight and flex fitted to this set." },
+    { title: "Wedge gapping", text: "The 48° approach wedge should be checked against the next wedge in your bag by loft and carry distance." },
+  ],
+  source: { label: "Titleist T200 official product page", url: "https://www.titleist.com/golf-clubs/irons/t200-2023" },
+};
+
+const aiSmokeHl: ProductPageDetails = {
+  brand: "Callaway",
+  intro: "A high-launch game-improvement iron designed for moderate-to-average swing speeds and a confidence-inspiring flight.",
+  gallery: [
+    { src: "/images/shop/categories-v2/golf_irons.webp", alt: "Golf irons representing the Callaway Paradym Ai Smoke HL set", label: "Ai Smoke HL" },
+  ],
+  galleryNote: "Temporary category image. Ask Karibu Golf for current photographs of the exact Ai Smoke HL set before ordering.",
+  overviewEyebrow: "PARADYM AI SMOKE HL",
+  overviewTitle: "HIGHER LAUNCH. MORE CONFIDENCE.",
+  overviewBody: [
+    "Callaway built the HL model for golfers who need more launch to improve carry and hold more greens.",
+    "A deep cavity, low centre of gravity and longer blade length distinguish it from the standard Ai Smoke and Max Fast models.",
+  ],
+  overviewImage: "/images/shop/categories-v2/golf_irons.webp",
+  features: [
+    { title: "Ai Smart Face", text: "Callaway says the face was optimised with swing data from thousands of golfers to support the launch and spin needs of the HL player." },
+    { title: "Deep cavity construction", text: "A low, deep centre of gravity and tungsten weighting are designed to create a higher, more playable flight." },
+    { title: "Longer long and mid irons", text: "The 4- through 7-irons use additional length to create speed; centre contact and fit still need to be checked." },
+    { title: "Dynamic Sole Design", text: "A pre-worn leading edge and variable bounce are intended to promote clean turf interaction and forgiveness." },
+  ],
+  detailEyebrow: "4-IRON THROUGH APPROACH WEDGE",
+  detailTitle: "BUILT TO HELP THE BALL CLIMB.",
+  detailBody: [
+    "The reference 7-iron is 30° with a 37.5-inch standard length. The set continues to a 47° approach wedge.",
+    "Confirm that the physical stock carries the HL badge and verify its shaft, flex, handedness and condition before payment.",
+  ],
+  detailImage: "/images/shop/categories-v2/golf_irons.webp",
+  configuration: [
+    { label: "Set", values: ["4–PW + AW"] },
+    { label: "Shaft and flex", values: ["Confirm exact stock"] },
+    { label: "Hand", values: ["Confirm exact stock"] },
+  ],
+  specTitle: "AI SMOKE HL SPECIFICATIONS.",
+  specIntro: "Callaway reference specifications for the 2024 Paradym Ai Smoke HL. Confirm the exact physical set before ordering.",
+  specs: {
+    headers: ["Club", "Loft", "Lie", "Length"],
+    rows: [
+      ["4", "21°", "59.75°", '39.75"'],
+      ["5", "24°", "60.5°", '39.00"'],
+      ["6", "27°", "61.25°", '38.25"'],
+      ["7", "30°", "62°", '37.50"'],
+      ["8", "34°", "62.75°", '36.75"'],
+      ["9", "38°", "63.5°", '36.00"'],
+      ["PW", "43°", "63.75°", '35.75"'],
+      ["AW", "47°", "64°", '35.50"'],
+    ],
+  },
+  equipment: [
+    { title: "Reference steel shaft", text: "Callaway lists True Temper Elevate MPH 85 as an original steel configuration. Confirm what is installed on the Karibu set." },
+    { title: "Reference graphite shaft", text: "Callaway lists Project X Cypher 2.0 60 as an original graphite configuration. Confirm the exact shaft and flex before payment." },
+  ],
+  source: { label: "Callaway Paradym Ai Smoke HL official product page", url: "https://www.callawaygolf.com/product/irons-2024-paradym-ai-smoke-hl" },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -99,6 +207,8 @@ const categoryGuidance: Record<string, { eyebrow: string; title: string; text: s
 
 export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir-tmp") return p790;
+  if (product.slug === "gk-ir-ttt") return t200;
+  if (product.slug === "gk-ir004") return aiSmokeHl;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
