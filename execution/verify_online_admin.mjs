@@ -41,9 +41,15 @@ assert.deepEqual(visible.map((product) => product.sku).sort(), expectedVisibleSk
 
 const adminHtml = await (await fetch(`${baseUrl}/admin/`)).text();
 assert(adminHtml.includes("Karibu Golf — Online Admin"), "Admin UI marker was not found");
+assert(adminHtml.includes('id="nav-dashboard"'), "Online dashboard navigation was not found");
 assert(adminHtml.includes('id="nav-categories"'), "Online categories navigation was not found");
+assert(adminHtml.includes('id="nav-inventory"'), "Online inventory navigation was not found");
+assert(adminHtml.includes('id="bulk-bar"'), "Product bulk actions were not found");
+assert(adminHtml.includes('id="inventory-rows"'), "Inventory bulk editor was not found");
 const adminJs = await (await fetch(`${baseUrl}/admin/admin.js`)).text();
 assert(adminJs.includes("function showCategoryProducts"), "Category product view was not found");
+assert(adminJs.includes("function runBulkAction"), "Product bulk actions were not found");
+assert(adminJs.includes("function saveInventory"), "Inventory batch save was not found");
 
 const blogHtml = await (await fetch(`${baseUrl}/blog/`)).text();
 const articleSlugs = [...blogHtml.matchAll(/href="\/blog\/([^"#?]+)"/g)].map((match) => match[1]);

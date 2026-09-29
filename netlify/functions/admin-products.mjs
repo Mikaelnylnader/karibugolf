@@ -1,5 +1,5 @@
 import { isAuthorized, json } from "./_shared/auth.mjs";
-import { readProducts, saveProduct, triggerStorefrontBuild } from "./_shared/sheets.mjs";
+import { readProducts, saveProduct, saveProducts, triggerStorefrontBuild } from "./_shared/sheets.mjs";
 
 export default async function handler(request, context) {
   if (!(await isAuthorized(request))) return json({ error: "Unauthorized" }, 401);
@@ -17,7 +17,21 @@ export default async function handler(request, context) {
       });
     }
     if (!["POST", "PUT"].includes(request.method)) return json({ error: "Method not allowed" }, 405);
-    const product = await request.json();
+    const body = await request.json();
+    if (Array.isArray(body.products)) {
+      if (!body.products.length || body.products.length > 100) return json({ error: "Select between 1 and 100 products." }, 400);
+      const products = body.products.map((product) => ({
+        ...product,
+        sku: String(product.sku || "").trim().toUpperCase(),
+        name: String(product.name || "").trim(),
+      }));
+      const invalid = products.find((product) => !/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(product.sku) || !product.name);
+      if (invalid) return json({ error: `Invalid product in bulk update: ${invalid.sku || "missing SKU"}.` }, 400);
+      await saveProducts(products);
+      context.waitUntil(triggerStorefrontBuild());
+      return json({ saved: true, count: products.length, products, rebuildStarted: true });
+    }
+    const product = body;
     product.sku = String(product.sku || "").trim().toUpperCase();
     product.name = String(product.name || "").trim();
     if (!/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(product.sku)) return json({ error: "Use a valid SKU (letters, numbers, dash or underscore)." }, 400);

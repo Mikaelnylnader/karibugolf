@@ -121,37 +121,53 @@ async function ensureAnyHeader(headers, labels) {
   return existing ?? ensureHeader(headers, labels[0]);
 }
 
-export async function saveProduct(product) {
+const productFields = (product) => [
+  [["SKU"], product.sku], [["Name"], product.name], [["Category"], product.categorySlug],
+  [["Description"], product.description || ""], [["Sizes"], product.sizes || ""], [["Colors"], product.colors || ""],
+  [["Cost China (CNY)", "Cost Price (CNY)", "Cost CNY"], product.costCny || 0],
+  [["Cost China (Ksh)", "Cost KES"], product.costKes || 0],
+  [["Price Kenya (CNY)", "Selling Price (CNY)", "Sell CNY"], product.priceCny || 0],
+  [["Price Kenya (Ksh)", "Selling Price (KES)", "Sell KES"], product.priceKes || 0],
+  [["Selling Price (USD)", "Price (USD)"], product.priceUsd || 0],
+  [["Status"], product.status || "Out of Stock"], [["Stock"], product.stock || "0"],
+  [["Image", "Image URL"], product.image || ""], [["Website Visible"], product.websiteVisible ? "TRUE" : "FALSE"],
+];
+
+export async function saveProducts(items) {
   const { headers, products } = await readProducts();
-  const fields = [
-    [["SKU"], product.sku], [["Name"], product.name], [["Category"], product.categorySlug],
-    [["Description"], product.description || ""], [["Sizes"], product.sizes || ""], [["Colors"], product.colors || ""],
-    [["Cost China (CNY)", "Cost Price (CNY)", "Cost CNY"], product.costCny || 0],
-    [["Cost China (Ksh)", "Cost KES"], product.costKes || 0],
-    [["Price Kenya (CNY)", "Selling Price (CNY)", "Sell CNY"], product.priceCny || 0],
-    [["Price Kenya (Ksh)", "Selling Price (KES)", "Sell KES"], product.priceKes || 0],
-    [["Selling Price (USD)", "Price (USD)"], product.priceUsd || 0],
-    [["Status"], product.status || "Out of Stock"], [["Stock"], product.stock || "0"],
-    [["Image", "Image URL"], product.image || ""], [["Website Visible"], product.websiteVisible ? "TRUE" : "FALSE"],
-  ];
-  for (const [candidates] of fields) await ensureAnyHeader(headers, candidates);
-  const existing = products.find((item) => item.sku.toLowerCase() === String(product.sku).toLowerCase());
-  if (!existing) {
-    const row = Array(headers.length).fill("");
-    for (const [candidates, value] of fields) {
-      const index = candidates.map((name) => headers.indexOf(name)).find((candidate) => candidate >= 0);
-      if (index >= 0) row[index] = value;
+  const allCandidates = new Map();
+  for (const product of items) for (const [candidates] of productFields(product)) allCandidates.set(candidates.join("|"), candidates);
+  for (const candidates of allCandidates.values()) await ensureAnyHeader(headers, candidates);
+
+  const updates = [];
+  const additions = [];
+  for (const product of items) {
+    const fields = productFields(product);
+    const existing = products.find((item) => item.sku.toLowerCase() === String(product.sku).toLowerCase());
+    if (!existing) {
+      const row = Array(headers.length).fill("");
+      for (const [candidates, value] of fields) {
+        const index = candidates.map((name) => headers.indexOf(name)).find((candidate) => candidate >= 0);
+        if (index >= 0) row[index] = value;
+      }
+      additions.push(row);
+    } else {
+      for (const [candidates, value] of fields) {
+        const index = candidates.map((name) => headers.indexOf(name)).find((candidate) => candidate >= 0);
+        if (index >= 0) updates.push({ range: `${SHEET_TAB}!${columnName(index + 1)}${existing.rowNumber}`, values: [[value]] });
+      }
     }
-    const range = encodeURIComponent(`${SHEET_TAB}!A:ZZ`);
-    await google(`/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, { method: "POST", body: JSON.stringify({ values: [row] }) });
-  } else {
-    const data = [];
-    for (const [candidates, value] of fields) {
-      const index = candidates.map((name) => headers.indexOf(name)).find((candidate) => candidate >= 0);
-      if (index >= 0) data.push({ range: `${SHEET_TAB}!${columnName(index + 1)}${existing.rowNumber}`, values: [[value]] });
-    }
-    await google(`/values:batchUpdate`, { method: "POST", body: JSON.stringify({ valueInputOption: "USER_ENTERED", data }) });
   }
+  if (updates.length) await google(`/values:batchUpdate`, { method: "POST", body: JSON.stringify({ valueInputOption: "USER_ENTERED", data: updates }) });
+  if (additions.length) {
+    const range = encodeURIComponent(`${SHEET_TAB}!A:ZZ`);
+    await google(`/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, { method: "POST", body: JSON.stringify({ values: additions }) });
+  }
+  return items;
+}
+
+export async function saveProduct(product) {
+  await saveProducts([product]);
   return product;
 }
 

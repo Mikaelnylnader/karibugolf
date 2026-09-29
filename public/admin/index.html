@@ -10,48 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/admin/admin.css">
-  <style>
-    [hidden] { display: none !important; }
-    .category-link { border: 0; background: transparent; color: #1f5132; font: inherit; font-weight: 700; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: rgba(200,152,72,.55); text-underline-offset: 4px; }
-    .category-link:hover { color: #c89848; }
-    .password-reveal { display: flex; align-items: center; gap: 8px; color: #746d63; font-size: 12px; font-weight: 600; }
-    .password-reveal input { width: auto; margin: 0; box-shadow: none; }
-    .view-panel[hidden] { display: none; }
-    .category-groups { display: grid; gap: 28px; }
-    .category-group h2 { margin: 0 0 12px; font-size: 18px; letter-spacing: -.02em; }
-    .category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .category-card { min-height: 138px; border: 1px solid rgba(23,19,15,.14); border-radius: 10px; background: #fffdf8; padding: 20px; text-align: left; cursor: pointer; color: #17130f; transition: transform .18s, border-color .18s, box-shadow .18s; }
-    .category-card:hover { transform: translateY(-2px); border-color: #1f5132; box-shadow: 0 9px 24px rgba(31,81,50,.1); }
-    .category-card span, .category-card strong, .category-card small { display: block; }
-    .category-card span { color: #c89848; font: 500 10px/1 "DM Mono", monospace; letter-spacing: .12em; }
-    .category-card strong { margin: 18px 0 8px; font-size: 22px; }
-    .category-card small { color: #746d63; }
-    .category-detail-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
-    .category-detail-head h2 { margin: 6px 0 0; font-size: 32px; letter-spacing: -.04em; }
-    .category-back { border: 1px solid rgba(23,19,15,.14); background: #fff; color: #1f5132; border-radius: 7px; padding: 10px 14px; font-weight: 700; cursor: pointer; }
-    .category-product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .category-product { display: grid; grid-template-columns: 74px 1fr; gap: 14px; align-items: center; min-height: 122px; padding: 14px; border: 1px solid rgba(23,19,15,.12); border-radius: 10px; background: #fffdf8; }
-    .category-product img, .category-product .thumb-placeholder { width: 74px; height: 74px; object-fit: contain; border-radius: 8px; background: #f2eee5; }
-    .category-product h3 { margin: 0 0 4px; font-size: 16px; line-height: 1.15; }
-    .category-product p { margin: 0 0 10px; color: #746d63; font: 500 10px/1.4 "DM Mono", monospace; }
-    .category-product footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .category-product footer span { color: #1f5132; font-weight: 700; font-size: 12px; }
-    .empty-category { padding: 54px 24px; text-align: center; border: 1px dashed rgba(23,19,15,.18); border-radius: 10px; color: #746d63; }
-    .login-mark-full { width: min(300px, 82%); height: auto; margin-bottom: 34px; }
-    .brand-full { display: block; padding: 8px 10px; border-radius: 7px; background: #f0e3ca; }
-    .brand-full .brand-wordmark-image { width: 100%; height: auto; display: block; }
-    .brand-full .brand-badge-image { display: none; }
-    @media (max-width: 950px) {
-      .brand-full { padding: 6px; background: transparent; }
-      .brand-full .brand-wordmark-image { display: none; }
-      .brand-full .brand-badge-image { display: block; width: 44px; height: 44px; }
-      .category-grid, .category-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 680px) {
-      .category-grid, .category-product-grid { grid-template-columns: 1fr; }
-      .category-detail-head { align-items: flex-start; flex-direction: column; }
-    }
-  </style>
 </head>
 <body>
   <div id="login" class="login-shell" hidden>
@@ -59,7 +17,7 @@
       <img src="/images/logo.png" alt="Karibu Golf" class="login-mark-full">
       <p class="eyebrow">PRIVATE OPERATIONS</p>
       <h1>Your Karibu<br><em>control room.</em></h1>
-      <p class="login-copy">Manage inventory, prices and what appears in the live webshop.</p>
+      <p class="login-copy">Manage products, inventory, prices and what appears in the live webshop.</p>
       <form id="login-form">
         <label for="password">Admin password</label>
         <input id="password" type="password" autocomplete="current-password" required autofocus>
@@ -76,11 +34,14 @@
         <img class="brand-wordmark-image" src="/images/logo.png" alt="Karibu Golf">
         <img class="brand-badge-image" src="/images/karibu-badge.svg" alt="">
       </a>
-      <nav>
-        <a id="nav-products" class="active" href="#products"><span>◫</span> Products</a>
+      <nav aria-label="Admin sections">
+        <a id="nav-dashboard" class="active" href="#dashboard"><span>⌂</span> Dashboard</a>
+        <a id="nav-products" href="#products"><span>◫</span> Products</a>
+        <a id="nav-inventory" href="#inventory"><span>▦</span> Inventory</a>
         <a id="nav-categories" href="#categories"><span>◇</span> Categories</a>
+        <div class="nav-rule"></div>
         <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span> Live shop</a>
-        <a href="https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY" target="_blank" rel="noreferrer"><span>▦</span> Google Sheet</a>
+        <a href="https://docs.google.com/spreadsheets/d/1f9njWpqERHIbwKIfbPalauXJdkgQGZuvSYvEluwVuPY" target="_blank" rel="noreferrer"><span>▤</span> Google Sheet</a>
       </nav>
       <div class="sidebar-foot">
         <span class="connected"><i></i> Google Sheet connected</span>
@@ -90,39 +51,123 @@
 
     <div class="workspace">
       <header class="topbar">
-        <div><p class="eyebrow">ONLINE BACKEND</p><h1 id="view-title">Products</h1></div>
-        <button id="new-product" class="primary" type="button">＋ Add product</button>
+        <div>
+          <p id="view-eyebrow" class="eyebrow">ONLINE BACKEND</p>
+          <h1 id="view-title">Dashboard</h1>
+          <p id="view-subtitle" class="view-subtitle">Your catalogue, stock and live shop in one place.</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="refresh" type="button" class="secondary compact">↻ Refresh</button>
+          <button id="new-product" class="primary" type="button">＋ Add product</button>
+        </div>
       </header>
 
-      <main class="content view-panel" id="products">
-        <section class="stats" aria-label="Product summary">
-          <button class="stat active" data-filter="all"><span>All products</span><strong id="stat-total">—</strong><small>Stored in backend and Sheet</small></button>
-          <button class="stat live" data-filter="live"><span>Live webshop</span><strong id="stat-live">—</strong><small>Visible at karibugolf.com</small></button>
-          <button class="stat private" data-filter="private"><span>Private inventory</span><strong id="stat-private">—</strong><small>Hidden from customers</small></button>
-          <button class="stat stock" data-filter="stock"><span>In stock</span><strong id="stat-stock">—</strong><small>Available inventory</small></button>
+      <div id="notice" class="notice global-notice" hidden></div>
+
+      <main class="content view-panel" id="dashboard">
+        <section class="overview-strip" aria-label="Store summary">
+          <button class="overview-card" data-go="products" data-filter-target="all"><span>All products</span><strong id="dash-total">—</strong><small>Google Sheet catalogue</small></button>
+          <button class="overview-card green" data-go="products" data-filter-target="live"><span>Live webshop</span><strong id="dash-live">—</strong><small>Visible to customers</small></button>
+          <button class="overview-card gold" data-go="products" data-filter-target="private"><span>Private inventory</span><strong id="dash-private">—</strong><small>Stored but hidden</small></button>
+          <button class="overview-card coal" data-go="inventory"><span>Units available</span><strong id="dash-units">—</strong><small>Across in-stock items</small></button>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel quick-panel">
+            <header class="panel-head"><div><p class="eyebrow">QUICK ACTIONS</p><h2>Run the shop.</h2></div></header>
+            <div class="quick-actions">
+              <button data-quick="add"><span>＋</span><strong>Add a product</strong><small>Create it in the Sheet and backend.</small></button>
+              <button data-go="inventory"><span>▦</span><strong>Update inventory</strong><small>Edit several stock quantities together.</small></button>
+              <button data-go="categories"><span>◇</span><strong>Browse categories</strong><small>Open products by department.</small></button>
+              <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span><strong>Check the live shop</strong><small>See exactly what customers see.</small></a>
+            </div>
+          </article>
+
+          <article class="panel stock-watch">
+            <header class="panel-head"><div><p class="eyebrow">STOCK WATCH</p><h2>Needs attention.</h2></div><button data-go="inventory" class="text-button">Open inventory →</button></header>
+            <div id="stock-watch-list" class="mini-list"><p class="loading-inline">Loading stock…</p></div>
+          </article>
+
+          <article class="panel category-health">
+            <header class="panel-head"><div><p class="eyebrow">CATALOGUE MIX</p><h2>Products by category.</h2></div><button data-go="categories" class="text-button">All categories →</button></header>
+            <div id="dashboard-categories" class="bar-list"></div>
+          </article>
+
+          <article class="panel catalogue-snapshot">
+            <header class="panel-head"><div><p class="eyebrow">LIVE CATALOGUE</p><h2>Published products.</h2></div><button data-go="products" data-filter-target="live" class="text-button">View all →</button></header>
+            <div id="dashboard-products" class="mini-list"><p class="loading-inline">Loading products…</p></div>
+          </article>
+        </section>
+      </main>
+
+      <main class="content view-panel" id="products" hidden>
+        <section class="saved-views" aria-label="Product views">
+          <button class="view-tab active" data-filter="all">All <strong id="stat-total">—</strong></button>
+          <button class="view-tab" data-filter="live">Live <strong id="stat-live">—</strong></button>
+          <button class="view-tab" data-filter="private">Private <strong id="stat-private">—</strong></button>
+          <button class="view-tab" data-filter="stock">In stock <strong id="stat-stock">—</strong></button>
+          <button class="view-tab" data-filter="out">Out of stock <strong id="stat-out">—</strong></button>
         </section>
 
         <section class="catalog-card">
           <div class="catalog-tools">
             <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search product name or SKU"></label>
             <select id="category-filter" aria-label="Filter by category"><option value="">All categories</option></select>
-            <button id="refresh" type="button" class="secondary">Refresh</button>
+            <select id="sort-products" aria-label="Sort products">
+              <option value="name-asc">Product A–Z</option>
+              <option value="name-desc">Product Z–A</option>
+              <option value="stock-asc">Stock low to high</option>
+              <option value="stock-desc">Stock high to low</option>
+              <option value="price-desc">Price high to low</option>
+              <option value="price-asc">Price low to high</option>
+            </select>
           </div>
-          <div id="notice" class="notice" hidden></div>
+          <div id="bulk-bar" class="bulk-bar" hidden>
+            <strong><span id="selected-count">0</span> selected</strong>
+            <button type="button" data-bulk="live">Make live</button>
+            <button type="button" data-bulk="private">Make private</button>
+            <button type="button" data-bulk="in">Set in stock</button>
+            <button type="button" data-bulk="out">Set out of stock</button>
+            <button type="button" id="clear-selection" class="bulk-clear">Clear</button>
+          </div>
           <div class="table-wrap">
-            <table>
-              <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Website</th><th></th></tr></thead>
-              <tbody id="product-rows"><tr><td colspan="6" class="loading">Loading your catalog…</td></tr></tbody>
+            <table class="product-table">
+              <thead><tr><th class="check-column"><input id="select-all" type="checkbox" aria-label="Select all visible products"></th><th>Product</th><th>Category</th><th>Sell price</th><th>Inventory</th><th>Website</th><th></th></tr></thead>
+              <tbody id="product-rows"><tr><td colspan="7" class="loading">Loading your catalogue…</td></tr></tbody>
+            </table>
+          </div>
+          <footer class="table-footer"><span id="product-count">— products</span><span>Changes save to Google Sheets and start one website update.</span></footer>
+        </section>
+      </main>
+
+      <main class="content view-panel" id="inventory" hidden>
+        <section class="inventory-summary">
+          <article><span>Total units</span><strong id="inventory-units">—</strong></article>
+          <article><span>In-stock products</span><strong id="inventory-in">—</strong></article>
+          <article><span>Low stock (1–2)</span><strong id="inventory-low">—</strong></article>
+          <article><span>Out of stock</span><strong id="inventory-out">—</strong></article>
+        </section>
+        <section class="catalog-card">
+          <div class="inventory-intro">
+            <div><p class="eyebrow">BULK INVENTORY</p><h2>Edit quantities like a spreadsheet.</h2><p>Enter the new total quantity for each product, then save all changes once.</p></div>
+            <button id="save-inventory" class="primary" type="button" disabled>Save inventory changes</button>
+          </div>
+          <div class="catalog-tools inventory-tools">
+            <label class="search"><span>⌕</span><input id="inventory-search" type="search" placeholder="Search inventory"></label>
+            <select id="inventory-category" aria-label="Filter inventory by category"><option value="">All categories</option></select>
+          </div>
+          <div class="table-wrap inventory-wrap">
+            <table class="inventory-table">
+              <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Available</th><th>Status after save</th><th>Website</th><th></th></tr></thead>
+              <tbody id="inventory-rows"><tr><td colspan="7" class="loading">Loading inventory…</td></tr></tbody>
             </table>
           </div>
         </section>
       </main>
 
       <main class="content view-panel" id="categories" hidden>
-        <section class="catalog-card" style="padding:24px;">
-          <p class="eyebrow">CATALOG STRUCTURE</p>
-          <h2 style="margin:0 0 8px;font-size:30px;letter-spacing:-.04em;">Browse your categories</h2>
-          <p style="margin:0 0 26px;color:#746d63;">Choose a category to open only those products.</p>
+        <section class="catalog-card category-shell">
+          <header class="category-intro"><p class="eyebrow">CATALOGUE STRUCTURE</p><h2>Browse your categories.</h2><p>Choose a category to see and edit only those products.</p></header>
           <div id="category-groups" class="category-groups"></div>
         </section>
       </main>
@@ -132,56 +177,79 @@
   <dialog id="editor">
     <form id="product-form" method="dialog">
       <header class="editor-head">
-        <div><p class="eyebrow">PRODUCT EDITOR</p><h2 id="editor-title">Add product</h2></div>
-        <button id="close-editor" class="icon-button" type="button" aria-label="Close">×</button>
+        <div><p class="eyebrow">PRODUCT EDITOR</p><h2 id="editor-title">Add product</h2><p id="editor-sku-note">Create a complete listing, then decide when it goes live.</p></div>
+        <div class="editor-head-actions"><a id="editor-preview" href="#" target="_blank" rel="noreferrer" hidden>View live ↗</a><button id="close-editor" class="icon-button" type="button" aria-label="Close">×</button></div>
       </header>
       <div class="editor-body">
-        <section class="form-card">
-          <h3>Product information</h3>
-          <div class="form-grid">
-            <label>SKU<input name="sku" required maxlength="40" placeholder="GK-IR-001"></label>
-            <label class="wide">Product name<input name="name" required placeholder="TaylorMade P790"></label>
-            <label>Category<select name="categorySlug" required></select></label>
-            <label>Status<select name="status"><option>Out of Stock</option><option>In Stock</option><option>Coming Soon</option><option>Discontinued</option></select></label>
-            <label>Stock<input name="stock" inputmode="numeric" value="0"></label>
-            <label class="wide">Description<textarea name="description" rows="4" placeholder="Describe the product for customers and search engines"></textarea></label>
-            <label>Sizes<input name="sizes" placeholder="4–PW or S, M, L"></label>
-            <label>Colours<input name="colors" placeholder="Silver, Black"></label>
-          </div>
-        </section>
-
-        <section class="form-card">
-          <h3>Pricing</h3>
-          <p class="hint">Enter cost and selling price in RMB. Kenya and USD values calculate automatically.</p>
-          <div class="form-grid prices">
-            <label>Cost in RMB<input name="costCny" type="number" min="0" step="0.01"></label>
-            <label>Cost in KSh<input name="costKes" type="number" min="0" step="1"></label>
-            <label>Selling price in RMB<input name="priceCny" type="number" min="0" step="0.01"></label>
-            <label>Selling price in KSh<input name="priceKes" type="number" min="0" step="1"></label>
-            <label>Selling price in USD<input name="priceUsd" type="number" min="0" step="0.01"></label>
-          </div>
-          <p class="rate-note">Calculation: 1 RMB = 19 KSh · 1 USD = 129.5 KSh</p>
-        </section>
-
-        <section class="form-card media-card">
-          <h3>Product image</h3>
-          <div class="media-layout">
-            <div class="image-preview" id="image-preview"><span>No image</span></div>
-            <div>
-              <label>Image URL<input name="image" id="image-url" placeholder="https://… or upload below"></label>
-              <label class="upload">Upload a new image<input id="image-file" type="file" accept="image/*"></label>
-              <small>JPG, PNG or WebP, maximum 5 MB.</small>
+        <div class="editor-main">
+          <section class="form-card">
+            <h3>Product information</h3>
+            <p class="hint">Customer-facing name and description.</p>
+            <div class="form-grid">
+              <label class="wide">Product name<input name="name" required placeholder="TaylorMade P790"></label>
+              <label>SKU<input name="sku" required maxlength="40" placeholder="GK-IR-001"></label>
+              <label class="full">Description<textarea name="description" rows="5" placeholder="Describe the product for customers and search engines"></textarea></label>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="publish-card">
-          <label class="publish-toggle">
-            <input name="websiteVisible" type="checkbox">
-            <span class="switch"></span>
-            <span><strong>Show in live webshop</strong><small>Off keeps this product in the backend and Google Sheet only.</small></span>
-          </label>
-        </section>
+          <section class="form-card media-card">
+            <h3>Media</h3>
+            <p class="hint">Use a clear product photograph. Paste a URL or upload a file.</p>
+            <div class="media-layout">
+              <div class="image-preview" id="image-preview"><span>No image</span></div>
+              <div>
+                <label>Image URL<input name="image" id="image-url" placeholder="https://… or /images/…"></label>
+                <label class="upload">Upload a new image<input id="image-file" type="file" accept="image/*"></label>
+                <small>JPG, PNG or WebP, maximum 5 MB.</small>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-card">
+            <h3>Pricing</h3>
+            <p class="hint">Use RMB as the source. KSh and USD calculate automatically and remain editable.</p>
+            <div class="form-grid prices">
+              <label>Cost in RMB<input name="costCny" type="number" min="0" step="0.01"></label>
+              <label>Cost in KSh<input name="costKes" type="number" min="0" step="1"></label>
+              <label>Selling price in RMB<input name="priceCny" type="number" min="0" step="0.01"></label>
+              <label>Selling price in KSh<input name="priceKes" type="number" min="0" step="1"></label>
+              <label>Selling price in USD<input name="priceUsd" type="number" min="0" step="0.01"></label>
+              <div class="margin-preview"><span>Gross margin</span><strong id="margin-value">—</strong><small>Based on entered cost and selling price</small></div>
+            </div>
+            <p class="rate-note">Default conversion: 1 RMB = 19 KSh · 1 USD = 129.5 KSh</p>
+          </section>
+        </div>
+
+        <aside class="editor-side">
+          <section class="publish-card">
+            <p class="eyebrow">PUBLISHING</p>
+            <label class="publish-toggle">
+              <input name="websiteVisible" type="checkbox">
+              <span class="switch"></span>
+              <span><strong>Show in live webshop</strong><small>Off keeps it private in the backend and Sheet.</small></span>
+            </label>
+          </section>
+
+          <section class="form-card">
+            <h3>Organisation</h3>
+            <div class="side-fields">
+              <label>Category<select name="categorySlug" required></select></label>
+              <label>Sizes / set makeup<input name="sizes" placeholder="4–PW or S, M, L"></label>
+              <label>Colours / finish<input name="colors" placeholder="Silver, Black"></label>
+            </div>
+          </section>
+
+          <section class="form-card">
+            <h3>Inventory</h3>
+            <div class="side-fields">
+              <label>Status<select name="status"><option>Out of Stock</option><option>In Stock</option><option>Coming Soon</option><option>Discontinued</option></select></label>
+              <label>Available quantity<input name="stock" type="number" min="0" step="1" inputmode="numeric" value="0"></label>
+            </div>
+            <p class="hint inventory-hint">A quantity above zero should use “In Stock”. Zero should use “Out of Stock”.</p>
+          </section>
+
+          <section class="sync-card"><span><i></i> Connected</span><strong>Google Sheets is the source of truth.</strong><p>Saving here updates the Sheet, then starts a live storefront build.</p></section>
+        </aside>
       </div>
       <footer class="editor-actions">
         <p id="save-status"></p>
