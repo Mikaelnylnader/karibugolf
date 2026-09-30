@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T13:09:07.654Z",
+  "generatedAt": "2026-09-30T07:06:11.676Z",
   "categories": [
     {
       "slug": "drivers",
@@ -185,7 +185,7 @@
       "categorySlug": "golf_irons",
       "categoryLabel": "Golf Irons",
       "description": "Players-distance iron set with a forged face, hollow-body construction, Max Impact technology and a Tour-inspired shape.",
-      "priceKes": 62508,
+      "priceKes": 130000,
       "priceUsd": 482.69,
       "priceCny": 2943,
       "sizes": "4–PW + AW",
@@ -225,7 +225,7 @@
       "categorySlug": "golf_irons",
       "categoryLabel": "Golf Irons",
       "description": "Players distance iron with forged feel and hollow-body construction.",
-      "priceKes": 171000,
+      "priceKes": 130000,
       "priceUsd": 1320.46,
       "priceCny": 9000,
       "sizes": "4-PW",
@@ -234,6 +234,7 @@
       "stock": "1",
       "featured": true,
       "images": [
+        "/api/product-images/2ac095d5-cde6-4957-9c33-46b13384c68d-tc635-zoom-d.jpg",
         "/images/p790-hero.webp",
         "/images/clubs.jpg"
       ]

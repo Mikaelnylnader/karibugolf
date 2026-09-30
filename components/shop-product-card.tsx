@@ -1,5 +1,5 @@
 import type { CatalogProduct } from "@/lib/shop-catalog";
-import { formatKes } from "@/lib/shop-catalog";
+import LiveProductCardPrice from "@/components/live-product-card-price";
 
 export default function ShopProductCard({ product }: { product: CatalogProduct }) {
   const available = product.status.toLowerCase() === "in stock" && Number(product.stock || 0) > 0;
@@ -11,8 +11,7 @@ export default function ShopProductCard({ product }: { product: CatalogProduct }
     <div className="store-product-copy">
       <p className="micro">{product.categoryLabel} · {product.sku}</p>
       <h3>{product.name}</h3>
-      <p className="store-price">{formatKes(product.priceKes)}</p>
-      {(product.priceCny > 0 || product.priceUsd > 0) && <p className="store-currencies">{product.priceCny > 0 ? `¥${product.priceCny.toLocaleString("en-US")}` : ""}{product.priceCny > 0 && product.priceUsd > 0 ? " · " : ""}{product.priceUsd > 0 ? `$${product.priceUsd.toLocaleString("en-US")}` : ""}</p>}
+      <LiveProductCardPrice product={product}/>
       <span>View product ↗</span>
     </div>
   </a>;
