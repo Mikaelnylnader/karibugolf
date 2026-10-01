@@ -13,7 +13,7 @@ const liveP790 = livePayload.products?.[0];
 const expectedP790Price = liveP790 ? Math.round(liveP790.priceKes).toLocaleString("en-KE") : null;
 if (!liveP790) failures.push(`storefront API: P790 unavailable (HTTP ${liveResponse.status})`);
 
-const expectedSkus = ["GK-IR-TMP", "GK-IR-TTT", "GK-IR004"];
+const expectedSkus = ["GK-IR-P770", "GK-IR-TMP", "GK-IR-TTT", "GK-IR004"];
 if (catalog.products.length !== expectedSkus.length || expectedSkus.some((sku) => !catalog.products.some((product) => product.sku === sku))) {
   failures.push(`catalog: expected ${expectedSkus.join(", ")}, found ${catalog.products.map((product) => product.sku).join(", ")}`);
 }

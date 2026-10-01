@@ -86,6 +86,64 @@ const p790: ProductPageDetails = {
   source: { label: "TaylorMade P·790 official product page", url: "https://www.taylormadegolf.com/P%E2%88%99790-Irons/DW-TC635.html?lang=en_US" },
 };
 
+const p770: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A modern players iron with a compact profile, forged feel and progressive launch designed for consistent shotmaking.",
+  gallery: [
+    { src: "/images/products/gk-ir-p770/p770-cavity.jpg", alt: "TaylorMade P770 iron cavity and forged back view", label: "Cavity" },
+    { src: "/images/products/gk-ir-p770/p770-face.jpg", alt: "TaylorMade P770 iron face and grooves", label: "Face" },
+    { src: "/images/products/gk-ir-p770/p770-address.jpg", alt: "TaylorMade P770 iron viewed from the playing position", label: "At address" },
+    { src: "/images/products/gk-ir-p770/p770-profile.jpg", alt: "TaylorMade P770 iron profile, topline and sole", label: "Profile" },
+  ],
+  galleryNote: "TaylorMade product reference images supplied to Karibu Golf. Ask us for current photographs of the exact set before ordering.",
+  overviewEyebrow: "2024 P·770 IRONS",
+  overviewTitle: "COMPACT SHAPE. FORGED CONSISTENCY.",
+  overviewBody: [
+    "TaylorMade positions the P·770 as a modern players iron with a thinner topline and more compact head than P·790.",
+    "The forged construction, FLTD CG and precision-milled face are designed to balance feel, launch, spin and forgiveness through the set.",
+  ],
+  overviewImage: "/images/products/gk-ir-p770/p770-cavity.jpg",
+  features: [
+    { title: "Solid forged feel", text: "TaylorMade says each forged head is fine-tuned to deliver precise feedback and the best-feeling P·770 generation to date." },
+    { title: "Progressive flight", text: "FLTD CG is engineered to promote easier launch in the long irons and a lower, higher-spinning flight in the scoring clubs." },
+    { title: "Refined players shaping", text: "A thinner topline, compact head and updated sole geometry provide a clean look at address and support consistent turf interaction." },
+    { title: "Measured forgiveness", text: "Exacting mass optimisation and refined tungsten weighting add stability while preserving the workability expected from a players iron." },
+  ],
+  detailEyebrow: "4-IRON THROUGH PITCHING WEDGE",
+  detailTitle: "SEVEN CLUBS. ONE CONTROLLED FLIGHT.",
+  detailBody: [
+    "This Karibu listing is for a 4–PW set with a stiff steel shaft. The manufacturer reference lofts progress from 22.5° in the 4-iron to 46° in the pitching wedge.",
+    "Confirm the shaft brand and model, handedness, lie settings, grips and condition of the physical set with Karibu Golf before payment.",
+  ],
+  detailImage: "/images/products/gk-ir-p770/p770-face.jpg",
+  configuration: [
+    { label: "Set", values: ["4–PW"] },
+    { label: "Shaft", values: ["Steel"] },
+    { label: "Flex", values: ["Stiff"] },
+    { label: "Hand", values: ["Confirm exact stock"] },
+  ],
+  specTitle: "P·770 SPECIFICATIONS.",
+  specIntro: "TaylorMade reference specifications for the 2024 P·770. This table covers the 4–PW set shown in the Karibu listing.",
+  specs: {
+    headers: ["Club", "Loft", "Lie", "Men’s length", "Hand"],
+    rows: [
+      ["4", "22.5°", "61°", '38.50"', "RH / LH"],
+      ["5", "25.5°", "61.5°", '38.00"', "RH / LH"],
+      ["6", "29°", "62°", '37.50"', "RH / LH"],
+      ["7", "33°", "62.5°", '37.00"', "RH / LH"],
+      ["8", "37°", "63°", '36.50"', "RH / LH"],
+      ["9", "41°", "63.5°", '36.00"', "RH / LH"],
+      ["PW", "46°", "64°", '35.75"', "RH / LH"],
+    ],
+  },
+  equipment: [
+    { title: "Stiff steel stock", text: "This Karibu set is listed with a stiff steel shaft. Ask us to confirm the shaft brand, model, weight and labels from the physical clubs." },
+    { title: "Manufacturer shaft reference", text: "TaylorMade lists True Temper Dynamic Gold Mid 115 S300 as a stiff reference configuration. The exact Karibu stock shaft must be verified before ordering." },
+    { title: "Grip reference", text: "TaylorMade lists the Golf Pride Z-Grip Plus 2 as a standard reference grip. Request current photographs to confirm what is installed." },
+  ],
+  source: { label: "TaylorMade P·770 official product page", url: "https://www.taylormadegolf.com/P%E2%88%99770-Irons/DW-TC567.html?lang=en_US" },
+};
+
 const t200: ProductPageDetails = {
   brand: "Titleist",
   intro: "A players-distance iron that pairs a clean, Tour-inspired shape with a forged face, hollow construction and modern launch technology.",
@@ -207,6 +265,7 @@ const categoryGuidance: Record<string, { eyebrow: string; title: string; text: s
 
 export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir-tmp") return p790;
+  if (product.slug === "gk-ir-p770") return p770;
   if (product.slug === "gk-ir-ttt") return t200;
   if (product.slug === "gk-ir004") return aiSmokeHl;
 

@@ -179,6 +179,28 @@
   ],
   "products": [
     {
+      "sku": "GK-IR-P770",
+      "slug": "gk-ir-p770",
+      "name": "TaylorMade P770",
+      "categorySlug": "golf_irons",
+      "categoryLabel": "Golf Irons",
+      "description": "Modern players iron with compact shaping, forged feel and progressive launch through the set.",
+      "priceKes": 140000,
+      "priceUsd": 1081.08,
+      "priceCny": 7368.42,
+      "sizes": "4-PW",
+      "colors": "Steel · Stiff",
+      "status": "In Stock",
+      "stock": "1",
+      "featured": false,
+      "images": [
+        "/images/products/gk-ir-p770/p770-cavity.jpg",
+        "/images/products/gk-ir-p770/p770-face.jpg",
+        "/images/products/gk-ir-p770/p770-address.jpg",
+        "/images/products/gk-ir-p770/p770-profile.jpg"
+      ]
+    },
+    {
       "sku": "GK-IR-TTT",
       "slug": "gk-ir-ttt",
       "name": "Titleist T200",
