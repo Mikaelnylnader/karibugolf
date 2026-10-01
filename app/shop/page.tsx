@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, MessageCircle, PackageCheck, Truck } from "lucide-react";
-import { departments, products } from "@/lib/shop-catalog";
+import { departments, formatKes, inStockProducts, productDisplayImage, products } from "@/lib/shop-catalog";
 import ShopScrollShell from "@/components/shop-scroll-shell";
 import "./scrollcraft.css";
 
@@ -18,13 +18,28 @@ export default function Shop() {
         <span data-sc-parallax="-0.35"><img src={departments[0].image} alt="" /></span>
         <span data-sc-parallax="0.35"><img src={departments[4].image} alt="" /></span>
       </div>
-      <div className="store-hero-copy"><p className="micro">THE KARIBU WEBSHOP</p><h1>FIND YOUR<br/><em>NEXT ROUND.</em></h1><a href="#departments">Browse departments <ArrowUpRight size={20}/></a></div>
-      <div className="store-hero-note"><span>{products.length} PRODUCTS · 6 DEPARTMENTS</span><p>Start with what you need. Narrow the collection. Then ask a real person when you want help choosing.</p></div>
+      <div className="store-hero-copy"><p className="micro">THE KARIBU WEBSHOP</p><h1>FIND YOUR<br/><em>NEXT ROUND.</em></h1><a href="/shop/stock">Shop in-stock now <ArrowUpRight size={20}/></a></div>
+      <div className="store-hero-note"><span>{products.length} PRODUCTS · {inStockProducts.length} IN STOCK · 6 DEPARTMENTS</span><p>Start with what is ready now or browse the full shop by department. Ask a real person when you want help choosing.</p></div>
     </section>
 
     <nav className="store-quick-nav" aria-label="Shop departments" data-sc-in data-sc-stagger="45">
       {departments.map((item, index) => <a href={`#${item.slug}`} key={item.slug}><span>0{index + 1}</span>{item.label}</a>)}
     </nav>
+
+    <section className="shop-stock-window" aria-labelledby="shop-stock-title" data-sc-act="flow">
+      <header data-sc-in data-sc-stagger="55">
+        <div><p className="micro">LIVE KARIBU INVENTORY</p><span>{String(inStockProducts.length).padStart(2, "0")} READY IN KENYA</span></div>
+        <h2 id="shop-stock-title">WHAT IS<br/><em>IN STOCK NOW.</em></h2>
+        <p>Only products currently marked available in the Karibu catalogue appear here. Prices and stock come from the same source as each product page.</p>
+      </header>
+      <div className="shop-stock-rack" data-sc-in data-sc-stagger="55">
+        {inStockProducts.map((product, index) => <a href={`/shop/product/${product.slug}`} className={`shop-stock-item shop-stock-item-${index + 1}`} key={product.sku}>
+          <figure><img src={productDisplayImage(product)} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.16" : "-0.16"}/></figure>
+          <div><span>{String(index + 1).padStart(2, "0")} · {product.sku}</span><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
+        </a>)}
+      </div>
+      <footer data-sc-in><p>Every in-stock item, one focused collection.</p><a href="/shop/stock">Open live stock room <ArrowUpRight size={20}/></a></footer>
+    </section>
 
     <section className="department-intro" id="departments" data-sc-act="flow">
       <p className="micro">THE FULL EQUIPMENT WALL</p>

@@ -41,6 +41,7 @@ const routes = [
   ...blogRoutes,
   "/contact",
   "/shop",
+  "/shop/stock",
   "/shop/taylormade-p790-irons",
   ...shopRoutes,
   ...productRoutes,

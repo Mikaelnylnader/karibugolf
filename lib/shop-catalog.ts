@@ -93,6 +93,11 @@ export const departments: Department[] = [
 ];
 
 export const products = catalogData.products as CatalogProduct[];
+export const productIsInStock = (product: CatalogProduct) =>
+  product.status.toLowerCase() === "in stock" && Number(product.stock || 0) > 0;
+export const inStockProducts = products.filter(productIsInStock);
+export const productDisplayImage = (product: CatalogProduct) =>
+  product.images.find((image) => !image.startsWith("/api/product-images/")) ?? product.images[0] ?? "/images/clubs.jpg";
 export const departmentBySlug = (slug: string) => departments.find((item) => item.slug === slug);
 export const categoryBySlug = (slug: string) => departments.flatMap((item) => item.categories).find((item) => item.slug === slug);
 export const departmentForCategory = (slug: string) => departments.find((item) => item.categories.some((categoryItem) => categoryItem.slug === slug));

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, MessageCircle } from "lucide-react";
+import { formatKes, inStockProducts, productDisplayImage } from "@/lib/shop-catalog";
 
 const chat = "https://wa.me/254116416105";
 const topics = ["Equipment", "Apparel", "Essentials"];
@@ -18,6 +19,7 @@ export default function Home() {
  const opening = useRef<HTMLElement>(null);
  const welcome = useRef<HTMLElement>(null);
  const journey = useRef<HTMLElement>(null);
+ const homeStock = useRef<HTMLElement>(null);
  const track = useRef<HTMLDivElement>(null);
  const [active, setActive] = useState(0);
  useEffect(() => {
@@ -47,6 +49,17 @@ export default function Home() {
    journey.current.style.setProperty("--rail-x",String(-r*Math.max(0,(track.current?.scrollWidth??journey.current.clientWidth)-journey.current.clientWidth))+"px");
    const step=Math.round(r*2);
    if(step!==previous) { previous=step; setActive(step); }
+   if(homeStock.current) {
+    const stockBox=homeStock.current.getBoundingClientRect();
+    const stockProgress=clamp(-stockBox.top/Math.max(1,homeStock.current.offsetHeight-vh));
+    homeStock.current.style.setProperty("--home-stock-p",String(stockProgress));
+    const spread=Math.min(window.innerWidth*.145,210);
+    const positions=[[-1.15,-.16,-8],[-.38,.16,-3],[.38,-.13,4],[1.15,.15,8]];
+    homeStock.current.querySelectorAll<HTMLElement>("[data-home-stock-card]").forEach((card,index)=>{
+     const [x,y,rotate]=positions[index] ?? [0,0,0];
+     card.style.transform=`translate(-50%,-50%) translate3d(${x*spread*stockProgress}px,${y*vh*stockProgress}px,0) rotate(${rotate*stockProgress}deg)`;
+    });
+   }
    root.current.style.setProperty("--page-progress", String(clamp(window.scrollY / Math.max(1,document.documentElement.scrollHeight-vh))));
   };
   const update=()=>{ if(!frame) frame=requestAnimationFrame(paint); };
@@ -62,6 +75,12 @@ export default function Home() {
   const y=journey.current.getBoundingClientRect().top+window.scrollY;
   const headerHeight=document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
   window.scrollTo({top:y-headerHeight+(journey.current.offsetHeight-window.innerHeight+headerHeight)*(i/2),behavior:"smooth"});
+ };
+ const openStockRack=()=>{
+  if(!homeStock.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const top=homeStock.current.getBoundingClientRect().top+window.scrollY;
+  const travel=Math.max(0,homeStock.current.offsetHeight-window.innerHeight);
+  window.scrollTo({top:top+travel*.92,behavior:"smooth"});
  };
  const supports=[
   ["A real person in your corner","Ask us about your setup, sizing or what you’re looking for. Our team is here to help you explore the options, one conversation at a time."],
@@ -96,7 +115,17 @@ export default function Home() {
     <nav className="journey-nav" aria-label="Explore services">{topics.map((topic,i)=><button key={topic} className={active===i?"current":""} aria-current={active===i?"step":undefined} onClick={()=>goToPanel(i)}>{topic}<ArrowUpRight size={14}/></button>)}</nav>
    </div>
   </section>
-  <section className="shop-announcement" aria-labelledby="webshop-heading"><div><p className="micro">THE KARIBU WEBSHOP</p><h2 id="webshop-heading">YOUR NEXT FIND.<br/><em>JUST A CLICK AWAY.</em></h2><p>Clubs, shoes, apparel, bags, balls and round essentials—organised into a dedicated store that makes the growing Karibu collection easy to explore.</p></div><a href="/shop" target="_blank" rel="noopener">Open the webshop <ArrowUpRight size={25}/></a></section>
+  <section className="home-stock" id="stock-now" ref={homeStock} aria-labelledby="home-stock-title">
+   <div className="home-stock-stage">
+    <div className="home-stock-copy"><p className="micro">LIVE FROM THE KARIBU STOCK ROOM</p><h2 id="home-stock-title">HERE NOW.<br/><em>READY TO PLAY.</em></h2><p>{inStockProducts.length} products are currently marked in stock in Kenya. See the exact sets, live prices and product details in one focused collection.</p><a href="/shop/stock">See what is in stock <ArrowUpRight size={21}/></a></div>
+    <div className="home-stock-rack" aria-label="Products in stock now">
+     {inStockProducts.slice(0,4).map((product,index)=><a className={`home-stock-card home-stock-card-${index+1}`} href={`/shop/product/${product.slug}`} data-home-stock-card onFocus={openStockRack} key={product.sku}>
+      <span>{String(index+1).padStart(2,"0")} · IN STOCK</span><figure><img src={productDisplayImage(product)} alt={product.name} width="800" height="800" loading="lazy"/></figure><div><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
+     </a>)}
+    </div>
+    <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI, KENYA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
+   </div>
+  </section>
   <section className="people" id="people">
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>
    <div className="people-body"><div className="people-title"><h2>GOOD GOLF.<br/><em>REAL PEOPLE.</em></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across Kenya.</p></div></div>
