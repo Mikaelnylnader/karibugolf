@@ -32,6 +32,7 @@ changes only grammar and world will fail it.
 | Karibu Departments | Gallery / catalog | Fixed accumulating Kit Ledger with direct category index | First category as a labelled full-bleed photographic object | object hero > 0-9 reveal/parallax chapters > product shelf > inquiry, 9.0vh desktop / 10.2vh phone / 13.0vh compact for Clubs | Collection-desk inquiry label after the live product shelf | Kit Ledger stamps visited categories and resolves as a completed kit | Kenyan golf editorial, Fairway / Sand / Coal / Brass | 4501 |
 | Karibu P790 Product | Product dossier | Sticky compact dossier tabs with a return-to-setup destination | Immediate split purchase sheet with gallery, price, stock and configuration | flow commerce > pin/parallax study > pan technology > flow silence > pin/reveal loft peak > flow reference and close, 14.4vh desktop / 17.9vh phone / 8.8vh reduced | Configuration return followed by a related-product shelf | Seven real 4–PW lofts assemble into the gapping spine beside the iron face | Technical golf workshop, Fairway / Coal / Sand / Brass | 4501 |
 | Karibu Journal | Chaptered editorial | Updating margin folio with issue metadata and active reading category | Type-only printed cover opening into a split-spine feature | flow cover > custom split reveal/parallax feature > asymmetric flow reading room > reveal colophon, 9.3vh desktop / 11.1vh phone / 8.6vh reduced | Editorial masthead and colophon with held reading and contact links | Split-spine paper cover opens onto a Kenyan fairway | Kenyan golf editorial, Fairway / Sand / Coal / Brass | 4502 |
+| Karibu Stock Room | Live surface | Fixed numbered stock register with active product name | Live inventory manifest with the exact available count | flow manifest > four full product exhibits > flow confirmation desk, 6.5vh desktop / 8.4vh phone | Availability confirmation desk with shop return and WhatsApp handoff | Live paper Stock Ticket stamps the active SKU, price and quantity | Kenyan golf stock room, Fairway / Sand / Coal / Brass | 4503 |
 
 ---
 
@@ -53,6 +54,7 @@ as a constraint, so writing them down is the whole point.
 - Representative 8-act range at 9.0 desktop viewport-heights and 10.2 phone viewport-heights.
 - Product dossier with commerce before narrative, a horizontal construction rail and an exact seven-club loft-trace peak.
 - Chaptered editorial with a split-spine cover reveal, updating margin folio and dark colophon close.
+- Live inventory surface with a numbered product register and updating paper Stock Ticket.
 
 ---
 
