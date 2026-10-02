@@ -8,6 +8,9 @@ const expected = [
   "taylormade-p790-irons-kenya-buying-guide",
   "steel-vs-graphite-iron-shafts-kenya",
 ];
+const expectedHeroImages = new Map([
+  ["titleist-t200-irons-kenya-buying-guide", "/api/product-images/3d1a5d94-02c6-4344-8ccb-c551654066cf-t200-1.png"],
+]);
 const browser = await chromium.launch({
   headless: true,
   executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
@@ -42,6 +45,7 @@ for (const slug of expected) {
     hasArticleSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"BlogPosting"')),
     hasFaqSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"FAQPage"')),
     hasProductLink: Boolean(document.querySelector('.article-copy a[href^="/shop/product/"]')),
+    heroImage: document.querySelector(".article-photo img")?.getAttribute("src"),
     oldCategoryLinks: document.querySelectorAll('.article-copy a[href^="/categories/"]').length,
     overflow: document.documentElement.scrollWidth - innerWidth,
     brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
@@ -54,6 +58,7 @@ for (const slug of expected) {
   if (!result.hasArticleSchema) failures.push(`${slug}: missing BlogPosting schema`);
   if (!result.hasFaqSchema) failures.push(`${slug}: missing FAQ schema`);
   if (!result.hasProductLink) failures.push(`${slug}: missing product link`);
+  if (expectedHeroImages.has(slug) && result.heroImage !== expectedHeroImages.get(slug)) failures.push(`${slug}: wrong product hero image ${result.heroImage}`);
   if (result.oldCategoryLinks) failures.push(`${slug}: old category links remain`);
   if (result.overflow > 0) failures.push(`${slug}: horizontal overflow ${result.overflow}px`);
   if (result.brokenImages.length) failures.push(`${slug}: broken images`);
