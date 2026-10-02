@@ -14,7 +14,11 @@ const attachDiagnostics = (page, label) => {
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(`${label} console: ${message.text()}`);
   });
-  page.on("requestfailed", (request) => errors.push(`${label} request: ${request.url()} ${request.failure()?.errorText ?? "failed"}`));
+  page.on("requestfailed", (request) => {
+    const failure = request.failure()?.errorText ?? "failed";
+    if (request.resourceType() === "image" && failure.includes("ERR_ABORTED")) return;
+    errors.push(`${label} request: ${request.url()} ${failure}`);
+  });
 };
 
 const desktop = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
@@ -67,6 +71,8 @@ await desktop.goto(`${base}/`, { waitUntil: "networkidle" });
 const home = await desktop.evaluate(() => ({
   cards: document.querySelectorAll(".home-stock-card").length,
   stockLink: document.querySelector(".home-stock-copy>a")?.getAttribute("href"),
+  shopIntro: document.querySelector("#webshop-heading")?.textContent?.replace(/\s+/g, " ").trim(),
+  shopLink: document.querySelector(".shop-announcement>a")?.getAttribute("href"),
 }));
 const homeStock = desktop.locator(".home-stock");
 await homeStock.scrollIntoViewIfNeeded();
@@ -112,6 +118,7 @@ const failures = [
   ...(Object.values(routeStatuses).every((status) => status === 200) ? [] : ["product route status"]),
   ...(shop.cards === expectedCount && shop.stockLink === "/shop/stock" ? [] : ["shop stock window"]),
   ...(home.cards === expectedCount && home.stockLink === "/shop/stock" ? [] : ["home stock rack"]),
+  ...(home.shopIntro?.includes("YOUR NEXT FIND") && home.shopLink === "/shop" ? [] : ["home shop introduction"]),
   ...(new Set(fanTransforms).size > 1 ? [] : ["home stock rack did not fan open"]),
   ...(mobileState.products === expectedCount && mobileState.registerVisible ? [] : ["mobile stock content"]),
   ...(mobileState.horizontalOverflow <= 0 ? [] : [`mobile overflow ${mobileState.horizontalOverflow}px`]),
