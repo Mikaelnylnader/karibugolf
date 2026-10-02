@@ -5,7 +5,7 @@ import { departmentForCategory, productBySlug, productsForCategory } from "@/lib
 import "../scrollcraft.css";
 
 export const metadata: Metadata = {
-  title: "TaylorMade P790 Irons | Karibu Golf Kenya",
+  title: "TaylorMade P790 Irons | Karibu Golf East Africa",
   description: "Explore TaylorMade P790 irons with detailed images, technology, specifications, price and current Karibu Golf stock information.",
   alternates: { canonical: "https://karibugolf.com/shop/product/gk-ir-tmp/" },
   robots: { index: false, follow: true },

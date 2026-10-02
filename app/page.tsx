@@ -97,7 +97,7 @@ export default function Home() {
  const supports=[
   ["A real person in your corner","Ask us about your setup, sizing or what you’re looking for. Our team is here to help you explore the options, one conversation at a time."],
   ["Something specific in mind?","We source golf equipment from around the world. Tell us what’s on your wish list and we’ll discuss special-order options with you."],
-  ["From Nairobi. Across Kenya.","We arrange nationwide delivery, so your next golf day doesn’t depend on a trip to the shop. Message us for delivery details."]
+  ["From Nairobi. Across East Africa.","We help golfers across East Africa access the right equipment. Message us to discuss delivery options for your location."]
  ];
  return (
  <main ref={root} className="new-site" id="top">
@@ -107,7 +107,7 @@ export default function Home() {
     <div className="landscape-window"><Image unoptimized className="landscape" src="/images/fairway-aerial.jpg" alt="Sunlight tracing a fairway through trees, seen from above" width={2400} height={1599} priority/><div className="image-edge-shade"/></div>
     <div className="opening-title"><p className="micro">A LOVE FOR GOLF. A PLACE FOR YOU.</p><h1><span>OUT HERE.</span><span>ALL <em>IN.</em></span></h1></div>
     <div className="opening-second"><span className="micro">KARIBU SANA.</span><h2>The game.<br/>The feeling.<br/><em>The belonging.</em></h2><p>Welcome to your golf world.</p></div>
-    <div className="opening-bottom"><span>YOUR GOLF PARTNER<br/>IN KENYA.</span><a href="#offers">Explore what we offer <ArrowUpRight size={22}/></a><span className="opening-side-note">GOOD GOLF.<br/>EVEN BETTER COMPANY.</span></div>
+    <div className="opening-bottom"><span>YOUR GOLF PARTNER<br/>IN EAST AFRICA.</span><a href="#offers">Explore what we offer <ArrowUpRight size={22}/></a><span className="opening-side-note">GOOD GOLF.<br/>EVEN BETTER COMPANY.</span></div>
    </div>
   </section>
   <section className="welcome" id="welcome" ref={welcome}>
@@ -137,22 +137,22 @@ export default function Home() {
   </section>
   <section className="home-stock" id="stock-now" ref={homeStock} aria-labelledby="home-stock-title">
    <div className="home-stock-stage">
-    <div className="home-stock-copy"><p className="micro">LIVE FROM THE KARIBU STOCK ROOM</p><h2 id="home-stock-title">HERE NOW.<br/><em>READY TO PLAY.</em></h2><p>{inStockProducts.length} products are currently marked in stock in Kenya. See the exact sets, live prices and product details in one focused collection.</p><a href="/shop/stock">See what is in stock <ArrowUpRight size={21}/></a></div>
+    <div className="home-stock-copy"><p className="micro">LIVE FROM THE KARIBU STOCK ROOM</p><h2 id="home-stock-title">HERE NOW.<br/><em>READY TO PLAY.</em></h2><p>{inStockProducts.length} products are currently in stock at our Nairobi base, ready for golfers across East Africa. See the exact sets, live prices and product details in one focused collection.</p><a href="/shop/stock">See what is in stock <ArrowUpRight size={21}/></a></div>
     <div className="home-stock-rack" aria-label="Products in stock now">
      {inStockProducts.slice(0,4).map((product,index)=><a className={`home-stock-card home-stock-card-${index+1}`} href={`/shop/product/${product.slug}`} data-home-stock-card onFocus={openStockRack} key={product.sku}>
       <span>{String(index+1).padStart(2,"0")} · IN STOCK</span><figure><LiveProductImage product={product} alt={product.name} width="800" height="800" loading="lazy"/></figure><div><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
      </a>)}
     </div>
-    <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI, KENYA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
+    <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI · EAST AFRICA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
    </div>
   </section>
   <section className="people" id="people" ref={people}>
    <span className="people-orbit" aria-hidden="true"/>
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>
-   <div className="people-body"><div className="people-title"><h2><span className="people-line people-line-one"><span>GOOD GOLF.</span></span><span className="people-line people-line-two"><em>REAL PEOPLE.</em></span></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across Kenya.</p></div></div>
+   <div className="people-body"><div className="people-title"><h2><span className="people-line people-line-one"><span>GOOD GOLF.</span></span><span className="people-line people-line-two"><em>REAL PEOPLE.</em></span></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across East Africa.</p></div></div>
    <span className="people-divider" aria-hidden="true"><i/></span>
    <Accordion className="support-accordion" defaultValue={[0]}>{supports.map(([title,description],i)=><AccordionItem className="support-item" key={title} value={i}><AccordionTrigger>{title}</AccordionTrigger><AccordionContent><p>{description}</p></AccordionContent></AccordionItem>)}</Accordion></div>
   </section>
-  <section className="contact-close" id="contact"><div className="close-top"><span className="micro">YOUR NEXT ROUND STARTS WITH A CONVERSATION.</span><span>NAIROBI, KENYA</span></div><a className="huge-contact" href={chat+"?text="+encodeURIComponent("Hi Karibu Golf! I'd like to learn more about what you offer.")}><span>LET’S TALK<br/><em>GOLF.</em></span><ArrowUpRight strokeWidth={.8}/></a><div className="close-bottom"><p>Have a question? A wish list? A love for the game?<br/>We’d love to hear from you.</p><a href={chat}><MessageCircle size={18}/> +254 116 416 105</a></div></section>
+  <section className="contact-close" id="contact"><div className="close-top"><span className="micro">YOUR NEXT ROUND STARTS WITH A CONVERSATION.</span><span>NAIROBI · EAST AFRICA</span></div><a className="huge-contact" href={chat+"?text="+encodeURIComponent("Hi Karibu Golf! I'd like to learn more about what you offer.")}><span>LET’S TALK<br/><em>GOLF.</em></span><ArrowUpRight strokeWidth={.8}/></a><div className="close-bottom"><p>Have a question? A wish list? A love for the game?<br/>We’d love to hear from you.</p><a href={chat}><MessageCircle size={18}/> +254 116 416 105</a></div></section>
  </main>);
 }

@@ -90,7 +90,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
       <p>{active.sku}</p>
       <h2>{active.name}</h2>
       <dl>
-        <div><dt>Kenya price</dt><dd>{formatKes(active.priceKes)}</dd></div>
+        <div><dt>Price (KSh)</dt><dd>{formatKes(active.priceKes)}</dd></div>
         <div><dt>Available</dt><dd>{active.stock}</dd></div>
       </dl>
     </aside>}
@@ -99,7 +99,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
       <section className="stock-manifest" data-sc-act="flow">
         <div className="stock-manifest-count" aria-label={`${products.length} products in stock`}>
           <span>{String(products.length).padStart(2, "0")}</span>
-          <small>AVAILABLE<br/>IN KENYA</small>
+          <small>READY<br/>FROM NAIROBI</small>
         </div>
         <div className="stock-manifest-copy" data-sc-in data-sc-stagger="55">
           <p className="micro">KARIBU LIVE INVENTORY</p>
@@ -148,7 +148,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
           <h2>THE SET IS HERE.<br/><em>LET’S CHECK THE DETAILS.</em></h2>
         </div>
         <div data-sc-in>
-          <p>Stock moves quickly. Message the Karibu team and we will confirm the exact club set, shaft and collection or delivery options in Kenya.</p>
+          <p>Stock moves quickly. Message the Karibu team and we will confirm the exact club set, shaft and collection or delivery options across East Africa.</p>
           <a href={`${whatsapp}?text=${encodeURIComponent("Hi Karibu Golf! I would like to confirm what is currently in stock.")}`}>Confirm live stock <MessageCircle size={19}/></a>
         </div>
       </section>

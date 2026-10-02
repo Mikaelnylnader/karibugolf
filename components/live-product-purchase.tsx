@@ -37,7 +37,7 @@ export default function LiveProductPurchase({ product, configuration }: Props) {
 
   return <>
     <div className={`catalog-stock ${available ? "available" : "unavailable"}`} data-live-stock={live.sku}>
-      <span/>{available ? `In stock in Kenya · ${live.stock} available` : "Currently out of stock"}
+      <span/>{available ? `In stock in Nairobi · ${live.stock} available` : "Currently out of stock"}
     </div>
     <p className="club-intro">{product.description}</p>
     <div className="club-price" data-live-price={live.sku}>{price}<span>¥{Number(live.priceCny || 0).toLocaleString("en-US")} RMB · ${Number(live.priceUsd || 0).toLocaleString("en-US")} USD</span></div>

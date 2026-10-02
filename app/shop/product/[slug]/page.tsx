@@ -16,11 +16,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const details = detailsForProduct(product);
   const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
   return {
-    title: `${product.name} | Karibu Golf Kenya`,
-    description: `${product.description} View price, stock, images, options and specifications from Karibu Golf Kenya.`,
+    title: `${product.name} | Karibu Golf East Africa`,
+    description: `${product.description} View price, Nairobi stock, images, options and specifications from Karibu Golf East Africa.`,
     alternates: { canonical },
     openGraph: {
-      title: `${product.name} | Karibu Golf Kenya`,
+      title: `${product.name} | Karibu Golf East Africa`,
       description: product.description,
       url: canonical,
       type: "website",
