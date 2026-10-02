@@ -3,7 +3,8 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowUpRight, MessageCircle } from "lucide-react";
 import type { CatalogProduct } from "@/lib/shop-catalog";
-import { formatKes, productDisplayImage } from "@/lib/shop-catalog";
+import { formatKes } from "@/lib/shop-catalog";
+import LiveProductImage from "@/components/live-product-image";
 
 declare global {
   interface Window {
@@ -123,7 +124,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
         >
           <span className="stock-exhibit-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
           <a className="stock-exhibit-image" href={`/shop/product/${product.slug}`} data-sc-reveal={index % 2 ? "right" : "left"} data-sc-reveal-at="0.04 0.50">
-            <img src={productDisplayImage(product)} alt={product.name} width="1200" height="1200" loading={index > 0 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.24" : "-0.24"}/>
+            <LiveProductImage product={product} alt={product.name} width="1200" height="1200" loading={index > 0 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.24" : "-0.24"}/>
           </a>
           <div className="stock-exhibit-copy" data-sc-in data-sc-stagger="55">
             <p className="micro">{product.categoryLabel} · {product.sku}</p>

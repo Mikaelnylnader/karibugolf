@@ -15,6 +15,7 @@ export default async function handler(request) {
         priceUsd: product.priceUsd,
         status: product.status,
         stock: product.stock,
+        image: product.image,
       }));
     return json({ products: visible });
   } catch (error) {

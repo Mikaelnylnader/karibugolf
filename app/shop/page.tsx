@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, MessageCircle, PackageCheck, Truck } from "lucide-react";
-import { departments, formatKes, inStockProducts, productDisplayImage, products } from "@/lib/shop-catalog";
+import { departments, formatKes, inStockProducts, products } from "@/lib/shop-catalog";
 import ShopScrollShell from "@/components/shop-scroll-shell";
+import LiveProductImage from "@/components/live-product-image";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default function Shop() {
       </header>
       <div className="shop-stock-rack" data-sc-in data-sc-stagger="55">
         {inStockProducts.map((product, index) => <a href={`/shop/product/${product.slug}`} className={`shop-stock-item shop-stock-item-${index + 1}`} key={product.sku}>
-          <figure><img src={productDisplayImage(product)} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.16" : "-0.16"}/></figure>
+          <figure><LiveProductImage product={product} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.16" : "-0.16"}/></figure>
           <div><span>{String(index + 1).padStart(2, "0")} · {product.sku}</span><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
         </a>)}
       </div>

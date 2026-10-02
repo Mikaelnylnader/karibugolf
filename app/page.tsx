@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, MessageCircle } from "lucide-react";
-import { formatKes, inStockProducts, productDisplayImage } from "@/lib/shop-catalog";
+import { formatKes, inStockProducts } from "@/lib/shop-catalog";
+import LiveProductImage from "@/components/live-product-image";
 
 const chat = "https://wa.me/254116416105";
 const topics = ["Equipment", "Apparel", "Essentials"];
@@ -115,12 +116,20 @@ export default function Home() {
     <nav className="journey-nav" aria-label="Explore services">{topics.map((topic,i)=><button key={topic} className={active===i?"current":""} aria-current={active===i?"step":undefined} onClick={()=>goToPanel(i)}>{topic}<ArrowUpRight size={14}/></button>)}</nav>
    </div>
   </section>
+  <section className="shop-announcement" aria-labelledby="webshop-heading">
+   <div>
+    <p className="micro">THE KARIBU WEBSHOP</p>
+    <h2 id="webshop-heading">YOUR NEXT FIND.<br/><em>JUST A CLICK AWAY.</em></h2>
+    <p>Clubs, shoes, apparel, bags, balls and round essentials—organised into a dedicated store that makes the growing Karibu collection easy to explore.</p>
+   </div>
+   <a href="/shop">Open the webshop <ArrowUpRight size={25}/></a>
+  </section>
   <section className="home-stock" id="stock-now" ref={homeStock} aria-labelledby="home-stock-title">
    <div className="home-stock-stage">
     <div className="home-stock-copy"><p className="micro">LIVE FROM THE KARIBU STOCK ROOM</p><h2 id="home-stock-title">HERE NOW.<br/><em>READY TO PLAY.</em></h2><p>{inStockProducts.length} products are currently marked in stock in Kenya. See the exact sets, live prices and product details in one focused collection.</p><a href="/shop/stock">See what is in stock <ArrowUpRight size={21}/></a></div>
     <div className="home-stock-rack" aria-label="Products in stock now">
      {inStockProducts.slice(0,4).map((product,index)=><a className={`home-stock-card home-stock-card-${index+1}`} href={`/shop/product/${product.slug}`} data-home-stock-card onFocus={openStockRack} key={product.sku}>
-      <span>{String(index+1).padStart(2,"0")} · IN STOCK</span><figure><img src={productDisplayImage(product)} alt={product.name} width="800" height="800" loading="lazy"/></figure><div><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
+      <span>{String(index+1).padStart(2,"0")} · IN STOCK</span><figure><LiveProductImage product={product} alt={product.name} width="800" height="800" loading="lazy"/></figure><div><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
      </a>)}
     </div>
     <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI, KENYA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
