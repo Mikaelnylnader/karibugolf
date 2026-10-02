@@ -33,6 +33,7 @@ changes only grammar and world will fail it.
 | Karibu P790 Product | Product dossier | Sticky compact dossier tabs with a return-to-setup destination | Immediate split purchase sheet with gallery, price, stock and configuration | flow commerce > pin/parallax study > pan technology > flow silence > pin/reveal loft peak > flow reference and close, 14.4vh desktop / 17.9vh phone / 8.8vh reduced | Configuration return followed by a related-product shelf | Seven real 4–PW lofts assemble into the gapping spine beside the iron face | Technical golf workshop, Fairway / Coal / Sand / Brass | 4501 |
 | Karibu Journal | Chaptered editorial | Updating margin folio with issue metadata and active reading category | Type-only printed cover opening into a split-spine feature | flow cover > custom split reveal/parallax feature > asymmetric flow reading room > reveal colophon, 9.3vh desktop / 11.1vh phone / 8.6vh reduced | Editorial masthead and colophon with held reading and contact links | Split-spine paper cover opens onto a Kenyan fairway | Kenyan golf editorial, Fairway / Sand / Coal / Brass | 4502 |
 | Karibu Stock Room | Live surface | Fixed numbered stock register with active product name | Live inventory manifest with the exact available count | flow manifest > four full product exhibits > flow confirmation desk, 6.5vh desktop / 8.4vh phone | Availability confirmation desk with shop return and WhatsApp handoff | Live paper Stock Ticket stamps the active SKU, price and quantity | Kenyan golf stock room, Fairway / Sand / Coal / Brass | 4503 |
+| Karibu About | Hospitality procession | Fixed non-navigation welcome line that records the page opening | Layered photographic Karibu aperture with concentric brand rings | pin aperture > flow origin > pin belief > pan promises > flow circle close, 12.8vh desktop / 12.6vh phone / 7.0vh reduced | Three open arcs settle around a held contact invitation | Karibu aperture expands from badge scale into the golfer, then returns as the closing invitation ring | East African golf hospitality, Fairway / Paper / Lime / Brass | 4505 |
 
 ---
 
@@ -55,6 +56,7 @@ as a constraint, so writing them down is the whole point.
 - Product dossier with commerce before narrative, a horizontal construction rail and an exact seven-club loft-trace peak.
 - Chaptered editorial with a split-spine cover reveal, updating margin folio and dark colophon close.
 - Live inventory surface with a numbered product register and updating paper Stock Ticket.
+- Hospitality procession with a brand aperture hero, non-navigation welcome line and open-circle contact resolution.
 
 ---
 
