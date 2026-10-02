@@ -21,6 +21,7 @@ export default function Home() {
  const welcome = useRef<HTMLElement>(null);
  const journey = useRef<HTMLElement>(null);
  const homeStock = useRef<HTMLElement>(null);
+ const people = useRef<HTMLElement>(null);
  const track = useRef<HTMLDivElement>(null);
  const [active, setActive] = useState(0);
  useEffect(() => {
@@ -60,6 +61,16 @@ export default function Home() {
      const [x,y,rotate]=positions[index] ?? [0,0,0];
      card.style.transform=`translate(-50%,-50%) translate3d(${x*spread*stockProgress}px,${y*vh*stockProgress}px,0) rotate(${rotate*stockProgress}deg)`;
     });
+   }
+   if(people.current) {
+    const peopleBox=people.current.getBoundingClientRect();
+    const peopleProgress=clamp((vh*.9-peopleBox.top)/Math.max(1,vh*.78));
+    people.current.style.setProperty("--people-p",String(peopleProgress));
+    people.current.style.setProperty("--people-label",String(clamp(peopleProgress*2.2)));
+    people.current.style.setProperty("--people-line-one",String(clamp((peopleProgress-.08)*2.15)));
+    people.current.style.setProperty("--people-line-two",String(clamp((peopleProgress-.19)*2.05)));
+    people.current.style.setProperty("--people-detail",String(clamp((peopleProgress-.34)*1.9)));
+    people.current.style.setProperty("--people-list",String(clamp((peopleProgress-.42)*1.75)));
    }
    root.current.style.setProperty("--page-progress", String(clamp(window.scrollY / Math.max(1,document.documentElement.scrollHeight-vh))));
   };
@@ -135,9 +146,11 @@ export default function Home() {
     <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI, KENYA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
    </div>
   </section>
-  <section className="people" id="people">
+  <section className="people" id="people" ref={people}>
+   <span className="people-orbit" aria-hidden="true"/>
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>
-   <div className="people-body"><div className="people-title"><h2>GOOD GOLF.<br/><em>REAL PEOPLE.</em></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across Kenya.</p></div></div>
+   <div className="people-body"><div className="people-title"><h2><span className="people-line people-line-one"><span>GOOD GOLF.</span></span><span className="people-line people-line-two"><em>REAL PEOPLE.</em></span></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across Kenya.</p></div></div>
+   <span className="people-divider" aria-hidden="true"><i/></span>
    <Accordion className="support-accordion" defaultValue={[0]}>{supports.map(([title,description],i)=><AccordionItem className="support-item" key={title} value={i}><AccordionTrigger>{title}</AccordionTrigger><AccordionContent><p>{description}</p></AccordionContent></AccordionItem>)}</Accordion></div>
   </section>
   <section className="contact-close" id="contact"><div className="close-top"><span className="micro">YOUR NEXT ROUND STARTS WITH A CONVERSATION.</span><span>NAIROBI, KENYA</span></div><a className="huge-contact" href={chat+"?text="+encodeURIComponent("Hi Karibu Golf! I'd like to learn more about what you offer.")}><span>LET’S TALK<br/><em>GOLF.</em></span><ArrowUpRight strokeWidth={.8}/></a><div className="close-bottom"><p>Have a question? A wish list? A love for the game?<br/>We’d love to hear from you.</p><a href={chat}><MessageCircle size={18}/> +254 116 416 105</a></div></section>
