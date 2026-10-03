@@ -19,6 +19,10 @@ export default function ShopScrollShell({ children, departments }: { children: R
     const root = rootRef.current;
     if (!root) return;
     document.documentElement.classList.add("shop-category-snap");
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const hero = root.querySelector<HTMLElement>("[data-shop-hero]");
+    const heroStage = hero?.querySelector<HTMLElement>("[data-shop-hero-stage]");
+    const clamp = (value: number) => Math.max(0, Math.min(1, value));
 
     const mount = () => {
       if (!root.dataset.scrollcraftMounted && window.ScrollCraft) {
@@ -43,6 +47,18 @@ export default function ShopScrollShell({ children, departments }: { children: R
       const bounds = root.getBoundingClientRect();
       const travel = Math.max(root.offsetHeight - window.innerHeight, 1);
       setProgress(Math.min(1, Math.max(0, -bounds.top / travel)));
+      root.dataset.shopMotion = motion.matches ? "off" : "on";
+      if (hero && heroStage) {
+        const header = document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
+        const heroProgress = motion.matches ? 0 : clamp((header - hero.getBoundingClientRect().top) / Math.max(hero.offsetHeight - heroStage.offsetHeight, 1));
+        const leave = clamp((heroProgress - 0.08) / 0.32);
+        const enter = clamp((heroProgress - 0.32) / 0.30);
+        hero.style.setProperty("--shop-hero-p", String(heroProgress));
+        hero.style.setProperty("--shop-hero-leave", String(leave));
+        hero.style.setProperty("--shop-hero-enter", String(enter));
+        heroStage.dataset.scVerifyState = `window:${Math.round(heroProgress * 100)};first:${Math.round((1 - leave) * 100)};second:${Math.round(enter * 100)}`;
+        heroStage.dataset.scVerifyHold = motion.matches ? "true" : "false";
+      }
 
       let closest = departments[0]?.slug ?? "clubs";
       let distance = Number.POSITIVE_INFINITY;
@@ -69,6 +85,7 @@ export default function ShopScrollShell({ children, departments }: { children: R
     updateTrail();
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll, { passive: true });
+    motion.addEventListener("change", onScroll);
     const onClick = (event: MouseEvent) => {
       const anchor = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
       const slug = anchor?.getAttribute("href")?.slice(1);
@@ -83,6 +100,7 @@ export default function ShopScrollShell({ children, departments }: { children: R
     return () => {
       removeEventListener("scroll", onScroll);
       removeEventListener("resize", onScroll);
+      motion.removeEventListener("change", onScroll);
       root.removeEventListener("click", onClick);
       document.documentElement.classList.remove("shop-category-snap");
       if (frame) cancelAnimationFrame(frame);

@@ -19,11 +19,56 @@ function watch(page, label) {
 
 async function openPage(viewport, label, reducedMotion = "no-preference") {
   const page = await browser.newPage({ viewport, reducedMotion });
+  await page.addInitScript(() => {
+    Element.prototype.requestPointerLock = () => Promise.resolve();
+    Element.prototype.setPointerCapture = () => {};
+    Element.prototype.releasePointerCapture = () => {};
+  });
   watch(page, label);
   const response = await page.goto(url, { waitUntil: "networkidle" });
   if (response?.status() !== 200) failures.push(`${label}: HTTP ${response?.status()}`);
   await page.waitForFunction(() => document.querySelector(".shop-scroll-shell")?.getAttribute("data-scrollcraft-mounted") === "true");
   return page;
+}
+
+async function inspectHero(page, label, reduced = false) {
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; document.documentElement.style.scrollSnapType = "none"; });
+  const geometry = await page.evaluate(() => {
+    const hero = document.querySelector("[data-shop-hero]");
+    const stage = document.querySelector("[data-shop-hero-stage]");
+    const navHeight = document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
+    return { top: hero.getBoundingClientRect().top + scrollY - navHeight, travel: hero.offsetHeight - stage.offsetHeight, navHeight, stagePosition: getComputedStyle(stage).position };
+  });
+  const samples = [];
+  for (const [index, progress] of [0, .2, .4, .6, .8, 1].entries()) {
+    await page.evaluate(({ top, travel, progress }) => scrollTo(0, top + travel * progress), { ...geometry, progress });
+    await page.waitForTimeout(300);
+    samples.push(await page.evaluate(() => {
+      const stage = document.querySelector("[data-shop-hero-stage]");
+      const link = stage.querySelector('.store-hero-copy a');
+      const rect = link.getBoundingClientRect();
+      return {
+        stageTop: Math.round(stage.getBoundingClientRect().top),
+        photoTransform: getComputedStyle(stage.querySelector('.store-hero-gallery>span:nth-child(2)')).transform,
+        foregroundTransform: getComputedStyle(stage.querySelector('.store-hero-gallery>span:nth-child(3)')).transform,
+        firstOpacity: Number(getComputedStyle(stage.querySelector('.store-hero-first')).opacity),
+        secondOpacity: Number(getComputedStyle(stage.querySelector('.store-hero-second')).opacity),
+        linkVisible: rect.top > 60 && rect.bottom < innerHeight - 10,
+        overflow: document.documentElement.scrollWidth - innerWidth,
+      };
+    }));
+    if (!reduced) await page.screenshot({ path: `${out}/${label}-hero-${index}.png` });
+    if (reduced) break;
+  }
+  if (!reduced) {
+    if (geometry.stagePosition !== "sticky" || geometry.travel < 400) failures.push(`${label} hero does not hold during scroll`);
+    if (samples.some((sample) => Math.abs(sample.stageTop - geometry.navHeight) > 2)) failures.push(`${label} hero leaves before the effect ends`);
+    if (new Set(samples.map((sample) => sample.photoTransform)).size < 5) failures.push(`${label} hero photograph does not move`);
+    if (samples[0].firstOpacity < .99 || samples.at(-1).secondOpacity < .99) failures.push(`${label} hero headline transition`);
+  } else if (geometry.travel > 2 || geometry.stagePosition === "sticky") failures.push("reduced hero keeps extra scroll space");
+  if (samples.some((sample) => !sample.linkVisible || sample.overflow > 0)) failures.push(`${label} hero stock link clipped or page overflows`);
+  await page.evaluate(() => { document.documentElement.style.scrollSnapType = ""; });
+  return { geometry, samples };
 }
 
 async function inspectPage(page, label) {
@@ -106,6 +151,7 @@ async function sampleEffects(page, label) {
 }
 
 const desktop = await openPage({ width: 1440, height: 900 }, "desktop");
+const desktopHero = await inspectHero(desktop, "desktop");
 const desktopEffects = await sampleEffects(desktop, "desktop");
 const desktopResult = await inspectPage(desktop, "desktop");
 await desktop.locator('.store-quick-nav a[href="#apparel"]').click();
@@ -118,13 +164,18 @@ const quickNavTarget = await desktop.evaluate(() => {
 await desktop.close();
 
 const mobile = await openPage({ width: 390, height: 844 }, "mobile");
+const mobileHero = await inspectHero(mobile, "mobile");
 const mobileEffects = await sampleEffects(mobile, "mobile");
 const mobileResult = await inspectPage(mobile, "mobile");
 await mobile.close();
 
 const reduced = await openPage({ width: 390, height: 844 }, "reduced", "reduce");
+const reducedHero = await inspectHero(reduced, "reduced", true);
 const reducedResult = await inspectPage(reduced, "reduced");
 await reduced.close();
+const compact = await openPage({ width: 360, height: 640 }, "compact");
+const compactHero = await inspectHero(compact, "compact");
+await compact.close();
 await browser.close();
 
 for (const [label, result] of [["desktop", desktopResult], ["mobile", mobileResult], ["reduced", reducedResult]]) {
@@ -150,5 +201,5 @@ for (const [label, effects] of [["desktop", desktopEffects], ["mobile", mobileEf
 }
 failures.push(...errors);
 
-console.log(JSON.stringify({ url, desktop: { ...desktopResult, effects: desktopEffects, quickNavTarget }, mobile: { ...mobileResult, effects: mobileEffects }, reducedMotion: reducedResult, errors, failures }, null, 2));
+console.log(JSON.stringify({ url, desktop: { ...desktopResult, hero: desktopHero, effects: desktopEffects, quickNavTarget }, mobile: { ...mobileResult, hero: mobileHero, effects: mobileEffects }, reducedMotion: { ...reducedResult, hero: reducedHero }, compactHero, errors, failures }, null, 2));
 if (failures.length) process.exitCode = 1;

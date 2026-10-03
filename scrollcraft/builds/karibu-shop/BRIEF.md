@@ -59,7 +59,7 @@ The short Sand-colored transition immediately before the department gallery is i
 
 | Beat | Device family | Why |
 |---|---|---|
-| Arrival | Flow + layered parallax | Establishes a physical shop window without delaying access |
+| Arrival | Held shop window + independent zoom + headline transition | Like the landing page, the opening stays in view while the main photograph approaches and the title resolves from the next round to your own gear |
 | Orientation | In-view stagger | Makes the six choices legible together |
 | Discovery | Per-card reveal + parallax + full-card snap | Preserves the original equipment-wall composition while every photograph arrives on its own timeline and settles fully into view |
 | Reassurance | Flow + in-view typography | Keeps service information quick and readable |

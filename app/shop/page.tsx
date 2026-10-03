@@ -12,15 +12,23 @@ export const metadata: Metadata = {
 
 export default function Shop() {
   return <ShopScrollShell departments={departments}><main className="inner-page store-page scrollcrafted-store" id="page-content">
-    <section className="store-hero" data-sc-act="flow">
-      <div className="store-hero-ground" data-sc-parallax="-0.45" aria-hidden="true" />
+    <section className="store-hero-journey" data-shop-hero data-sc-act="flow" aria-label="Welcome to the Karibu webshop">
+     <div className="store-hero" data-shop-hero-stage data-sc-verify-state="shop-window:opening">
+      <div className="store-hero-ground" aria-hidden="true" />
       <div className="store-hero-gallery" aria-hidden="true">
-        <span data-sc-parallax="-0.8"><img src={departments[1].image} alt="" /></span>
-        <span data-sc-parallax="-0.35"><img src={departments[0].image} alt="" /></span>
-        <span data-sc-parallax="0.35"><img src={departments[4].image} alt="" /></span>
+        <span><img src={departments[1].image} alt="" /></span>
+        <span><img src={departments[0].image} alt="" /></span>
+        <span><img src={departments[4].image} alt="" /></span>
       </div>
-      <div className="store-hero-copy"><p className="micro">THE KARIBU WEBSHOP</p><h1>FIND YOUR<br/><em>NEXT ROUND.</em></h1><a href="/shop/stock">Shop in-stock now <ArrowUpRight size={20}/></a></div>
+      <div className="store-hero-copy">
+       <div className="store-hero-heading">
+        <div className="store-hero-first"><p className="micro">THE KARIBU WEBSHOP</p><h1>FIND YOUR<br/><em>NEXT ROUND.</em></h1></div>
+        <div className="store-hero-second" aria-hidden="true"><p className="micro">FROM NAIROBI. ACROSS EAST AFRICA.</p><h2>YOUR GAME.<br/><em>YOUR GEAR.</em></h2></div>
+       </div>
+       <a href="/shop/stock">Shop in-stock now <ArrowUpRight size={20}/></a>
+      </div>
       <div className="store-hero-note"><span>{products.length} PRODUCTS · {inStockProducts.length} IN STOCK · 6 DEPARTMENTS</span><p>Start with what is ready now or browse the full shop by department. Ask a real person when you want help choosing.</p></div>
+     </div>
     </section>
 
     <nav className="store-quick-nav" aria-label="Shop departments" data-sc-in data-sc-stagger="45">
