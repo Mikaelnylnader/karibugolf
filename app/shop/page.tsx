@@ -42,26 +42,18 @@ export default function Shop() {
       <footer data-sc-in><p>Every in-stock item, one focused collection.</p><a href="/shop/stock">Open live stock room <ArrowUpRight size={20}/></a></footer>
     </section>
 
-    <section className="department-pan" id="departments" aria-label="Shop by department" data-shop-pan data-sc-act="pan" data-sc-span="6.3" data-sc-drift="#14110e">
-      <div className="sc-stage department-pan-stage" data-sc-stage data-sc-verify-state="clubs:0">
-        <div className="department-pan-rail" data-sc-pan="0.02">
-          <header className="department-pan-intro">
-            <p className="micro">THE FULL EQUIPMENT WALL</p>
-            <h2>CHOOSE A<br/>DEPARTMENT.</h2>
-            <p>Every category is connected to the live Karibu catalog. Keep scrolling to move through the full Karibu shop.</p>
-          </header>
-          {departments.map((item, index) => <a className={`department-card department-pan-panel department-card-${index + 1}`} href={`/shop/${item.slug}`} id={item.slug} data-shop-department={item.slug} data-sc-in key={item.slug}>
-            <figure><img src={item.image} alt={`${item.label} at Karibu Golf East Africa`} width="1200" height="1600" loading={index > 1 ? "lazy" : "eager"}/></figure>
-            <div className="department-shade"/>
-            <div className="department-copy"><p className="micro">{item.eyebrow}</p><h2>{item.label}</h2><p>{item.description}</p><span>{item.categories.length} {item.categories.length === 1 ? "category" : "categories"} <ArrowUpRight size={21}/></span></div>
-          </a>)}
-          <aside className="department-pan-close">
-            <p className="micro">THE WHOLE SHOP</p>
-            <h2>YOUR NEXT<br/><em>FIND STARTS HERE.</em></h2>
-            <a href="https://wa.me/254116416105">Ask Karibu for help <ArrowUpRight size={20}/></a>
-          </aside>
-        </div>
-      </div>
+    <section className="department-intro" id="departments" data-sc-act="flow" data-shop-snap>
+      <p className="micro">THE FULL EQUIPMENT WALL</p>
+      <h2>CHOOSE A DEPARTMENT.<br/><em>GO STRAIGHT TO THE GEAR.</em></h2>
+      <p>Every category is connected to the live Karibu catalog, so the shop can grow without becoming harder to navigate.</p>
+    </section>
+
+    <section className="department-grid" aria-label="Shop by department" data-sc-act="flow">
+      {departments.map((item, index) => <a className={`department-card department-card-${index + 1}`} href={`/shop/${item.slug}`} id={item.slug} data-shop-department={item.slug} data-shop-snap data-sc-in data-sc-tilt="4" key={item.slug}>
+        <figure><img src={item.image} alt={`${item.label} at Karibu Golf East Africa`} width="1200" height="1600" loading={index > 1 ? "lazy" : "eager"}/></figure>
+        <div className="department-shade"/>
+        <div className="department-copy"><p className="micro">{item.eyebrow}</p><h2>{item.label}</h2><p>{item.description}</p><span>{item.categories.length} {item.categories.length === 1 ? "category" : "categories"} <ArrowUpRight size={21}/></span></div>
+      </a>)}
     </section>
 
     <section className="store-about" data-sc-act="flow">
