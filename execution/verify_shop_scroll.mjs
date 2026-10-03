@@ -76,7 +76,37 @@ async function inspectPage(page, label) {
   return { ...result, samples };
 }
 
+async function sampleEffects(page, label) {
+  await page.evaluate(() => { document.documentElement.style.scrollSnapType = "none"; });
+  const sample = async (actSelector, mediaSelector, progress, name) => {
+    await page.evaluate(({ actSelector, progress }) => {
+      const act = document.querySelector(actSelector);
+      if (!act) return;
+      const top = act.getBoundingClientRect().top + scrollY;
+      scrollTo(0, top - innerHeight + progress * (act.offsetHeight + innerHeight));
+    }, { actSelector, progress });
+    await page.waitForTimeout(220);
+    const state = await page.evaluate((mediaSelector) => {
+      const media = document.querySelector(mediaSelector);
+      const image = media?.querySelector("img");
+      const copy = media?.closest("a")?.querySelector(":scope > div:last-child");
+      return { clipPath: media ? getComputedStyle(media).clipPath : "missing", imageTransform: image ? getComputedStyle(image).transform : "missing", copyOpacity: copy ? Number(getComputedStyle(copy).opacity) : 0 };
+    }, mediaSelector);
+    await page.screenshot({ path: `${out}/${label}-${name}.png` });
+    return state;
+  };
+  const effects = {
+    stockEntry: await sample(".shop-stock-window", ".shop-stock-item:first-child figure", 0.16, "stock-entry"),
+    stockSettled: await sample(".shop-stock-window", ".shop-stock-item:first-child figure", 0.52, "stock-settled"),
+    categoryEntry: await sample('[data-shop-department="clubs"]', '[data-shop-department="clubs"] figure', 0.18, "category-entry"),
+    categorySettled: await sample('[data-shop-department="clubs"]', '[data-shop-department="clubs"] figure', 0.68, "category-settled"),
+  };
+  await page.evaluate(() => { document.documentElement.style.scrollSnapType = ""; });
+  return effects;
+}
+
 const desktop = await openPage({ width: 1440, height: 900 }, "desktop");
+const desktopEffects = await sampleEffects(desktop, "desktop");
 const desktopResult = await inspectPage(desktop, "desktop");
 await desktop.locator('.store-quick-nav a[href="#apparel"]').click();
 await desktop.waitForTimeout(1800);
@@ -88,6 +118,7 @@ const quickNavTarget = await desktop.evaluate(() => {
 await desktop.close();
 
 const mobile = await openPage({ width: 390, height: 844 }, "mobile");
+const mobileEffects = await sampleEffects(mobile, "mobile");
 const mobileResult = await inspectPage(mobile, "mobile");
 await mobile.close();
 
@@ -109,7 +140,15 @@ for (const [label, result] of [["desktop", desktopResult], ["mobile", mobileResu
   if (result.samples.some((sample) => (sample.activeRowDelta ?? 999) > 2)) failures.push(`${label} active trail row mismatch`);
 }
 if (quickNavTarget.active !== "#apparel" || quickNavTarget.hash !== "#apparel" || Math.abs(quickNavTarget.centreDelta ?? 999) > 60) failures.push("quick navigation does not centre apparel");
+for (const [label, effects] of [["desktop", desktopEffects], ["mobile", mobileEffects]]) {
+  const remainingReveal = (clipPath) => Math.max(0, ...[...clipPath.matchAll(/([\d.]+)%/g)].map((match) => Number(match[1])));
+  if (effects.stockEntry.clipPath === effects.stockSettled.clipPath || remainingReveal(effects.stockSettled.clipPath) > 0.5) failures.push(`${label} stock reveal does not resolve`);
+  if (effects.categoryEntry.clipPath === effects.categorySettled.clipPath || remainingReveal(effects.categorySettled.clipPath) > 0.5) failures.push(`${label} category reveal does not resolve`);
+  if (effects.stockEntry.imageTransform === effects.stockSettled.imageTransform) failures.push(`${label} stock image has no scroll drift`);
+  if (effects.categoryEntry.imageTransform === effects.categorySettled.imageTransform) failures.push(`${label} category image has no scroll drift`);
+  if (effects.stockSettled.copyOpacity < 0.99 || effects.categorySettled.copyOpacity < 0.99) failures.push(`${label} settled card copy is not readable`);
+}
 failures.push(...errors);
 
-console.log(JSON.stringify({ url, desktop: { ...desktopResult, quickNavTarget }, mobile: mobileResult, reducedMotion: reducedResult, errors, failures }, null, 2));
+console.log(JSON.stringify({ url, desktop: { ...desktopResult, effects: desktopEffects, quickNavTarget }, mobile: { ...mobileResult, effects: mobileEffects }, reducedMotion: reducedResult, errors, failures }, null, 2));
 if (failures.length) process.exitCode = 1;

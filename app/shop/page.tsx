@@ -34,8 +34,8 @@ export default function Shop() {
         <p>Only products currently marked available in the Karibu catalogue appear here. Prices and stock come from the same source as each product page.</p>
       </header>
       <div className="shop-stock-rack" data-sc-in data-sc-stagger="55">
-        {inStockProducts.map((product, index) => <a href={`/shop/product/${product.slug}`} className={`shop-stock-item shop-stock-item-${index + 1}`} key={product.sku}>
-          <figure><LiveProductImage product={product} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.16" : "-0.16"}/></figure>
+        {inStockProducts.map((product, index) => <a href={`/shop/product/${product.slug}`} className={`shop-stock-item shop-stock-item-${index + 1}`} data-sc-tilt="2" key={product.sku}>
+          <figure data-sc-reveal={index % 2 ? "right" : "up"} data-sc-reveal-at={`${0.08 + index * 0.04} ${0.42 + index * 0.05}`}><LiveProductImage product={product} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.28" : "-0.28"}/></figure>
           <div><span>{String(index + 1).padStart(2, "0")} · {product.sku}</span><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
         </a>)}
       </div>
@@ -48,9 +48,9 @@ export default function Shop() {
       <p>Every category is connected to the live Karibu catalog, so the shop can grow without becoming harder to navigate.</p>
     </section>
 
-    <section className="department-grid" aria-label="Shop by department" data-sc-act="flow">
-      {departments.map((item, index) => <a className={`department-card department-card-${index + 1}`} href={`/shop/${item.slug}`} id={item.slug} data-shop-department={item.slug} data-shop-snap data-sc-in data-sc-tilt="4" key={item.slug}>
-        <figure><img src={item.image} alt={`${item.label} at Karibu Golf East Africa`} width="1200" height="1600" loading={index > 1 ? "lazy" : "eager"}/></figure>
+    <section className="department-grid" aria-label="Shop by department">
+      {departments.map((item, index) => <a className={`department-card department-card-${index + 1}`} href={`/shop/${item.slug}`} id={item.slug} data-shop-department={item.slug} data-shop-snap data-sc-act="flow" data-sc-in data-sc-tilt="4" key={item.slug}>
+        <figure data-sc-reveal={index % 2 ? "right" : "left"} data-sc-reveal-at="0.05 0.40"><img src={item.image} alt={`${item.label} at Karibu Golf East Africa`} width="1200" height="1600" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.18" : "-0.18"}/></figure>
         <div className="department-shade"/>
         <div className="department-copy"><p className="micro">{item.eyebrow}</p><h2>{item.label}</h2><p>{item.description}</p><span>{item.categories.length} {item.categories.length === 1 ? "category" : "categories"} <ArrowUpRight size={21}/></span></div>
       </a>)}
