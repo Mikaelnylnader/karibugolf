@@ -940,6 +940,58 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .department-intro h2 { font-size:clamp(58px,7.6vw,118px); line-height:.86; letter-spacing:-.035em; }
 .department-intro h2 em { color:#1f5132; }
 .department-intro>p:last-child { max-width:470px; font-size:17px; line-height:1.8; padding-bottom:8px; }
+.department-pan { position:relative; background:#14110e; color:#efe3cc; }
+.department-pan-stage { background:#14110e; color:#efe3cc; }
+.department-pan-rail {
+ display:flex;
+ align-items:stretch;
+ gap:1px;
+ width:max-content;
+ height:100%;
+ padding-top:calc(var(--nav-height) + 64px);
+ background:#2b2722;
+}
+.department-pan-intro,
+.department-pan-close {
+ flex:0 0 44vw;
+ min-width:580px;
+ display:flex;
+ flex-direction:column;
+ justify-content:flex-end;
+ padding:clamp(36px,5vw,78px);
+ background:#1f5132;
+ color:#efe3cc;
+}
+.department-pan-intro h2,
+.department-pan-close h2 {
+ margin:22px 0 30px;
+ font-size:clamp(68px,7.4vw,118px);
+ line-height:.8;
+ letter-spacing:-.045em;
+}
+.department-pan-intro>p:last-child { max-width:450px; color:#d9d2c3; font-size:16px; line-height:1.7; }
+.department-pan-panel {
+ flex:0 0 58vw;
+ width:58vw;
+ min-width:760px;
+ min-height:0!important;
+ height:100%;
+}
+.department-pan-close { flex-basis:40vw; min-width:540px; background:#efe3cc; color:#14110e; }
+.department-pan-close h2 em { color:#1f5132; }
+.department-pan-close>a {
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:30px;
+ width:min(100%,430px);
+ margin-top:auto;
+ padding:0 0 12px;
+ border-bottom:2px solid #c89947;
+ font-size:12px;
+ letter-spacing:.07em;
+ text-transform:uppercase;
+}
 .scrollcrafted-store .department-grid { gap:1px; padding:1px; background:#14110e; }
 .scrollcrafted-store .department-card { min-height:clamp(600px,78vh,850px); isolation:isolate; background:#14110e; border:0; transform-style:preserve-3d; }
 .scrollcrafted-store .department-card:nth-child(3),.scrollcrafted-store .department-card:nth-child(4),.scrollcrafted-store .department-card:nth-child(5) { min-height:clamp(520px,67vh,740px); }
@@ -987,6 +1039,12 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
  .scrollcrafted-store .store-hero-note { display:block; }
  .department-intro { padding:80px 6% 65px; }
  .department-intro h2 { font-size:clamp(56px,17vw,82px); }
+ .department-pan-rail { padding-top:calc(var(--nav-height) + 58px); }
+ .department-pan-intro,.department-pan-close { flex-basis:84vw; min-width:84vw; justify-content:center; padding:36px clamp(24px,7vw,34px) 96px; }
+ .department-pan-intro h2,.department-pan-close h2 { font-size:clamp(60px,18vw,86px); }
+ .department-pan-intro>p:last-child { font-size:15px; line-height:1.55; }
+ .department-pan-close>a { margin-top:42px; }
+ .department-pan-panel { flex-basis:86vw; width:86vw; min-width:86vw; }
  .scrollcrafted-store .department-grid { display:block; }
  .scrollcrafted-store .department-card { min-height:68svh!important; margin:0 0 1px; }
  .scrollcrafted-store .department-card figure img { width:100%; height:100%; }
@@ -995,4 +1053,7 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 }
 @media(prefers-reduced-motion:reduce) {
  .store-hero-gallery>span,.scrollcrafted-store .department-card figure img,.fairway-trail-line i { transform:none!important; transition:none!important; }
+ .department-pan { height:auto!important; }
+ .department-pan .department-pan-stage { position:relative!important; top:auto; height:calc(100svh - var(--nav-height)); min-height:660px; overflow-x:auto; overflow-y:hidden; }
+ .department-pan-panel { opacity:1!important; transform:none!important; }
 }

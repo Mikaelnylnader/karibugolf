@@ -61,7 +61,7 @@ The short Sand-colored transition immediately before the department gallery is i
 |---|---|---|
 | Arrival | Flow + layered parallax | Establishes a physical shop window without delaying access |
 | Orientation | In-view stagger | Makes the six choices legible together |
-| Discovery | Alternating reveal + restrained tilt | Lets every category image arrive as an object in a collection |
+| Discovery | Pinned horizontal pan + in-view settle | Holds the viewport while the six departments travel through one curated equipment wall |
 | Reassurance | Flow + in-view typography | Keeps service information quick and readable |
 | Commitment | Bespoke Fairway Trail resolution | Turns the end into a useful navigation choice rather than a decorative footer |
 
@@ -70,7 +70,7 @@ The short Sand-colored transition immediately before the department gallery is i
 | Plane | Asset and depth | Independent movement | Contact / occlusion rule |
 |---|---|---|---|
 | Far environment | Fairway-green field and shop shadow | Slowest vertical drift | Never reduces headline contrast |
-| Midground | Category photograph panels | Moderate alternating drift | Panels remain fully clickable |
-| Focal subject | Clubs category panel | Small scale and vertical shift | Dominant but does not cover the primary action |
+| Midground | Category photograph panels | Lateral movement on one pinned rail | Panels remain fully clickable |
+| Focal subject | Active category panel | Settles into the viewport centre as the rail advances | Dominant but does not cover the primary action |
 | Near foreground | Sand edge and brass rule | Fastest restrained shift | Frames the scene without covering text |
 | Typography | Semantic HTML | Stable | Headline and browse action remain readable at all widths |
