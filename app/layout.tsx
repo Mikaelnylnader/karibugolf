@@ -8,7 +8,10 @@ const body = DM_Sans({variable:'--font-body',subsets:['latin'],display:'swap'});
 export const metadata: Metadata = {
  title:'Karibu Golf East Africa | Out here. All in.',
  description:'Discover golf equipment, apparel, essentials and personal service from Karibu Golf, based in Nairobi and serving golfers across East Africa.',
- robots:process.env.NETLIFY ? {index:true,follow:true} : {index:false,follow:false},
+ // This layout is the public storefront. Local builds are also uploaded to
+ // production, so NETLIFY's build-time environment is not an indexing gate.
+ // The separate admin/API paths remain excluded by the exported robots.txt.
+ robots:{index:true,follow:true},
  icons:{icon:'/images/karibu-badge.svg'}
 };
 export default function RootLayout({children}:Readonly<{children:React.ReactNode}>) {

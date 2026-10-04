@@ -273,6 +273,8 @@
   letter-spacing: -0.025em;
 }
 
+.about-mission-link { display:inline-flex; align-items:center; gap:16px; min-height:44px; margin-top:22px; padding:10px 0; border-bottom:1px solid currentColor; font-size:14px; }
+
 .about-origin-photo {
   position: relative;
   grid-column: 1 / -1;

@@ -74,8 +74,9 @@ export default function About() {
           </div>
           <div className="about-origin-copy" data-sc-in data-sc-stagger="55">
             <p>Karibu Golf brings together golf equipment, apparel and accessories from leading brands, with personal assistance when you need a hand choosing.</p>
-            <p>Whether you’re taking your first steps into golf or looking for something for your next round, the experience should feel welcoming.</p>
+            <p>Our wider ambition is to help more people across East Africa get into golf. Alongside the shop, we are planning ways to support junior players, welcome new communities and make equipment easier to access. These programmes are future plans, not initiatives already running.</p>
             <span>A question deserves a conversation.</span>
+            <a className="about-mission-link" href="/growing-the-game/">Explore our Growing the Game plans <ArrowUpRight size={18} aria-hidden="true" /></a>
           </div>
           <figure className="about-origin-photo" data-sc-reveal="left" data-sc-reveal-at="0.06 0.72">
             <Image unoptimized fill sizes="(max-width: 760px) 100vw, 62vw" src="/images/fairway-aerial.jpg" alt="An aerial view of a green fairway and bunkers" />

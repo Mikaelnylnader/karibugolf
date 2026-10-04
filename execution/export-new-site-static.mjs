@@ -37,6 +37,7 @@ const blogRoutes = [
 const routes = [
   "/",
   "/about",
+  "/growing-the-game",
   "/blog",
   ...blogRoutes,
   "/contact",

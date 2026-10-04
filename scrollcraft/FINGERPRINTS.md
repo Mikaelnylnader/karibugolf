@@ -34,6 +34,7 @@ changes only grammar and world will fail it.
 | Karibu Journal | Chaptered editorial | Updating margin folio with issue metadata and active reading category | Type-only printed cover opening into a split-spine feature | flow cover > custom split reveal/parallax feature > asymmetric flow reading room > reveal colophon, 9.3vh desktop / 11.1vh phone / 8.6vh reduced | Editorial masthead and colophon with held reading and contact links | Split-spine paper cover opens onto a Kenyan fairway | Kenyan golf editorial, Fairway / Sand / Coal / Brass | 4502 |
 | Karibu Stock Room | Live surface | Fixed numbered stock register with active product name | Live inventory manifest with the exact available count | flow manifest > four full product exhibits > flow confirmation desk, 6.5vh desktop / 8.4vh phone | Availability confirmation desk with shop return and WhatsApp handoff | Live paper Stock Ticket stamps the active SKU, price and quantity | Kenyan golf stock room, Fairway / Sand / Coal / Brass | 4503 |
 | Karibu About | Hospitality procession | Fixed non-navigation welcome line that records the page opening | Layered photographic Karibu aperture with concentric brand rings | pin aperture > flow origin > pin belief > pan promises > flow circle close, 12.8vh desktop / 12.6vh phone / 7.0vh reduced | Three open arcs settle around a held contact invitation | Karibu aperture expands from badge scale into the golfer, then returns as the closing invitation ring | East African golf hospitality, Fairway / Paper / Lime / Brass | 4505 |
+| Karibu Growing the Game | Public commitment ledger | Local four-plan anchors beside a held status heading, natural flow on phones | Paper headline beside an offset photographic window with independent photo and foreground badge motion | kinetic/parallax opening > flow current offer > sticky ambition ledger > drawn growth path > flow partnership desk | Practical collaboration desk with a contextual inquiry and explicit future-programme status | Access, players and opportunities connect as a visible scroll-drawn growth path with arriving nodes | East African golf mission, Fairway / Paper / Lime | 4506 |
 
 ---
 
@@ -57,6 +58,7 @@ as a constraint, so writing them down is the whole point.
 - Chaptered editorial with a split-spine cover reveal, updating margin folio and dark colophon close.
 - Live inventory surface with a numbered product register and updating paper Stock Ticket.
 - Hospitality procession with a brand aperture hero, non-navigation welcome line and open-circle contact resolution.
+- Public commitment ledger with truthful future-plan status, a photographic offset opening and a visible three-node growth path. Shares the Journal's calm reading pace and quiet contact ending, not its split-spine cover or folio navigation.
 
 ---
 

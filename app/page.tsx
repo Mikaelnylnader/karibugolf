@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable next/no-html-link-for-pages -- Native links work with the static export without an RSC prefetch server. */
 import Image from "next/image";
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
@@ -22,6 +23,7 @@ export default function Home() {
  const journey = useRef<HTMLElement>(null);
  const homeStock = useRef<HTMLElement>(null);
  const people = useRef<HTMLElement>(null);
+ const mission = useRef<HTMLElement>(null);
  const track = useRef<HTMLDivElement>(null);
  const [active, setActive] = useState(0);
  useEffect(() => {
@@ -71,6 +73,10 @@ export default function Home() {
     people.current.style.setProperty("--people-line-two",String(clamp((peopleProgress-.19)*2.05)));
     people.current.style.setProperty("--people-detail",String(clamp((peopleProgress-.34)*1.9)));
     people.current.style.setProperty("--people-list",String(clamp((peopleProgress-.42)*1.75)));
+   }
+   if(mission.current) {
+    const box=mission.current.getBoundingClientRect();
+    mission.current.style.setProperty("--home-mission-p",String(clamp((vh*.9-box.top)/Math.max(1,vh*.7))));
    }
    root.current.style.setProperty("--page-progress", String(clamp(window.scrollY / Math.max(1,document.documentElement.scrollHeight-vh))));
   };
@@ -152,6 +158,10 @@ export default function Home() {
    <div className="people-body"><div className="people-title"><h2><span className="people-line people-line-one"><span>GOOD GOLF.</span></span><span className="people-line people-line-two"><em>REAL PEOPLE.</em></span></h2><div className="people-caption"><Image unoptimized src="/images/karibu-badge.svg" alt="Karibu Golf" width={66} height={66}/><p>Based in Nairobi.<br/>Here for golfers across East Africa.</p></div></div>
    <span className="people-divider" aria-hidden="true"><i/></span>
    <Accordion className="support-accordion" defaultValue={[0]}>{supports.map(([title,description],i)=><AccordionItem className="support-item" key={title} value={i}><AccordionTrigger>{title}</AccordionTrigger><AccordionContent><p>{description}</p></AccordionContent></AccordionItem>)}</Accordion></div>
+  </section>
+  <section className="home-mission" ref={mission} aria-labelledby="home-mission-title">
+   <div><p className="micro">A SHOP WITH A BIGGER AMBITION</p><h2 id="home-mission-title">MORE PEOPLE.<br/><em>MORE GOLF.</em></h2></div>
+   <div><p>Equipment and personal guidance today. A long-term ambition to make golf more accessible, affordable and welcoming across East Africa.</p><p>We are planning support for junior golf, grassroots introductions and equipment reuse. These programmes are not yet launched, but the direction is clear: help more people find their place in the game.</p><a href="/growing-the-game/">Discover our Growing the Game plans <ArrowUpRight size={20}/></a></div>
   </section>
   <section className="contact-close" id="contact"><div className="close-top"><span className="micro">YOUR NEXT ROUND STARTS WITH A CONVERSATION.</span><span>NAIROBI · EAST AFRICA</span></div><a className="huge-contact" href={chat+"?text="+encodeURIComponent("Hi Karibu Golf! I'd like to learn more about what you offer.")}><span>LET’S TALK<br/><em>GOLF.</em></span><ArrowUpRight strokeWidth={.8}/></a><div className="close-bottom"><p>Have a question? A wish list? A love for the game?<br/>We’d love to hear from you.</p><a href={chat}><MessageCircle size={18}/> +254 116 416 105</a></div></section>
  </main>);
