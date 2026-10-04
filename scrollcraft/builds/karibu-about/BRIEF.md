@@ -1,5 +1,18 @@
 # Karibu Golf About: ScrollCraft brief
 
+## Founder and community content update, 4 October 2026
+
+Targeted content extension, not a new page grammar. The owner supplied Mikael Nylander's playing and coaching biography and asked that customers be invited to founder-led Nairobi range gatherings. Preserve the existing aperture hero, belief sequence, service rail and open-circle close.
+
+- Founder: a calm, readable editorial spread introduces Mikael, professional play in Sweden, DP World Tour appearances in China, and coaching in Shanghai and Nairobi. These biographical facts are owner-supplied, not independently researched. No portrait is supplied; do not label a stock photograph as Mikael.
+- Community: after the service horizon, explain that buying from Karibu Golf includes invitations to upcoming Nairobi gatherings and driving range clinics. Describe coaching, equipment demos, meeting golfers and the customer VIP group. Publish no invented date, venue, admission price, booking or automatic group enrolment.
+- Journey additions: grounding becomes trust in the person behind the shop; confidence becomes belonging through a real customer invitation. The opening aperture remains the visual peak.
+- Motion: modest once-on-entry stagger for the founder and community highlights, with normal document flow so all biography and event information can be read at the visitor's pace. Existing photographic assets and brand tokens only; no generated imagery or spending.
+- Next action: a real WhatsApp inquiry to ask about the next clinic and customer group. Dates and venues are explicitly to be announced through social media and WhatsApp.
+- Verification: existing desktop, mobile and reduced-motion scroll regression checks, plus founder/community text, responsive layouts and inquiry-link/focus checks in the exported production package.
+- Rendered review: the founder spread feels grounded and personal; the range section resolves into a welcoming invitation. The opening aperture remains the peak, with no extra pinning added for long-form copy. Existing grammar and signature move are unchanged, so this is a revision to the existing fingerprint, not a new build row.
+- Local acceptance: rebuilt export passes at 1440×1000, 390×844, 360×640 and reduced motion. All new copy reaches full opacity, no horizontal overflow, all four highlights present, inquiry URL correct and keyboard focus visible. The rerun on 4 October supersedes the first test's RSC prefetch errors after restoring native static navigation. Physical phone hardware was not tested.
+
 ## Evidence and scope
 
 This is a targeted rebuild of the existing `/about/` page. The decisions below reuse the live Karibu Golf brand, the supplied local photography, the existing About copy, and the owner’s direction that Karibu Golf serves East Africa from Nairobi. No quotations, statistics, customer claims, or new service promises have been invented.

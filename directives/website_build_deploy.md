@@ -4,6 +4,13 @@
 
 Build and deploy the Golf Kenya premium website with automatic product updates from Google Sheets.
 
+## Current app-based storefront (October 2026)
+
+- The authored frontend is in `app/` and `components/`. Build with `npm run build`, which runs the catalog export, vinext build and static export. The current publish directory is **`dist/static`**, not the legacy `website/` or the parent `dist/` directory.
+- Deploy the reviewed package with `npx netlify deploy --prod --dir=dist/static --no-build --site 925395d9-2336-4f0d-81e0-21a72b3c9074`. Check authentication first and retain the existing site.
+- Use native internal anchors in the static storefront. `next/link` introduced an RSC prefetch setup error in the exported About page on 4 October; this deployment has no RSC prefetch server. A targeted lint exception documents why a native anchor is needed.
+- Run `execution/verify_about_scroll.mjs` for About updates. It checks the existing scroll states plus the founder biography, customer clinic invitation, WhatsApp inquiry, keyboard focus, compact phone layout and reduced motion. Preserve failed evidence and rerun after repair.
+
 ## Current production workflow (September 2026)
 
 - The current public website is `dist/`, not the legacy `website/` or `.tmp/website/` folders described below.

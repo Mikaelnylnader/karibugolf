@@ -1,4 +1,5 @@
 
+/* eslint-disable next/no-html-link-for-pages -- Static export uses native navigation without an RSC prefetch server. */
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Image from "next/image";
@@ -8,9 +9,18 @@ import "../shop/scrollcraft.css";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
-  title: "About Karibu Golf | Golf for East Africa",
-  description: "Meet Karibu Golf, based in Nairobi and serving golfers across East Africa with equipment, apparel, personal help and special orders.",
+  title: "About Karibu Golf | Mikael Nylander & Our Golf Community",
+  description: "Meet founder Mikael Nylander, discover his professional golf and coaching experience, and explore Karibu Golf customer gatherings and driving range clinics in Nairobi.",
 };
+
+const clinicInquiry = "https://wa.me/254116416105?text=" + encodeURIComponent("Hi Karibu Golf! I'd like to hear about the next Nairobi driving range clinic and your customer VIP group.");
+
+const clinicHighlights = [
+  { title: "Practical coaching", copy: "Get hands-on swing tips and personal guidance from Mikael, whether you are new to golf or working on your next improvement." },
+  { title: "Try the gear", copy: "Explore Karibu Golf clubs, balls and accessories firsthand, see the latest apparel, and talk through equipment and custom-fitting options." },
+  { title: "Meet your golf community", copy: "Hit some balls, bring a friend and connect with beginners and experienced golfers in a relaxed, welcoming setting." },
+  { title: "Stay part of the conversation", copy: "Ask to join our dedicated customer VIP group for future clinics, demo days, community updates and special offers." },
+];
 
 const promises = [
   {
@@ -74,6 +84,26 @@ export default function About() {
         </div>
       </section>
 
+      <section className="about-founder sc-section" id="founder" aria-labelledby="founder-title">
+        <div className="sc-wrap about-founder-grid">
+          <header className="about-founder-heading" data-sc-in data-sc-stagger="55">
+            <h2 id="founder-title">MEET OUR<br /><em>FOUNDER.</em></h2>
+            <p className="about-founder-name">Mikael Nylander</p>
+            <p className="about-founder-role">Founder, golfer and coach</p>
+          </header>
+          <div className="about-founder-story" data-sc-in data-sc-stagger="55">
+            <p>Karibu Golf was founded by Mikael Nylander, with a lifelong dedication to the game and a simple ambition: to help more people enjoy golf.</p>
+            <p>Mikael competed as a professional golfer in Sweden and made appearances at DP World Tour events in China. His experience in competitive golf shapes a practical understanding of what players need, both on the course and when choosing their equipment.</p>
+            <p>He went on to coach internationally in Shanghai, China, and Nairobi, Kenya. Bringing tournament experience and hands-on instruction together, Mikael helps golfers of all skill levels build confidence, understand their game and find a setup that works for them.</p>
+          </div>
+          <dl className="about-founder-journey" data-sc-in data-sc-stagger="65">
+            <div><dt>Sweden</dt><dd>Professional playing experience</dd></div>
+            <div><dt>China</dt><dd>DP World Tour appearances and coaching in Shanghai</dd></div>
+            <div><dt>Nairobi</dt><dd>Coaching, Karibu Golf and a growing community</dd></div>
+          </dl>
+        </div>
+      </section>
+
       <section className="about-people-belief" data-sc-act="pin" data-sc-span="2.2">
         <div className="sc-stage about-belief-stage" data-sc-stage>
           <div className="about-belief-orbit" aria-hidden="true"><i /><i /></div>
@@ -106,6 +136,24 @@ export default function About() {
               <Image unoptimized src="/images/karibu-badge.svg" alt="" width={78} height={78} />
               <p>From the first question to the next round.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="about-community sc-section" id="community" aria-labelledby="community-title">
+        <div className="sc-wrap">
+          <header className="about-community-intro" data-sc-in data-sc-stagger="55">
+            <h2 id="community-title">JOIN US<br /><em>ON THE RANGE.</em></h2>
+            <p className="about-community-subtitle">Karibu Golf community gatherings &amp; driving range clinics in Nairobi</p>
+            <p>Good equipment is just the beginning. When you buy from Karibu Golf, you’ll be invited to our upcoming community gatherings and driving range clinics in Nairobi, personally hosted and led by Mikael Nylander.</p>
+            <p>Come to sharpen your swing, ask questions or simply enjoy the game with other people. Mikael brings his professional playing and international coaching experience directly to the range, sharing practical advice in an approachable setting.</p>
+          </header>
+          <div className="about-community-highlights" data-sc-in data-sc-stagger="65">
+            {clinicHighlights.map((highlight) => <article key={highlight.title}><h3>{highlight.title}</h3><p>{highlight.copy}</p></article>)}
+          </div>
+          <div className="about-community-invitation">
+            <div><h3>Your invitation starts here.</h3><p>Karibu Golf customers will be invited to these Nairobi events. Dates, venues and participation details will be announced through our social media channels and WhatsApp. Message us to ask about the next clinic and joining the customer VIP group.</p></div>
+            <a href={clinicInquiry}>Ask about the next clinic <ArrowUpRight size={22} aria-hidden="true" /></a>
           </div>
         </div>
       </section>

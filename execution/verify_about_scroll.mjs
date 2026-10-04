@@ -1,8 +1,8 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright-core";
 
 const base = (process.argv[2] || "http://127.0.0.1:4505").replace(/\/$/, "");
-const output = "scrollcraft/builds/karibu-about/lab";
+const output = `.tmp/about-scroll-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 
 const browser = await chromium.launch({
@@ -65,6 +65,37 @@ async function state(page) {
   });
 }
 
+async function inspectNewContent(page, label) {
+  for (const selector of [".about-founder", ".about-community"]) {
+    for (const [index, progress] of [0, 0.5, 1].entries()) {
+      await page.evaluate(({ selector, progress }) => {
+        document.documentElement.style.scrollBehavior = "auto";
+        const section = document.querySelector(selector);
+        const nav = document.querySelector(".persistent-nav")?.getBoundingClientRect().height || 76;
+        scrollTo(0, section.getBoundingClientRect().top + scrollY - nav + Math.max(0, section.offsetHeight - innerHeight + nav) * progress);
+      }, { selector, progress });
+      await page.waitForTimeout(800);
+      await page.screenshot({ path: `${output}/${label}-${selector.slice(7)}-${index}.png` });
+    }
+  }
+  const link = page.locator(".about-community-invitation a");
+  await link.focus();
+  const focus = await link.evaluate((item) => ({
+    visible: item.getBoundingClientRect().top >= 0 && item.getBoundingClientRect().bottom <= innerHeight,
+    outline: getComputedStyle(item).outlineWidth,
+    href: item.href,
+  }));
+  return page.evaluate((focus) => ({
+    focus,
+    founder: document.querySelector(".about-founder").textContent,
+    community: document.querySelector(".about-community").textContent,
+    highlights: document.querySelectorAll(".about-community-highlights article").length,
+    overflow: document.documentElement.scrollWidth - innerWidth,
+    headingWidths: [...document.querySelectorAll(".about-founder h2, .about-community h2")].map((item) => item.scrollWidth - item.clientWidth),
+    entryOpacities: [...document.querySelectorAll(".about-founder [data-sc-in] > *, .about-community [data-sc-in] > *")].map((item) => Number(getComputedStyle(item).opacity)),
+  }), focus);
+}
+
 const desktopRun = await pageFor({ width: 1440, height: 1000 });
 const desktop = { hero: [], pan: [] };
 for (const [index, progress] of [0, 0.5, 1].entries()) {
@@ -86,6 +117,7 @@ await desktopRun.page.locator(".about-circle-close").scrollIntoViewIfNeeded();
 await desktopRun.page.waitForTimeout(500);
 desktop.close = await state(desktopRun.page);
 await desktopRun.page.screenshot({ path: `${output}/desktop-close.png` });
+const desktopContent = await inspectNewContent(desktopRun.page, "desktop");
 await desktopRun.context.close();
 
 const mobileRun = await pageFor({ width: 390, height: 844 });
@@ -99,6 +131,7 @@ await mobileRun.page.locator(".about-circle-close").scrollIntoViewIfNeeded();
 await mobileRun.page.waitForTimeout(450);
 const mobileClose = await state(mobileRun.page);
 await mobileRun.page.screenshot({ path: `${output}/mobile-close.png` });
+const mobileContent = await inspectNewContent(mobileRun.page, "mobile");
 await mobileRun.context.close();
 
 const reducedRun = await pageFor({ width: 1440, height: 1000 }, "reduce");
@@ -114,7 +147,12 @@ const reduced = await reducedRun.page.evaluate(() => ({
   heroHeight: document.querySelector(".about-aperture-hero").getBoundingClientRect().height,
 }));
 await reducedRun.page.screenshot({ path: `${output}/reduced-promises.png`, fullPage: false });
+const reducedContent = await inspectNewContent(reducedRun.page, "reduced");
 await reducedRun.context.close();
+
+const compactRun = await pageFor({ width: 360, height: 640 });
+const compactContent = await inspectNewContent(compactRun.page, "compact");
+await compactRun.context.close();
 
 await browser.close();
 
@@ -136,5 +174,17 @@ const failures = [
   ...errors,
 ];
 
-console.log(JSON.stringify({ base, desktop, mobileHero, mobilePan, mobileClose, reduced, errors, failures }, null, 2));
+for (const [label, result] of Object.entries({ desktopContent, mobileContent, reducedContent, compactContent })) {
+  if (!["Mikael Nylander", "Sweden", "DP World Tour", "Shanghai", "Nairobi"].every((text) => result.founder.includes(text))) failures.push(`${label}: founder biography incomplete`);
+  if (!result.community.includes("When you buy from Karibu Golf, you’ll be invited") || !result.community.includes("Dates, venues and participation details will be announced")) failures.push(`${label}: customer invitation or event status missing`);
+  if (result.highlights !== 4) failures.push(`${label}: four clinic highlights expected`);
+  if (!result.focus.href.startsWith("https://wa.me/254116416105?text=") || !decodeURIComponent(result.focus.href).includes("Nairobi driving range clinic")) failures.push(`${label}: incorrect clinic inquiry link`);
+  if (!result.focus.visible || parseFloat(result.focus.outline) < 2) failures.push(`${label}: clinic link keyboard focus not visible`);
+  if (result.overflow > 1 || result.headingWidths.some((width) => width > 1)) failures.push(`${label}: new content overflows`);
+  if (result.entryOpacities.some((opacity) => opacity < 0.99)) failures.push(`${label}: new copy remains hidden after entry`);
+}
+
+const report = { base, output, desktop, mobileHero, mobilePan, mobileClose, reduced, desktopContent, mobileContent, reducedContent, compactContent, errors, failures };
+await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2));
+console.log(JSON.stringify(report, null, 2));
 if (failures.length) process.exitCode = 1;
