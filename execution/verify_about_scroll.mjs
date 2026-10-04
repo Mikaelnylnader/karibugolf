@@ -189,7 +189,7 @@ const failures = [
 ];
 
 for (const [label, result] of Object.entries({ desktopContent, mobileContent, reducedContent, compactContent })) {
-  if (!["Mikael Nylander", "Sweden", "DP World Tour", "Shanghai", "Nairobi"].every((text) => result.founder.includes(text))) failures.push(`${label}: founder biography incomplete`);
+  if (!["Mikael Nylander", "Sweden", "DP World Tour", "Volvo China Open", "several tournaments in Shanghai", "multiple long-drive competitions", "Nairobi"].every((text) => result.founder.includes(text))) failures.push(`${label}: founder biography incomplete`);
   if (!result.community.includes("When you buy from Karibu Golf, you’ll be invited") || !result.community.includes("Dates, venues and participation details will be announced")) failures.push(`${label}: customer invitation or event status missing`);
   if (result.highlights !== 4) failures.push(`${label}: four clinic highlights expected`);
   if (!result.focus.href.startsWith("https://wa.me/254116416105?text=") || !decodeURIComponent(result.focus.href).includes("Nairobi driving range clinic")) failures.push(`${label}: incorrect clinic inquiry link`);

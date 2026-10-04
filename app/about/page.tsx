@@ -95,12 +95,12 @@ export default function About() {
           </header>
           <div className="about-founder-story" data-sc-in data-sc-stagger="55">
             <p>Karibu Golf was founded by Mikael Nylander, with a lifelong dedication to the game and a simple ambition: to help more people enjoy golf.</p>
-            <p>Mikael competed as a professional golfer in Sweden and made appearances at DP World Tour events in China. His experience in competitive golf shapes a practical understanding of what players need, both on the course and when choosing their equipment.</p>
-            <p>He went on to coach internationally in Shanghai, China, and Nairobi, Kenya. Bringing tournament experience and hands-on instruction together, Mikael helps golfers of all skill levels build confidence, understand their game and find a setup that works for them.</p>
+            <p>Mikael competed as a professional golfer in Sweden and made appearances at DP World Tour events in China, including the Volvo China Open. He has won several tournaments in Shanghai and multiple long-drive competitions, bringing firsthand experience of competitive golf to Karibu Golf.</p>
+            <p>He went on to coach internationally in Shanghai, China, and Nairobi, Kenya. Combining tournament experience with hands-on instruction and a lifelong passion for the game, Mikael helps golfers of all skill levels build confidence, improve their play and choose equipment that works for them.</p>
           </div>
           <dl className="about-founder-journey" data-about-founder-trace data-sc-in data-sc-stagger="65">
             <div style={{ "--stop-at": 0 } as CSSProperties}><dt>Sweden</dt><dd>Professional playing experience</dd></div>
-            <div style={{ "--stop-at": 0.42 } as CSSProperties}><dt>China</dt><dd>DP World Tour appearances and coaching in Shanghai</dd></div>
+            <div style={{ "--stop-at": 0.42 } as CSSProperties}><dt>China</dt><dd>Volvo China Open, Shanghai tournament wins and coaching</dd></div>
             <div style={{ "--stop-at": 0.84 } as CSSProperties}><dt>Nairobi</dt><dd>Coaching, Karibu Golf and a growing community</dd></div>
           </dl>
         </div>
