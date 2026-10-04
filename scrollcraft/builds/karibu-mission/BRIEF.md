@@ -49,3 +49,13 @@ Tell-someone sentence: "It's the mission page where more access, more players an
 ## Verification
 
 Test exported package and live deployment at desktop, 390×844, compact 360×640, reduced motion and no JavaScript. Six samples around the growth moment; verify photo/path movement, real anchor targets, contextual partner message, status honesty, new sitemap route, all entry copy reaching full opacity, focus, no overflow/broken imagery or script errors. Retain existing About and home scroll regression checks. Browser phone sizes are not physical phone hardware.
+
+## 4 October refinement: motion and copy, not a redesign
+
+The user explicitly requested: "use the ... scroll-craft ... on this and use some of this info on the start page but dont chenge the design just change the test or it better". Treat "test" as "text". Keep both pages' established layout, palette, type, imagery, headline identities and section order. Homepage changes are text-only; no CSS, markup structure, media, links or scroll handlers change there.
+
+Reuse the eight-topic brief, five-beat journey and original public-commitment-ledger grammar. This is maintenance of the same registered build, not a new page that should pass a novelty gate against itself. The fingerprint remains unchanged deliberately under the user's design-preservation instruction; do not invent four structural changes or rewrite the historical row.
+
+The feeling curve stays clarity → trust → possibility → optimism → agency. Make the optimism peak more perceivable: three existing growth lines arrive progressively in their existing positions, then the original path connects them. Type always resolves before it leaves the readable area; reduced motion and no JavaScript keep the complete statement. Hero depth gets stronger but bounded photo/badge travel, measured from visible geometry. The existing plan index gains active-location feedback without added chrome. All custom motion remains page-local; no shared engine modification, new images, fake programme activity or filler scroll.
+
+Refine existing homepage paragraphs to connect the shop's equipment and personal guidance with welcoming more people across East Africa, and describe junior/community/reuse initiatives as future plans. Preserve "Out Here. All In.", "Your Next Find", stock, "Good Golf. Real People." and "More People. More Golf.". Compare baseline and final homepage CSS/structure/headline/image contracts, alongside desktop and phone screenshots.

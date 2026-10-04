@@ -1,7 +1,9 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright-core";
 
 const base = (process.argv[2] || "http://127.0.0.1:4506").replace(/\/$/, "");
+const baseline = process.argv.includes("--baseline");
+const compareHome = process.argv.find(argument => argument.startsWith("--compare-home="))?.slice("--compare-home=".length);
 const output = `.tmp/mission-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
@@ -46,6 +48,7 @@ async function snapshot(page) {
     state: document.querySelector("[data-mission-growth]").dataset.scVerifyState,
     pathTop: document.querySelector(".mission-growth-path").getBoundingClientRect().top,
     viewport: innerHeight,
+    growthLines: [...document.querySelectorAll(".mission-growth-line>span")].map(line => ({ opacity: getComputedStyle(line).opacity, transform: getComputedStyle(line).transform, rise: new DOMMatrixReadOnly(getComputedStyle(line).transform).m42 })),
     broken: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src),
   }));
 }
@@ -57,7 +60,24 @@ for (const { label, viewport, reduced } of [
   { label: "reduced", viewport: { width: 1440, height: 1000 }, reduced: "reduce" },
 ]) {
   const { page, context } = await pageFor(viewport, reduced);
-  const record = { hero: [], growth: [], anchors: [], entries: [] };
+  const record = { hero: [], growthType: [], growth: [], anchors: [], entries: [] };
+  if (!baseline) {
+    for (let index = 0; index < 6; index++) {
+      await page.evaluate(progress => {
+        const lines = [...document.querySelectorAll(".mission-growth-line")];
+        const start = lines[0].getBoundingClientRect().top + scrollY - innerHeight * .96;
+        const finish = lines.at(-1).getBoundingClientRect().top + scrollY - innerHeight * .65;
+        scrollTo(0, start + (finish - start) * progress);
+      }, index / 5);
+      await page.waitForTimeout(180);
+      record.growthType.push(await snapshot(page));
+      await page.screenshot({ path: `${output}/${label}-growth-type-${index}.png` });
+    }
+    check(record.growthType.every(state => state.growthLines.length === 3 && state.growthLines.every(line => Number(line.opacity) === 1)), `${label}: growth headlines missing or faded`);
+    check(record.growthType.at(-1).growthLines.every(line => Math.abs(line.rise) < .5), `${label}: growth headlines did not fully arrive`);
+    if (reduced !== "reduce") check(new Set(record.growthType.map(state => JSON.stringify(state.growthLines.map(line => line.rise)))).size > 3, `${label}: growth typography did not respond to scrolling`);
+    else check(record.growthType.every(state => state.growthLines.every(line => line.transform === "none")), "reduced: moving growth typography");
+  }
   for (let index = 0; index < 6; index++) {
     await page.evaluate(index => scrollTo(0, index * innerHeight * .07), index);
     await page.waitForTimeout(160);
@@ -85,7 +105,7 @@ for (const { label, viewport, reduced } of [
     await page.screenshot({ path: `${output}/${label}-growth-${index}.png` });
   }
   check(record.entries.every(entry => entry.opacities.every(opacity => Number(opacity) > .98)), `${label}: entry copy did not reach full opacity`);
-  check([...record.hero, ...record.growth, ...record.entries].every(state => state.overflow <= 0), `${label}: horizontal overflow`);
+  check([...record.hero, ...record.growthType, ...record.growth, ...record.entries].every(state => state.overflow <= 0), `${label}: horizontal overflow`);
   check([...record.hero, ...record.growth].every(state => !state.broken.length), `${label}: broken image`);
   check(Number.parseFloat(record.growth.at(-1).drawn.replace(/^calc\(/, "")) < .02, `${label}: growth path did not resolve`);
   check(record.growth.every(state => state.pathTop > 0 && state.pathTop < state.viewport), `${label}: growth animation completed out of view`);
@@ -100,6 +120,7 @@ for (const { label, viewport, reduced } of [
     const target = await page.locator(`#${id}`).evaluate(node => ({ top: node.getBoundingClientRect().top, nav: document.querySelector(".persistent-nav").getBoundingClientRect().height }));
     record.anchors.push({ id, ...target });
     check(target.top >= target.nav - 2 && target.top < viewport.height, `${label}: ${id} anchor hidden by navigation`);
+    if (!baseline) check(await page.locator(`.mission-ledger-heading a[href="#${id}"]`).getAttribute("aria-current") === "location", `${label}: plan index did not mark ${id} active`);
   }
   const partner = page.locator(".mission-partner-copy>a");
   await partner.focus();
@@ -123,6 +144,7 @@ for (const selector of [".mission-today", "#junior-golf", ".mission-growth", ".m
   noJsStates.push(await noJs.locator(selector).evaluate(node => [...node.querySelectorAll("[data-sc-in], [data-sc-stagger]>*"), node].map(item => getComputedStyle(item).opacity)));
 }
 check(noJsStates.flat().every(opacity => Number(opacity) === 1), "no-JS: unreadable content");
+if (!baseline) check(await noJs.locator(".mission-growth-line>span").evaluateAll(lines => lines.length === 3 && lines.every(line => getComputedStyle(line).transform === "none")), "no-JS: growth typography masked");
 await noJs.screenshot({ path: `${output}/no-js.png`, fullPage: true });
 results.noJs = noJsStates;
 await noJsContext.close();
@@ -135,12 +157,36 @@ await context.addInitScript(() => {
 });
 const page = await context.newPage();
 await page.goto(`${base}/`, { waitUntil: "networkidle" });
+results.homeContract = await page.evaluate(() => ({
+  sectionOrder: [...document.querySelectorAll("main>section")].map(section => section.getAttribute("class")),
+  headings: [...document.querySelectorAll("main h1,main h2")].map(heading => heading.innerText),
+  stylesheets: [...document.querySelectorAll('link[rel="stylesheet"]')].map(link => link.getAttribute("href")),
+  images: [...document.querySelectorAll("main img")].filter(image => !image.closest(".home-stock")).map(image => image.getAttribute("src")),
+  paragraphCount: document.querySelectorAll("main p").length,
+  structure: [...document.querySelectorAll("main, main *")].map(node => `${node.tagName}:${node.getAttribute("class") ?? ""}`),
+}));
+if (compareHome) {
+  const previous = JSON.parse(await readFile(compareHome, "utf8")).results.homeContract;
+  for (const key of Object.keys(previous)) check(JSON.stringify(previous[key]) === JSON.stringify(results.homeContract[key]), `home: original ${key} changed`);
+}
 check(await page.locator(".shop-announcement").count() === 1 && await page.locator(".home-stock").count() === 1 && await page.locator(".people").count() === 1, "home: original sections missing");
 await scrollToElement(page, ".home-mission");
 await page.screenshot({ path: `${output}/home-mission-mobile.png` });
 check(await page.locator('.home-mission a[href="/growing-the-game/"]').count() === 1, "home: mission link missing");
+if (!baseline) check((await page.locator(".home-mission").innerText()).includes("future plans, not programmes already running"), "home: future programmes not clearly marked");
 check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "home: footer/mission overflow");
 check(await page.evaluate(() => [...document.querySelectorAll(".shared-footer nav a")].every(link => link.getBoundingClientRect().height >= 44)), "home: footer tap targets too small");
+for (const { label, viewport } of [
+  { label: "desktop", viewport: { width: 1440, height: 1000 } },
+  { label: "compact", viewport: { width: 360, height: 640 } },
+]) {
+  await page.setViewportSize(viewport);
+  for (const selector of [".welcome", ".shop-announcement", ".home-mission"]) {
+    await scrollToElement(page, selector);
+    await page.screenshot({ path: `${output}/home-${selector.slice(1)}-${label}.png` });
+    check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `home: ${label} ${selector} overflow`);
+  }
+}
 await page.locator(".home-mission a").click();
 await page.waitForURL("**/growing-the-game/");
 check(await page.locator("h1").innerText() === "GROWING\nTHE GAME.", "home: mission link did not navigate");

@@ -60,6 +60,8 @@ as a constraint, so writing them down is the whole point.
 - Hospitality procession with a brand aperture hero, non-navigation welcome line and open-circle contact resolution.
 - Public commitment ledger with truthful future-plan status, a photographic offset opening and a visible three-node growth path. Shares the Journal's calm reading pace and quiet contact ending, not its split-spine cover or folio navigation.
 
+Maintenance note, 4 October 2026: the same Growing the Game page was refined with sequential growth-type arrivals, bounded independent photo/badge depth and an active plan index. Its original fingerprint is retained because the owner explicitly requested design preservation. Homepage updates were copy-only, not a new build or novelty claim.
+
 ---
 
 ## Appending a row

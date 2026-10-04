@@ -62,7 +62,7 @@ export default function GrowingTheGame() {
 
     <section className="mission-growth" data-mission-growth aria-labelledby="mission-growth-title">
       <p className="micro">THE FUTURE WE WANT TO HELP BUILD</p>
-      <h2 id="mission-growth-title">MORE ACCESS.<br />MORE PLAYERS.<br /><em>MORE OPPORTUNITIES.</em></h2>
+      <h2 id="mission-growth-title"><span className="mission-growth-line"><span>MORE ACCESS.</span></span><span className="mission-growth-line"><span>MORE PLAYERS.</span></span><span className="mission-growth-line"><span><em>MORE OPPORTUNITIES.</em></span></span></h2>
       <svg className="mission-growth-path" viewBox="0 0 900 120" aria-hidden="true">
         <path className="mission-path-base" d="M24 60 C170 60 300 38 450 38 S760 60 876 60" />
         <path className="mission-path-drawn" pathLength="1" d="M24 60 C170 60 300 38 450 38 S760 60 876 60" />
