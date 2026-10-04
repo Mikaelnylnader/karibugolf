@@ -13,6 +13,7 @@ if (!process.env.GOOGLE_OAUTH_JSON) {
 
 const existing = JSON.parse(await fs.readFile(output, "utf8"));
 const existingBySku = new Map(existing.products.map((product) => [product.sku.toLowerCase(), product]));
+const existingOrder = new Map(existing.products.map((product, index) => [product.sku.toLowerCase(), index]));
 const labels = new Map(existing.categories.map((category) => [category.slug, category.label]));
 const { products } = await readProducts();
 const live = products.filter((product) => product.websiteVisible).map((product) => {
@@ -35,7 +36,7 @@ const live = products.filter((product) => product.websiteVisible).map((product) 
     featured: previous?.featured || false,
     images: [...new Set([...(image ? [image] : []), ...(previous?.images || []), "/images/clubs.jpg"])],
   };
-});
+}).sort((left, right) => (existingOrder.get(left.sku.toLowerCase()) ?? Number.MAX_SAFE_INTEGER) - (existingOrder.get(right.sku.toLowerCase()) ?? Number.MAX_SAFE_INTEGER));
 
 await fs.writeFile(output, `${JSON.stringify({ ...existing, generatedAt: new Date().toISOString(), products: live }, null, 2)}\n`, "utf8");
 console.log(`Catalog build: exported ${live.length} live products from Google Sheets.`);

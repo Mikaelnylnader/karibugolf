@@ -24,6 +24,14 @@ export type ProductPageDetails = {
   specs: ProductSpecTable;
   equipment?: { title: string; text: string }[];
   source?: { label: string; url: string };
+  presentation?: {
+    imageLabels: string[];
+    featuresTitle: string;
+    featuresIntro: string;
+    inquiryTitle: string;
+    inquiryBody: string;
+    inquiryLink: string;
+  };
 };
 
 const splitValues = (value: string) => value.split(/\s*(?:,|;|\|)\s*/).filter(Boolean);
@@ -252,6 +260,62 @@ const aiSmokeHl: ProductPageDetails = {
   source: { label: "Callaway Paradym Ai Smoke HL official product page", url: "https://www.callawaygolf.com/product/irons-2024-paradym-ai-smoke-hl" },
 };
 
+const proV1: ProductPageDetails = {
+  brand: "Titleist",
+  intro: "A premium golf ball for mid-flight performance, low long-game spin and soft feel. Currently out of stock. Ask us about future availability.",
+  gallery: [
+    { src: "/images/products/titleist-pro-v1-box.png", alt: "Titleist Pro V1 dozen box in black packaging", label: "Dozen box" },
+    { src: "/images/products/titleist-pro-v1-ball.png", alt: "White Titleist Pro V1 golf ball with Titleist logo", label: "Ball" },
+    { src: "/images/products/titleist-pro-v1-alignment.png", alt: "Titleist Pro V1 ball showing the side-stamp alignment arrows", label: "Alignment" },
+    { src: "/images/products/titleist-pro-v1-sleeve.png", alt: "Titleist Pro V1 sleeve packaging", label: "Sleeve" },
+  ],
+  galleryNote: "Product reference pictures supplied to Karibu Golf. This listing is for a dozen; the sleeve photograph shows the inner packaging. No stock is currently available.",
+  overviewEyebrow: "TITLEIST PRO V1",
+  overviewTitle: "DISTANCE. CONTROL. SOFT FEEL.",
+  overviewBody: [
+    "Pro V1 balances distance from the tee with control around the green. Titleist describes a mid-trajectory flight and softer feel than Pro V1x.",
+    "Choose by your preferred flight, spin and feel, not handicap alone. Availability and the exact production generation will be confirmed before any order.",
+  ],
+  overviewImage: "/images/products/titleist-pro-v1-box.png",
+  features: [
+    { title: "Mid-flight profile", text: "A 388-dimple aerodynamic pattern supports a penetrating flight, lower than Pro V1x." },
+    { title: "Long-game efficiency", text: "A high-flex casing works with the core to support speed and low spin on longer shots." },
+    { title: "Scoring-shot control", text: "The high-gradient core is designed for responsive iron and wedge performance." },
+    { title: "Soft cover feel", text: "The cast urethane elastomer cover supports touch and greenside spin." },
+  ],
+  detailEyebrow: "WHITE · DOZEN PACK",
+  detailTitle: "YOUR BALL. YOUR PREFERRED FLIGHT.",
+  detailBody: [
+    "The listing is for 12 white Pro V1 balls. Box, ball, alignment-marking and sleeve photographs help you identify the product.",
+    "This is a catalogue listing, not a reservation or an in-stock offer. Contact Karibu Golf for future availability and a confirmed quote.",
+  ],
+  detailImage: "/images/products/titleist-pro-v1-alignment.png",
+  configuration: [
+    { label: "Pack", values: ["Dozen (12 balls)"] },
+    { label: "Colour", values: ["White"] },
+  ],
+  specTitle: "PRO V1 REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference information. Exact batch, generation and ball numbers are subject to confirmation when stock becomes available.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "Titleist Pro V1"], ["Pack", "Dozen (12 balls)"], ["Colour", "White"],
+      ["Flight", "Mid trajectory"], ["Long-game spin", "Low"],
+      ["Cover", "Cast urethane elastomer"], ["Dimple pattern", "388 tetrahedral"],
+      ["Feel", "Soft"],
+    ],
+  },
+  source: { label: "Titleist Pro V1 official product page", url: "https://www.titleist.com/product/pro-v1/005PV1T.html" },
+  presentation: {
+    imageLabels: ["Dozen box", "Ball", "Alignment"],
+    featuresTitle: "WHAT SHAPES THE BALL'S PERFORMANCE.",
+    featuresIntro: "Explore the flight, spin and feel behind Pro V1.",
+    inquiryTitle: "FIND YOUR BALL. ASK WHAT'S NEXT.",
+    inquiryBody: "This product is currently out of stock. Ask about future availability, the exact pack and delivery options across East Africa. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this golf ball",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -268,6 +332,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir-p770") return p770;
   if (product.slug === "gk-ir-ttt") return t200;
   if (product.slug === "gk-ir004") return aiSmokeHl;
+  if (product.slug === "gk-bl012") return proV1;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

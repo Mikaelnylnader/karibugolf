@@ -1,0 +1,7 @@
+/* A two-column ball reference table should not require sideways phone scrolling. */
+.product-golf-ball .club-specs table { width:100%; min-width:0; table-layout:fixed; }
+.product-golf-ball .club-specs th:first-child { width:42%; }
+.product-golf-ball .club-specs td { overflow-wrap:anywhere; }
+@media(max-width:600px) {
+  .product-golf-ball .club-specs th,.product-golf-ball .club-specs td { padding:15px 12px; font-size:14px; }
+}

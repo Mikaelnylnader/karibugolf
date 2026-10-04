@@ -20,7 +20,7 @@ export default function CatalogProductTemplate({ product, details, department, r
   const isP790 = product.slug === "gk-ir-tmp";
   const categoryHref = department ? `/shop/${department.slug}/${product.categorySlug}` : "/shop";
 
-  return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}`} id="page-content">
+  return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}`} id="page-content">
     <div className="product-breadcrumb"><a href={categoryHref}><ArrowLeft size={16}/> {product.categoryLabel}</a></div>
     <section className="club-purchase" id="product-order" data-sc-act="flow">
       <ProductGallery images={details.gallery} note={details.galleryNote}/>
@@ -36,7 +36,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       <a href="#product-overview">Overview</a>
       <a href="#product-features">Key details</a>
       <a href="#product-specifications">Specifications</a>
-      <a href="#related-products">Related products</a>
+      {related.length > 0 && <a href="#related-products">Related products</a>}
       <a href="#product-order">Choose your setup ↑</a>
     </nav>
 
@@ -58,14 +58,14 @@ export default function CatalogProductTemplate({ product, details, department, r
             <Image unoptimized src={details.gallery[2].src} alt={details.gallery[2].alt} width={900} height={900}/>
           </figure>}
         </div>
-        <div className="product-study-key" aria-hidden="true"><span>Cavity</span><span>Face</span><span>Address</span></div>
+        <div className="product-study-key" aria-hidden="true">{(details.presentation?.imageLabels ?? ["Cavity", "Face", "Address"]).map((label) => <span key={label}>{label}</span>)}</div>
       </div>
     </section>
 
     <section className="product-tech-pan" id="product-features" data-sc-act="pan" data-sc-span="2.35" data-sc-drift="#14110e">
       <div className="sc-stage product-tech-stage" data-sc-stage>
         <div className="product-tech-rail" data-sc-pan="0.02">
-          <header><p className="micro">CONSTRUCTION NOTES</p><h2>WHAT IS INSIDE THE CLUB.</h2><p>Move through the verified details that shape speed, feel, launch and turf interaction.</p></header>
+          <header><p className="micro">CONSTRUCTION NOTES</p><h2>{details.presentation?.featuresTitle ?? "WHAT IS INSIDE THE CLUB."}</h2><p>{details.presentation?.featuresIntro ?? "Move through the verified details that shape speed, feel, launch and turf interaction."}</p></header>
           {details.features.map((feature, index) => <article key={feature.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{feature.title}</h3><p>{feature.text}</p></article>)}
           <aside aria-hidden="true"><strong>{details.features.length}</strong><span>connected details</span></aside>
         </div>
@@ -128,19 +128,19 @@ export default function CatalogProductTemplate({ product, details, department, r
     </section>}
 
     <section className="product-return-close" data-sc-act="flow">
-      <div data-sc-in><p className="micro">YOUR NEXT MOVE</p><h2>CHOOSE THE SETUP. WE WILL CONFIRM THE SET.</h2></div>
-      <div><p>Return to the options above, select your preferred hand, shaft and flex, then send the complete request to Karibu Golf.</p><a href="#product-order">Choose your configuration <ArrowUpRight size={18}/></a></div>
+      <div data-sc-in><p className="micro">YOUR NEXT MOVE</p><h2>{details.presentation?.inquiryTitle ?? "CHOOSE THE SETUP. WE WILL CONFIRM THE SET."}</h2></div>
+      <div><p>{details.presentation?.inquiryBody ?? "Return to the options above, select your preferred hand, shaft and flex, then send the complete request to Karibu Golf."}</p><a href="#product-order">{details.presentation?.inquiryLink ?? "Choose your configuration"} <ArrowUpRight size={18}/></a></div>
     </section>
 
-    <section className="product-related" id="related-products" data-sc-act="flow">
+    {related.length > 0 && <section className="product-related" id="related-products" data-sc-act="flow">
       <div className="store-section-heading"><p className="micro">KEEP EXPLORING</p><h2>RELATED PRODUCTS.</h2></div>
       <div className="store-product-grid">{related.map((item) => {
         const relatedAvailable = isAvailable(item);
         return <a className="store-product-card" href={`/shop/product/${item.slug}`} key={item.sku}>
-          <div className="store-product-image"><img src={item.images[0] ?? "/images/clubs.jpg"} alt={item.name}/><span className={relatedAvailable ? "available" : "unavailable"}>{relatedAvailable ? "In stock" : "Out of stock"}</span></div>
+          <div className="store-product-image"><Image unoptimized src={item.images[0] ?? "/images/clubs.jpg"} alt={item.name} width={900} height={900}/><span className={relatedAvailable ? "available" : "unavailable"}>{relatedAvailable ? "In stock" : "Out of stock"}</span></div>
           <div className="store-product-copy"><p className="micro">{item.categoryLabel}</p><h3>{item.name}</h3><LiveProductCardPrice product={item}/><span>View product <ArrowUpRight size={14}/></span></div>
         </a>;
       })}</div>
-    </section>
+    </section>}
   </main></ProductScrollShell>;
 }

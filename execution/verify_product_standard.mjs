@@ -13,7 +13,7 @@ const liveP790 = livePayload.products?.[0];
 const expectedP790Price = liveP790 ? Math.round(liveP790.priceKes).toLocaleString("en-KE") : null;
 if (!liveP790) failures.push(`storefront API: P790 unavailable (HTTP ${liveResponse.status})`);
 
-const expectedSkus = ["GK-IR-P770", "GK-IR-TMP", "GK-IR-TTT", "GK-IR004"];
+const expectedSkus = ["GK-IR-P770", "GK-IR-TMP", "GK-IR-TTT", "GK-IR004", "GK-BL012"];
 if (catalog.products.length !== expectedSkus.length || expectedSkus.some((sku) => !catalog.products.some((product) => product.sku === sku))) {
   failures.push(`catalog: expected ${expectedSkus.join(", ")}, found ${catalog.products.map((product) => product.sku).join(", ")}`);
 }
@@ -36,7 +36,16 @@ const browser = await chromium.launch({
   executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
 });
 
-const p790Page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+async function pageFor(viewport) {
+  const context = await browser.newContext({ viewport });
+  await context.addInitScript(() => {
+    Element.prototype.setPointerCapture = () => {};
+    Element.prototype.releasePointerCapture = () => {};
+    HTMLElement.prototype.requestPointerLock = () => Promise.resolve();
+  });
+  return context.newPage();
+}
+const p790Page = await pageFor({ width: 390, height: 844 });
 const p790ConsoleErrors = [];
 const p790FailedRequests = [];
 p790Page.on("console", (message) => {
@@ -125,7 +134,7 @@ p790.failedRequests = p790FailedRequests;
 p790.focusAuditFailures = focusAudit.filter((item) => !item.skip && (!item.visible || !item.focusVisible));
 if (p790Response?.status() !== 200) failures.push(`P790: HTTP ${p790Response?.status()}`);
 if (p790.title !== "TaylorMade P790") failures.push(`P790: title ${p790.title}`);
-if (!p790.status?.includes("In stock in Kenya · 1 available")) failures.push(`P790: stock status ${p790.status}`);
+if (!p790.status?.includes("In stock in Nairobi · 1 available")) failures.push(`P790: stock status ${p790.status}`);
 if (!expectedP790Price || !p790.price?.includes(expectedP790Price)) failures.push(`P790: current KES price does not match live API (${expectedP790Price})`);
 if (p790.galleryCount !== 4) failures.push(`P790: gallery count ${p790.galleryCount}`);
 if (p790.featureCount !== 4) failures.push(`P790: feature count ${p790.featureCount}`);
@@ -149,7 +158,7 @@ if (p790.overflow > 0) failures.push(`P790: horizontal overflow ${p790.overflow}
 if (p790.brokenImages.length) failures.push("P790: broken images");
 await p790Page.close();
 
-const legacyPage = await browser.newPage({ viewport: { width: 1180, height: 820 } });
+const legacyPage = await pageFor({ width: 1180, height: 820 });
 const legacyResponse = await legacyPage.goto(`${base}/shop/taylormade-p790-irons/`, { waitUntil: "networkidle" });
 const legacy = await legacyPage.evaluate(() => ({
   standard: Boolean(document.querySelector(".catalog-standard-product")),
@@ -158,7 +167,7 @@ const legacy = await legacyPage.evaluate(() => ({
   canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href"),
   brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
 }));
-if (legacyResponse?.status() !== 200 || !legacy.standard || !expectedP790Price || !legacy.price?.includes(expectedP790Price) || !legacy.status?.includes("In stock in Kenya · 1 available") || legacy.canonical !== "https://karibugolf.com/shop/product/gk-ir-tmp/" || legacy.brokenImages.length) {
+if (legacyResponse?.status() !== 200 || !legacy.standard || !expectedP790Price || !legacy.price?.includes(expectedP790Price) || !legacy.status?.includes("In stock in Nairobi · 1 available") || legacy.canonical !== "https://karibugolf.com/shop/product/gk-ir-tmp/" || legacy.brokenImages.length) {
   failures.push("legacy P790 route is inconsistent with the product standard");
 }
 await legacyPage.close();
@@ -166,7 +175,7 @@ await legacyPage.close();
 const samples = catalog.products.filter((product) => product.slug !== "gk-ir-tmp");
 const sampleResults = [];
 for (const product of samples) {
-  const page = await browser.newPage({ viewport: { width: 1180, height: 820 } });
+  const page = await pageFor({ width: 1180, height: 820 });
   const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "networkidle" });
   const result = await page.evaluate(() => ({
     standard: Boolean(document.querySelector(".catalog-standard-product")),
@@ -178,7 +187,8 @@ for (const product of samples) {
     brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
   }));
   sampleResults.push({ slug: product.slug, category: product.categorySlug, status: response?.status(), ...result });
-  if (response?.status() !== 200 || !result.standard || result.galleryCount < 1 || result.featureCount !== 4 || result.specificationRows < 5 || result.relatedCount < 1 || result.overflow > 0 || result.brokenImages.length) {
+  const expectedRelated = Math.min(4, catalog.products.filter(item => item.slug !== product.slug && item.categorySlug === product.categorySlug).length);
+  if (response?.status() !== 200 || !result.standard || result.galleryCount < 1 || result.featureCount !== 4 || result.specificationRows < 5 || result.relatedCount !== expectedRelated || result.overflow > 0 || result.brokenImages.length) {
     failures.push(`${product.slug}: standard product page check failed`);
   }
   await page.close();

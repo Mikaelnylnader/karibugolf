@@ -1,0 +1,110 @@
+import { chromium } from "playwright-core";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+
+const base = (process.argv[2] || "http://127.0.0.1:4506").replace(/\/$/, "");
+const local = base.includes("127.0.0.1") || base.includes("localhost");
+const output = `.tmp/pro-v1-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
+await mkdir(output, { recursive: true });
+const failures = [], errors = [], results = {};
+const check = (condition, message) => { if (!condition) failures.push(message); };
+const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"));
+const ball = catalog.products.find(product => product.sku === "GK-BL012");
+check(ball?.status === "Out of Stock" && Number(ball?.stock) === 0, "catalog: ball incorrectly in stock");
+check(catalog.products.filter(product => product.status === "In Stock" && Number(product.stock) > 0).length === 4, "catalog: original stock selection changed");
+const pairs = [["Prov1.png", "box"], ["Prov1 2.png", "ball"], ["prov1 1.png", "alignment"], ["prov1 3.png", "sleeve"]];
+for (const [original, name] of pairs) {
+  const hash = bytes => createHash("sha256").update(bytes).digest("hex");
+  check(hash(await readFile(`C:/Users/mikae/Downloads/${original}`)) === hash(await readFile(`images/products/titleist-pro-v1-${name}.png`)), `${name}: provided picture was changed`);
+}
+if (!local) {
+  const response = await fetch(`${base}/api/storefront-products?sku=GK-BL012`);
+  const live = response.ok ? (await response.json()).products?.[0] : null;
+  check(live?.status === "Out of Stock" && Number(live?.stock) === 0 && live?.image === "/images/products/titleist-pro-v1-box.png", "live API: incorrect ball availability or image");
+  results.live = live;
+}
+const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
+for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
+  { label: "desktop", viewport: { width: 1440, height: 1000 }, reducedMotion: "no-preference", javaScriptEnabled: true },
+  { label: "mobile", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", javaScriptEnabled: true },
+  { label: "compact", viewport: { width: 360, height: 640 }, reducedMotion: "no-preference", javaScriptEnabled: true },
+  { label: "reduced", viewport: { width: 390, height: 844 }, reducedMotion: "reduce", javaScriptEnabled: true },
+  { label: "no-js", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", javaScriptEnabled: false },
+]) {
+  const context = await browser.newContext({ viewport, reducedMotion, javaScriptEnabled });
+  await context.addInitScript(() => {
+    Element.prototype.setPointerCapture = () => {};
+    Element.prototype.releasePointerCapture = () => {};
+    HTMLElement.prototype.requestPointerLock = () => Promise.resolve();
+  });
+  const page = await context.newPage();
+  page.on("pageerror", error => errors.push(`${label}: ${error.message}`));
+  page.on("response", response => { if (response.status() >= 400 && !(local && response.url().includes("/api/"))) errors.push(`${response.status()} ${response.url()}`); });
+  const response = await page.goto(`${base}/shop/product/gk-bl012/`, { waitUntil: "networkidle" });
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; });
+  check(response.ok(), `${label}: page not found`);
+  if (javaScriptEnabled) await page.waitForFunction(() => document.querySelector(".product-scroll-shell")?.dataset.scrollcraftMounted === "true");
+  check((await page.locator("h1").textContent()) === "Titleist Pro V1 Golf Balls", `${label}: incorrect product name`);
+  check((await page.locator(".catalog-stock").innerText()).includes("out of stock"), `${label}: incorrectly available`);
+  check(await page.locator(".club-thumbnails button").count() === 4, `${label}: missing supplied pictures`);
+  check(await page.locator(".catalog-configurator legend").allTextContents().then(labels => JSON.stringify(labels) === JSON.stringify(["Pack", "Colour"])), `${label}: club configuration shown for a golf ball`);
+  check((await page.locator(".catalog-configurator .contact-button").innerText()).includes("Ask about availability"), `${label}: ordering offered for unavailable item`);
+  const schema = await page.locator('script[type="application/ld+json"]').first().textContent();
+  check(schema.includes('"availability":"https://schema.org/OutOfStock"') && schema.includes('"name":"Titleist"'), `${label}: incorrect structured data`);
+  check(await page.locator(".club-source").getAttribute("href") === "https://www.titleist.com/product/pro-v1/005PV1T.html", `${label}: manufacturer source missing`);
+  check(await page.locator(".product-spec-table-wrap").evaluate(node => node.scrollWidth <= node.clientWidth), `${label}: two-column ball specifications clipped`);
+  check(!(await page.locator("main").innerText()).includes("WHAT IS INSIDE THE CLUB"), `${label}: club copy leaked into ball page`);
+  await page.screenshot({ path: `${output}/${label}-purchase.png` });
+  if (javaScriptEnabled) {
+    for (const name of ["Ball", "Alignment", "Sleeve", "Dozen box"]) {
+      await page.getByRole("button", { name: `Show ${name} photo`, exact: true }).click();
+      check(await page.getByRole("button", { name: `Enlarge ${name} photo`, exact: true }).count() === 1, `${label}: ${name} photo cannot be selected`);
+    }
+    await page.getByRole("button", { name: "Enlarge Dozen box photo", exact: true }).click();
+    check(await page.getByRole("dialog").isVisible(), `${label}: zoom not working`);
+    await page.keyboard.press("Escape");
+    await page.getByRole("dialog").waitFor({ state: "hidden" });
+    check(await page.getByRole("dialog").count() === 0, `${label}: zoom cannot close`);
+  }
+  for (const selector of ["#product-overview", "#product-features", "#product-specifications", ".product-return-close"]) {
+    await page.locator(selector).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(900);
+    await page.screenshot({ path: `${output}/${label}-${selector.replace(/[.#]/g, "")}.png` });
+    check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${label}: ${selector} horizontal overflow`);
+  }
+  check(await page.evaluate(() => [...document.images].every(image => !image.complete || image.naturalWidth > 0)), `${label}: broken photograph`);
+  if (javaScriptEnabled) {
+    const enquiry = page.locator(".catalog-configurator .contact-button");
+    await enquiry.focus();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Shift+Tab");
+    await page.waitForTimeout(200);
+    const focus = await enquiry.evaluate(node => ({ active: node === document.activeElement, top: node.getBoundingClientRect().top, bottom: node.getBoundingClientRect().bottom, outline: getComputedStyle(node).outlineWidth, href: node.href }));
+    check(focus.active && focus.top >= 0 && focus.bottom <= viewport.height && parseFloat(focus.outline) >= 2, `${label}: enquiry focus not visible: ${JSON.stringify(focus)}`);
+    check(decodeURIComponent(focus.href).includes("Pack: Dozen (12 balls), Colour: White"), `${label}: enquiry missing pack information`);
+  }
+  results[label] = { status: await page.locator(".catalog-stock").innerText(), pictures: 4 };
+  await context.close();
+}
+const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+await context.addInitScript(() => {
+  Element.prototype.setPointerCapture = () => {};
+  Element.prototype.releasePointerCapture = () => {};
+  HTMLElement.prototype.requestPointerLock = () => Promise.resolve();
+});
+const page = await context.newPage();
+for (const route of ["/shop/balls/", "/shop/balls/balls/"]) {
+  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  const card = page.locator('a.store-product-card[href="/shop/product/gk-bl012"]');
+  check(await card.count() === 1 && (await card.innerText()).toLowerCase().includes("out of stock"), `${route}: missing out-of-stock ball listing`);
+}
+for (const route of ["/", "/shop/", "/shop/stock/"]) {
+  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  check(await page.locator('.home-stock a[href*="gk-bl012"], .stock-register a[href*="gk-bl012"], .stock-room a[href*="gk-bl012"], .shop-stock-rack a[href*="gk-bl012"]').count() === 0, `${route}: unavailable ball leaked into in-stock area`);
+  if (route === "/shop/stock/") check(!((await page.locator("main").innerText()).includes("Titleist Pro V1")), "stock page: unavailable ball shown");
+}
+await browser.close();
+check(errors.length === 0, `runtime/resources: ${errors.join("; ")}`);
+await writeFile(`${output}/report.json`, JSON.stringify({ base, results, errors, failures }, null, 2));
+console.log(JSON.stringify({ base, output, errors, failures }, null, 2));
+if (failures.length) process.exitCode = 1;

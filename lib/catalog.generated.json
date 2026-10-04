@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T07:06:11.676Z",
+  "generatedAt": "2026-10-04T18:52:26.943Z",
   "categories": [
     {
       "slug": "drivers",
@@ -197,7 +197,8 @@
         "/images/products/gk-ir-p770/p770-cavity.jpg",
         "/images/products/gk-ir-p770/p770-face.jpg",
         "/images/products/gk-ir-p770/p770-address.jpg",
-        "/images/products/gk-ir-p770/p770-profile.jpg"
+        "/images/products/gk-ir-p770/p770-profile.jpg",
+        "/images/clubs.jpg"
       ]
     },
     {
@@ -216,6 +217,7 @@
       "stock": "1",
       "featured": false,
       "images": [
+        "/api/product-images/3d1a5d94-02c6-4344-8ccb-c551654066cf-t200-1.png",
         "/images/products/Titleist_T200.jpg",
         "/images/clubs.jpg"
       ]
@@ -227,7 +229,7 @@
       "categorySlug": "golf_irons",
       "categoryLabel": "Golf Irons",
       "description": "High-launch game-improvement iron set with an Ai Smart Face and deep cavity-back construction.",
-      "priceKes": 89297,
+      "priceKes": 100000,
       "priceUsd": 689.55,
       "priceCny": 4204,
       "sizes": "4–PW + AW",
@@ -236,6 +238,7 @@
       "stock": "1",
       "featured": false,
       "images": [
+        "/api/product-images/27a8fa90-3e6f-4074-a503-d08238c62bf4-irons-2024-paradym-ai-smoke-hl-1.png",
         "/images/shop/categories-v2/golf_irons.webp",
         "/images/clubs.jpg"
       ]
@@ -259,6 +262,28 @@
         "/api/product-images/2ac095d5-cde6-4957-9c33-46b13384c68d-tc635-zoom-d.jpg",
         "/images/p790-hero.webp",
         "/images/clubs.jpg"
+      ]
+    },
+    {
+      "sku": "GK-BL012",
+      "slug": "gk-bl012",
+      "name": "Titleist Pro V1 Golf Balls",
+      "categorySlug": "balls",
+      "categoryLabel": "Balls",
+      "description": "Titleist Pro V1 golf balls with a mid-flight profile, low long-game spin and soft feel. Cast urethane cover for greenside control. White, dozen pack. Currently out of stock; ask Karibu Golf about future availability.",
+      "priceKes": 11480,
+      "priceUsd": 88.65,
+      "priceCny": 541,
+      "sizes": "Dozen (12 balls)",
+      "colors": "White",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/titleist-pro-v1-box.png",
+        "/images/products/titleist-pro-v1-ball.png",
+        "/images/products/titleist-pro-v1-alignment.png",
+        "/images/products/titleist-pro-v1-sleeve.png"
       ]
     }
   ]
