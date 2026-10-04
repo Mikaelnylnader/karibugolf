@@ -2,6 +2,20 @@
 
 ## Founder and community content update, 4 October 2026
 
+### Requested ScrollCraft extension
+
+The owner explicitly asked to use ScrollCraft for this page after the biography and clinic content was published. Retain the existing hospitality grammar and photographic aperture, not a new template. The new curve is trust through the founder's travelled path, then belonging through the invitation to play together. Keep administrative event details in normal flow.
+
+| Beat | Visible device | Why |
+|---|---|---|
+| Founder trust | Sticky editorial heading, brand badge and scroll-drawn Sweden–China–Nairobi trace | The person stays present while the reader follows his background, without hiding or moving prose |
+| Community belonging | Separate photographic window that wipes open, settles at the reader's side and gently approaches during the invitation | A visual transition from reading about the game to imagining participating |
+| Next step | Sequential highlight entrances and held WhatsApp inquiry | Practical information arrives in reading order and the action remains available |
+
+No invented portrait or event photography. Use the existing generic golf image with an honest descriptive alt, not as evidence of a past clinic. Desktop uses held columns; phone stacks the photograph between introduction and highlights, with shorter travel. Reduced motion shows the whole trace, photograph and copy immediately. Existing aperture remains the signature and visual peak; this is an in-place extension, not a separate fingerprint entry.
+
+Rendered acceptance: the founder heading stays clear while the trace moves from quiet marks to a connected path; the community window introduces warmth without putting copy over the photo. The first mobile image state is deliberately an opening wipe, then resolves to the full column. Six scroll samples per new section passed in desktop, phone, compact phone and reduced motion, including distinct trace/image transforms, complete reveals, overflow, biography/invitation preservation and visible keyboard focus. No physical-device test was performed. No assets were generated and the shared engine was not modified.
+
 Targeted content extension, not a new page grammar. The owner supplied Mikael Nylander's playing and coaching biography and asked that customers be invited to founder-led Nairobi range gatherings. Preserve the existing aperture hero, belief sequence, service rail and open-circle close.
 
 - Founder: a calm, readable editorial spread introduces Mikael, professional play in Sweden, DP World Tour appearances in China, and coaching in Shanghai and Nairobi. These biographical facts are owner-supplied, not independently researched. No portrait is supplied; do not label a stock photograph as Mikael.

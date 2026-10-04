@@ -66,16 +66,26 @@ async function state(page) {
 }
 
 async function inspectNewContent(page, label) {
+  const samples = { founder: [], community: [] };
   for (const selector of [".about-founder", ".about-community"]) {
-    for (const [index, progress] of [0, 0.5, 1].entries()) {
+    for (const [index, progress] of [0, 0.2, 0.4, 0.6, 0.8, 1].entries()) {
       await page.evaluate(({ selector, progress }) => {
         document.documentElement.style.scrollBehavior = "auto";
         const section = document.querySelector(selector);
         const nav = document.querySelector(".persistent-nav")?.getBoundingClientRect().height || 76;
-        scrollTo(0, section.getBoundingClientRect().top + scrollY - nav + Math.max(0, section.offsetHeight - innerHeight + nav) * progress);
+        const top = section.getBoundingClientRect().top + scrollY;
+        const entry = innerHeight * 0.75;
+        scrollTo(0, top - entry + (Math.max(0, section.offsetHeight - innerHeight + nav) + entry) * progress);
       }, { selector, progress });
       await page.waitForTimeout(800);
       await page.screenshot({ path: `${output}/${label}-${selector.slice(7)}-${index}.png` });
+      samples[selector.slice(7)].push(await page.evaluate(() => ({
+        trace: getComputedStyle(document.querySelector(".about-founder-journey"), "::after").transform,
+        traceState: document.querySelector("[data-about-founder-trace]").dataset.scVerifyState,
+        photo: getComputedStyle(document.querySelector(".about-community-photo-motion")).transform,
+        window: getComputedStyle(document.querySelector(".about-community-photo-window")).clipPath,
+        photoState: document.querySelector("[data-about-community-media]").dataset.scVerifyState,
+      })));
     }
   }
   const link = page.locator(".about-community-invitation a");
@@ -85,15 +95,19 @@ async function inspectNewContent(page, label) {
     outline: getComputedStyle(item).outlineWidth,
     href: item.href,
   }));
-  return page.evaluate((focus) => ({
+  return page.evaluate(({ focus, samples }) => ({
     focus,
+    samples,
+    motion: document.querySelector(".about-scroll-shell").dataset.aboutMotion,
+    founderPosition: getComputedStyle(document.querySelector(".about-founder-heading")).position,
+    photoPosition: getComputedStyle(document.querySelector(".about-community-photo")).position,
     founder: document.querySelector(".about-founder").textContent,
     community: document.querySelector(".about-community").textContent,
     highlights: document.querySelectorAll(".about-community-highlights article").length,
     overflow: document.documentElement.scrollWidth - innerWidth,
     headingWidths: [...document.querySelectorAll(".about-founder h2, .about-community h2")].map((item) => item.scrollWidth - item.clientWidth),
     entryOpacities: [...document.querySelectorAll(".about-founder [data-sc-in] > *, .about-community [data-sc-in] > *")].map((item) => Number(getComputedStyle(item).opacity)),
-  }), focus);
+  }), { focus, samples });
 }
 
 const desktopRun = await pageFor({ width: 1440, height: 1000 });
@@ -182,7 +196,14 @@ for (const [label, result] of Object.entries({ desktopContent, mobileContent, re
   if (!result.focus.visible || parseFloat(result.focus.outline) < 2) failures.push(`${label}: clinic link keyboard focus not visible`);
   if (result.overflow > 1 || result.headingWidths.some((width) => width > 1)) failures.push(`${label}: new content overflows`);
   if (result.entryOpacities.some((opacity) => opacity < 0.99)) failures.push(`${label}: new copy remains hidden after entry`);
+  if (label !== "reducedContent") {
+    if (new Set(result.samples.founder.map((sample) => sample.trace)).size < 3) failures.push(`${label}: founder route does not draw across scroll`);
+    if (new Set(result.samples.community.map((sample) => sample.photo)).size < 3) failures.push(`${label}: community photograph does not move across scroll`);
+    if (new Set(result.samples.community.map((sample) => sample.window)).size < 2) failures.push(`${label}: community photograph does not wipe open`);
+  } else if (result.samples.community.some((sample) => sample.window !== "none") || result.photoPosition === "sticky" || result.founderPosition === "sticky") failures.push("reducedContent: new sections retained moving/sticky choreography");
 }
+if (desktopContent.founderPosition !== "sticky" || desktopContent.photoPosition !== "sticky") failures.push("desktop columns do not hold while reading");
+if ([mobileContent, compactContent].some((result) => result.founderPosition === "sticky" || result.photoPosition === "sticky")) failures.push("phone layout inherited desktop sticky columns");
 
 const report = { base, output, desktop, mobileHero, mobilePan, mobileClose, reduced, desktopContent, mobileContent, reducedContent, compactContent, errors, failures };
 await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2));

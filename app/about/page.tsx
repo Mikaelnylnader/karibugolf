@@ -84,22 +84,23 @@ export default function About() {
         </div>
       </section>
 
-      <section className="about-founder sc-section" id="founder" aria-labelledby="founder-title">
+      <section className="about-founder sc-section" id="founder" aria-labelledby="founder-title" data-about-founder>
         <div className="sc-wrap about-founder-grid">
           <header className="about-founder-heading" data-sc-in data-sc-stagger="55">
             <h2 id="founder-title">MEET OUR<br /><em>FOUNDER.</em></h2>
             <p className="about-founder-name">Mikael Nylander</p>
             <p className="about-founder-role">Founder, golfer and coach</p>
+            <div className="about-founder-seal" aria-hidden="true"><Image unoptimized src="/images/karibu-badge.svg" alt="" width={88} height={88} /></div>
           </header>
           <div className="about-founder-story" data-sc-in data-sc-stagger="55">
             <p>Karibu Golf was founded by Mikael Nylander, with a lifelong dedication to the game and a simple ambition: to help more people enjoy golf.</p>
             <p>Mikael competed as a professional golfer in Sweden and made appearances at DP World Tour events in China. His experience in competitive golf shapes a practical understanding of what players need, both on the course and when choosing their equipment.</p>
             <p>He went on to coach internationally in Shanghai, China, and Nairobi, Kenya. Bringing tournament experience and hands-on instruction together, Mikael helps golfers of all skill levels build confidence, understand their game and find a setup that works for them.</p>
           </div>
-          <dl className="about-founder-journey" data-sc-in data-sc-stagger="65">
-            <div><dt>Sweden</dt><dd>Professional playing experience</dd></div>
-            <div><dt>China</dt><dd>DP World Tour appearances and coaching in Shanghai</dd></div>
-            <div><dt>Nairobi</dt><dd>Coaching, Karibu Golf and a growing community</dd></div>
+          <dl className="about-founder-journey" data-about-founder-trace data-sc-in data-sc-stagger="65">
+            <div style={{ "--stop-at": 0 } as CSSProperties}><dt>Sweden</dt><dd>Professional playing experience</dd></div>
+            <div style={{ "--stop-at": 0.42 } as CSSProperties}><dt>China</dt><dd>DP World Tour appearances and coaching in Shanghai</dd></div>
+            <div style={{ "--stop-at": 0.84 } as CSSProperties}><dt>Nairobi</dt><dd>Coaching, Karibu Golf and a growing community</dd></div>
           </dl>
         </div>
       </section>
@@ -142,15 +143,21 @@ export default function About() {
 
       <section className="about-community sc-section" id="community" aria-labelledby="community-title">
         <div className="sc-wrap">
+         <div className="about-community-story-grid" data-about-community-grid>
           <header className="about-community-intro" data-sc-in data-sc-stagger="55">
             <h2 id="community-title">JOIN US<br /><em>ON THE RANGE.</em></h2>
             <p className="about-community-subtitle">Karibu Golf community gatherings &amp; driving range clinics in Nairobi</p>
             <p>Good equipment is just the beginning. When you buy from Karibu Golf, you’ll be invited to our upcoming community gatherings and driving range clinics in Nairobi, personally hosted and led by Mikael Nylander.</p>
             <p>Come to sharpen your swing, ask questions or simply enjoy the game with other people. Mikael brings his professional playing and international coaching experience directly to the range, sharing practical advice in an approachable setting.</p>
           </header>
-          <div className="about-community-highlights" data-sc-in data-sc-stagger="65">
-            {clinicHighlights.map((highlight) => <article key={highlight.title}><h3>{highlight.title}</h3><p>{highlight.copy}</p></article>)}
+          <figure className="about-community-photo" data-about-community-media>
+            <div className="about-community-photo-window"><div className="about-community-photo-motion"><Image unoptimized fill sizes="(max-width: 860px) 100vw, 42vw" src="/images/golf-moment.jpg" alt="A golfer following through on a sunlit course" /></div></div>
+            <figcaption>A SHARED LOVE OF THE GAME.</figcaption>
+          </figure>
+          <div className="about-community-highlights">
+            {clinicHighlights.map((highlight) => <article key={highlight.title} data-sc-in data-sc-stagger="55"><h3>{highlight.title}</h3><p>{highlight.copy}</p></article>)}
           </div>
+         </div>
           <div className="about-community-invitation">
             <div><h3>Your invitation starts here.</h3><p>Karibu Golf customers will be invited to these Nairobi events. Dates, venues and participation details will be announced through our social media channels and WhatsApp. Message us to ask about the next clinic and joining the customer VIP group.</p></div>
             <a href={clinicInquiry}>Ask about the next clinic <ArrowUpRight size={22} aria-hidden="true" /></a>

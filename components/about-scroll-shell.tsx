@@ -36,12 +36,35 @@ export default function AboutScrollShell({ children }: { children: ReactNode }) 
     }
 
     let frame = 0;
+    const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       frame = 0;
       const viewport = window.innerHeight;
       const bounds = root.getBoundingClientRect();
       const journey = Math.max(root.offsetHeight - viewport, 1);
       const pageProgress = clamp(-bounds.top / journey);
+      const header = document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
+      root.dataset.aboutMotion = motion.matches ? "off" : "on";
+      const founderTrace = root.querySelector<HTMLElement>("[data-about-founder-trace]");
+      if (founderTrace) {
+        const traceBounds = founderTrace.getBoundingClientRect();
+        const trace = motion.matches ? 1 : clamp((viewport * 0.7 - traceBounds.top) / Math.max(traceBounds.height * 0.9, 1));
+        root.style.setProperty("--about-founder-trace", trace.toFixed(4));
+        founderTrace.dataset.scVerifyState = `route:${Math.round(trace * 100)}`;
+      }
+      const communityGrid = root.querySelector<HTMLElement>("[data-about-community-grid]");
+      const communityMedia = root.querySelector<HTMLElement>("[data-about-community-media]");
+      if (communityGrid && communityMedia) {
+        const gridBounds = communityGrid.getBoundingClientRect();
+        const mediaBounds = communityMedia.getBoundingClientRect();
+        const reveal = motion.matches ? 1 : clamp((viewport * 0.95 - mediaBounds.top) / Math.max(viewport * 0.65, 1));
+        const photo = motion.matches ? 1 : innerWidth > 860
+          ? clamp((header + 24 - gridBounds.top) / Math.max(gridBounds.height - communityMedia.offsetHeight, 1))
+          : clamp((viewport - mediaBounds.top) / Math.max(viewport + mediaBounds.height, 1));
+        root.style.setProperty("--about-community-reveal", reveal.toFixed(4));
+        root.style.setProperty("--about-community-photo", photo.toFixed(4));
+        communityMedia.dataset.scVerifyState = `window:${Math.round(reveal * 100)};zoom:${Math.round((1.12 - photo * 0.10) * 1000)};shift:${Math.round((photo - 0.5) * 60)}`;
+      }
 
       const hero = root.querySelector<HTMLElement>("[data-about-hero]");
       const heroStage = root.querySelector<HTMLElement>("[data-about-aperture]");
@@ -77,9 +100,11 @@ export default function AboutScrollShell({ children }: { children: ReactNode }) 
     update();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate, { passive: true });
+    motion.addEventListener("change", requestUpdate);
     return () => {
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
+      motion.removeEventListener("change", requestUpdate);
       if (frame) cancelAnimationFrame(frame);
       existing?.removeEventListener("load", mount);
     };
@@ -89,6 +114,9 @@ export default function AboutScrollShell({ children }: { children: ReactNode }) 
     "--about-page": 0,
     "--about-aperture": 0,
     "--about-close": 0,
+    "--about-founder-trace": 1,
+    "--about-community-reveal": 1,
+    "--about-community-photo": 1,
   } as CSSProperties;
 
   return <div ref={rootRef} className="about-scroll-shell" style={style}>
