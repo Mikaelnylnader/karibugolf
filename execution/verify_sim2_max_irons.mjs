@@ -15,7 +15,7 @@ await mkdir(output, { recursive: true });
 const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"));
 const product = catalog.products.find((item) => item.sku === sku);
 check(Boolean(product), "catalog: SIM2 Max missing");
-check(product?.priceKes === 86108, `catalog: price changed to ${product?.priceKes}`);
+check(product?.priceKes === 120000, `catalog: price changed to ${product?.priceKes}`);
 check(product?.status === "Out of Stock" && Number(product?.stock) === 0, "catalog: availability is not out of stock / zero");
 check(product?.images?.length === 4, `catalog: expected four images, found ${product?.images?.length}`);
 check(catalog.products.filter((item) => item.status === "In Stock" && Number(item.stock) > 0).length === 4, "catalog: original in-stock selection changed");
@@ -43,7 +43,7 @@ if (!local) {
   const response = await fetch(`${base}/api/storefront-products?sku=${sku}`);
   const live = response.ok ? (await response.json()).products?.[0] : null;
   check(Boolean(live), `live API: ${sku} missing (HTTP ${response.status})`);
-  check(live?.priceKes === 86108, `live API: price ${live?.priceKes}`);
+  check(live?.priceKes === 120000, `live API: price ${live?.priceKes}`);
   check(live?.status === "Out of Stock" && Number(live?.stock) === 0, "live API: availability mismatch");
   check(new URL(live?.image || "/", base).pathname === "/images/products/taylormade-sim2-max-irons-cavity.jpg", "live API: image mismatch");
   results.liveApi = live;
@@ -92,7 +92,7 @@ for (const contextOptions of [
   check(response?.status() === 200, `${label}: HTTP ${response?.status()}`);
   check(result.title === "TaylorMade SIM2 Max Irons", `${label}: title mismatch`);
   check(result.stock?.toLowerCase().includes("out of stock"), `${label}: stock text mismatch`);
-  check(result.price?.includes("KSh 86,108"), `${label}: KES price missing`);
+  check(result.price?.includes("KSh 120,000"), `${label}: KES price missing`);
   check(!result.text.includes("$664") && !result.text.includes("¥4,532"), `${label}: non-KES public price found`);
   check(result.gallery === 4, `${label}: gallery count ${result.gallery}`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
