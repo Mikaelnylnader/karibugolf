@@ -791,6 +791,68 @@ const sim2MaxIrons: ProductPageDetails = {
   },
 };
 
+const sim2MaxDriver: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A 460cc driver built for high launch, high MOI and maximum forgiveness, with an aerodynamic carbon sole and a speed-injected face.",
+  gallery: [
+    { src: "/images/products/taylormade-sim2-max-driver-sole.jpg", alt: "TaylorMade SIM2 Max Driver sole and Inertia Generator", label: "Sole" },
+    { src: "/images/products/taylormade-sim2-max-driver-crown.jpg", alt: "TaylorMade SIM2 Max Driver carbon crown", label: "Crown" },
+    { src: "/images/products/taylormade-sim2-max-driver-face.jpg", alt: "TaylorMade SIM2 Max Driver Twist Face", label: "Face" },
+    { src: "/images/products/taylormade-sim2-max-driver-profile.jpg", alt: "TaylorMade SIM2 Max Driver side profile", label: "Profile" },
+    { src: "/images/products/taylormade-sim2-max-driver-headcover.jpg", alt: "TaylorMade SIM2 Max Driver headcover", label: "Headcover" },
+  ],
+  galleryNote: "All five official TaylorMade product-reference photographs were supplied by Karibu Golf. Ask for current photographs and confirmation of the exact loft, hand, shaft, flex, grip, headcover and condition when stock returns.",
+  overviewEyebrow: "TAYLORMADE SIM2 MAX DRIVER",
+  overviewTitle: "HIGHER LAUNCH. HIGH MOI. MAX FORGIVENESS.",
+  overviewBody: [
+    "SIM2 Max combines a lightweight Forged Ring Construction with a 24g tungsten weight positioned on the Inertia Generator for stability and forgiveness.",
+    "A TPS Front Weight supports a mid-to-high launch and mid-to-low spin profile, while the 9-layer carbon sole is shaped to reduce drag through the downswing.",
+  ],
+  overviewImage: "/images/products/taylormade-sim2-max-driver-sole.jpg",
+  features: [
+    { title: "Forged Ring Construction", text: "A precision-milled aluminium ring unites the driver head's components to support speed, stability and forgiveness." },
+    { title: "24g Inertia Generator", text: "The heavy rear tungsten weight raises MOI and helps keep the head stable on off-centre strikes." },
+    { title: "Speed Injected Twist Face", text: "A milled back face cup and toe-side injection port tune face speed, while Twist Face is designed to reduce common miss patterns." },
+    { title: "Thru-Slot Speed Pocket", text: "TaylorMade's sole slot is designed to preserve ball speed on strikes made low on the face." },
+  ],
+  detailEyebrow: "LOFT · HAND · SHAFT",
+  detailTitle: "MATCH THE DRIVER TO YOUR DELIVERY.",
+  detailBody: [
+    "TaylorMade lists 9° and 10.5° heads in right- and left-handed builds, while the 12° reference head is right-handed. The 4° loft sleeve supports fitting adjustments.",
+    "These choices are manufacturer fitting references, not Karibu inventory. The team will confirm the exact head, shaft, flex and playing length before payment.",
+  ],
+  detailImage: "/images/products/taylormade-sim2-max-driver-face.jpg",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Loft", values: ["9°", "10.5°", "12° (RH reference)"] },
+    { label: "Shaft / flex", values: ["Fujikura Ventus Blue · Senior", "Fujikura Ventus Blue · Regular", "Fujikura Ventus Blue · Stiff", "Kuro Kage Silver · Regular", "Kuro Kage Silver · Stiff", "Kuro Kage Silver · X-Stiff"] },
+  ],
+  specTitle: "SIM2 MAX DRIVER SPECIFICATIONS.",
+  specIntro: "TaylorMade manufacturer-reference specifications. Exact Karibu stock must be confirmed when the driver becomes available.",
+  specs: {
+    headers: ["Loft", "Hand", "Lie", "Volume", "Length", "Swing weight"],
+    rows: [
+      ["9°", "RH / LH", "56°–60°", "460cc", '45.75"', "D4"],
+      ["10.5°", "RH / LH", "56°–60°", "460cc", '45.75"', "D4"],
+      ["12°", "RH", "56°–60°", "460cc", '45.75"', "D4"],
+    ],
+  },
+  equipment: [
+    { title: "Fujikura Ventus Blue", text: "TaylorMade's reference profiles include Senior, Regular and Stiff flexes from 53g to 55g with mid-high launch and mid spin." },
+    { title: "Kuro Kage Silver", text: "Reference Regular, Stiff and X-Stiff profiles range from 64g to 69g with mid launch and mid-low spin." },
+    { title: "Golf Pride Z-Grip", text: "The reference grip is a black/grey standard-size 47g Z-Grip. Confirm the grip and included headcover on the exact item." },
+  ],
+  source: { label: "TaylorMade SIM2 Max Driver official product page", url: "https://www.taylormadegolf.com/SIM2-Max-Driver/DW-JJI65.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Sole", "Crown", "Face", "Profile", "Headcover"],
+    featuresTitle: "THE SIM2 MAX DRIVER DETAILS.",
+    featuresIntro: "Explore the structure, weighting, face technology and low-face protection behind this forgiving 460cc head.",
+    inquiryTitle: "CHOOSE THE LOFT. WE WILL CONFIRM THE BUILD.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference loft, hand and shaft profile, then ask Karibu Golf to confirm future availability and the exact build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this SIM2 Max driver",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -816,6 +878,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
   if (product.slug === "gk-wg009") return mg5Wedge;
   if (product.slug === "gk-ir005") return sim2MaxIrons;
+  if (product.slug === "gk-dr001") return sim2MaxDriver;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

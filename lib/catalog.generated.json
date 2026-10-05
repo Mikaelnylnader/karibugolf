@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T20:37:21.076341+00:00",
+  "generatedAt": "2026-10-05T20:54:47.156366+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -473,6 +473,29 @@
         "/images/products/taylormade-sim2-max-irons-address.jpg",
         "/images/products/taylormade-sim2-max-irons-face.jpg",
         "/images/products/taylormade-sim2-max-irons-sole.jpg"
+      ]
+    },
+    {
+      "sku": "GK-DR001",
+      "slug": "gk-dr001",
+      "name": "TaylorMade SIM2 Max Driver",
+      "categorySlug": "drivers",
+      "categoryLabel": "Drivers",
+      "description": "TaylorMade SIM2 Max 460cc driver with Forged Ring Construction, a 24g tungsten Inertia Generator, Speed Injected Twist Face and a Thru-Slot Speed Pocket. Loft, hand, shaft and flex choices are manufacturer references; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 119274,
+      "priceUsd": 921.03,
+      "priceCny": 5616,
+      "sizes": "9°; 10.5°; 12° (manufacturer loft reference)",
+      "colors": "Black / White / Blue",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/taylormade-sim2-max-driver-sole.jpg",
+        "/images/products/taylormade-sim2-max-driver-crown.jpg",
+        "/images/products/taylormade-sim2-max-driver-face.jpg",
+        "/images/products/taylormade-sim2-max-driver-profile.jpg",
+        "/images/products/taylormade-sim2-max-driver-headcover.jpg"
       ]
     }
   ]
