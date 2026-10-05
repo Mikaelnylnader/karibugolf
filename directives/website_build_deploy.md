@@ -33,6 +33,8 @@ Build and deploy the Golf Kenya premium website with automatic product updates f
 
 - If Windows Application Control blocks the local `workerd.exe` (Wrangler reports `spawn UNKNOWN`), do not disable or bypass the policy. The framework has a supported Node production renderer: `node execution/build_vinext_static.mjs --node` then `node execution/export-new-site-static.mjs --node` uses it to generate the same static route set. Run the full relevant product/guide/currency checks before publishing. These explicit options do not change default Cloudflare builds or live hosting.
 
+- Production visual QA can itself exhaust Google Sheets' 60-per-user-per-minute read quota: each price/image component reads the live endpoint. Netlify error logs identify upstream HTTP 429, surfaced as 500 by the public endpoint. Do not run repeated live browser suites against the Sheet at full speed. The product, glove-guide and currency verifiers accept `--api-snapshot`: one real live catalogue read, then that verified response is replayed for visual contexts. Reports explicitly distinguish this from direct API testing. Wait for the quota window to recover and retain separate direct live API evidence; this test mode does not alter the website or its API. Wait for `footer.shared-footer` to parse the static body rather than network-idle or readyState, which external deferred requests can hold open.
+
 ## Current production workflow (September 2026)
 
 - The current public website is `dist/`, not the legacy `website/` or `.tmp/website/` folders described below.

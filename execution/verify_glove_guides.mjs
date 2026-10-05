@@ -2,9 +2,11 @@ import { chromium } from "playwright-core";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import catalog from "../lib/catalog.generated.json" with { type: "json" };
+import { loadApiSnapshot, installApiSnapshot } from "./storefront-api-qa.mjs";
 
 const base = (process.argv[2] || "http://127.0.0.1:4509").replace(/\/$/, "");
 const local = /127\.0\.0\.1|localhost/.test(base);
+const apiSnapshot = await loadApiSnapshot(base);
 const output = `.tmp/glove-guides-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 const failures = [], errors = [], externalWarnings = [], results = [];
@@ -27,6 +29,7 @@ for (const settings of [
 ]) {
   const { label, ...options } = settings;
   const context = await browser.newContext(options);
+  await installApiSnapshot(context, base, apiSnapshot);
   const page = await context.newPage();
   page.on("pageerror", error => errors.push(`${label}: ${error.message}`));
   page.on("response", response => {
@@ -36,9 +39,10 @@ for (const settings of [
   });
   for (const product of catalog.products) {
     if (product.categorySlug !== "gloves" && label !== "desktop") continue;
-    // Wait on document state directly; external video requests need not go idle.
+    // The footer proves the static body parsed even if an external deferred script
+    // keeps readyState at loading in no-JavaScript browser contexts.
     const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "commit" });
-    await page.waitForFunction(() => document.readyState !== "loading");
+    await page.locator("footer.shared-footer").waitFor({ state: "attached" });
     check(response.ok(), `${product.slug}: missing page`);
     const isGlove = product.categorySlug === "gloves";
     check(await page.locator("#glove-size-guide").count() === (isGlove ? 1 : 0), `${product.slug}: guide missing or present on non-glove`);
@@ -93,6 +97,6 @@ for (const settings of [
 }
 await browser.close();
 check(errors.length === 0, `Runtime/resources: ${errors.join("; ")}`);
-await writeFile(`${output}/report.json`, JSON.stringify({ base, results, errors, externalWarnings, failures }, null, 2));
-console.log(JSON.stringify({ base, output, views: results.length, errors, externalWarnings, failures }, null, 2));
+await writeFile(`${output}/report.json`, JSON.stringify({ base, apiMode: apiSnapshot ? "live snapshot" : "direct", results, errors, externalWarnings, failures }, null, 2));
+console.log(JSON.stringify({ base, apiMode: apiSnapshot ? "live snapshot" : "direct", output, views: results.length, errors, externalWarnings, failures }, null, 2));
 if (failures.length) process.exitCode = 1;

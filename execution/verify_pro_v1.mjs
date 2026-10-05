@@ -1,9 +1,11 @@
 import { chromium } from "playwright-core";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { loadApiSnapshot, installApiSnapshot } from "./storefront-api-qa.mjs";
 
 const base = (process.argv[2] || "http://127.0.0.1:4506").replace(/\/$/, "");
 const local = base.includes("127.0.0.1") || base.includes("localhost");
+const apiSnapshot = await loadApiSnapshot(base);
 const isX = process.argv.includes("--pro-v1x");
 const isPureTouch = process.argv.includes("--pure-touch");
 const isStaSof = process.argv.includes("--stasof");
@@ -24,6 +26,12 @@ const output = `.tmp/${isWeatherSof ? "weathersof" : isStaSof ? "stasof" : isPur
 await mkdir(output, { recursive: true });
 const failures = [], errors = [], results = {};
 const check = (condition, message) => { if (!condition) failures.push(message); };
+async function navigate(page, route) {
+  // External video requests need not become idle for a complete static document.
+  const response = await page.goto(`${base}${route}`, { waitUntil: "commit" });
+  await page.locator("footer.shared-footer").waitFor({ state: "attached" });
+  return response;
+}
 const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"));
 const ball = catalog.products.find(product => product.sku === sku);
 check(ball?.status === "Out of Stock" && Number(ball?.stock) === 0, "catalog: ball incorrectly in stock");
@@ -35,8 +43,8 @@ for (const [original, name] of pairs) {
   check(hash(await readFile(`C:/Users/mikae/${folder}/${original}`)) === hash(await readFile(`images/products/${imagePrefix}-${name}.png`)), `${name}: provided picture was changed`);
 }
 if (!local) {
-  const response = await fetch(`${base}/api/storefront-products?sku=${sku}`);
-  const live = response.ok ? (await response.json()).products?.[0] : null;
+  const response = apiSnapshot ? null : await fetch(`${base}/api/storefront-products?sku=${sku}`);
+  const live = apiSnapshot?.find(product => product.sku === sku) ?? (response?.ok ? (await response.json()).products?.[0] : null);
   // Sheets can store absolute site URLs or relative image paths; verify the same resource.
   const expectedImage = new URL(`/images/products/${imagePrefix}-${primary}.png`, base).href;
   const liveImage = live?.image ? new URL(live.image, base).href : null;
@@ -52,6 +60,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
   { label: "no-js", viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", javaScriptEnabled: false },
 ]) {
   const context = await browser.newContext({ viewport, reducedMotion, javaScriptEnabled });
+  await installApiSnapshot(context, base, apiSnapshot);
   await context.addInitScript(() => {
     Element.prototype.setPointerCapture = () => {};
     Element.prototype.releasePointerCapture = () => {};
@@ -60,7 +69,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
   const page = await context.newPage();
   page.on("pageerror", error => errors.push(`${label}: ${error.message}`));
   page.on("response", response => { if (response.status() >= 400 && !(local && response.url().includes("/api/"))) errors.push(`${response.status()} ${response.url()}`); });
-  const response = await page.goto(`${base}/shop/product/${slug}/`, { waitUntil: "networkidle" });
+  const response = await navigate(page, `/shop/product/${slug}/`);
   await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; });
   check(response.ok(), `${label}: page not found`);
   if (javaScriptEnabled) await page.waitForFunction(() => document.querySelector(".product-scroll-shell")?.dataset.scrollcraftMounted === "true");
@@ -116,6 +125,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
   await context.close();
 }
 const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+await installApiSnapshot(context, base, apiSnapshot);
 await context.addInitScript(() => {
   Element.prototype.setPointerCapture = () => {};
   Element.prototype.releasePointerCapture = () => {};
@@ -123,17 +133,17 @@ await context.addInitScript(() => {
 });
 const page = await context.newPage();
 for (const route of isGlove ? ["/shop/accessories/", "/shop/accessories/gloves/"] : ["/shop/balls/", "/shop/balls/balls/"]) {
-  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  await navigate(page, route);
   const card = page.locator(`a.store-product-card[href="/shop/product/${slug}"]`);
   check(await card.count() === 1 && (await card.innerText()).toLowerCase().includes("out of stock"), `${route}: missing out-of-stock ball listing`);
 }
 for (const route of ["/", "/shop/", "/shop/stock/"]) {
-  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  await navigate(page, route);
   check(await page.locator(`.home-stock a[href*="${slug}"], .stock-register a[href*="${slug}"], .stock-room a[href*="${slug}"], .shop-stock-rack a[href*="${slug}"]`).count() === 0, `${route}: unavailable ball leaked into in-stock area`);
   if (route === "/shop/stock/") check(!((await page.locator("main").innerText()).includes(productName)), "stock page: unavailable product shown");
 }
 await browser.close();
 check(errors.length === 0, `runtime/resources: ${errors.join("; ")}`);
-await writeFile(`${output}/report.json`, JSON.stringify({ base, results, errors, failures }, null, 2));
-console.log(JSON.stringify({ base, output, errors, failures }, null, 2));
+await writeFile(`${output}/report.json`, JSON.stringify({ base, apiMode: apiSnapshot ? "live snapshot" : "direct", results, errors, failures }, null, 2));
+console.log(JSON.stringify({ base, apiMode: apiSnapshot ? "live snapshot" : "direct", output, errors, failures }, null, 2));
 if (failures.length) process.exitCode = 1;
