@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T07:30:57.094573+00:00",
+  "generatedAt": "2026-10-05T07:43:01.516621+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -307,6 +307,28 @@
         "/images/products/titleist-pro-v1x-angle.png",
         "/images/products/titleist-pro-v1x-alignment.png",
         "/images/products/titleist-pro-v1x-sleeve.png"
+      ]
+    },
+    {
+      "sku": "GK-GL005",
+      "slug": "gk-gl005",
+      "name": "Titleist Players Men's Golf Glove",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "Titleist Players Men's Golf Glove in Pearl (white). Select cabretta leather, breathable perforations and reinforced cuff and thumb. Size, glove hand and fit to be confirmed on restock. Currently out of stock; ask about future availability.",
+      "priceKes": 3700,
+      "priceUsd": 28.57,
+      "priceCny": 194.74,
+      "sizes": "Confirm size, glove hand and fit on restock",
+      "colors": "Pearl (white)",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/titleist-players-glove-back.png",
+        "/images/products/titleist-players-glove-palm.png",
+        "/images/products/titleist-players-glove-grip.png",
+        "/images/products/titleist-players-glove-packaging.png"
       ]
     }
   ]

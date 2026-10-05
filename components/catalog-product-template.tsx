@@ -20,7 +20,7 @@ export default function CatalogProductTemplate({ product, details, department, r
   const isP790 = product.slug === "gk-ir-tmp";
   const categoryHref = department ? `/shop/${department.slug}/${product.categorySlug}` : "/shop";
 
-  return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}`} id="page-content">
+  return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}${details.specs.headers.length === 2 ? " product-reference-table" : ""}`} id="page-content">
     <div className="product-breadcrumb"><a href={categoryHref}><ArrowLeft size={16}/> {product.categoryLabel}</a></div>
     <section className="club-purchase" id="product-order" data-sc-act="flow">
       <ProductGallery images={details.gallery} note={details.galleryNote}/>

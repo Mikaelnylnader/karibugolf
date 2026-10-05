@@ -370,6 +370,62 @@ const proV1x: ProductPageDetails = {
   },
 };
 
+const playersGlove: ProductPageDetails = {
+  brand: "Titleist",
+  intro: "A thin cabretta-leather men's golf glove in Pearl (white). Currently out of stock. Ask about future availability and the right size, glove hand and fit for you.",
+  gallery: [
+    { src: "/images/products/titleist-players-glove-back.png", alt: "Pearl white Titleist Players men's glove showing back and closure", label: "Back" },
+    { src: "/images/products/titleist-players-glove-palm.png", alt: "Titleist Players men's glove palm and perforated fingers", label: "Palm" },
+    { src: "/images/products/titleist-players-glove-grip.png", alt: "Titleist Players glove gripping a golf club", label: "Grip" },
+    { src: "/images/products/titleist-players-glove-packaging.png", alt: "Titleist Players cabretta leather glove in retail packaging", label: "Packaging" },
+  ],
+  galleryNote: "Product reference pictures supplied to Karibu Golf. Size, glove hand, fit and packaging will be confirmed when stock becomes available. No stock is currently available.",
+  overviewEyebrow: "TITLEIST PLAYERS MEN'S",
+  overviewTitle: "THIN LEATHER. CONNECTED FEEL.",
+  overviewBody: [
+    "Titleist pairs select cabretta leather with carefully placed seams for a close fit and responsive feel.",
+    "This Pearl (white) glove is a catalogue listing, not an available order. Speak to Karibu Golf about future stock and fit before payment.",
+  ],
+  overviewImage: "/images/products/titleist-players-glove-back.png",
+  features: [
+    { title: "Select cabretta leather", text: "Thin leather balances a precise fit with close contact at the grip." },
+    { title: "Breathable perforations", text: "Perforated areas help air move through the glove." },
+    { title: "Considered construction", text: "Careful seam placement and twin elastic rows support fit and flexibility." },
+    { title: "Secure, reinforced finish", text: "A fine-gauge hook-and-loop closure and satin reinforcement at the cuff and thumb finish the glove." },
+  ],
+  detailEyebrow: "SIZE · GLOVE HAND · FIT",
+  detailTitle: "GET THE FIT RIGHT.",
+  detailBody: [
+    "Glove hand means the hand you wear it on, not the hand you swing with. Confirm size and regular or cadet fit with us when new stock arrives.",
+    "The photographs are product references. They do not promise a specific hand or size in stock, and an availability enquiry does not reserve an item.",
+  ],
+  detailImage: "/images/products/titleist-players-glove-palm.png",
+  configuration: [
+    { label: "Size", values: ["Confirm on restock"] },
+    { label: "Glove hand / fit", values: ["Confirm on restock"] },
+    { label: "Colour", values: ["Pearl (white)"] },
+  ],
+  specTitle: "PLAYERS GLOVE REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference ranges, not Karibu inventory. No size or hand is currently available.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "Titleist Players Men's"], ["Colour", "Pearl (white)"], ["Material", "Select cabretta leather"],
+      ["Regular left", "S, M, ML, L, XL, XXL"], ["Cadet left", "S, M, ML, L, XL"],
+      ["Regular right", "S, M, ML, L, XL"], ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "Titleist Players men's official product page", url: "https://www.titleist.com/product/players-mens/007GL1T.html?dwvar_007GL1T_color=PRL" },
+  presentation: {
+    imageLabels: ["Back", "Palm", "Grip"],
+    featuresTitle: "THE DETAILS BEHIND THE FEEL.",
+    featuresIntro: "Explore the leather, ventilation and construction.",
+    inquiryTitle: "YOUR FIT. ASK WHAT'S NEXT.",
+    inquiryBody: "Currently out of stock. Ask about future availability, size and delivery across East Africa. We will confirm your glove hand and fit before any order.",
+    inquiryLink: "Ask about this golf glove",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -388,6 +444,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir004") return aiSmokeHl;
   if (product.slug === "gk-bl012") return proV1;
   if (product.slug === "gk-bl011") return proV1x;
+  if (product.slug === "gk-gl005") return playersGlove;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
