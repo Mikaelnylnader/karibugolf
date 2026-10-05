@@ -49,6 +49,12 @@ for (const settings of [
     if (!isGlove) continue;
     if (options.javaScriptEnabled) await page.waitForFunction(() => document.querySelector(".product-scroll-shell")?.dataset.scrollcraftMounted === "true");
     await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; });
+    await page.locator("img").evaluateAll(async images => {
+      images.forEach(image => { image.loading = "eager"; });
+      await Promise.all(images.map(image => Promise.race([
+        image.decode().catch(() => {}), new Promise(resolve => setTimeout(resolve, 5000)),
+      ])));
+    });
     const shortcut = page.locator(".glove-guide-shortcut");
     check(await shortcut.getAttribute("href") === "#glove-size-guide", `${label}/${product.slug}: shortcut target is incorrect`);
     const guide = page.locator("#glove-size-guide");
