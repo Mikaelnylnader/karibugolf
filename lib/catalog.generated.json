@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T19:18:38.121551+00:00",
+  "generatedAt": "2026-10-05T20:07:17.181477+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -429,6 +429,28 @@
         "/images/products/footjoy-weathersof-women-turquoise-set.png",
         "/images/products/footjoy-weathersof-women-turquoise-back.png",
         "/images/products/footjoy-weathersof-women-turquoise-packaging.png"
+      ]
+    },
+    {
+      "sku": "GK-WG009",
+      "slug": "gk-wg009",
+      "name": "TaylorMade MG5 Wedge",
+      "categorySlug": "wedges",
+      "categoryLabel": "Wedges",
+      "description": "TaylorMade MG5 Wedge, fully forged from carbon steel with Spin Tread Technology, a RAW face and aggressive saw-milled grooves. Manufacturer loft, grind, finish, hand and shaft choices are reference options; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 18243,
+      "priceUsd": 140.87,
+      "priceCny": 960.16,
+      "sizes": "46°–60°; LB, SC, SB, SX and HB grinds (manufacturer reference)",
+      "colors": "Satin Chrome, Charcoal (manufacturer reference)",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/taylormade-mg5-wedge-back.jpg",
+        "/images/products/taylormade-mg5-wedge-face.jpg",
+        "/images/products/taylormade-mg5-wedge-face-angle.jpg",
+        "/images/products/taylormade-mg5-wedge-sole.jpg"
       ]
     }
   ]

@@ -667,6 +667,65 @@ const womensWeathersofGlove: ProductPageDetails = {
   },
 };
 
+const mg5Wedge: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A tour-inspired, fully forged wedge combining soft carbon-steel feel with a RAW face, Spin Tread Technology and aggressive saw-milled grooves.",
+  gallery: [
+    { src: "/images/products/taylormade-mg5-wedge-back.jpg", alt: "TaylorMade MG5 Satin Chrome wedge back and milled sole", label: "Back" },
+    { src: "/images/products/taylormade-mg5-wedge-face.jpg", alt: "TaylorMade MG5 wedge face and full groove pattern", label: "Face" },
+    { src: "/images/products/taylormade-mg5-wedge-face-angle.jpg", alt: "TaylorMade MG5 wedge face, hosel and grooves from an angle", label: "Grooves" },
+    { src: "/images/products/taylormade-mg5-wedge-sole.jpg", alt: "TaylorMade MG5 wedge sole and precision-milled grind", label: "Sole" },
+  ],
+  galleryNote: "All four official TaylorMade product-reference photographs were supplied by Karibu Golf. They show the Satin Chrome finish; exact loft, bounce, grind, hand, shaft and condition must be confirmed when stock returns.",
+  overviewEyebrow: "TAYLORMADE MILLED GRIND 5",
+  overviewTitle: "FORGED FEEL. CONTROL IN EVERY CONDITION.",
+  overviewBody: [
+    "TaylorMade builds MG5 from ultrasoft forged carbon steel for responsive feel through the scoring clubs.",
+    "Spin Tread Technology redirects water from the RAW face, while tighter, sharper saw-milled grooves are designed to retain friction and control around the green.",
+  ],
+  overviewImage: "/images/products/taylormade-mg5-wedge-back.jpg",
+  features: [
+    { title: "Fully forged feel", text: "The MG5 head is fully forged from ultrasoft carbon steel for the soft, responsive feedback TaylorMade targets in a tour-inspired wedge." },
+    { title: "Spin Tread Technology", text: "TaylorMade’s face treatment is designed to redirect water away from impact and help maintain friction in wet playing conditions." },
+    { title: "Aggressive saw-milled grooves", text: "Tighter tolerances, steeper groove walls and sharper radii are engineered to create more spin and control." },
+    { title: "Tour-inspired sole choices", text: "The manufacturer’s selector covers multiple precision-milled grinds for different turf conditions, divot patterns and face manipulation." },
+  ],
+  detailEyebrow: "LOFT · BOUNCE · GRIND",
+  detailTitle: "BUILD THE WEDGE AROUND YOUR TURF.",
+  detailBody: [
+    "The manufacturer’s current selector spans 46° through 60°, with LB, SC, SB, SX and HB sole choices covering firm through soft conditions and shallow through steep deliveries.",
+    "These choices are fitting references, not Karibu inventory. Select your preference below and the team will confirm the exact head, finish, hand, shaft and grip before payment.",
+  ],
+  detailImage: "/images/products/taylormade-mg5-wedge-face-angle.jpg",
+  configuration: [
+    { label: "Loft", values: ["46°", "48°", "50°", "52°", "54°", "56°", "58°", "60°"] },
+    { label: "Grind", values: ["LB", "SC", "SB", "SX", "HB"] },
+    { label: "Finish", values: ["Satin Chrome", "Charcoal"] },
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+  ],
+  specTitle: "MG5 GRIND REFERENCE.",
+  specIntro: "TaylorMade manufacturer-reference combinations from the current MG5 selector. Not every loft is offered in every grind, and none of these options represents current Karibu stock.",
+  specs: {
+    headers: ["Grind", "Loft / bounce", "Manufacturer fit summary"],
+    rows: [
+      ["LB", "56.08° · 58.08° · 60.08°", "Shallow delivery and firm, tight conditions"],
+      ["SC", "54.10° · 56.10° · 58.09° · 60.09°", "Heel-and-toe relief for greenside versatility"],
+      ["SB", "46.09° · 48.09° · 50.09° · 52.09° · 54.12° · 56.12° · 58.10° · 60.10°", "Four-way camber for varied swings and turf"],
+      ["SX", "58.11° · 60.11°", "Mid-bounce versatility with a Reverse-C trailing edge"],
+      ["HB", "54.13° · 56.14° · 58.12° · 60.12°", "Steeper delivery or softer conditions"],
+    ],
+  },
+  source: { label: "TaylorMade MG5 official product page", url: "https://www.taylormadegolf.com/MG5-Wedge/DW-TC647.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Back", "Face", "Grooves"],
+    featuresTitle: "THE MG5 DETAILS.",
+    featuresIntro: "Move through the forged construction, wet-condition face treatment, groove geometry and sole choices.",
+    inquiryTitle: "CHOOSE THE LOFT. MATCH THE GRIND.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference loft, grind, finish and hand, then ask Karibu Golf to confirm future availability and the exact build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this MG5 wedge",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -690,6 +749,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl008") return stasofGlove;
   if (product.slug === "gk-gl009") return weathersofGlove;
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
+  if (product.slug === "gk-wg009") return mg5Wedge;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
