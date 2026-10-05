@@ -29,6 +29,10 @@ Build and deploy the Golf Kenya premium website with automatic product updates f
 - Before decoding all product images in QA, set offscreen lazy images to eager loading and bound the wait. A newly added lower-page size chart can otherwise leave `decode()` pending indefinitely even though the image serves correctly and the guide itself passes its visual tests.
 - Product modals must sit above the site's explicit overlay layer (`z-index:150`). Use `z-index:160` for the glove guide popup and verify both computed stacking and hit-testing at its centre; visibility/size assertions alone can pass while the popup is blurred behind its backdrop.
 
+- WeatherSof uses existing `GK-GL009`. Refresh with `execution/update_footjoy_weathersof_listing.py` (read-only unless `--apply`) and resolve its Sheet row (116 at addition); preserve prices/costs and update only listing, visibility, status and quantity. Use `execution/verify_pro_v1.mjs <base> --weathersof`, plus the shared glove-guide and currency suites. The supplied green-packaging photographs are reference images; FootJoy's `004WEA` page redirects to a prior-generation two-pack. Label it as a technology reference, not a promise of pack contents or the newest MicroTac construction. Confirm version, hand, fit and pack contents on restock.
+
+- If Windows Application Control blocks the local `workerd.exe` (Wrangler reports `spawn UNKNOWN`), do not disable or bypass the policy. The framework has a supported Node production renderer: `node execution/build_vinext_static.mjs --node` then `node execution/export-new-site-static.mjs --node` uses it to generate the same static route set. Run the full relevant product/guide/currency checks before publishing. These explicit options do not change default Cloudflare builds or live hosting.
+
 ## Current production workflow (September 2026)
 
 - The current public website is `dist/`, not the legacy `website/` or `.tmp/website/` folders described below.

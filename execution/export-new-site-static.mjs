@@ -48,10 +48,13 @@ const routes = [
   ...productRoutes,
 ];
 
-const wrangler = path.resolve("node_modules/wrangler/bin/wrangler.js");
+const useNode = process.argv.includes("--node");
+const cli = path.resolve(useNode ? "node_modules/vinext/dist/cli.js" : "node_modules/wrangler/bin/wrangler.js");
 const server = spawn(
   process.execPath,
-  [wrangler, "dev", "--config", "dist/server/wrangler.json", "--port", String(port)],
+  useNode
+    ? [cli, "start", "--hostname", "127.0.0.1", "--port", String(port)]
+    : [cli, "dev", "--config", "dist/server/wrangler.json", "--port", String(port)],
   { stdio: ["ignore", "pipe", "pipe"] },
 );
 

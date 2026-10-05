@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T10:58:05.321306+00:00",
+  "generatedAt": "2026-10-05T18:17:16.961577+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -373,6 +373,28 @@
         "/images/products/footjoy-stasof-back.png",
         "/images/products/footjoy-stasof-palm.png",
         "/images/products/footjoy-stasof-packaging.png"
+      ]
+    },
+    {
+      "sku": "GK-GL009",
+      "slug": "gk-gl009",
+      "name": "FootJoy WeatherSof Men's Golf Glove",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "FootJoy WeatherSof Men's Golf Glove in White / Black. Soft feel, a secure adjustable closure and perforated fingers. Size, glove hand, fit and exact version to be confirmed on restock. Currently out of stock; ask about future availability.",
+      "priceKes": 2042,
+      "priceUsd": 15.77,
+      "priceCny": 107.47,
+      "sizes": "Confirm size, glove hand and fit on restock",
+      "colors": "White / Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/footjoy-weathersof-set.png",
+        "/images/products/footjoy-weathersof-back.png",
+        "/images/products/footjoy-weathersof-palm.png",
+        "/images/products/footjoy-weathersof-packaging.png"
       ]
     }
   ]

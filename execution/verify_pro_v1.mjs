@@ -7,18 +7,20 @@ const local = base.includes("127.0.0.1") || base.includes("localhost");
 const isX = process.argv.includes("--pro-v1x");
 const isPureTouch = process.argv.includes("--pure-touch");
 const isStaSof = process.argv.includes("--stasof");
+const isWeatherSof = process.argv.includes("--weathersof");
 const isPlayersGlove = process.argv.includes("--players-glove");
-const isGlove = isPlayersGlove || isPureTouch || isStaSof;
-const brand = isPureTouch || isStaSof ? "FootJoy" : "Titleist";
-const sku = isStaSof ? "GK-GL008" : isPureTouch ? "GK-GL010" : isGlove ? "GK-GL005" : isX ? "GK-BL011" : "GK-BL012";
+const isFootJoy = isPureTouch || isStaSof || isWeatherSof;
+const isGlove = isPlayersGlove || isFootJoy;
+const brand = isFootJoy ? "FootJoy" : "Titleist";
+const sku = isWeatherSof ? "GK-GL009" : isStaSof ? "GK-GL008" : isPureTouch ? "GK-GL010" : isGlove ? "GK-GL005" : isX ? "GK-BL011" : "GK-BL012";
 const slug = sku.toLowerCase();
-const model = isStaSof ? "StaSof Men's" : isPureTouch ? "Pure Touch Limited Men's" : isGlove ? "Players Men's" : isX ? "Pro V1x" : "Pro V1";
+const model = isWeatherSof ? "WeatherSof Men's" : isStaSof ? "StaSof Men's" : isPureTouch ? "Pure Touch Limited Men's" : isGlove ? "Players Men's" : isX ? "Pro V1x" : "Pro V1";
 const productName = `${brand} ${model} ${isGlove ? "Golf Glove" : "Golf Balls"}`;
-const imagePrefix = isStaSof ? "footjoy-stasof" : isPureTouch ? "footjoy-pure-touch" : isGlove ? "titleist-players-glove" : isX ? "titleist-pro-v1x" : "titleist-pro-v1";
-const source = isStaSof ? "https://www.footjoy.com/product/men/gloves-men/stasof/006STA.html?dwvar_006STA_color=66770E-301" : isPureTouch ? "https://www.footjoy.com/product/men/gloves-men/pure-touch-limited/026PUR.html?dwvar_026PUR_color=64013E" : isGlove ? "https://www.titleist.com/product/players-mens/007GL1T.html?dwvar_007GL1T_color=PRL" : isX ? "https://www.titleist.com/product/pro-v1x/005PVXT.html" : "https://www.titleist.com/product/pro-v1/005PV1T.html";
-const primary = isPureTouch || isStaSof ? "set" : isGlove ? "back" : "box";
-const primaryLabel = isPureTouch || isStaSof ? "Glove + box" : isGlove ? "Back" : "Dozen box";
-const output = `.tmp/${isStaSof ? "stasof" : isPureTouch ? "pure-touch" : isGlove ? "players-glove" : isX ? "pro-v1x" : "pro-v1"}-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
+const imagePrefix = isWeatherSof ? "footjoy-weathersof" : isStaSof ? "footjoy-stasof" : isPureTouch ? "footjoy-pure-touch" : isGlove ? "titleist-players-glove" : isX ? "titleist-pro-v1x" : "titleist-pro-v1";
+const source = isWeatherSof ? "https://www.footjoy.com/product/sale/sale-gloves/weathersof-2-pack/004WEA.html" : isStaSof ? "https://www.footjoy.com/product/men/gloves-men/stasof/006STA.html?dwvar_006STA_color=66770E-301" : isPureTouch ? "https://www.footjoy.com/product/men/gloves-men/pure-touch-limited/026PUR.html?dwvar_026PUR_color=64013E" : isGlove ? "https://www.titleist.com/product/players-mens/007GL1T.html?dwvar_007GL1T_color=PRL" : isX ? "https://www.titleist.com/product/pro-v1x/005PVXT.html" : "https://www.titleist.com/product/pro-v1/005PV1T.html";
+const primary = isFootJoy ? "set" : isGlove ? "back" : "box";
+const primaryLabel = isFootJoy ? "Glove + box" : isGlove ? "Back" : "Dozen box";
+const output = `.tmp/${isWeatherSof ? "weathersof" : isStaSof ? "stasof" : isPureTouch ? "pure-touch" : isGlove ? "players-glove" : isX ? "pro-v1x" : "pro-v1"}-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 const failures = [], errors = [], results = {};
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -26,7 +28,7 @@ const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"))
 const ball = catalog.products.find(product => product.sku === sku);
 check(ball?.status === "Out of Stock" && Number(ball?.stock) === 0, "catalog: ball incorrectly in stock");
 check(catalog.products.filter(product => product.status === "In Stock" && Number(product.stock) > 0).length === 4, "catalog: original stock selection changed");
-const pairs = isStaSof ? [["strasoft .png", "set"], ["strasoft 1.png", "back"], ["strasoft 3.png", "palm"], ["strasoft 2.png", "packaging"]] : isPureTouch ? [["Pure feel.png", "set"], ["pure feel1.png", "back"], ["pure feel3.png", "palm"], ["pure feel2.png", "packaging"]] : isGlove ? [["Skärmbild 2026-10-04 171804.png", "back"], ["Skärmbild 2026-10-04 171736.png", "palm"], ["Skärmbild 2026-10-04 171750.png", "grip"], ["Skärmbild 2026-10-04 171717.png", "packaging"]] : isX ? [["Prov2x.png", "box"], ["Prov1x2.png", "ball"], ["prov1x 1.png", "angle"], ["Prov1x4.png", "alignment"], ["prov1x 3.png", "sleeve"]] : [["Prov1.png", "box"], ["Prov1 2.png", "ball"], ["prov1 1.png", "alignment"], ["prov1 3.png", "sleeve"]];
+const pairs = isWeatherSof ? [["weahtersoft men.png", "set"], ["weahtersoft men 2.png", "back"], ["weahtersoft men 3.png", "palm"], ["weahtersoft men 1.png", "packaging"]] : isStaSof ? [["strasoft .png", "set"], ["strasoft 1.png", "back"], ["strasoft 3.png", "palm"], ["strasoft 2.png", "packaging"]] : isPureTouch ? [["Pure feel.png", "set"], ["pure feel1.png", "back"], ["pure feel3.png", "palm"], ["pure feel2.png", "packaging"]] : isGlove ? [["Skärmbild 2026-10-04 171804.png", "back"], ["Skärmbild 2026-10-04 171736.png", "palm"], ["Skärmbild 2026-10-04 171750.png", "grip"], ["Skärmbild 2026-10-04 171717.png", "packaging"]] : isX ? [["Prov2x.png", "box"], ["Prov1x2.png", "ball"], ["prov1x 1.png", "angle"], ["Prov1x4.png", "alignment"], ["prov1x 3.png", "sleeve"]] : [["Prov1.png", "box"], ["Prov1 2.png", "ball"], ["prov1 1.png", "alignment"], ["prov1 3.png", "sleeve"]];
 for (const [original, name] of pairs) {
   const hash = bytes => createHash("sha256").update(bytes).digest("hex");
   const folder = isPlayersGlove ? "Pictures/Screenshots" : "Downloads";
@@ -74,7 +76,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
   check(!(await page.locator("main").innerText()).includes("WHAT IS INSIDE THE CLUB"), `${label}: club copy leaked into ball page`);
   await page.screenshot({ path: `${output}/${label}-purchase.png` });
   if (javaScriptEnabled) {
-    for (const name of isPureTouch || isStaSof ? ["Back", "Palm", "Packaging", "Glove + box"] : isGlove ? ["Palm", "Grip", "Packaging", "Back"] : ["Ball", ...(isX ? ["Angled view"] : []), "Alignment", "Sleeve", "Dozen box"]) {
+    for (const name of isFootJoy ? ["Back", "Palm", "Packaging", "Glove + box"] : isGlove ? ["Palm", "Grip", "Packaging", "Back"] : ["Ball", ...(isX ? ["Angled view"] : []), "Alignment", "Sleeve", "Dozen box"]) {
       await page.getByRole("button", { name: `Show ${name} photo`, exact: true }).click();
       check(await page.getByRole("button", { name: `Enlarge ${name} photo`, exact: true }).count() === 1, `${label}: ${name} photo cannot be selected`);
     }
@@ -108,7 +110,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
     await page.waitForTimeout(200);
     const focus = await enquiry.evaluate(node => ({ active: node === document.activeElement, top: node.getBoundingClientRect().top, bottom: node.getBoundingClientRect().bottom, outline: getComputedStyle(node).outlineWidth, href: node.href }));
     check(focus.active && focus.top >= 0 && focus.bottom <= viewport.height && parseFloat(focus.outline) >= 2, `${label}: enquiry focus not visible: ${JSON.stringify(focus)}`);
-    check(decodeURIComponent(focus.href).includes(isGlove ? `Size: Confirm on restock, Glove hand / fit: Confirm on restock, Colour: ${isStaSof ? "Pearl / Black" : isPureTouch ? "White" : "Pearl (white)"}` : "Pack: Dozen (12 balls), Colour: White"), `${label}: enquiry missing product options`);
+    check(decodeURIComponent(focus.href).includes(isGlove ? `Size: Confirm on restock, Glove hand / fit: Confirm on restock, Colour: ${isWeatherSof ? "White / Black" : isStaSof ? "Pearl / Black" : isPureTouch ? "White" : "Pearl (white)"}` : "Pack: Dozen (12 balls), Colour: White"), `${label}: enquiry missing product options`);
   }
   results[label] = { status: await page.locator(".catalog-stock").innerText(), pictures: pairs.length };
   await context.close();

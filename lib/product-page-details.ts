@@ -541,6 +541,62 @@ const stasofGlove: ProductPageDetails = {
   },
 };
 
+const weathersofGlove: ProductPageDetails = {
+  brand: "FootJoy",
+  intro: "Everyday comfort, a soft feel and a secure adjustable closure. White / Black. Currently out of stock; ask about your size, glove hand and fit on restock.",
+  gallery: [
+    { src: "/images/products/footjoy-weathersof-set.png", alt: "White and black FootJoy WeatherSof glove beside its green packaging", label: "Glove + box" },
+    { src: "/images/products/footjoy-weathersof-back.png", alt: "FootJoy WeatherSof glove back with FJ closure and perforated fingers", label: "Back" },
+    { src: "/images/products/footjoy-weathersof-palm.png", alt: "FootJoy WeatherSof glove palm with reinforced areas", label: "Palm" },
+    { src: "/images/products/footjoy-weathersof-packaging.png", alt: "Green FootJoy WeatherSof retail packaging", label: "Packaging" },
+  ],
+  galleryNote: "Product reference photographs supplied by Karibu Golf. No stock is currently available. Confirm the exact version, size, glove hand and packaging when stock returns.",
+  overviewEyebrow: "FOOTJOY WEATHERSOF",
+  overviewTitle: "EVERYDAY COMFORT. CONFIDENT GRIP.",
+  overviewBody: [
+    "WeatherSof is designed around a soft feel, a consistent fit and dependable grip. Your photographs show the white and black glove with green WeatherSof packaging.",
+    "Explore the glove and size guide here, then ask Karibu Golf about future availability across East Africa. This is a catalogue listing, not a ready-to-ship item.",
+  ],
+  overviewImage: "/images/products/footjoy-weathersof-back.png",
+  features: [
+    { title: "Soft feel", text: "FootJoy’s prior-generation WeatherSof reference describes FiberSof material for comfort and a consistent fit." },
+    { title: "Reinforced grip areas", text: "The same manufacturer reference uses performance leather in high-wear areas. Confirm the exact version on restock." },
+    { title: "Breathable design", text: "Perforated fingers are visible in the supplied photographs; the prior-generation reference also describes PowerNet knuckle mesh." },
+    { title: "Adjustable closure", text: "The FJ-branded closure helps secure the glove around the hand. FootJoy calls its reference closure ComforTab." },
+  ],
+  detailEyebrow: "SIZE · GLOVE HAND · FIT",
+  detailTitle: "FIND YOUR EVERYDAY FIT.",
+  detailBody: [
+    "Use the size guide below to measure your hand. Glove hand means the hand you wear it on, not the hand you swing with. We will confirm size and regular or cadet fit before any order.",
+    "WeatherSof versions and packaging can differ. The linked manufacturer reference is a prior-generation two-pack; it does not mean this listing includes two gloves. Confirm the exact item and pack contents when stock returns.",
+  ],
+  detailImage: "/images/products/footjoy-weathersof-palm.png",
+  configuration: [
+    { label: "Size", values: ["Confirm on restock"] },
+    { label: "Glove hand / fit", values: ["Confirm on restock"] },
+    { label: "Colour", values: ["White / Black"] },
+  ],
+  specTitle: "WEATHERSOF REFERENCE DETAILS.",
+  specIntro: "The photos show the product to explore. Manufacturer technology references describe the prior-generation model, not confirmed incoming inventory.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "FootJoy WeatherSof Men's"], ["Colour shown", "White / Black"],
+      ["Closure", "Adjustable FJ-branded closure"], ["Size / hand / fit", "Confirm on restock"],
+      ["Exact version / pack contents", "Confirm on restock"], ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "FootJoy WeatherSof prior-generation manufacturer reference (two-pack)", url: "https://www.footjoy.com/product/sale/sale-gloves/weathersof-2-pack/004WEA.html" },
+  presentation: {
+    imageLabels: ["Glove + box", "Back", "Palm"],
+    featuresTitle: "A CLOSER LOOK AT WEATHERSOF.",
+    featuresIntro: "Explore the feel, fit and closure, then confirm the exact version on restock.",
+    inquiryTitle: "YOUR FIT. ASK WHAT'S NEXT.",
+    inquiryBody: "Currently out of stock. Ask about future availability and delivery across East Africa. We will confirm size, glove hand, fit and pack contents before any order.",
+    inquiryLink: "Ask about this golf glove",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -562,6 +618,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl005") return playersGlove;
   if (product.slug === "gk-gl010") return pureTouchGlove;
   if (product.slug === "gk-gl008") return stasofGlove;
+  if (product.slug === "gk-gl009") return weathersofGlove;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
