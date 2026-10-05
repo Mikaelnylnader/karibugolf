@@ -636,7 +636,7 @@ const womensWeathersofGlove: ProductPageDetails = {
   detailTitle: "CHOOSE YOUR PREFERRED FIT.",
   detailBody: [
     "FootJoy’s current manufacturer page lists S, M, ML and L with Regular Left and Regular Right options. These are reference options, not a statement of Karibu stock.",
-    "The supplied measurement picture is a general men’s reference, not a women’s FootJoy conversion chart. Use it to understand how to measure, then confirm the model-specific fit with Karibu Golf before ordering.",
+    "The supplied women’s measurement picture is a general reference, not an official FootJoy conversion chart. Use it to understand how to measure, then confirm the model-specific fit with Karibu Golf before ordering.",
   ],
   detailImage: "/images/products/footjoy-weathersof-women-white-black-palm.png",
   configuration: [

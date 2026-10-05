@@ -13,12 +13,17 @@ const failures = [], errors = [], externalWarnings = [], results = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 const original = await readFile("C:/Users/mikae/Downloads/ChatGPT Image Oct 4, 2026, 05_48_51 PM-2.png");
+const womensOriginal = await readFile("C:/Users/mikae/Downloads/ChatGPT Image Oct 4, 2026, 05_48_50 PM-1.png");
 const imagePath = "/images/guides/mens-golf-glove-size-guide.png";
+const womensImagePath = "/images/guides/womens-golf-glove-size-guide.png";
 for (const folder of ["images/guides", "public/images/guides", "dist/static/images/guides"]) {
   check(hash(original) === hash(await readFile(`${folder}/mens-golf-glove-size-guide.png`)), `${folder}: size picture changed`);
+  check(hash(womensOriginal) === hash(await readFile(`${folder}/womens-golf-glove-size-guide.png`)), `${folder}: women's size picture changed`);
 }
 const served = await fetch(`${base}${imagePath}`);
 check(served.ok && hash(original) === hash(Buffer.from(await served.arrayBuffer())), "served guide: missing or changed picture");
+const servedWomens = await fetch(`${base}${womensImagePath}`);
+check(servedWomens.ok && hash(womensOriginal) === hash(Buffer.from(await servedWomens.arrayBuffer())), "served women's guide: missing or changed picture");
 const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
 for (const settings of [
   { label: "desktop", viewport: { width: 1440, height: 1000 }, reducedMotion: "no-preference", javaScriptEnabled: true },
@@ -66,7 +71,9 @@ for (const settings of [
     check((await guide.innerText()).includes("not an official FootJoy or Titleist size chart"), `${label}/${product.slug}: conversion caveat missing`);
     check((await guide.innerText()).includes("these are different measurements"), `${label}/${product.slug}: measurement distinction missing`);
     check(await guide.locator(".glove-fit-source").count() === 2, `${label}/${product.slug}: official guide links missing`);
+    const expectedImagePath = product.slug === "gk-gl011" ? womensImagePath : imagePath;
     const picture = guide.locator(".glove-size-guide-image img");
+    check(await picture.getAttribute("src") === expectedImagePath, `${label}/${product.slug}: wrong gender size picture`);
     const dimensions = await picture.evaluate(async node => { await node.decode(); return { width: node.clientWidth, height: node.clientHeight, ratio: node.naturalWidth / node.naturalHeight }; });
     check(Math.abs(dimensions.width / dimensions.height - dimensions.ratio) < .02, `${label}/${product.slug}: chart cropped or distorted`);
     await page.screenshot({ path: `${output}/${label}-${product.slug}-guide.png` });
@@ -75,9 +82,9 @@ for (const settings of [
     await page.screenshot({ path: `${output}/${label}-${product.slug}-picture.png` });
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${label}/${product.slug}: horizontal overflow`);
     const fullSize = guide.getByRole("link", { name: "Open full-size sizing picture ↗", exact: true });
-    check(await fullSize.getAttribute("href") === imagePath, `${label}/${product.slug}: no-JavaScript full-size fallback broken`);
+    check(await fullSize.getAttribute("href") === expectedImagePath, `${label}/${product.slug}: no-JavaScript full-size fallback broken`);
     if (options.javaScriptEnabled) {
-      const triggerLabel = product.slug === "gk-gl011" ? "Enlarge general glove measurement guide" : "Enlarge men's glove size guide";
+      const triggerLabel = product.slug === "gk-gl011" ? "Enlarge women's glove size guide" : "Enlarge men's glove size guide";
       const trigger = guide.getByRole("button", { name: triggerLabel, exact: true });
       await trigger.focus();
       await page.keyboard.press("Tab");
@@ -85,7 +92,7 @@ for (const settings of [
       check(await trigger.evaluate(node => document.activeElement === node && parseFloat(getComputedStyle(node).outlineWidth) >= 2), `${label}/${product.slug}: missing keyboard focus outline`);
       await page.keyboard.press("Enter");
       check(await page.getByRole("dialog").isVisible(), `${label}/${product.slug}: guide zoom not open`);
-      check(await page.getByRole("dialog").locator("img").getAttribute("src") === imagePath, `${label}/${product.slug}: wrong zoom image`);
+      check(await page.getByRole("dialog").locator("img").getAttribute("src") === expectedImagePath, `${label}/${product.slug}: wrong zoom image`);
       await page.waitForTimeout(250);
       const dialogBounds = await page.getByRole("dialog").boundingBox();
       check(dialogBounds && dialogBounds.width <= options.viewport.width && dialogBounds.height <= options.viewport.height, `${label}/${product.slug}: zoom exceeds viewport`);
