@@ -726,6 +726,71 @@ const mg5Wedge: ProductPageDetails = {
   },
 };
 
+const sim2MaxIrons: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A high-launching game-improvement iron set built around Cap Back construction, an intelligently positioned sweet spot and forged-like impact feel.",
+  gallery: [
+    { src: "/images/products/taylormade-sim2-max-irons-cavity.jpg", alt: "TaylorMade SIM2 Max 7-iron cavity-back view", label: "Cavity" },
+    { src: "/images/products/taylormade-sim2-max-irons-address.jpg", alt: "TaylorMade SIM2 Max iron viewed from the playing position", label: "At address" },
+    { src: "/images/products/taylormade-sim2-max-irons-face.jpg", alt: "TaylorMade SIM2 Max iron face and grooves", label: "Face" },
+    { src: "/images/products/taylormade-sim2-max-irons-sole.jpg", alt: "TaylorMade SIM2 Max 7-iron sole and Speed Pocket", label: "Sole" },
+  ],
+  galleryNote: "All four official TaylorMade product-reference photographs were supplied by Karibu Golf. Ask for current photographs and confirmation of the exact 5–PW + AW set, hand, shafts, flexes and condition when stock returns.",
+  overviewEyebrow: "TAYLORMADE SIM2 MAX IRONS",
+  overviewTitle: "HIGH LAUNCH. FAST FACE. MORE FORGIVENESS.",
+  overviewBody: [
+    "SIM2 Max uses a multi-material Cap Back structure to support the topline and upper face while preserving face flexibility for distance and forgiveness.",
+    "A low centre of gravity promotes higher launch, while TaylorMade positions Progressive Inverted Cone Technology to expand the useful sweet spot and help reduce the common right miss.",
+  ],
+  overviewImage: "/images/products/taylormade-sim2-max-irons-cavity.jpg",
+  features: [
+    { title: "Cap Back construction", text: "A lightweight multi-material structure supports the topline from heel to toe while working with the flexible face to improve sound, feel and speed." },
+    { title: "Fast, forgiving face", text: "Each face uses Progressive Inverted Cone Technology to position the sweet spot for common impact locations and help minimise the typical right miss." },
+    { title: "Thru-Slot Speed Pocket", text: "TaylorMade’s sole slot is engineered to preserve face flexibility and ball speed on strikes low on the face." },
+    { title: "ECHO Damping System", text: "A softer polymer blend stretches across the enclosed cavity to channel away harsh vibration and create a forged-like impact sensation." },
+  ],
+  detailEyebrow: "THE 5–PW + AW SET",
+  detailTitle: "SEVEN CLUBS. ONE EASY-LAUNCHING SETUP.",
+  detailBody: [
+    "The manufacturer configuration shown for this listing runs from the 5-iron through pitching wedge and adds the 49° approach wedge.",
+    "Hand, shaft and flex selections below are fitting references, not current Karibu inventory. The team will confirm every club and component before payment.",
+  ],
+  detailImage: "/images/products/taylormade-sim2-max-irons-face.jpg",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Shaft / flex", values: ["KBS Max 85 MT Steel · Stiff", "Ventus Blue Graphite · Senior", "Ventus Blue Graphite · Regular", "Ventus Blue Graphite · Stiff"] },
+    { label: "Set", values: ["5–PW + AW"] },
+  ],
+  specTitle: "SIM2 MAX SET SPECIFICATIONS.",
+  specIntro: "TaylorMade manufacturer-reference specifications for the 5–PW + AW configuration shown in this Karibu listing.",
+  specs: {
+    headers: ["Club", "Loft", "Lie", "Length", "Hand"],
+    rows: [
+      ["5", "21.5°", "62.0°", '38.50"', "RH / LH"],
+      ["6", "25.0°", "62.5°", '37.88"', "RH / LH"],
+      ["7", "28.5°", "63.0°", '37.25"', "RH / LH"],
+      ["8", "32.5°", "63.5°", '36.75"', "RH / LH"],
+      ["9", "38.0°", "64.0°", '36.25"', "RH / LH"],
+      ["PW", "43.5°", "64.5°", '35.75"', "RH / LH"],
+      ["AW", "49.0°", "64.5°", '35.50"', "RH / LH"],
+    ],
+  },
+  equipment: [
+    { title: "KBS Max 85 MT steel", text: "TaylorMade’s reference steel build lists Stiff flex at 98g with 1.7° torque." },
+    { title: "Fujikura Ventus Blue graphite", text: "The reference graphite build lists Senior, Regular and Stiff profiles from 56g to 76g, with high to mid-high launch." },
+    { title: "Lamkin Crossline 360 grip", text: "The manufacturer reference grip is a black, standard-size 52g Crossline 360 with a textured round profile." },
+  ],
+  source: { label: "TaylorMade SIM2 Max Irons official product page", url: "https://www.taylormadegolf.com/SIM2-Max-Irons/DW-TA164.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Cavity", "At address", "Face"],
+    featuresTitle: "THE SIM2 MAX DETAILS.",
+    featuresIntro: "Explore the structural, speed, forgiveness and feel technologies behind this game-improvement set.",
+    inquiryTitle: "CHOOSE THE BUILD. WE WILL CONFIRM THE SET.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference hand and shaft profile, then ask Karibu Golf to confirm the exact seven-club set, condition and future availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this SIM2 Max set",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -750,6 +815,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl009") return weathersofGlove;
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
   if (product.slug === "gk-wg009") return mg5Wedge;
+  if (product.slug === "gk-ir005") return sim2MaxIrons;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

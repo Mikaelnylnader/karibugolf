@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T20:07:17.181477+00:00",
+  "generatedAt": "2026-10-05T20:23:14.488476+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -451,6 +451,28 @@
         "/images/products/taylormade-mg5-wedge-face.jpg",
         "/images/products/taylormade-mg5-wedge-face-angle.jpg",
         "/images/products/taylormade-mg5-wedge-sole.jpg"
+      ]
+    },
+    {
+      "sku": "GK-IR005",
+      "slug": "gk-ir005",
+      "name": "TaylorMade SIM2 Max Irons",
+      "categorySlug": "golf_irons",
+      "categoryLabel": "Golf Irons",
+      "description": "TaylorMade SIM2 Max game-improvement irons with Cap Back construction, a Thru-Slot Speed Pocket, Progressive Inverted Cone Technology and an ECHO Damping System. The 5–PW + AW set, hand, shaft and flex choices are manufacturer references; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 86108,
+      "priceUsd": 664.93,
+      "priceCny": 4532.0,
+      "sizes": "5–PW + AW (manufacturer set reference)",
+      "colors": "Chrome / Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/taylormade-sim2-max-irons-cavity.jpg",
+        "/images/products/taylormade-sim2-max-irons-address.jpg",
+        "/images/products/taylormade-sim2-max-irons-face.jpg",
+        "/images/products/taylormade-sim2-max-irons-sole.jpg"
       ]
     }
   ]
