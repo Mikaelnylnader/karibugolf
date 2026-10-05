@@ -52,7 +52,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ depar
             <header data-sc-in data-sc-stagger="55">
               <p className="micro">KARIBU GOLF / {category.label.toUpperCase()}</p>
               <h2>THE {category.label.toUpperCase()}<br />COLLECTION.</h2>
-              <p>Prices are shown in Kenyan shillings, with USD and RMB references on each product. Open any product for details and availability.</p>
+              <p>Prices are shown in Kenyan shillings (KSh). Open any product for details and availability.</p>
             </header>
             <div className="store-product-grid" data-sc-in data-sc-stagger="40">
               {categoryProducts.map((product) => <ShopProductCard product={product} key={product.sku} />)}

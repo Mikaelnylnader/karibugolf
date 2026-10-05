@@ -91,7 +91,10 @@ export default function About() {
             <h2 id="founder-title">MEET OUR<br /><em>FOUNDER.</em></h2>
             <p className="about-founder-name">Mikael Nylander</p>
             <p className="about-founder-role">Founder, golfer and coach</p>
-            <div className="about-founder-seal" aria-hidden="true"><Image unoptimized src="/images/karibu-badge.svg" alt="" width={88} height={88} /></div>
+            <figure className="about-founder-photo about-founder-portrait" data-about-founder-photo data-photo-direction="-1">
+              <div className="about-founder-photo-frame"><div className="about-founder-photo-window"><Image unoptimized src="/images/founder/mikael-volvo-china-open-tee-off.webp" alt="Mikael Nylander following through after a tee shot at Volvo China Open qualifying" width={1536} height={1024} sizes="(max-width: 860px) 100vw, 38vw" /></div></div>
+              <figcaption><strong>On the tee.</strong><span>Mikael Nylander at Volvo China Open qualifying.</span></figcaption>
+            </figure>
           </header>
           <div className="about-founder-story" data-sc-in data-sc-stagger="55">
             <p>Karibu Golf was founded by Mikael Nylander, with a lifelong dedication to the game and a simple ambition: to help more people enjoy golf.</p>
@@ -104,6 +107,16 @@ export default function About() {
             <div style={{ "--stop-at": 0.84 } as CSSProperties}><dt>Nairobi</dt><dd>Coaching, Karibu Golf and a growing community</dd></div>
           </dl>
         </div>
+          <div className="sc-wrap about-founder-photos" aria-label="Photographs from Volvo China Open qualifying">
+            <figure className="about-founder-photo" data-about-founder-photo data-photo-direction="1">
+              <div className="about-founder-photo-frame"><div className="about-founder-photo-window"><Image unoptimized src="/images/founder/mikael-volvo-china-open-putting.webp" alt="Mikael Nylander putting on the green at Volvo China Open qualifying" width={1536} height={1024} sizes="(max-width: 860px) 100vw, 52vw" /></div></div>
+              <figcaption><strong>On the green.</strong><span>Putting during Volvo China Open qualifying.</span></figcaption>
+            </figure>
+            <figure className="about-founder-photo" data-about-founder-photo data-photo-direction="-1">
+              <div className="about-founder-photo-frame"><div className="about-founder-photo-window"><Image unoptimized src="/images/founder/mikael-volvo-china-open-walking.webp" alt="Mikael Nylander walking the course with another golfer at Volvo China Open qualifying" width={1536} height={1024} sizes="(max-width: 860px) 100vw, 40vw" /></div></div>
+              <figcaption><strong>Between shots.</strong><span>Walking the course during Volvo China Open qualifying.</span></figcaption>
+            </figure>
+          </div>
       </section>
 
       <section className="about-people-belief" data-sc-act="pin" data-sc-span="2.2">

@@ -1,5 +1,43 @@
 # Karibu Golf About: ScrollCraft brief
 
+## Owner-supplied founder photographs, 5 October 2026
+
+This is an in-place photographic extension, not a new site or fingerprint. The owner's request is: "use this pictures for the about me and use the [$scroll-craft] for the pictures and with the new text". Reuse the established answers, brand and hospitality procession. Do not redesign the opening, service rail or ending to manufacture a new fingerprint. The existing registry row remains the record of this same page.
+
+### Reused brief and bounded decisions
+
+1. Vibe: retain the established welcoming, personal golf editorial style.
+2. Journey: the owner supplied a founder biography and three photographs. Pair the tee-off photograph with his name, follow with the readable biography and career trace, then a putting/walking photographic spread.
+3. Energy: calm prose, restrained print-like photographic movement, no new dramatic pin or video.
+4. Feeling: personal recognition at the tee-off image; trust while reading the biography; connection in the putting/walking pair; belonging at the existing customer clinic invitation.
+5. Distinctive experience: real founder photographs now give substance to the existing travelled path and aperture story. Preserve the existing bespoke Karibu aperture rather than adding a competing signature.
+6. Aesthetic range: retain the existing fairway green, paper, lime, two typefaces and asymmetric editorial composition.
+7. Structure: distinct scenes in the existing hospitality procession, not a new continuous world or page grammar. The seven alternative grammars would require a redesign outside this targeted request.
+8. Assets: the three supplied 1536-by-1024 PNGs, retained in Downloads. Compress delivery copies to WebP without cropping, recolouring, inventing subjects or removing the existing image markings. No generated imagery or paid generation.
+
+### Feeling curve before devices
+
+- Recognition: the founder's name beside the real tee-off photograph.
+- Trust: the updated Sweden, China and Nairobi biography remains stationary and fully readable.
+- Connection: two separate photographs settle gently into a staggered spread, with captions outside the images.
+- Belonging: the unchanged Nairobi clinic invitation offers a real next step.
+
+The existing opening aperture remains the page-wide peak. The founder photos are supporting evidence, not three competing peaks. No empty scroll or new pinning is authored. Tell-someone extension: "I met the person behind the shop through his story and photographs from Volvo China Open qualifying."
+
+### Bounded scroll score and layer contract
+
+| Beat | Device | Composition and constraint |
+|---|---|---|
+| Founder recognition | Natural-flow photograph with once-opening print mask | Tee-off beneath founder identity; keep the full 3:2 image and caption, no text over faces |
+| Founder trust | Existing editorial reading and drawn career trace | No moving prose, no duplicated biography, no extra held span |
+| Personal connection | Separately paced photograph frames | Asymmetric desktop pair, short independent translation/rotation, full-image final states |
+| Mobile connection | Single-column photographs | Natural 3:2 ratios, gentler bounded movement, no desktop offsets or sticky tall column |
+| Motion-off reading | Static complete frames | All three photos and captions visible without JavaScript or under reduced motion |
+
+Photo transforms live on inner frames; progress is measured on stable outer figures. The photographs, captions and prose are separate planes. Do not cut people out or simulate movement within the tournament photographs. Keep the shared engine unchanged and use page-local requestAnimationFrame progress. Captions call the pictured event "Volvo China Open qualifying", as printed on the supplied images, rather than asserting these photos show main-event participation. Existing playing/coaching/wins copy remains owner-supplied.
+
+Verification must inspect six positions per photograph on desktop, typical and compact phone, and reduced motion; actual masks/transforms, full final images, readable captions, all new biography details, keyboard inquiry, no-JavaScript fallback, failed requests, overflow, and the final production package. Physical phone hardware remains outside headless coverage.
+
 ## Founder and community content update, 4 October 2026
 
 ### Requested ScrollCraft extension

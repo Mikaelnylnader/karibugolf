@@ -37,6 +37,7 @@ export default function AboutScrollShell({ children }: { children: ReactNode }) 
 
     let frame = 0;
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
+    const founderPhotos = [...root.querySelectorAll<HTMLElement>("[data-about-founder-photo]")];
     const update = () => {
       frame = 0;
       const viewport = window.innerHeight;
@@ -45,6 +46,20 @@ export default function AboutScrollShell({ children }: { children: ReactNode }) 
       const pageProgress = clamp(-bounds.top / journey);
       const header = document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
       root.dataset.aboutMotion = motion.matches ? "off" : "on";
+      for (const photo of founderPhotos) {
+        // Measure the stable figure, never the independently transformed print.
+        const photoBounds = photo.getBoundingClientRect();
+        const open = motion.matches ? 1 : clamp((viewport * 0.96 - photoBounds.top) / Math.max(viewport * 0.40, 1));
+        const travel = motion.matches ? 0.5 : clamp((viewport - photoBounds.top) / Math.max(viewport + photoBounds.height, 1));
+        const direction = Number(photo.dataset.photoDirection || 1);
+        const distance = innerWidth > 860 ? 24 : 12;
+        const turn = direction * (1 - open) * (innerWidth > 860 ? 1.2 : 0.4);
+        photo.style.setProperty("--founder-photo-open", open.toFixed(4));
+        photo.style.setProperty("--founder-photo-shift", `${((travel - 0.5) * distance).toFixed(2)}px`);
+        photo.style.setProperty("--founder-photo-turn", `${turn.toFixed(3)}deg`);
+        photo.dataset.scVerifyState = `print:${Math.round(open * 22)};shift:${Math.round((travel - 0.5) * distance)};turn:${Math.round(turn * 100)}`;
+        photo.dataset.scVerifyHold = motion.matches ? "true" : "false";
+      }
       const founderTrace = root.querySelector<HTMLElement>("[data-about-founder-trace]");
       if (founderTrace) {
         const traceBounds = founderTrace.getBoundingClientRect();

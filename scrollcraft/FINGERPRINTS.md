@@ -62,6 +62,8 @@ as a constraint, so writing them down is the whole point.
 
 Maintenance note, 4 October 2026: the same Growing the Game page was refined with sequential growth-type arrivals, bounded independent photo/badge depth and an active plan index. Its original fingerprint is retained because the owner explicitly requested design preservation. Homepage updates were copy-only, not a new build or novelty claim.
 
+Maintenance note, 5 October 2026: the existing About page now pairs the updated founder biography with three owner-supplied Volvo China Open qualifying photographs. Natural-flow photographic prints have bounded masks/translation, with stacked phone and static reduced/no-JavaScript composition. The original About grammar, navigation, aperture peak and contact-ring ending remain. This is an in-place extension, not a new build claiming four changed fingerprint dimensions. Historical rows are unchanged.
+
 ---
 
 ## Appending a row

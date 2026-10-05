@@ -25,6 +25,5 @@ export default function LiveProductCardPrice({ product }: { product: CatalogProd
 
   return <>
     <p className="store-price" data-live-card-price={live.sku}>{formatKes(live.priceKes)}</p>
-    {(live.priceCny > 0 || live.priceUsd > 0) && <p className="store-currencies">{live.priceCny > 0 ? `¥${live.priceCny.toLocaleString("en-US")}` : ""}{live.priceCny > 0 && live.priceUsd > 0 ? " · " : ""}{live.priceUsd > 0 ? `$${live.priceUsd.toLocaleString("en-US")}` : ""}</p>}
   </>;
 }

@@ -135,7 +135,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
               <div><dt>Specification</dt><dd>{product.colors || "Confirm with Karibu"}</dd></div>
               <div><dt>Available</dt><dd>{product.stock}</dd></div>
             </dl>
-            <div className="stock-exhibit-price"><strong>{formatKes(product.priceKes)}</strong><span>¥{product.priceCny.toLocaleString("en-US", { maximumFractionDigits: 2 })} · ${product.priceUsd.toLocaleString("en-US", { maximumFractionDigits: 2 })}</span></div>
+            <div className="stock-exhibit-price"><strong>{formatKes(product.priceKes)}</strong></div>
             <a className="stock-product-link" href={`/shop/product/${product.slug}`}>View product <ArrowUpRight size={19}/></a>
           </div>
         </article>)}

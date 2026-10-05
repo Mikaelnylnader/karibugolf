@@ -110,6 +110,42 @@ async function inspectNewContent(page, label) {
   }), { focus, samples });
 }
 
+async function inspectFounderPhotos(page, label) {
+  const photos = [];
+  for (let photoIndex = 0; photoIndex < 3; photoIndex++) {
+    await page.evaluate(() => {
+      document.documentElement.style.scrollBehavior = "auto";
+      const founder = document.querySelector(".about-founder");
+      scrollTo(0, founder.getBoundingClientRect().top + scrollY - innerHeight);
+    });
+    await page.waitForTimeout(150);
+    const top = await page.locator("[data-about-founder-photo]").nth(photoIndex).evaluate((item) => item.getBoundingClientRect().top + scrollY);
+    const samples = [];
+    for (const [sample, progress] of [0, 0.2, 0.4, 0.6, 0.8, 1].entries()) {
+      await page.evaluate(({ top, progress }) => {
+        const nav = document.querySelector(".persistent-nav")?.getBoundingClientRect().height || 76;
+        scrollTo(0, top - innerHeight * 0.9 + progress * (innerHeight * 0.9 - nav - 28));
+      }, { top, progress });
+      await page.waitForTimeout(250);
+      samples.push(await page.locator("[data-about-founder-photo]").nth(photoIndex).evaluate((item) => ({
+        state: item.dataset.scVerifyState,
+        open: Number(getComputedStyle(item).getPropertyValue("--founder-photo-open")),
+        transform: getComputedStyle(item.querySelector(".about-founder-photo-frame")).transform,
+        clip: getComputedStyle(item.querySelector(".about-founder-photo-window")).clipPath,
+        image: item.querySelector("img").currentSrc,
+        loaded: item.querySelector("img").complete && item.querySelector("img").naturalWidth === 1536,
+        caption: item.querySelector("figcaption").textContent,
+        imageRatio: item.querySelector("img").clientWidth / item.querySelector("img").clientHeight,
+        overflow: document.documentElement.scrollWidth - innerWidth,
+        introOverlapsGallery: document.querySelector(".about-founder-heading").getBoundingClientRect().bottom > document.querySelector(".about-founder-photos").getBoundingClientRect().top + 1,
+      })));
+      await page.screenshot({ path: `${output}/${label}-photo-${photoIndex}-${sample}.png` });
+    }
+    photos.push(samples);
+  }
+  return photos;
+}
+
 const desktopRun = await pageFor({ width: 1440, height: 1000 });
 const desktop = { hero: [], pan: [] };
 for (const [index, progress] of [0, 0.5, 1].entries()) {
@@ -132,6 +168,7 @@ await desktopRun.page.waitForTimeout(500);
 desktop.close = await state(desktopRun.page);
 await desktopRun.page.screenshot({ path: `${output}/desktop-close.png` });
 const desktopContent = await inspectNewContent(desktopRun.page, "desktop");
+const desktopPhotos = await inspectFounderPhotos(desktopRun.page, "desktop");
 await desktopRun.context.close();
 
 const mobileRun = await pageFor({ width: 390, height: 844 });
@@ -146,6 +183,7 @@ await mobileRun.page.waitForTimeout(450);
 const mobileClose = await state(mobileRun.page);
 await mobileRun.page.screenshot({ path: `${output}/mobile-close.png` });
 const mobileContent = await inspectNewContent(mobileRun.page, "mobile");
+const mobilePhotos = await inspectFounderPhotos(mobileRun.page, "mobile");
 await mobileRun.context.close();
 
 const reducedRun = await pageFor({ width: 1440, height: 1000 }, "reduce");
@@ -162,11 +200,29 @@ const reduced = await reducedRun.page.evaluate(() => ({
 }));
 await reducedRun.page.screenshot({ path: `${output}/reduced-promises.png`, fullPage: false });
 const reducedContent = await inspectNewContent(reducedRun.page, "reduced");
+const reducedPhotos = await inspectFounderPhotos(reducedRun.page, "reduced");
 await reducedRun.context.close();
 
 const compactRun = await pageFor({ width: 360, height: 640 });
 const compactContent = await inspectNewContent(compactRun.page, "compact");
+const compactPhotos = await inspectFounderPhotos(compactRun.page, "compact");
 await compactRun.context.close();
+
+const noJsContext = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
+await noJsContext.addInitScript(() => {
+  Element.prototype.setPointerCapture = () => {};
+  Element.prototype.releasePointerCapture = () => {};
+  HTMLElement.prototype.requestPointerLock = () => Promise.resolve();
+});
+const noJsPage = await noJsContext.newPage();
+await noJsPage.goto(`${base}/about/`, { waitUntil: "networkidle" });
+const noJs = await noJsPage.locator("[data-about-founder-photo]").evaluateAll((items) => items.map((item) => ({
+  transform: getComputedStyle(item.querySelector(".about-founder-photo-frame")).transform,
+  clip: getComputedStyle(item.querySelector(".about-founder-photo-window")).clipPath,
+  caption: item.querySelector("figcaption").textContent,
+  visible: item.clientHeight > 0,
+})));
+await noJsContext.close();
 
 await browser.close();
 
@@ -205,7 +261,19 @@ for (const [label, result] of Object.entries({ desktopContent, mobileContent, re
 if (desktopContent.founderPosition !== "sticky" || desktopContent.photoPosition !== "sticky") failures.push("desktop columns do not hold while reading");
 if ([mobileContent, compactContent].some((result) => result.founderPosition === "sticky" || result.photoPosition === "sticky")) failures.push("phone layout inherited desktop sticky columns");
 
-const report = { base, output, desktop, mobileHero, mobilePan, mobileClose, reduced, desktopContent, mobileContent, reducedContent, compactContent, errors, failures };
+for (const [label, photos] of Object.entries({ desktopPhotos, mobilePhotos, compactPhotos, reducedPhotos })) {
+  if (photos.length !== 3 || new Set(photos.map((samples) => samples[0].image)).size !== 3) failures.push(`${label}: three unique founder photos expected`);
+  for (const [index, samples] of photos.entries()) {
+    if (!samples.every((sample) => sample.loaded && sample.overflow <= 1 && !sample.introOverlapsGallery && Math.abs(sample.imageRatio - 1.5) < 0.015 && sample.caption.includes("Volvo China Open qualifying"))) failures.push(`${label}: photo ${index} missing, cropped, overlapping, overflowing or mislabelled`);
+    if (!samples.some((sample) => sample.open >= 0.99)) failures.push(`${label}: photo ${index} never fully opens`);
+    if (label === "reducedPhotos") {
+      if (samples.some((sample) => sample.transform !== "none" || sample.clip !== "none")) failures.push(`${label}: photo ${index} retained moving choreography`);
+    } else if (new Set(samples.map((sample) => sample.transform)).size < 3) failures.push(`${label}: photo ${index} did not move through distinct rendered states`);
+  }
+}
+if (noJs.length !== 3 || noJs.some((photo) => !photo.visible || photo.clip !== "none" || photo.transform !== "none")) failures.push("no-JavaScript founder photos are hidden or transformed");
+
+const report = { base, output, desktop, mobileHero, mobilePan, mobileClose, reduced, desktopContent, mobileContent, reducedContent, compactContent, desktopPhotos, mobilePhotos, compactPhotos, reducedPhotos, noJs, errors, failures };
 await writeFile(`${output}/report.json`, JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 if (failures.length) process.exitCode = 1;

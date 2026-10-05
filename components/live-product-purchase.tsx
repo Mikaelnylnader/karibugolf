@@ -40,7 +40,7 @@ export default function LiveProductPurchase({ product, configuration }: Props) {
       <span/>{available ? `In stock in Nairobi · ${live.stock} available` : "Currently out of stock"}
     </div>
     <p className="club-intro">{product.description}</p>
-    <div className="club-price" data-live-price={live.sku}>{price}<span>¥{Number(live.priceCny || 0).toLocaleString("en-US")} RMB · ${Number(live.priceUsd || 0).toLocaleString("en-US")} USD</span></div>
+    <div className="club-price" data-live-price={live.sku}>{price}</div>
     <dl className="club-set">
       <div><dt>Listed options</dt><dd>{product.sizes || "Confirm with us"}</dd></div>
       <div><dt>Colour / finish</dt><dd>{product.colors || "Confirm with us"}</dd></div>
