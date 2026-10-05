@@ -36,8 +36,9 @@ for (const settings of [
   });
   for (const product of catalog.products) {
     if (product.categorySlug !== "gloves" && label !== "desktop") continue;
-    // External video requests need not go idle to verify the rendered glove guide.
-    const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "domcontentloaded" });
+    // Wait on document state directly; external video requests need not go idle.
+    const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "commit" });
+    await page.waitForFunction(() => document.readyState !== "loading");
     check(response.ok(), `${product.slug}: missing page`);
     const isGlove = product.categorySlug === "gloves";
     check(await page.locator("#glove-size-guide").count() === (isGlove ? 1 : 0), `${product.slug}: guide missing or present on non-glove`);
