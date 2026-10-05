@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T18:52:26.943Z",
+  "generatedAt": "2026-10-05T07:30:57.094573+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -284,6 +284,29 @@
         "/images/products/titleist-pro-v1-ball.png",
         "/images/products/titleist-pro-v1-alignment.png",
         "/images/products/titleist-pro-v1-sleeve.png"
+      ]
+    },
+    {
+      "sku": "GK-BL011",
+      "slug": "gk-bl011",
+      "name": "Titleist Pro V1x Golf Balls",
+      "categorySlug": "balls",
+      "categoryLabel": "Balls",
+      "description": "Titleist Pro V1x golf balls with high flight, low long-game spin and higher iron and wedge spin than Pro V1. Firmer feel and a cast urethane cover. White, dozen pack. Currently out of stock; ask Karibu Golf about future availability.",
+      "priceKes": 11480,
+      "priceUsd": 88.65,
+      "priceCny": 604.21,
+      "sizes": "Dozen (12 balls)",
+      "colors": "White",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/titleist-pro-v1x-box.png",
+        "/images/products/titleist-pro-v1x-ball.png",
+        "/images/products/titleist-pro-v1x-angle.png",
+        "/images/products/titleist-pro-v1x-alignment.png",
+        "/images/products/titleist-pro-v1x-sleeve.png"
       ]
     }
   ]

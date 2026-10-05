@@ -316,6 +316,60 @@ const proV1: ProductPageDetails = {
   },
 };
 
+const proV1x: ProductPageDetails = {
+  brand: "Titleist",
+  intro: "A premium golf ball for higher flight, low long-game spin and responsive scoring-shot control, with a firmer feel than Pro V1. Currently out of stock; ask about future availability.",
+  gallery: [
+    { src: "/images/products/titleist-pro-v1x-box.png", alt: "Titleist Pro V1x dozen box in silver packaging", label: "Dozen box" },
+    { src: "/images/products/titleist-pro-v1x-ball.png", alt: "White Titleist Pro V1x ball with Titleist logo and red number", label: "Ball" },
+    { src: "/images/products/titleist-pro-v1x-angle.png", alt: "Titleist Pro V1x ball at an angle showing its logo and side stamp", label: "Angled view" },
+    { src: "/images/products/titleist-pro-v1x-alignment.png", alt: "Titleist Pro V1x side-stamp alignment arrows", label: "Alignment" },
+    { src: "/images/products/titleist-pro-v1x-sleeve.png", alt: "Titleist Pro V1x silver sleeve packaging", label: "Sleeve" },
+  ],
+  galleryNote: "Product reference pictures supplied to Karibu Golf. This listing is for a dozen; the sleeve photograph shows the inner packaging. No stock is currently available.",
+  overviewEyebrow: "TITLEIST PRO V1x",
+  overviewTitle: "HIGH FLIGHT. PRECISE CONTROL.",
+  overviewBody: [
+    "Titleist positions Pro V1x for golfers who want a higher flight and more iron and wedge spin than Pro V1, with a firmer feel.",
+    "Choose the ball for your preferred trajectory, spin and feel rather than handicap alone. Confirm the exact production generation and availability with Karibu Golf before any order.",
+  ],
+  overviewImage: "/images/products/titleist-pro-v1x-box.png",
+  features: [
+    { title: "Higher flight", text: "A spherically tiled 348 tetrahedral dimple pattern supports a higher trajectory than Pro V1." },
+    { title: "Low long-game spin", text: "The high-flex casing layer works with the core to support speed while keeping long-game spin low." },
+    { title: "Iron and wedge control", text: "A high-gradient dual core supports iron and wedge spin. Titleist describes slightly more scoring-club spin than Pro V1." },
+    { title: "Responsive urethane cover", text: "The cast urethane elastomer cover supports greenside touch and control. Overall feel is firmer than Pro V1." },
+  ],
+  detailEyebrow: "WHITE · DOZEN PACK",
+  detailTitle: "MORE HEIGHT. YOUR PREFERRED FEEL.",
+  detailBody: [
+    "This listing is for 12 white Pro V1x balls. Your five reference photographs show the dozen box, ball, angled view, alignment marking and inner sleeve packaging.",
+    "Pro V1x is a different model from Pro V1 and Pro V1x Left Dash. This is an out-of-stock catalogue listing, not a reservation or an available order.",
+  ],
+  detailImage: "/images/products/titleist-pro-v1x-alignment.png",
+  configuration: [{ label: "Pack", values: ["Dozen (12 balls)"] }, { label: "Colour", values: ["White"] }],
+  specTitle: "PRO V1x REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference information. Exact batch, production generation and ball numbers will be confirmed when stock becomes available.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "Titleist Pro V1x"], ["Pack", "Dozen (12 balls)"], ["Colour", "White"],
+      ["Flight", "High trajectory; higher than Pro V1"], ["Long-game spin", "Low"],
+      ["Iron / wedge spin", "Higher than Pro V1"], ["Core", "High-gradient dual core"],
+      ["Cover", "Cast urethane elastomer"], ["Dimple pattern", "348 tetrahedral"], ["Feel", "Firmer than Pro V1"],
+    ],
+  },
+  source: { label: "Titleist Pro V1x official product page", url: "https://www.titleist.com/product/pro-v1x/005PVXT.html" },
+  presentation: {
+    imageLabels: ["Dozen box", "Ball", "Angled view"],
+    featuresTitle: "WHAT SHAPES THE BALL'S PERFORMANCE.",
+    featuresIntro: "Explore the flight, spin and feel behind Pro V1x.",
+    inquiryTitle: "FIND YOUR BALL. ASK WHAT'S NEXT.",
+    inquiryBody: "This product is currently out of stock. Ask about future availability, the exact pack and delivery options across East Africa. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this golf ball",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -333,6 +387,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir-ttt") return t200;
   if (product.slug === "gk-ir004") return aiSmokeHl;
   if (product.slug === "gk-bl012") return proV1;
+  if (product.slug === "gk-bl011") return proV1x;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
