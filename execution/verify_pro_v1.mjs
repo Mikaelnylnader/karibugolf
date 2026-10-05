@@ -5,15 +5,19 @@ import { createHash } from "node:crypto";
 const base = (process.argv[2] || "http://127.0.0.1:4506").replace(/\/$/, "");
 const local = base.includes("127.0.0.1") || base.includes("localhost");
 const isX = process.argv.includes("--pro-v1x");
-const isGlove = process.argv.includes("--players-glove");
-const sku = isGlove ? "GK-GL005" : isX ? "GK-BL011" : "GK-BL012";
+const isPureTouch = process.argv.includes("--pure-touch");
+const isPlayersGlove = process.argv.includes("--players-glove");
+const isGlove = isPlayersGlove || isPureTouch;
+const brand = isPureTouch ? "FootJoy" : "Titleist";
+const sku = isPureTouch ? "GK-GL010" : isGlove ? "GK-GL005" : isX ? "GK-BL011" : "GK-BL012";
 const slug = sku.toLowerCase();
-const model = isGlove ? "Players Men's" : isX ? "Pro V1x" : "Pro V1";
-const productName = `Titleist ${model} ${isGlove ? "Golf Glove" : "Golf Balls"}`;
-const imagePrefix = isGlove ? "titleist-players-glove" : isX ? "titleist-pro-v1x" : "titleist-pro-v1";
-const source = isGlove ? "https://www.titleist.com/product/players-mens/007GL1T.html?dwvar_007GL1T_color=PRL" : isX ? "https://www.titleist.com/product/pro-v1x/005PVXT.html" : "https://www.titleist.com/product/pro-v1/005PV1T.html";
-const primary = isGlove ? "back" : "box";
-const output = `.tmp/${isGlove ? "players-glove" : isX ? "pro-v1x" : "pro-v1"}-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
+const model = isPureTouch ? "Pure Touch Limited Men's" : isGlove ? "Players Men's" : isX ? "Pro V1x" : "Pro V1";
+const productName = `${brand} ${model} ${isGlove ? "Golf Glove" : "Golf Balls"}`;
+const imagePrefix = isPureTouch ? "footjoy-pure-touch" : isGlove ? "titleist-players-glove" : isX ? "titleist-pro-v1x" : "titleist-pro-v1";
+const source = isPureTouch ? "https://www.footjoy.com/product/men/gloves-men/pure-touch-limited/026PUR.html?dwvar_026PUR_color=64013E" : isGlove ? "https://www.titleist.com/product/players-mens/007GL1T.html?dwvar_007GL1T_color=PRL" : isX ? "https://www.titleist.com/product/pro-v1x/005PVXT.html" : "https://www.titleist.com/product/pro-v1/005PV1T.html";
+const primary = isPureTouch ? "set" : isGlove ? "back" : "box";
+const primaryLabel = isPureTouch ? "Glove + box" : isGlove ? "Back" : "Dozen box";
+const output = `.tmp/${isPureTouch ? "pure-touch" : isGlove ? "players-glove" : isX ? "pro-v1x" : "pro-v1"}-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 const failures = [], errors = [], results = {};
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -21,10 +25,10 @@ const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"))
 const ball = catalog.products.find(product => product.sku === sku);
 check(ball?.status === "Out of Stock" && Number(ball?.stock) === 0, "catalog: ball incorrectly in stock");
 check(catalog.products.filter(product => product.status === "In Stock" && Number(product.stock) > 0).length === 4, "catalog: original stock selection changed");
-const pairs = isGlove ? [["Skärmbild 2026-10-04 171804.png", "back"], ["Skärmbild 2026-10-04 171736.png", "palm"], ["Skärmbild 2026-10-04 171750.png", "grip"], ["Skärmbild 2026-10-04 171717.png", "packaging"]] : isX ? [["Prov2x.png", "box"], ["Prov1x2.png", "ball"], ["prov1x 1.png", "angle"], ["Prov1x4.png", "alignment"], ["prov1x 3.png", "sleeve"]] : [["Prov1.png", "box"], ["Prov1 2.png", "ball"], ["prov1 1.png", "alignment"], ["prov1 3.png", "sleeve"]];
+const pairs = isPureTouch ? [["Pure feel.png", "set"], ["pure feel1.png", "back"], ["pure feel3.png", "palm"], ["pure feel2.png", "packaging"]] : isGlove ? [["Skärmbild 2026-10-04 171804.png", "back"], ["Skärmbild 2026-10-04 171736.png", "palm"], ["Skärmbild 2026-10-04 171750.png", "grip"], ["Skärmbild 2026-10-04 171717.png", "packaging"]] : isX ? [["Prov2x.png", "box"], ["Prov1x2.png", "ball"], ["prov1x 1.png", "angle"], ["Prov1x4.png", "alignment"], ["prov1x 3.png", "sleeve"]] : [["Prov1.png", "box"], ["Prov1 2.png", "ball"], ["prov1 1.png", "alignment"], ["prov1 3.png", "sleeve"]];
 for (const [original, name] of pairs) {
   const hash = bytes => createHash("sha256").update(bytes).digest("hex");
-  const folder = isGlove ? "Pictures/Screenshots" : "Downloads";
+  const folder = isPlayersGlove ? "Pictures/Screenshots" : "Downloads";
   check(hash(await readFile(`C:/Users/mikae/${folder}/${original}`)) === hash(await readFile(`images/products/${imagePrefix}-${name}.png`)), `${name}: provided picture was changed`);
 }
 if (!local) {
@@ -60,17 +64,17 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
   check(await page.locator(".catalog-configurator legend").allTextContents().then(labels => JSON.stringify(labels) === JSON.stringify(isGlove ? ["Size", "Glove hand / fit", "Colour"] : ["Pack", "Colour"])), `${label}: incorrect product configuration`);
   check((await page.locator(".catalog-configurator .contact-button").innerText()).includes("Ask about availability"), `${label}: ordering offered for unavailable item`);
   const schema = await page.locator('script[type="application/ld+json"]').first().textContent();
-  check(schema.includes('"availability":"https://schema.org/OutOfStock"') && schema.includes('"name":"Titleist"'), `${label}: incorrect structured data`);
+  check(schema.includes('"availability":"https://schema.org/OutOfStock"') && schema.includes(`"name":"${brand}"`), `${label}: incorrect structured data`);
   check(await page.locator(".club-source").getAttribute("href") === source, `${label}: manufacturer source missing`);
   check(await page.locator(".product-spec-table-wrap").evaluate(node => node.scrollWidth <= node.clientWidth), `${label}: two-column ball specifications clipped`);
   check(!(await page.locator("main").innerText()).includes("WHAT IS INSIDE THE CLUB"), `${label}: club copy leaked into ball page`);
   await page.screenshot({ path: `${output}/${label}-purchase.png` });
   if (javaScriptEnabled) {
-    for (const name of isGlove ? ["Palm", "Grip", "Packaging", "Back"] : ["Ball", ...(isX ? ["Angled view"] : []), "Alignment", "Sleeve", "Dozen box"]) {
+    for (const name of isPureTouch ? ["Back", "Palm", "Packaging", "Glove + box"] : isGlove ? ["Palm", "Grip", "Packaging", "Back"] : ["Ball", ...(isX ? ["Angled view"] : []), "Alignment", "Sleeve", "Dozen box"]) {
       await page.getByRole("button", { name: `Show ${name} photo`, exact: true }).click();
       check(await page.getByRole("button", { name: `Enlarge ${name} photo`, exact: true }).count() === 1, `${label}: ${name} photo cannot be selected`);
     }
-    await page.getByRole("button", { name: `Enlarge ${isGlove ? "Back" : "Dozen box"} photo`, exact: true }).click();
+    await page.getByRole("button", { name: `Enlarge ${primaryLabel} photo`, exact: true }).click();
     check(await page.getByRole("dialog").isVisible(), `${label}: zoom not working`);
     await page.keyboard.press("Escape");
     await page.getByRole("dialog").waitFor({ state: "hidden" });
@@ -96,7 +100,7 @@ for (const { label, viewport, reducedMotion, javaScriptEnabled } of [
     await page.waitForTimeout(200);
     const focus = await enquiry.evaluate(node => ({ active: node === document.activeElement, top: node.getBoundingClientRect().top, bottom: node.getBoundingClientRect().bottom, outline: getComputedStyle(node).outlineWidth, href: node.href }));
     check(focus.active && focus.top >= 0 && focus.bottom <= viewport.height && parseFloat(focus.outline) >= 2, `${label}: enquiry focus not visible: ${JSON.stringify(focus)}`);
-    check(decodeURIComponent(focus.href).includes(isGlove ? "Size: Confirm on restock, Glove hand / fit: Confirm on restock, Colour: Pearl (white)" : "Pack: Dozen (12 balls), Colour: White"), `${label}: enquiry missing product options`);
+    check(decodeURIComponent(focus.href).includes(isGlove ? `Size: Confirm on restock, Glove hand / fit: Confirm on restock, Colour: ${isPureTouch ? "White" : "Pearl (white)"}` : "Pack: Dozen (12 balls), Colour: White"), `${label}: enquiry missing product options`);
   }
   results[label] = { status: await page.locator(".catalog-stock").innerText(), pictures: pairs.length };
   await context.close();
@@ -116,7 +120,7 @@ for (const route of isGlove ? ["/shop/accessories/", "/shop/accessories/gloves/"
 for (const route of ["/", "/shop/", "/shop/stock/"]) {
   await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
   check(await page.locator(`.home-stock a[href*="${slug}"], .stock-register a[href*="${slug}"], .stock-room a[href*="${slug}"], .shop-stock-rack a[href*="${slug}"]`).count() === 0, `${route}: unavailable ball leaked into in-stock area`);
-  if (route === "/shop/stock/") check(!((await page.locator("main").innerText()).includes(`Titleist ${model}`)), "stock page: unavailable product shown");
+  if (route === "/shop/stock/") check(!((await page.locator("main").innerText()).includes(productName)), "stock page: unavailable product shown");
 }
 await browser.close();
 check(errors.length === 0, `runtime/resources: ${errors.join("; ")}`);

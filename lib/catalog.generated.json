@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T07:43:01.516621+00:00",
+  "generatedAt": "2026-10-05T10:44:59.410114+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -329,6 +329,28 @@
         "/images/products/titleist-players-glove-palm.png",
         "/images/products/titleist-players-glove-grip.png",
         "/images/products/titleist-players-glove-packaging.png"
+      ]
+    },
+    {
+      "sku": "GK-GL010",
+      "slug": "gk-gl010",
+      "name": "FootJoy Pure Touch Limited Men's Golf Glove",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "FootJoy Pure Touch Limited Men's Golf Glove in White. Select cabretta leather for a soft feel, with strategically placed elastic for a tailored fit. Size, glove hand and fit to be confirmed on restock. Currently out of stock; ask about future availability.",
+      "priceKes": 3571,
+      "priceUsd": 27.58,
+      "priceCny": 187.95,
+      "sizes": "Confirm size, glove hand and fit on restock",
+      "colors": "White",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/footjoy-pure-touch-set.png",
+        "/images/products/footjoy-pure-touch-back.png",
+        "/images/products/footjoy-pure-touch-palm.png",
+        "/images/products/footjoy-pure-touch-packaging.png"
       ]
     }
   ]

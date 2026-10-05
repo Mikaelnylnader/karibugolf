@@ -426,6 +426,64 @@ const playersGlove: ProductPageDetails = {
   },
 };
 
+const pureTouchGlove: ProductPageDetails = {
+  brand: "FootJoy",
+  intro: "Soft cabretta leather, a tailored fit and a clean white finish. Currently out of stock. Ask about future availability and your glove size, hand and fit.",
+  gallery: [
+    { src: "/images/products/footjoy-pure-touch-set.png", alt: "White FootJoy Pure Touch Limited glove beside its black packaging", label: "Glove + box" },
+    { src: "/images/products/footjoy-pure-touch-back.png", alt: "FootJoy Pure Touch Limited glove back with FJ closure and perforated fingers", label: "Back" },
+    { src: "/images/products/footjoy-pure-touch-palm.png", alt: "White FootJoy Pure Touch Limited glove palm", label: "Palm" },
+    { src: "/images/products/footjoy-pure-touch-packaging.png", alt: "Black FootJoy Pure Touch Limited retail packaging", label: "Packaging" },
+  ],
+  galleryNote: "Your product reference pictures. Size, glove hand, fit and packaging will be confirmed when new stock arrives. No stock is currently available.",
+  overviewEyebrow: "FOOTJOY PURE TOUCH LIMITED",
+  overviewTitle: "SOFT FEEL. PRECISE FIT.",
+  overviewBody: [
+    "Pure Touch Limited combines selected cabretta leather with strategically positioned elastic for a close, tailored fit.",
+    "Explore the glove here, then speak to Karibu Golf about future availability across East Africa. This is an out-of-stock catalogue listing, not a ready-to-ship item.",
+  ],
+  overviewImage: "/images/products/footjoy-pure-touch-back.png",
+  features: [
+    { title: "Select cabretta leather", text: "FootJoy uses carefully selected leather and a specialist preparation process for a supple feel." },
+    { title: "Tailored fit", text: "Targeted elastic helps the glove sit closely around the hand." },
+    { title: "White finish", text: "The white model shown in your four reference photographs." },
+    { title: "Confirm before ordering", text: "Ask us to confirm size, glove hand, fit and availability when stock returns." },
+  ],
+  detailEyebrow: "SIZE · GLOVE HAND · FIT",
+  detailTitle: "THE RIGHT FIT STARTS HERE.",
+  detailBody: [
+    "Glove hand is the hand you wear it on, not the hand you swing with. We will confirm your size and regular or cadet fit before any order.",
+    "Reference pictures do not promise a particular size or hand in stock. An availability enquiry does not reserve a glove.",
+  ],
+  detailImage: "/images/products/footjoy-pure-touch-palm.png",
+  configuration: [
+    { label: "Size", values: ["Confirm on restock"] },
+    { label: "Glove hand / fit", values: ["Confirm on restock"] },
+    { label: "Colour", values: ["White"] },
+  ],
+  specTitle: "PURE TOUCH REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference details, not inventory. Confirm which sizes and fits we can supply on restock.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "FootJoy Pure Touch Limited"], ["Style", "64013E"],
+      ["Colour", "White"], ["Material", "Select cabretta leather"],
+      ["Manufacturer size range", "S, M, ML, L, XL, 2XL; varies by hand / fit"],
+      ["Manufacturer hand / fit options", "Regular left, cadet left, regular right"],
+      ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "FootJoy Pure Touch Limited official product page", url: "https://www.footjoy.com/product/men/gloves-men/pure-touch-limited/026PUR.html?dwvar_026PUR_color=64013E" },
+  presentation: {
+    imageLabels: ["Glove + box", "Back", "Palm"],
+    featuresTitle: "A CLOSER LOOK AT PURE TOUCH.",
+    featuresIntro: "Explore the leather, fit and finish.",
+    inquiryTitle: "YOUR FIT. ASK WHAT'S NEXT.",
+    inquiryBody: "Currently out of stock. Ask about future availability and delivery across East Africa. We will confirm size, glove hand and fit before any order.",
+    inquiryLink: "Ask about this golf glove",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -445,6 +503,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-bl012") return proV1;
   if (product.slug === "gk-bl011") return proV1x;
   if (product.slug === "gk-gl005") return playersGlove;
+  if (product.slug === "gk-gl010") return pureTouchGlove;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
