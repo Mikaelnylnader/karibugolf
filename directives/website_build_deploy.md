@@ -22,6 +22,8 @@ Build and deploy the Golf Kenya premium website with automatic product updates f
 
 - FootJoy Pure Touch Limited uses existing `GK-GL010`. Refresh with `execution/update_footjoy_pure_touch_listing.py` (read-only by default; `--apply` preserves prices, backs up data and copies the four owner PNGs). Resolve the current Sheet row (117 at addition), then change only listing/image, website visibility and out-of-stock quantity cells. `execution/verify_pro_v1.mjs <base> --pure-touch` covers its four images, glove configuration, schema/API and exclusion from stock sections. Manufacturer size/hand ranges are reference information, not inventory. Google Sheets automatically adds a hyperlink to a newly entered image URL: allow exactly that link in post-write formatting comparisons and compare object keys canonically, while preserving other formats and currency cells.
 
+- Live product image checks must resolve absolute and relative Sheet image URLs against the storefront origin before comparison; the same photograph can be represented either way. Do not rewrite a valid catalogue image to satisfy a path-only test.
+
 ## Current production workflow (September 2026)
 
 - The current public website is `dist/`, not the legacy `website/` or `.tmp/website/` folders described below.

@@ -34,7 +34,10 @@ for (const [original, name] of pairs) {
 if (!local) {
   const response = await fetch(`${base}/api/storefront-products?sku=${sku}`);
   const live = response.ok ? (await response.json()).products?.[0] : null;
-  check(live?.status === "Out of Stock" && Number(live?.stock) === 0 && live?.image === `/images/products/${imagePrefix}-${primary}.png`, "live API: incorrect availability or image");
+  // Sheets can store absolute site URLs or relative image paths; verify the same resource.
+  const expectedImage = new URL(`/images/products/${imagePrefix}-${primary}.png`, base).href;
+  const liveImage = live?.image ? new URL(live.image, base).href : null;
+  check(live?.status === "Out of Stock" && Number(live?.stock) === 0 && liveImage === expectedImage, "live API: incorrect availability or image");
   results.live = live;
 }
 const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
