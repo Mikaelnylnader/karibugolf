@@ -36,7 +36,8 @@ for (const settings of [
   });
   for (const product of catalog.products) {
     if (product.categorySlug !== "gloves" && label !== "desktop") continue;
-    const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "networkidle" });
+    // External video requests need not go idle to verify the rendered glove guide.
+    const response = await page.goto(`${base}/shop/product/${product.slug}/`, { waitUntil: "domcontentloaded" });
     check(response.ok(), `${product.slug}: missing page`);
     const isGlove = product.categorySlug === "gloves";
     check(await page.locator("#glove-size-guide").count() === (isGlove ? 1 : 0), `${product.slug}: guide missing or present on non-glove`);
@@ -74,6 +75,12 @@ for (const settings of [
       await page.waitForTimeout(250);
       const dialogBounds = await page.getByRole("dialog").boundingBox();
       check(dialogBounds && dialogBounds.width <= options.viewport.width && dialogBounds.height <= options.viewport.height, `${label}/${product.slug}: zoom exceeds viewport`);
+      check(await page.getByRole("dialog").evaluate(node => {
+        const overlay = document.querySelector('[data-slot="dialog-overlay"]');
+        const bounds = node.getBoundingClientRect();
+        const front = document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+        return Number(getComputedStyle(node).zIndex) > Number(getComputedStyle(overlay).zIndex) && node.contains(front);
+      }), `${label}/${product.slug}: guide is behind the dimming overlay`);
       await page.screenshot({ path: `${output}/${label}-${product.slug}-zoom.png` });
       await page.keyboard.press("Escape");
       await page.getByRole("dialog").waitFor({ state: "hidden" });

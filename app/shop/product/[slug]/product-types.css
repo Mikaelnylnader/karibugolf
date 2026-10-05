@@ -22,7 +22,7 @@
 .glove-size-guide-image span { display:flex; align-items:center; justify-content:center; gap:9px; padding:14px; background:#10261d; color:white; font-size:14px; }
 .glove-size-guide-figure figcaption { font-size:13px; line-height:1.65; margin:14px 0; }
 .glove-size-guide-figure>a { font-size:14px; text-decoration:underline; text-underline-offset:4px; }
-.glove-size-guide-dialog { width:min(94vw,1000px); max-width:1000px; max-height:94dvh; overflow:auto; background:#fffdf5; color:#10261d; }
+.glove-size-guide-dialog { z-index:160; width:min(94vw,1000px); max-width:1000px; max-height:94dvh; overflow:auto; background:#fffdf5; color:#10261d; }
 .glove-size-guide-dialog img { display:block; width:100%; height:auto; }
 .glove-size-guide-dialog p,.glove-size-guide-dialog a { font-size:14px; line-height:1.6; }
 .glove-size-guide-dialog a { text-decoration:underline; }
