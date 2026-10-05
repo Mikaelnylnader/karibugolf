@@ -24,6 +24,10 @@ Build and deploy the Golf Kenya premium website with automatic product updates f
 
 - Live product image checks must resolve absolute and relative Sheet image URLs against the storefront origin before comparison; the same photograph can be represented either way. Do not rewrite a valid catalogue image to satisfy a path-only test.
 
+- StaSof refresh uses existing `GK-GL008` (not the old "StaSoft" spelling): `execution/update_footjoy_stasof_listing.py` preserves pricing, backs up data, copies four supplied product photos and the shared size-guide image without altering the originals. Resolve the current Sheet row (115 at addition) and use targeted listing/visibility/status/quantity updates; do not replace currency cells. `--stasof` on the product verifier checks unavailable product/gallery/API behaviour. `execution/verify_glove_guides.mjs` checks the shared size-guide section on every published glove page and its absence on non-gloves, including phone, keyboard, modal zoom, full-size no-JavaScript fallback and exact image hashes. The supplied size picture is general guidance, not a universal FootJoy/Titleist conversion. FootJoy's official chart uses middle-finger length from the palm, whereas the supplied picture shows wrist-to-fingertip length; explicitly distinguish these. Link to the manufacturer fitting chart and printable tool rather than transcribing malformed scraped chart cells.
+
+- Before decoding all product images in QA, set offscreen lazy images to eager loading and bound the wait. A newly added lower-page size chart can otherwise leave `decode()` pending indefinitely even though the image serves correctly and the guide itself passes its visual tests.
+
 ## Current production workflow (September 2026)
 
 - The current public website is `dist/`, not the legacy `website/` or `.tmp/website/` folders described below.

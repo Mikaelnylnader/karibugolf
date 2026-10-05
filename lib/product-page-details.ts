@@ -484,6 +484,63 @@ const pureTouchGlove: ProductPageDetails = {
   },
 };
 
+const stasofGlove: ProductPageDetails = {
+  brand: "FootJoy",
+  intro: "Advanced performance leather with breathable mesh, perforations and a secure angled closure. Pearl / Black. Currently out of stock; ask about your size, glove hand and fit on restock.",
+  gallery: [
+    { src: "/images/products/footjoy-stasof-set.png", alt: "FootJoy StaSof glove beside its black and yellow packaging", label: "Glove + box" },
+    { src: "/images/products/footjoy-stasof-back.png", alt: "White FootJoy StaSof glove back with black and yellow FJ closure", label: "Back" },
+    { src: "/images/products/footjoy-stasof-palm.png", alt: "FootJoy StaSof glove leather palm and perforated fingers", label: "Palm" },
+    { src: "/images/products/footjoy-stasof-packaging.png", alt: "FootJoy StaSof retail packaging", label: "Packaging" },
+  ],
+  galleryNote: "Product reference photos supplied by Karibu Golf. No stock is currently available. Confirm size, glove hand, fit and packaging when stock returns.",
+  overviewEyebrow: "FOOTJOY STASOF",
+  overviewTitle: "SOFT FEEL. CONFIDENT GRIP.",
+  overviewBody: [
+    "FootJoy’s StaSof uses advanced performance leather designed for lasting softness and moisture resistance, with a breathable construction and a secure closure.",
+    "Explore the glove and size guide here, then ask Karibu Golf about future availability across East Africa. This listing is not a ready-to-ship item.",
+  ],
+  overviewImage: "/images/products/footjoy-stasof-back.png",
+  features: [
+    { title: "Advanced performance leather", text: "APL leather is designed to balance softness, moisture resistance and grip." },
+    { title: "Breathable construction", text: "PowerNet mesh and positioned perforations support airflow and flexibility." },
+    { title: "Consistent fit", text: "Hand-crafted construction and moisture-wicking elastics support comfort." },
+    { title: "Angled ComforTab closure", text: "A hook-and-loop closure helps secure the glove around the hand." },
+  ],
+  detailEyebrow: "SIZE · GLOVE HAND · FIT",
+  detailTitle: "MAKE THE FIT YOURS.",
+  detailBody: [
+    "Use the size guide below to take your measurements. Glove hand means the hand you wear it on; regular and cadet fit must be confirmed for your chosen size.",
+    "The photos do not promise any size or hand in stock. We will confirm the exact item and availability before an order.",
+  ],
+  detailImage: "/images/products/footjoy-stasof-palm.png",
+  configuration: [
+    { label: "Size", values: ["Confirm on restock"] },
+    { label: "Glove hand / fit", values: ["Confirm on restock"] },
+    { label: "Colour", values: ["Pearl / Black"] },
+  ],
+  specTitle: "STASOF REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference information, not inventory. Confirm size and fit on restock.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "FootJoy StaSof Men's"], ["Style", "66770E-301"], ["Colour", "Pearl / Black"],
+      ["Leather", "APL advanced performance leather"], ["Ventilation", "PowerNet mesh and perforations"],
+      ["Closure", "Angled ComforTab hook-and-loop"], ["Size / hand / fit", "Confirm on restock"],
+      ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "FootJoy StaSof official product page", url: "https://www.footjoy.com/product/men/gloves-men/stasof/006STA.html?dwvar_006STA_color=66770E-301" },
+  presentation: {
+    imageLabels: ["Glove + box", "Back", "Palm"],
+    featuresTitle: "THE STASOF DETAILS.",
+    featuresIntro: "Explore the leather, ventilation and closure.",
+    inquiryTitle: "YOUR FIT. ASK WHAT'S NEXT.",
+    inquiryBody: "Currently out of stock. Ask about future availability and delivery across East Africa. We will confirm size, glove hand and fit before any order.",
+    inquiryLink: "Ask about this golf glove",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -504,6 +561,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-bl011") return proV1x;
   if (product.slug === "gk-gl005") return playersGlove;
   if (product.slug === "gk-gl010") return pureTouchGlove;
+  if (product.slug === "gk-gl008") return stasofGlove;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

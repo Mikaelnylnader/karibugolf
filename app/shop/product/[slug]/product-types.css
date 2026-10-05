@@ -5,3 +5,31 @@
 @media(max-width:600px) {
   .product-reference-table .club-specs th,.product-reference-table .club-specs td { padding:15px 12px; font-size:14px; }
 }
+
+.glove-guide-shortcut { margin-right:24px; }
+.glove-size-guide { padding:clamp(50px,7vw,100px) 8%; background:#ecebdc; scroll-margin-top:150px; }
+.glove-size-guide header { max-width:760px; margin-bottom:40px; }
+.glove-size-guide h2 { font-size:clamp(52px,6vw,88px); line-height:.92; margin:18px 0 24px; }
+.glove-size-guide p { font-size:16px; line-height:1.75; }
+.glove-size-guide-grid { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(30px,5vw,76px); align-items:start; }
+.glove-size-guide-copy ol { padding-left:24px; }
+.glove-size-guide-copy li { padding-left:8px; margin-bottom:24px; }
+.glove-size-guide h3 { font-family:inherit; font-size:19px; line-height:1.35; margin-bottom:8px; }
+.glove-size-guide-warning { border-left:3px solid #ad843a; padding:18px 22px; background:#fffdf5; margin:26px 0; }
+.glove-fit-source { display:block; font-size:14px; margin-top:16px; text-decoration:underline; text-underline-offset:4px; }
+.glove-size-guide-image { display:block; position:relative; border:1px solid #c4c9bc; background:white; width:100%; cursor:zoom-in; }
+.glove-size-guide-image img { width:100%; height:auto; display:block; }
+.glove-size-guide-image span { display:flex; align-items:center; justify-content:center; gap:9px; padding:14px; background:#10261d; color:white; font-size:14px; }
+.glove-size-guide-figure figcaption { font-size:13px; line-height:1.65; margin:14px 0; }
+.glove-size-guide-figure>a { font-size:14px; text-decoration:underline; text-underline-offset:4px; }
+.glove-size-guide-dialog { width:min(94vw,1000px); max-width:1000px; max-height:94dvh; overflow:auto; background:#fffdf5; color:#10261d; }
+.glove-size-guide-dialog img { display:block; width:100%; height:auto; }
+.glove-size-guide-dialog p,.glove-size-guide-dialog a { font-size:14px; line-height:1.6; }
+.glove-size-guide-dialog a { text-decoration:underline; }
+.glove-size-guide a:focus-visible,.glove-size-guide button:focus-visible { outline:3px solid #10261d; outline-offset:5px; }
+@media(max-width:750px) {
+  .glove-size-guide { padding:50px 6%; }
+  .glove-size-guide-grid { grid-template-columns:minmax(0,1fr); }
+  .glove-size-guide h2 { font-size:56px; }
+  .glove-size-guide header { margin-bottom:28px; }
+}

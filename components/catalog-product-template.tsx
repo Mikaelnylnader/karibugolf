@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import ProductGallery from "@/components/product-gallery";
+import GloveSizeGuide from "@/components/glove-size-guide";
 import ProductScrollShell from "@/components/product-scroll-shell";
 import LiveProductPurchase from "@/components/live-product-purchase";
 import LiveProductCardPrice from "@/components/live-product-card-price";
@@ -18,6 +19,7 @@ const isAvailable = (product: CatalogProduct) => product.status.toLowerCase() ==
 
 export default function CatalogProductTemplate({ product, details, department, related }: Props) {
   const isP790 = product.slug === "gk-ir-tmp";
+  const isGlove = product.categorySlug === "gloves";
   const categoryHref = department ? `/shop/${department.slug}/${product.categorySlug}` : "/shop";
 
   return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}${details.specs.headers.length === 2 ? " product-reference-table" : ""}`} id="page-content">
@@ -28,6 +30,7 @@ export default function CatalogProductTemplate({ product, details, department, r
         <p className="micro">{details.brand.toUpperCase()} · {product.categoryLabel.toUpperCase()} · {product.sku}</p>
         <h1>{product.name}</h1>
         <LiveProductPurchase product={{ ...product, description: details.intro }} configuration={details.configuration}/>
+        {isGlove && <a className="club-spec-link glove-guide-shortcut" href="#glove-size-guide">Find your glove size ↓</a>}
         <a className="club-spec-link" href="#product-specifications">Explore specifications ↓</a>
       </div>
     </section>
@@ -36,6 +39,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       <a href="#product-overview">Overview</a>
       <a href="#product-features">Key details</a>
       <a href="#product-specifications">Specifications</a>
+      {isGlove && <a href="#glove-size-guide">Size guide</a>}
       {related.length > 0 && <a href="#related-products">Related products</a>}
       <a href="#product-order">Choose your setup ↑</a>
     </nav>
@@ -121,6 +125,8 @@ export default function CatalogProductTemplate({ product, details, department, r
       <div className="product-spec-table-wrap" data-sc-in><table><thead><tr>{details.specs.headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{details.specs.rows.map((row) => <tr key={row.join("-")}>{row.map((cell, index) => <td key={`${cell}-${index}`}>{cell}</td>)}</tr>)}</tbody></table></div>
       {details.source && <a className="club-source" href={details.source.url} target="_blank" rel="noreferrer">Source: {details.source.label} ↗</a>}
     </section>
+
+    {isGlove && <GloveSizeGuide/>}
 
     {details.equipment && <section className="product-equipment-section" data-sc-act="flow">
       <div data-sc-in><p className="micro">SHAFTS, FLEX AND GRIP</p><h2>COMPLETE THE SETUP.</h2><p>These are manufacturer references, not a promise of current Karibu stock. Confirm the exact components fitted to the available set.</p></div>

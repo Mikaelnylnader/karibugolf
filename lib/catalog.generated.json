@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T10:44:59.410114+00:00",
+  "generatedAt": "2026-10-05T10:58:05.321306+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -351,6 +351,28 @@
         "/images/products/footjoy-pure-touch-back.png",
         "/images/products/footjoy-pure-touch-palm.png",
         "/images/products/footjoy-pure-touch-packaging.png"
+      ]
+    },
+    {
+      "sku": "GK-GL008",
+      "slug": "gk-gl008",
+      "name": "FootJoy StaSof Men's Golf Glove",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "FootJoy StaSof Men's Golf Glove in Pearl / Black. Advanced performance leather, breathable mesh and perforations, and an angled ComforTab closure. Size, glove hand and fit to be confirmed on restock. Currently out of stock; ask about future availability.",
+      "priceKes": 3315,
+      "priceUsd": 25.6,
+      "priceCny": 174.47,
+      "sizes": "Confirm size, glove hand and fit on restock",
+      "colors": "Pearl / Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/footjoy-stasof-set.png",
+        "/images/products/footjoy-stasof-back.png",
+        "/images/products/footjoy-stasof-palm.png",
+        "/images/products/footjoy-stasof-packaging.png"
       ]
     }
   ]
