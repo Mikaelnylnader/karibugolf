@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T18:17:16.961577+00:00",
+  "generatedAt": "2026-10-05T19:18:38.121551+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -395,6 +395,40 @@
         "/images/products/footjoy-weathersof-back.png",
         "/images/products/footjoy-weathersof-palm.png",
         "/images/products/footjoy-weathersof-packaging.png"
+      ]
+    },
+    {
+      "sku": "GK-GL011",
+      "slug": "gk-gl011",
+      "name": "FootJoy WeatherSof Women's Golf Glove",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "FootJoy WeatherSof Women's Golf Glove with FiberSof MicroTac, PowerNet mesh and an adjustable ComforTab closure. Reference colours shown: White / Black, Black, Navy, White / Pink and White / Turquoise. Currently out of stock; confirm colour, size and glove hand when stock returns.",
+      "priceKes": 2042,
+      "priceUsd": 15.77,
+      "priceCny": 107.47,
+      "sizes": "S, M, ML, L; Regular Left, Regular Right (manufacturer reference)",
+      "colors": "White / Black, Black, Navy, White / Pink, White / Turquoise",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/footjoy-weathersof-women-white-black-set.png",
+        "/images/products/footjoy-weathersof-women-white-black-back.png",
+        "/images/products/footjoy-weathersof-women-white-black-packaging.png",
+        "/images/products/footjoy-weathersof-women-white-black-palm.png",
+        "/images/products/footjoy-weathersof-women-black-set.png",
+        "/images/products/footjoy-weathersof-women-black-back.png",
+        "/images/products/footjoy-weathersof-women-black-packaging.png",
+        "/images/products/footjoy-weathersof-women-navy-set.png",
+        "/images/products/footjoy-weathersof-women-navy-back.png",
+        "/images/products/footjoy-weathersof-women-navy-packaging.png",
+        "/images/products/footjoy-weathersof-women-pink-set.png",
+        "/images/products/footjoy-weathersof-women-pink-back.png",
+        "/images/products/footjoy-weathersof-women-pink-packaging.png",
+        "/images/products/footjoy-weathersof-women-turquoise-set.png",
+        "/images/products/footjoy-weathersof-women-turquoise-back.png",
+        "/images/products/footjoy-weathersof-women-turquoise-packaging.png"
       ]
     }
   ]

@@ -597,6 +597,76 @@ const weathersofGlove: ProductPageDetails = {
   },
 };
 
+const womensWeathersofGlove: ProductPageDetails = {
+  brand: "FootJoy",
+  intro: "A women’s all-weather golf glove with a soft feel, breathable stretch and an adjustable closure. Five photographed colour options are shown. Currently out of stock; ask about your preferred colour, size and glove hand.",
+  gallery: [
+    { src: "/images/products/footjoy-weathersof-women-white-black-set.png", alt: "White and black women’s FootJoy WeatherSof glove beside green packaging", label: "White / Black · Set" },
+    { src: "/images/products/footjoy-weathersof-women-white-black-back.png", alt: "White and black women’s FootJoy WeatherSof glove back", label: "White / Black · Back" },
+    { src: "/images/products/footjoy-weathersof-women-white-black-packaging.png", alt: "White and black women’s FootJoy WeatherSof retail packaging", label: "White / Black · Box" },
+    { src: "/images/products/footjoy-weathersof-women-white-black-palm.png", alt: "White women’s FootJoy WeatherSof glove palm", label: "White / Black · Palm" },
+    { src: "/images/products/footjoy-weathersof-women-black-set.png", alt: "Black women’s FootJoy WeatherSof glove beside green packaging", label: "Black · Set" },
+    { src: "/images/products/footjoy-weathersof-women-black-back.png", alt: "Black women’s FootJoy WeatherSof glove back", label: "Black · Back" },
+    { src: "/images/products/footjoy-weathersof-women-black-packaging.png", alt: "Black women’s FootJoy WeatherSof retail packaging", label: "Black · Box" },
+    { src: "/images/products/footjoy-weathersof-women-navy-set.png", alt: "Navy women’s FootJoy WeatherSof glove beside green packaging", label: "Navy · Set" },
+    { src: "/images/products/footjoy-weathersof-women-navy-back.png", alt: "Navy women’s FootJoy WeatherSof glove back", label: "Navy · Back" },
+    { src: "/images/products/footjoy-weathersof-women-navy-packaging.png", alt: "Navy women’s FootJoy WeatherSof retail packaging", label: "Navy · Box" },
+    { src: "/images/products/footjoy-weathersof-women-pink-set.png", alt: "White and pink women’s FootJoy WeatherSof glove beside green packaging", label: "White / Pink · Set" },
+    { src: "/images/products/footjoy-weathersof-women-pink-back.png", alt: "White and pink women’s FootJoy WeatherSof glove back", label: "White / Pink · Back" },
+    { src: "/images/products/footjoy-weathersof-women-pink-packaging.png", alt: "White and pink women’s FootJoy WeatherSof retail packaging", label: "White / Pink · Box" },
+    { src: "/images/products/footjoy-weathersof-women-turquoise-set.png", alt: "White and turquoise women’s FootJoy WeatherSof glove beside green packaging", label: "White / Turquoise · Set" },
+    { src: "/images/products/footjoy-weathersof-women-turquoise-back.png", alt: "White and turquoise women’s FootJoy WeatherSof glove back", label: "White / Turquoise · Back" },
+    { src: "/images/products/footjoy-weathersof-women-turquoise-packaging.png", alt: "White and turquoise women’s FootJoy WeatherSof retail packaging", label: "White / Turquoise · Box" },
+  ],
+  galleryNote: "All 16 product reference photographs were supplied by Karibu Golf. The five colours shown are reference options, not current inventory. Confirm the exact colour, size, glove hand and packaging when stock returns.",
+  overviewEyebrow: "FOOTJOY WEATHERSOF WOMEN",
+  overviewTitle: "COLOURFUL CHOICE. EVERYDAY COMFORT.",
+  overviewBody: [
+    "WeatherSof Women combines soft FiberSof MicroTac material, breathable PowerNet mesh and an adjustable ComforTab closure for everyday play.",
+    "Explore the five photographed colour options and use the fitting section below, then ask Karibu Golf about future availability across East Africa. This is an out-of-stock catalogue listing.",
+  ],
+  overviewImage: "/images/products/footjoy-weathersof-women-white-black-back.png",
+  features: [
+    { title: "FiberSof MicroTac", text: "FootJoy describes the material as soft and designed to support a secure grip." },
+    { title: "PowerNet mesh", text: "Mesh across the back of the hand supports breathability, comfort and flexibility." },
+    { title: "ComforTab closure", text: "The angled hook-and-loop tab is designed to create a comfortable, secure fit." },
+    { title: "Five photographed colours", text: "Choose White / Black, Black, Navy, White / Pink or White / Turquoise as your preferred restock enquiry." },
+  ],
+  detailEyebrow: "SIZE · GLOVE HAND · COLOUR",
+  detailTitle: "CHOOSE YOUR PREFERRED FIT.",
+  detailBody: [
+    "FootJoy’s current manufacturer page lists S, M, ML and L with Regular Left and Regular Right options. These are reference options, not a statement of Karibu stock.",
+    "The supplied measurement picture is a general men’s reference, not a women’s FootJoy conversion chart. Use it to understand how to measure, then confirm the model-specific fit with Karibu Golf before ordering.",
+  ],
+  detailImage: "/images/products/footjoy-weathersof-women-white-black-palm.png",
+  configuration: [
+    { label: "Size", values: ["Small (S)", "Medium (M)", "Medium-Large (ML)", "Large (L)"] },
+    { label: "Glove hand / fit", values: ["Regular left", "Regular right"] },
+    { label: "Colour", values: ["White / Black", "Black", "Navy", "White / Pink", "White / Turquoise"] },
+  ],
+  specTitle: "WEATHERSOF WOMEN REFERENCE DETAILS.",
+  specIntro: "Manufacturer reference information and owner-supplied colour photographs. Exact incoming inventory must be confirmed on restock.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "FootJoy WeatherSof Women"], ["Style", "66980E"],
+      ["Photographed colours", "White / Black · Black · Navy · White / Pink · White / Turquoise"],
+      ["Manufacturer size options", "S · M · ML · L"], ["Manufacturer hand options", "Regular Left · Regular Right"],
+      ["Material", "FiberSof MicroTac"], ["Ventilation", "PowerNet mesh"],
+      ["Closure", "ComforTab hook-and-loop"], ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "FootJoy WeatherSof Women official product page", url: "https://www.footjoy.eu/en/women/gloves/weathersof-women/094AUS.html?dwvar_094AUS_color=66980E" },
+  presentation: {
+    imageLabels: ["White / Black", "Black", "Navy", "White / Pink", "White / Turquoise"],
+    featuresTitle: "THE WEATHERSOF DETAILS.",
+    featuresIntro: "Explore the material, ventilation, closure and five photographed colours.",
+    inquiryTitle: "YOUR COLOUR. YOUR FIT. ASK WHAT’S NEXT.",
+    inquiryBody: "Currently out of stock. Select your preferred size, glove hand and colour, then ask about future availability and delivery across East Africa. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this golf glove",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -619,6 +689,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl010") return pureTouchGlove;
   if (product.slug === "gk-gl008") return stasofGlove;
   if (product.slug === "gk-gl009") return weathersofGlove;
+  if (product.slug === "gk-gl011") return womensWeathersofGlove;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

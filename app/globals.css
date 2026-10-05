@@ -401,6 +401,7 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .club-product { background:#f7f8f5; }
 .club-product .product-breadcrumb { padding:25px 5%; font-size:14px; color:#52604f; }
 .club-purchase { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:6%; padding:0 5% 55px; align-items:start; }
+.club-gallery { min-width:0; }
 .club-gallery-stage { background:white; position:relative; }
 .club-zoom-trigger { display:block; position:relative; border:0; width:100%; background:white; cursor:zoom-in; }
 .club-zoom-trigger>img { width:100%; height:min(530px,50vw); object-fit:contain; }
@@ -437,6 +438,7 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .club-section-nav a { padding:22px 0; font-size:14px; white-space:nowrap; }
 .club-section-nav a:last-child { color:var(--lime); margin-left:auto; }
 .club-product section[id] { scroll-margin-top:75px; }
+.club-product #glove-size-guide { scroll-margin-top:calc(var(--nav-height) + 64px); }
 .club-editorial { background:#10261d; color:white; display:grid; grid-template-columns:1fr 1fr; align-items:center; }
 .club-editorial-heading { padding:65px 10%; }
 .club-editorial h2,.club-detail-pair h2,.club-shafts h2 { font-size:clamp(44px,5vw,76px); line-height:1; margin:25px 0; }
@@ -485,7 +487,7 @@ html { scroll-padding-top:calc(var(--nav-height) + 14px); }
 .club-image-dialog { z-index:160; max-width:900px!important; width:94vw; max-height:94svh; background:white; color:var(--ink); border-radius:0; padding:20px; overflow:auto; }
 .club-image-dialog>img { width:100%; height:70svh; object-fit:contain; }
 @media(max-width:900px) { .club-purchase { gap:4%; padding-inline:4%; } .club-feature-grid { grid-template-columns:1fr 1fr; gap:35px; } .club-lifestyle img { height:420px; } .club-section-nav { gap:24px; } .product-equipment-section { grid-template-columns:1fr; gap:35px; } .product-related .store-product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:650px) { .club-purchase,.club-editorial,.club-detail-pair,.club-shafts { grid-template-columns:1fr; } .club-purchase { padding:0 5% 35px; } .club-zoom-trigger>img { height:350px; } .club-thumbnails { grid-template-columns:repeat(2,minmax(0,1fr)); }.club-thumbnails img { height:68px; } .club-buy-panel { padding-top:25px; } .club-buy-panel h1 { font-size:52px; } .club-section-nav { gap:25px; } .club-section-nav a { padding:18px 0; } .club-editorial-heading { padding:40px 6%; } .club-lifestyle img { height:330px; } .club-feature-grid { padding:35px 6%; gap:28px; } .club-feature-grid h3 { font-size:28px; } .club-feature-grid p { font-size:15px; } .club-detail-pair>img { height:330px; } .club-detail-pair>div,.club-specs,.club-shafts,.product-equipment-section { padding:40px 6%; } .club-shaft-options { margin-top:25px; } .club-shaft-options article { padding:18px; } .club-photo-note { font-size:12px; } .product-related { padding:50px 5%; } .product-related .store-product-grid { grid-template-columns:1fr; } }
+@media(max-width:650px) { .club-purchase,.club-editorial,.club-detail-pair,.club-shafts { grid-template-columns:1fr; } .club-purchase { padding:0 5% 35px; } .club-zoom-trigger>img { height:350px; } .club-thumbnails { display:flex; overflow-x:auto; scroll-snap-type:x proximity; padding-bottom:7px; }.club-thumbnails button { flex:0 0 132px; scroll-snap-align:start; }.club-thumbnails img { height:68px; } .club-buy-panel { padding-top:25px; } .club-buy-panel h1 { font-size:52px; } .club-section-nav { gap:25px; } .club-section-nav a { padding:18px 0; } .club-editorial-heading { padding:40px 6%; } .club-lifestyle img { height:330px; } .club-feature-grid { padding:35px 6%; gap:28px; } .club-feature-grid h3 { font-size:28px; } .club-feature-grid p { font-size:15px; } .club-detail-pair>img { height:330px; } .club-detail-pair>div,.club-specs,.club-shafts,.product-equipment-section { padding:40px 6%; } .club-shaft-options { margin-top:25px; } .club-shaft-options article { padding:18px; } .club-photo-note { font-size:12px; } .product-related { padding:50px 5%; } .product-related .store-product-grid { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { .club-product * { scroll-behavior:auto; } }
 
 /* Scroll Craft product dossier */

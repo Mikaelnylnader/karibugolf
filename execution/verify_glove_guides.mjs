@@ -49,9 +49,11 @@ for (const settings of [
     if (!isGlove) continue;
     if (options.javaScriptEnabled) await page.waitForFunction(() => document.querySelector(".product-scroll-shell")?.dataset.scrollcraftMounted === "true");
     await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; });
-    await page.locator(".glove-guide-shortcut").click();
-    await page.waitForTimeout(700);
+    const shortcut = page.locator(".glove-guide-shortcut");
+    check(await shortcut.getAttribute("href") === "#glove-size-guide", `${label}/${product.slug}: shortcut target is incorrect`);
     const guide = page.locator("#glove-size-guide");
+    await guide.evaluate(node => node.scrollIntoView());
+    await page.waitForTimeout(700);
     check(await guide.isVisible(), `${label}/${product.slug}: guide hidden`);
     const heading = await page.locator("#glove-size-guide-title").boundingBox();
     check(heading && heading.y >= 70 && heading.y < options.viewport.height - 30, `${label}/${product.slug}: shortcut hides heading under sticky navigation`);
@@ -69,7 +71,8 @@ for (const settings of [
     const fullSize = guide.getByRole("link", { name: "Open full-size sizing picture ↗", exact: true });
     check(await fullSize.getAttribute("href") === imagePath, `${label}/${product.slug}: no-JavaScript full-size fallback broken`);
     if (options.javaScriptEnabled) {
-      const trigger = guide.getByRole("button", { name: "Enlarge men's glove size guide", exact: true });
+      const triggerLabel = product.slug === "gk-gl011" ? "Enlarge general glove measurement guide" : "Enlarge men's glove size guide";
+      const trigger = guide.getByRole("button", { name: triggerLabel, exact: true });
       await trigger.focus();
       await page.keyboard.press("Tab");
       await page.keyboard.press("Shift+Tab");

@@ -126,7 +126,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       {details.source && <a className="club-source" href={details.source.url} target="_blank" rel="noreferrer">Source: {details.source.label} ↗</a>}
     </section>
 
-    {isGlove && <GloveSizeGuide/>}
+    {isGlove && <GloveSizeGuide women={product.slug === "gk-gl011"}/>}
 
     {details.equipment && <section className="product-equipment-section" data-sc-act="flow">
       <div data-sc-in><p className="micro">SHAFTS, FLEX AND GRIP</p><h2>COMPLETE THE SETUP.</h2><p>These are manufacturer references, not a promise of current Karibu stock. Confirm the exact components fitted to the available set.</p></div>

@@ -8,10 +8,14 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 const guide = "/images/guides/mens-golf-glove-size-guide.png";
 const alt = "Owner-supplied men's golf glove sizing illustration: numbered sizes 21 to 26, letter sizes XS to XXL, hand circumference and wrist-to-fingertip measurement. General reference, not a FootJoy or Titleist conversion chart.";
 
-export default function GloveSizeGuide() {
+export default function GloveSizeGuide({ women = false }: { women?: boolean }) {
   const [open, setOpen] = useState(false);
+  const officialUrl = women
+    ? "https://www.footjoy.eu/en/women/gloves/weathersof-women/094AUS.html?dwvar_094AUS_color=66980E"
+    : "https://www.footjoy.com/fitting-men-gloves.html";
+  const triggerLabel = women ? "Enlarge general glove measurement guide" : "Enlarge men's glove size guide";
   return <section className="glove-size-guide" id="glove-size-guide" aria-labelledby="glove-size-guide-title" data-sc-act="flow">
-    <header><p className="micro">GLOVE FITTING · BEFORE YOU ORDER</p><h2 id="glove-size-guide-title">FIND YOUR FIT.</h2><p>Start with your measurements. Confirm the model, size, glove hand and fit with Karibu Golf before ordering.</p></header>
+    <header><p className="micro">GLOVE FITTING · BEFORE YOU ORDER</p><h2 id="glove-size-guide-title">FIND YOUR FIT.</h2><p>{women ? "The picture below explains the measurements but is a men’s reference. For this women’s glove, use the model-specific S, M, ML and L options above and confirm your fit with Karibu Golf." : "Start with your measurements. Confirm the model, size, glove hand and fit with Karibu Golf before ordering."}</p></header>
     <div className="glove-size-guide-grid">
       <div className="glove-size-guide-copy" data-sc-in>
         <ol>
@@ -21,15 +25,15 @@ export default function GloveSizeGuide() {
         </ol>
         <div className="glove-size-guide-warning"><h3>A guide, not a guaranteed conversion.</h3><p>The owner-supplied picture below is a general reference, not an official FootJoy or Titleist size chart. Numbered sizes do not map universally to letter sizes. Use the brand’s chart for the exact model and try the glove on where possible.</p></div>
         <p>Prefer inches? 1 inch = 2.54 cm. Send us your measurements and the glove model if you need help.</p>
-        <a className="glove-fit-source" href="https://www.footjoy.com/fitting-men-gloves.html" target="_blank" rel="noreferrer">FootJoy official measuring guide ↗</a>
+        <a className="glove-fit-source" href={officialUrl} target="_blank" rel="noreferrer">{women ? "FootJoy WeatherSof Women size options ↗" : "FootJoy official measuring guide ↗"}</a>
         <a className="glove-fit-source" href="https://www.footjoy.com/web/images/fitting/GloveFittingSystem.pdf" target="_blank" rel="noreferrer">FootJoy printable fitting tool ↗</a>
       </div>
       <figure className="glove-size-guide-figure" data-sc-in>
-        <button className="glove-size-guide-image" type="button" onClick={() => setOpen(true)} aria-label="Enlarge men's glove size guide"><Image unoptimized src={guide} alt={alt} width={1254} height={1254}/><span><Maximize2 size={18}/> Enlarge guide</span></button>
+        <button className="glove-size-guide-image" type="button" onClick={() => setOpen(true)} aria-label={triggerLabel}><Image unoptimized src={guide} alt={alt} width={1254} height={1254}/><span><Maximize2 size={18}/> Enlarge guide</span></button>
         <figcaption>General reference supplied by Karibu Golf. Brand/model sizing takes precedence.</figcaption>
         <a href={guide} target="_blank" rel="noreferrer">Open full-size sizing picture ↗</a>
       </figure>
     </div>
-    <Dialog open={open} onOpenChange={setOpen}><DialogContent className="glove-size-guide-dialog"><DialogTitle>Men’s glove size guide · General reference</DialogTitle><Image unoptimized src={guide} alt={alt} width={1254} height={1254}/><p>Not a brand-specific conversion chart. Confirm size, glove hand and fit before ordering.</p><a href={guide} target="_blank" rel="noreferrer">Open original at full size ↗</a></DialogContent></Dialog>
+    <Dialog open={open} onOpenChange={setOpen}><DialogContent className="glove-size-guide-dialog"><DialogTitle>{women ? "General measurement guide · Men’s reference" : "Men’s glove size guide · General reference"}</DialogTitle><Image unoptimized src={guide} alt={alt} width={1254} height={1254}/><p>Not a brand-specific conversion chart. Confirm size, glove hand and fit before ordering.</p><a href={guide} target="_blank" rel="noreferrer">Open original at full size ↗</a></DialogContent></Dialog>
   </section>;
 }
