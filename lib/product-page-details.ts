@@ -1051,6 +1051,72 @@ const sim2MaxRescue: ProductPageDetails = {
   },
 };
 
+const labGolfDf3i: ProductPageDetails = {
+  brand: "L.A.B. Golf",
+  intro: "A compact Lie Angle Balanced mallet with a CNC-milled aluminum head and a stainless-steel insert for a faster, firmer impact feel.",
+  gallery: [
+    { src: "/images/products/lab-golf-df3i-custom-putter-face.png", alt: "L.A.B. Golf DF3i custom putter with stainless-steel face insert", label: "Face insert" },
+    { src: "/images/products/lab-golf-df3i-custom-putter-sole.png", alt: "L.A.B. Golf DF3i custom putter sole and weighting screws", label: "Sole" },
+    { src: "/images/products/lab-golf-df3i-custom-putter-rear.png", alt: "L.A.B. Golf DF3i custom putter rear profile and shaft entry", label: "Rear profile" },
+  ],
+  galleryNote: "All three DF3i product-reference images were supplied by Karibu Golf. The exact hand, build, head weight, length, lie angle, shaft, alignment and grip must be confirmed before ordering.",
+  overviewEyebrow: "L.A.B. GOLF DF3i CUSTOM PUTTER",
+  overviewTitle: "LIE ANGLE BALANCE. FIRMER INSERT FEEL.",
+  overviewBody: [
+    "DF3i takes the compact DF3 mallet shape and adds a 303-stainless-steel insert for golfers who prefer a faster, firmer response at impact.",
+    "L.A.B. Golf builds the putter around Lie Angle Balance, which is designed to keep the face square to the arc without the golfer having to manipulate it through the stroke.",
+  ],
+  overviewImage: "/images/products/lab-golf-df3i-custom-putter-face.png",
+  features: [
+    { title: "Lie Angle Balance", text: "The head is hand-balanced to reduce torque and help the putter face remain square to the stroke arc." },
+    { title: "303 stainless-steel insert", text: "The face insert gives DF3i a faster, firmer feel than the non-insert DF3 while retaining the compact mallet platform." },
+    { title: "CNC-milled aluminum head", text: "The main head is machined from 6061 aluminum and uses precisely selected sole weights to target swing weight and balance." },
+    { title: "Built around fitting", text: "Length, lie angle, hand, putting style and head weight are fitting decisions. Karibu will confirm the complete specification before payment." },
+  ],
+  detailEyebrow: "HAND · STYLE · WEIGHT · FIT",
+  detailTitle: "FIT THE PUTTER BEFORE YOU ORDER.",
+  detailBody: [
+    "The official custom range covers right- and left-handed builds, standard or counterbalanced putting styles, and standard, heavier or lighter head-weight targets.",
+    "This listing is not current Karibu inventory. Select your preferred reference setup and arrange a fitting so the exact length, lie angle, shaft, alignment mark and grip can be confirmed.",
+  ],
+  detailImage: "/images/products/lab-golf-df3i-custom-putter-rear.png",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Putting style", values: ["Standard", "Counterbalanced"] },
+    { label: "Head weight", values: ["Standard", "Heavier", "Lighter"] },
+    { label: "Fitting", values: ["Custom fitting required"] },
+  ],
+  specTitle: "DF3i CUSTOM SPECIFICATIONS.",
+  specIntro: "Official L.A.B. Golf reference ranges. The final build depends on fitting and must be confirmed before ordering.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Head construction", "6061 aluminum"],
+      ["Face insert", "303 stainless steel"],
+      ["Finish", "Type-3 anodized"],
+      ["Effective loft", "3°"],
+      ["Standard length", "28–38 inches"],
+      ["Standard lie angle", "63–79.5°"],
+      ["Counterbalanced length", "36–40 inches"],
+      ["Counterbalanced lie angle", "67–75°"],
+    ],
+  },
+  equipment: [
+    { title: "Standard build", text: "Official reference range: 28–38 inches with lie angles from 63° to 79.5°. Exact values are fitting dependent." },
+    { title: "Counterbalanced build", text: "Official reference range: 36–40 inches with lie angles from 67° to 75°. This build carries a manufacturer upcharge." },
+    { title: "Complete custom setup", text: "Shaft, alignment, grip and other final choices are part of the custom configuration and must be confirmed with Karibu." },
+  ],
+  source: { label: "L.A.B. Golf DF3i Custom official product page", url: "https://labgolf.com/products/df3i-custom" },
+  presentation: {
+    imageLabels: ["Insert", "Sole", "Balance"],
+    featuresTitle: "THE DF3i DETAILS.",
+    featuresIntro: "Explore the balance concept, insert construction, compact mallet head and fitting-led build.",
+    inquiryTitle: "CHOOSE THE BUILD. COMPLETE THE FITTING.",
+    inquiryBody: "Currently out of stock. Select your reference hand, putting style and head weight, then ask Karibu Golf to arrange the fitting and confirm the full build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this DF3i custom putter",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -1080,6 +1146,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-dr001") return sim2MaxDriver;
   if (product.slug === "gk-fw001") return sim2MaxFairway;
   if (product.slug === "gk-hy001") return sim2MaxRescue;
+  if (product.slug === "gk-pt035") return labGolfDf3i;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
