@@ -18,6 +18,9 @@ check(Boolean(product), "catalog: Vokey SM11 missing");
 check(product?.priceKes === 67816, `catalog: price ${product?.priceKes}`);
 check(product?.status === "Out of Stock" && Number(product?.stock) === 0, "catalog: availability mismatch");
 check(product?.images?.length === 5, `catalog: expected five images, found ${product?.images?.length}`);
+check(product?.sizes === "48.10 F; 50.08 F; 52.08 F; 54.08 M; 56.08 M; 58.04 T; 60.04 T", `catalog: planned models ${product?.sizes}`);
+check(product?.colors === "Tour Chrome; Jet Black", `catalog: planned finishes ${product?.colors}`);
+check(product?.description?.includes("right-handed only") && product.description.includes("not currently in stock"), "catalog: planned-range description missing");
 
 const imagePairs = [
   ["Skärmbild 2026-10-06 143025.png", "titleist-vokey-sm11-wedge-back.png"],
@@ -77,8 +80,13 @@ for (const contextOptions of [
     gallery: document.querySelectorAll(".club-thumbnails button").length,
     features: document.querySelectorAll(".product-tech-rail article").length,
     specRows: document.querySelectorAll(".club-specs tbody tr").length,
+    specs: [...document.querySelectorAll(".club-specs tbody tr")].map((row) => row.textContent?.replace(/\s+/g, " ").trim()),
     equipment: document.querySelectorAll(".product-equipment-grid article").length,
     groups: [...document.querySelectorAll(".catalog-configurator legend")].map((node) => node.textContent?.trim()),
+    configurations: Object.fromEntries([...document.querySelectorAll(".catalog-configurator fieldset")].map((fieldset) => [
+      fieldset.querySelector("legend")?.textContent?.trim(),
+      [...fieldset.querySelectorAll("button")].map((button) => button.textContent?.trim()),
+    ])),
     source: document.querySelector(".club-source")?.getAttribute("href"),
     overflow: document.documentElement.scrollWidth - innerWidth,
     broken: [...document.images].filter((image) => image.complete && image.naturalWidth === 0 && !image.src.includes("/api/product-images/")).map((image) => image.src),
@@ -92,20 +100,26 @@ for (const contextOptions of [
   check(result.gallery === 5, `${label}: gallery count ${result.gallery}`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
   check(result.specRows === 4, `${label}: specification row count ${result.specRows}`);
+  check(result.specs?.some((row) => row.includes("48°") && row.includes("10° · F")), `${label}: 48.10 F specification missing`);
+  check(result.specs?.some((row) => row.includes("50° / 52°") && row.includes("8° · F")), `${label}: gap-wedge specifications missing`);
+  check(result.specs?.some((row) => row.includes("54° / 56°") && row.includes("8° · M")), `${label}: sand-wedge specifications missing`);
+  check(result.specs?.some((row) => row.includes("58° / 60°") && row.includes("4° · T")), `${label}: lob-wedge specifications missing`);
   check(result.equipment === 4, `${label}: equipment card count ${result.equipment}`);
   if (options.javaScriptEnabled) check(["Hand", "Loft / bounce / grind", "Finish", "Shaft"].every((group) => result.groups.includes(group)), `${label}: configuration groups incomplete`);
+  check(JSON.stringify(result.configurations.Hand) === JSON.stringify(["Right handed"]), `${label}: hand options ${JSON.stringify(result.configurations.Hand)}`);
+  check(JSON.stringify(result.configurations["Loft / bounce / grind"]) === JSON.stringify(["48.10 F", "50.08 F", "52.08 F", "54.08 M", "56.08 M", "58.04 T", "60.04 T"]), `${label}: model options ${JSON.stringify(result.configurations["Loft / bounce / grind"])}`);
+  check(JSON.stringify(result.configurations.Finish) === JSON.stringify(["Tour Chrome", "Jet Black"]), `${label}: finish options ${JSON.stringify(result.configurations.Finish)}`);
+  check(JSON.stringify(result.configurations.Shaft) === JSON.stringify(["Standard steel shaft"]), `${label}: shaft options ${JSON.stringify(result.configurations.Shaft)}`);
   check(result.source === "https://www.titleist.com/product/vokey-sm11/862C%3ACA-RH%3ACBW-4410.html", `${label}: official source mismatch`);
   check(result.overflow <= 0, `${label}: horizontal overflow ${result.overflow}px`);
   check(result.broken.length === 0, `${label}: broken images ${result.broken.join(", ")}`);
   check(errors.length === 0, `${label}: browser errors ${errors.join(" | ")}`);
   if (label === "desktop") {
     await page.screenshot({ path: `${output}/desktop.png`, fullPage: true });
-    await page.getByRole("button", { name: "Left handed", exact: true }).click();
-    await page.getByRole("button", { name: "60.12 K", exact: true }).click();
-    await page.getByRole("button", { name: "Raw", exact: true }).click();
-    await page.getByRole("button", { name: "MCA MMT AMC Red", exact: true }).click();
+    await page.getByRole("button", { name: "60.04 T", exact: true }).click();
+    await page.getByRole("button", { name: "Jet Black", exact: true }).click();
     const whatsapp = await page.locator(".catalog-configurator .contact-button").getAttribute("href");
-    check(whatsapp?.includes("Hand%3A%20Left%20handed") && whatsapp.includes("Loft%20%2F%20bounce%20%2F%20grind%3A%2060.12%20K") && whatsapp.includes("Finish%3A%20Raw") && whatsapp.includes("Shaft%3A%20MCA%20MMT%20AMC%20Red"), "desktop: WhatsApp inquiry omitted selected SM11 options");
+    check(whatsapp?.includes("Hand%3A%20Right%20handed") && whatsapp.includes("Loft%20%2F%20bounce%20%2F%20grind%3A%2060.04%20T") && whatsapp.includes("Finish%3A%20Jet%20Black") && whatsapp.includes("Shaft%3A%20Standard%20steel%20shaft"), "desktop: WhatsApp inquiry omitted selected SM11 options");
     await page.getByRole("button", { name: "Enlarge Back photo" }).click();
     check(await page.getByRole("dialog").isVisible(), "desktop: gallery zoom did not open");
     await page.keyboard.press("Escape");

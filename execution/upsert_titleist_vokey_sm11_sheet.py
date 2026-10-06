@@ -41,17 +41,22 @@ def main(apply: bool) -> None:
     row_count = matches[0]["properties"]["gridProperties"]["rowCount"]
     headers = sheet.row_values(1)
     sku_values = sheet.col_values(headers.index("SKU") + 1)
-    if SKU in sku_values:
-        raise RuntimeError(f"{SKU} already exists in Sheet")
-    if sku_values.count(SOURCE_SKU) != 1:
-        raise RuntimeError(f"Expected exactly one {SOURCE_SKU} Sheet row")
-    source_row = sku_values.index(SOURCE_SKU) + 1
-    target_row = len(sku_values) + 1
-    insert_needed = target_row > row_count
-    if target_row > row_count + 1:
-        raise RuntimeError("Target row is not adjacent to the current Sheet grid")
-    if not insert_needed and sheet.row_values(target_row):
-        raise RuntimeError(f"Target row {target_row} is not blank")
+    if sku_values.count(SKU) > 1:
+        raise RuntimeError(f"Expected at most one {SKU} Sheet row")
+    existing = SKU in sku_values
+    if existing:
+        source_row = target_row = sku_values.index(SKU) + 1
+        insert_needed = False
+    else:
+        if sku_values.count(SOURCE_SKU) != 1:
+            raise RuntimeError(f"Expected exactly one {SOURCE_SKU} Sheet row")
+        source_row = sku_values.index(SOURCE_SKU) + 1
+        target_row = len(sku_values) + 1
+        insert_needed = target_row > row_count
+        if target_row > row_count + 1:
+            raise RuntimeError("Target row is not adjacent to the current Sheet grid")
+        if not insert_needed and sheet.row_values(target_row):
+            raise RuntimeError(f"Target row {target_row} is not blank")
 
     source_before = sheet.row_values(source_row, value_render_option="UNFORMATTED_VALUE")
     source = source_before + [""] * (len(headers) - len(source_before))
@@ -90,6 +95,7 @@ def main(apply: bool) -> None:
         "grid_row_count": row_count,
         "source_row": source_row,
         "target_row": target_row,
+        "mode": "update" if existing else "insert",
         "insert_dimension": insert_needed,
         "sku": SKU,
         "margin": values[headers.index("Margin")],
@@ -123,8 +129,8 @@ def main(apply: bool) -> None:
                       "startIndex": row_count, "endIndex": row_count + 1},
             "inheritFromBefore": True,
         }})
-    requests.extend([
-        {"copyPaste": {
+    if not existing:
+        requests.append({"copyPaste": {
             "source": {"sheetId": sheet.id, "startRowIndex": source_row - 1,
                        "endRowIndex": source_row, "startColumnIndex": 0,
                        "endColumnIndex": len(headers)},
@@ -132,7 +138,8 @@ def main(apply: bool) -> None:
                             "endRowIndex": target_row, "startColumnIndex": 0,
                             "endColumnIndex": len(headers)},
             "pasteType": "PASTE_NORMAL",
-        }},
+        }})
+    requests.extend([
         {"updateCells": {
             "range": {"sheetId": sheet.id, "startRowIndex": target_row - 1,
                       "endRowIndex": target_row, "startColumnIndex": 0,
@@ -166,9 +173,10 @@ def main(apply: bool) -> None:
     actual += [""] * (len(headers) - len(actual))
     if actual[:len(headers)] != values:
         raise AssertionError(json.dumps({"expected": values, "actual": actual}, ensure_ascii=False, indent=2))
-    if sheet.row_values(source_row, value_render_option="UNFORMATTED_VALUE") != source_before:
+    if not existing and sheet.row_values(source_row, value_render_option="UNFORMATTED_VALUE") != source_before:
         raise AssertionError("Source Rescue row changed unexpectedly")
-    print(f"Added {SKU} to {sheet.title}!A{target_row}:V{target_row}. Backup: {backup}")
+    action = "Updated" if existing else "Added"
+    print(f"{action} {SKU} in {sheet.title}!A{target_row}:V{target_row}. Backup: {backup}")
 
 
 if __name__ == "__main__":

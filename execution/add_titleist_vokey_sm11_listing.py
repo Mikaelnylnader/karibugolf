@@ -28,12 +28,13 @@ PRICE_USD = round(PRICE_KES / USD_TO_KES, 2)
 DESCRIPTION = (
     "Titleist Vokey Design SM11 wedge with six Tour-proven grinds, unified "
     "centre-of-gravity placement and the Vokey Spin System for cleaner contact, "
-    "controlled flight and predictable spin. Loft, bounce, grind, finish, hand, "
-    "shaft and grip choices are manufacturer references; exact Karibu availability "
-    "must be confirmed. Currently out of stock."
+    "controlled flight and predictable spin. Karibu's planned range is right-handed "
+    "only, with seven loft / bounce / grind models, Tour Chrome or Jet Black finish, "
+    "and one standard steel shaft. This range is not currently in stock; exact future "
+    "availability and shaft model / flex must be confirmed."
 )
-SIZES = "44°–60°; 27 loft / bounce / grind combinations (manufacturer reference)"
-COLORS = "Tour Chrome; Nickel; Jet Black; Raw"
+SIZES = "48.10 F; 50.08 F; 52.08 F; 54.08 M; 56.08 M; 58.04 T; 60.04 T"
+COLORS = "Tour Chrome; Jet Black"
 IMAGES = [
     ("Skärmbild 2026-10-06 143025.png", "titleist-vokey-sm11-wedge-back.png"),
     ("Skärmbild 2026-10-06 143037.png", "titleist-vokey-sm11-wedge-face.png"),
