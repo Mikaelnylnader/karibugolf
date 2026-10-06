@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T20:54:47.156366+00:00",
+  "generatedAt": "2026-10-06T06:48:12.264058+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -496,6 +496,29 @@
         "/images/products/taylormade-sim2-max-driver-face.jpg",
         "/images/products/taylormade-sim2-max-driver-profile.jpg",
         "/images/products/taylormade-sim2-max-driver-headcover.jpg"
+      ]
+    },
+    {
+      "sku": "GK-FW001",
+      "slug": "gk-fw001",
+      "name": "TaylorMade SIM2 Max Fairway",
+      "categorySlug": "woods",
+      "categoryLabel": "Fairway Woods",
+      "description": "TaylorMade SIM2 Max fairway wood with an ultra-low centre of gravity, V Steel sole, C300 Steel Twist Face and a Thru-Slot Speed Pocket for high launch, forgiveness and versatile turf interaction. Loft, hand, shaft and flex choices are manufacturer references; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 85195,
+      "priceUsd": 657.88,
+      "priceCny": 4011,
+      "sizes": "3 (15°); 3HL (16.5°); 5 (18°); 7 (21°); 9 (24°) (manufacturer reference)",
+      "colors": "Black / White / Blue",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/taylormade-sim2-max-fairway-sole.jpg",
+        "/images/products/taylormade-sim2-max-fairway-crown.jpg",
+        "/images/products/taylormade-sim2-max-fairway-face.jpg",
+        "/images/products/taylormade-sim2-max-fairway-profile.jpg",
+        "/images/products/taylormade-sim2-max-fairway-headcover.jpg"
       ]
     }
   ]

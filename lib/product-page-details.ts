@@ -853,6 +853,70 @@ const sim2MaxDriver: ProductPageDetails = {
   },
 };
 
+const sim2MaxFairway: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A high-launching, forgiving fairway wood with an ultra-low centre of gravity, a versatile V Steel sole and a fast C300 steel face.",
+  gallery: [
+    { src: "/images/products/taylormade-sim2-max-fairway-sole.jpg", alt: "TaylorMade SIM2 Max Fairway sole and V Steel design", label: "Sole" },
+    { src: "/images/products/taylormade-sim2-max-fairway-crown.jpg", alt: "TaylorMade SIM2 Max Fairway carbon crown", label: "Crown" },
+    { src: "/images/products/taylormade-sim2-max-fairway-face.jpg", alt: "TaylorMade SIM2 Max Fairway Twist Face", label: "Face" },
+    { src: "/images/products/taylormade-sim2-max-fairway-profile.jpg", alt: "TaylorMade SIM2 Max Fairway side profile", label: "Profile" },
+    { src: "/images/products/taylormade-sim2-max-fairway-headcover.jpg", alt: "TaylorMade SIM2 Max Fairway headcover", label: "Headcover" },
+  ],
+  galleryNote: "All five official TaylorMade product-reference photographs were supplied by Karibu Golf. Ask for current photographs and confirmation of the exact loft, hand, shaft, flex, grip, headcover and condition when stock returns.",
+  overviewEyebrow: "TAYLORMADE SIM2 MAX FAIRWAY",
+  overviewTitle: "LOWER CG. HIGHER LAUNCH. MORE FORGIVENESS.",
+  overviewBody: [
+    "SIM2 Max pairs multi-material construction with efficient sole weighting to create an ultra-low centre of gravity for high launch, distance and forgiveness.",
+    "Its refined V Steel sole reduces the area contacting the turf, helping the head move cleanly through different lies from both tee and fairway.",
+  ],
+  overviewImage: "/images/products/taylormade-sim2-max-fairway-sole.jpg",
+  features: [
+    { title: "V Steel with ultra-low CG", text: "The updated sole redistributes mass for forgiveness while its depressed heel and toe improve turf interaction and versatility." },
+    { title: "C300 Steel Twist Face", text: "The strong C300 steel face is built for ball speed, while Twist Face curvature is designed to reduce common miss patterns." },
+    { title: "Multi-material construction", text: "A 190cc 3-wood head uses strategic weighting to combine explosive distance, forgiveness and a high-launch profile." },
+    { title: "Thru-Slot Speed Pocket", text: "TaylorMade's sole slot is designed to preserve face flexibility and ball speed on strikes made low on the face." },
+  ],
+  detailEyebrow: "LOFT · HAND · SHAFT",
+  detailTitle: "FIT THE FAIRWAY WOOD TO YOUR GAPS.",
+  detailBody: [
+    "TaylorMade lists 3, 3HL and 5 heads in right- and left-handed builds; the 7 and 9 references are right-handed. Head size and playing length change through the range.",
+    "These choices are manufacturer fitting references, not Karibu inventory. The team will confirm the exact head, shaft, flex and playing length before payment.",
+  ],
+  detailImage: "/images/products/taylormade-sim2-max-fairway-face.jpg",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Loft", values: ["3 · 15°", "3HL · 16.5°", "5 · 18°", "7 · 21° (RH reference)", "9 · 24° (RH reference)"] },
+    { label: "Shaft / flex", values: ["Ventus Blue 5 FW · Senior", "Ventus Blue 5 FW · Regular", "Ventus Blue 6 FW · Stiff", "Ventus Blue 6 FW · X-Stiff"] },
+  ],
+  specTitle: "SIM2 MAX FAIRWAY SPECIFICATIONS.",
+  specIntro: "TaylorMade manufacturer-reference specifications. Exact Karibu stock must be confirmed when the fairway wood becomes available.",
+  specs: {
+    headers: ["Club", "Loft", "Hand", "Lie", "Volume", "Length", "Swing weight"],
+    rows: [
+      ["3", "15°", "RH / LH", "59°", "190cc", '43.25"', "D3"],
+      ["3HL", "16.5°", "RH / LH", "59°", "190cc", '43.25"', "D3"],
+      ["5", "18°", "RH / LH", "59.5°", "160cc", '42.25"', "D3"],
+      ["7", "21°", "RH", "60°", "160cc", '41.75"', "D3"],
+      ["9", "24°", "RH", "60.5°", "145cc", '41.25"', "D3"],
+    ],
+  },
+  equipment: [
+    { title: "Ventus Blue 6 FW", text: "TaylorMade's Stiff and X-Stiff reference profiles weigh 62g and 63g, with mid launch and mid spin." },
+    { title: "Ventus Blue 5 FW", text: "The Regular and Senior reference profiles weigh 56g and 55g, with mid-high launch and mid spin." },
+    { title: "Golf Pride Z-Grip", text: "The reference grip is a black/grey standard-size 47g Z-Grip. Confirm the grip and included headcover on the exact item." },
+  ],
+  source: { label: "TaylorMade SIM2 Max Fairway official product page", url: "https://www.taylormadegolf.com/SIM2-Max-Fairway/DW-JJI58.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Sole", "Crown", "Face", "Profile", "Headcover"],
+    featuresTitle: "THE SIM2 MAX FAIRWAY DETAILS.",
+    featuresIntro: "Explore the sole geometry, face construction, weighting and low-face protection behind this forgiving fairway wood.",
+    inquiryTitle: "CHOOSE THE LOFT. WE WILL CONFIRM THE BUILD.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference loft, hand and shaft profile, then ask Karibu Golf to confirm future availability and the exact build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this SIM2 Max fairway",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -879,6 +943,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-wg009") return mg5Wedge;
   if (product.slug === "gk-ir005") return sim2MaxIrons;
   if (product.slug === "gk-dr001") return sim2MaxDriver;
+  if (product.slug === "gk-fw001") return sim2MaxFairway;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
