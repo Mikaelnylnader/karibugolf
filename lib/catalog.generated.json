@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T06:59:04.129324+00:00",
+  "generatedAt": "2026-10-06T12:36:11.581898+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -542,6 +542,29 @@
         "/images/products/taylormade-sim2-max-rescue-face.jpg",
         "/images/products/taylormade-sim2-max-rescue-profile.jpg",
         "/images/products/taylormade-sim2-max-rescue-headcover.jpg"
+      ]
+    },
+    {
+      "sku": "GK-WG010",
+      "slug": "gk-wg010",
+      "name": "Titleist Vokey SM11 Wedge",
+      "categorySlug": "wedges",
+      "categoryLabel": "Wedges",
+      "description": "Titleist Vokey Design SM11 wedge with six Tour-proven grinds, unified centre-of-gravity placement and the Vokey Spin System for cleaner contact, controlled flight and predictable spin. Loft, bounce, grind, finish, hand, shaft and grip choices are manufacturer references; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 67816,
+      "priceUsd": 523.68,
+      "priceCny": 3193,
+      "sizes": "44°–60°; 27 loft / bounce / grind combinations (manufacturer reference)",
+      "colors": "Tour Chrome; Nickel; Jet Black; Raw",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/titleist-vokey-sm11-wedge-back.png",
+        "/images/products/titleist-vokey-sm11-wedge-face.png",
+        "/images/products/titleist-vokey-sm11-wedge-sole.png",
+        "/images/products/titleist-vokey-sm11-wedge-profile.png",
+        "/images/products/titleist-vokey-sm11-wedge-address.png"
       ]
     }
   ]

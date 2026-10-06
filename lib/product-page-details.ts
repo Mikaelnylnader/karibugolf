@@ -726,6 +726,76 @@ const mg5Wedge: ProductPageDetails = {
   },
 };
 
+const vokeySm11Wedge: ProductPageDetails = {
+  brand: "Titleist",
+  intro: "A precision scoring wedge built around six Tour-proven grinds, unified CG placement and the Vokey Spin System for cleaner contact, controlled flight and predictable spin.",
+  gallery: [
+    { src: "/images/products/titleist-vokey-sm11-wedge-back.png", alt: "Titleist Vokey SM11 Tour Chrome wedge back", label: "Back" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-face.png", alt: "Titleist Vokey SM11 wedge face and grooves", label: "Face" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-sole.png", alt: "Titleist Vokey SM11 wedge sole and bounce profile", label: "Sole" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-profile.png", alt: "Titleist Vokey SM11 Tour Chrome side profile", label: "Profile" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-address.png", alt: "Titleist Vokey SM11 wedge at address", label: "Address" },
+  ],
+  galleryNote: "All five product-reference screenshots were supplied by Karibu Golf. They show a Tour Chrome SM11 wedge; exact loft, bounce, grind, finish, hand, shaft, grip and condition must be confirmed when stock returns.",
+  overviewEyebrow: "TITLEIST VOKEY DESIGN SM11",
+  overviewTitle: "CLEANER CONTACT. CONTROLLED FLIGHT. SMARTER SPIN.",
+  overviewBody: [
+    "SM11 pairs 27 loft, bounce and grind configurations with six Tour-proven sole designs so golfers can match contact and turf interaction to their technique.",
+    "For each loft, Titleist positions the centre of gravity consistently across the grind family, helping preserve a controlled launch window while the Vokey Spin System manages spin from different lies.",
+  ],
+  overviewImage: "/images/products/titleist-vokey-sm11-wedge-back.png",
+  features: [
+    { title: "Cleaner contact", text: "The loft, bounce and grind matrix is designed to guide the sole toward a repeatable strike and promote contact between grooves two and five." },
+    { title: "Controlled flight", text: "Unified CG placement keeps the centre of gravity consistent across grinds at the same loft for a stable, predictable launch window." },
+    { title: "Vokey Spin System", text: "An angled face texture, shot-specific groove shapes and deeper Spin Milled grooves are combined to produce appropriate spin from varied lies." },
+    { title: "Extended groove durability", text: "Titleist heat-treats the grooves to improve durability as the wedge sees regular practice and course use." },
+  ],
+  detailEyebrow: "LOFT · BOUNCE · GRIND",
+  detailTitle: "FIT THE SOLE TO YOUR SWING AND TURF.",
+  detailBody: [
+    "The manufacturer reference spans pitching, gap, sand and lob wedges from 44° to 60°, with F, S, M, D, K and T grinds covering different deliveries, face positions and course conditions.",
+    "These choices are fitting references, not Karibu inventory. Select a preferred specification below and the team will confirm the exact wedge and build before payment.",
+  ],
+  detailImage: "/images/products/titleist-vokey-sm11-wedge-address.png",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Loft / bounce / grind", values: [
+      "44.10 F", "46.10 F", "48.10 F", "50.08 F", "50.12 F", "52.08 F", "52.12 F",
+      "54.08 M", "54.10 S", "54.12 D", "54.14 F", "56.08 M", "56.10 S", "56.12 D", "56.14 F",
+      "58.04 T", "58.06 K", "58.08 M", "58.10 S", "58.12 D", "58.12 K",
+      "60.04 T", "60.06 K", "60.08 M", "60.10 S", "60.12 D", "60.12 K",
+    ] },
+    { label: "Finish", values: ["Tour Chrome", "Nickel", "Jet Black", "Raw"] },
+    { label: "Shaft", values: ["True Temper Dynamic Gold", "Dynamic Gold 105", "MCA MMT AMC Red"] },
+  ],
+  specTitle: "VOKEY SM11 SPECIFICATION RANGES.",
+  specIntro: "Titleist manufacturer-reference ranges. Standard lie is 64° for every model; exact Karibu stock must be confirmed when the wedge becomes available.",
+  specs: {
+    headers: ["Wedge family", "Lofts", "Bounce / grind reference", "Length", "Swing weight"],
+    rows: [
+      ["Pitching", "44°–48°", "10° · F", '35.75"', "D3"],
+      ["Gap", "50°–52°", "8° / 12° · F", '35.50"', "D3"],
+      ["Sand", "54°–56°", "8° M · 10° S · 12° D · 14° F", '35.25"', "D5"],
+      ["Lob", "58°–60°", "4° T · 6° K · 8° M · 10° S · 12° D / K", '35.00"', "D5"],
+    ],
+  },
+  equipment: [
+    { title: "True Temper Dynamic Gold", text: "The official reference spans R300 through X100, 127g–132g, with a low launch profile." },
+    { title: "Dynamic Gold 105", text: "A lighter steel reference at roughly 101g–103g with a low-to-mid launch profile." },
+    { title: "MCA MMT AMC Red", text: "A lightweight graphite reference covering junior, ladies, regular and stiff profiles with high launch." },
+    { title: "Titleist Universal 360", text: "The official grip reference covers .560, .580 and .600 core sizes from 40g to 52g." },
+  ],
+  source: { label: "Titleist Vokey SM11 official product page", url: "https://www.titleist.com/product/vokey-sm11/862C%3ACA-RH%3ACBW-4410.html" },
+  presentation: {
+    imageLabels: ["Back", "Face", "Sole", "Profile", "Address"],
+    featuresTitle: "THE SM11 DETAILS.",
+    featuresIntro: "Explore the contact, launch, spin and durability technologies behind the latest Vokey wedge family.",
+    inquiryTitle: "CHOOSE THE LOFT. MATCH THE GRIND.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference hand, loft, bounce, grind, finish and shaft, then ask Karibu Golf to confirm future availability and the exact build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this Vokey SM11 wedge",
+  },
+};
+
 const sim2MaxIrons: ProductPageDetails = {
   brand: "TaylorMade",
   intro: "A high-launching game-improvement iron set built around Cap Back construction, an intelligently positioned sweet spot and forged-like impact feel.",
@@ -1004,6 +1074,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl009") return weathersofGlove;
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
   if (product.slug === "gk-wg009") return mg5Wedge;
+  if (product.slug === "gk-wg010") return vokeySm11Wedge;
   if (product.slug === "gk-ir005") return sim2MaxIrons;
   if (product.slug === "gk-dr001") return sim2MaxDriver;
   if (product.slug === "gk-fw001") return sim2MaxFairway;
