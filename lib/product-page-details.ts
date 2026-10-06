@@ -726,6 +726,77 @@ const mg5Wedge: ProductPageDetails = {
   },
 };
 
+const rtx6ZipCoreWedge: ProductPageDetails = {
+  brand: "Cleveland Golf",
+  intro: "A Tour Satin scoring wedge combining HydraZip face treatment, a low-density ZipCore and tightly spaced UltiZip grooves for predictable spin and control.",
+  gallery: [
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-back.jpg", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge back", label: "Back" },
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-face.jpg", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge face", label: "Face" },
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-grooves.jpg", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge groove detail", label: "Grooves" },
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-cavity.jpg", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge cavity", label: "Cavity" },
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-sole.jpg", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge sole", label: "Sole" },
+    { src: "/images/products/cleveland-rtx6-zipcore-tour-satin-topline.webp", alt: "Cleveland RTX 6 ZipCore Tour Satin wedge topline", label: "Topline" },
+  ],
+  galleryNote: "All six Tour Satin product-reference photographs were supplied by Karibu Golf. Exact loft, bounce, grind, hand, shaft and grip must be confirmed when stock returns.",
+  overviewEyebrow: "CLEVELAND RTX 6 ZIPCORE",
+  overviewTitle: "MAXIMUM SPIN. ANY CONDITION.",
+  overviewBody: [
+    "RTX 6 ZipCore combines three face and head technologies to help preserve spin, launch and control from the fairway, rough, sand and wet lies.",
+    "The Tour Satin finish shown in every supplied photograph has a clean silver appearance designed to reduce distracting glare at address.",
+  ],
+  overviewImage: "/images/products/cleveland-rtx6-zipcore-tour-satin-back.jpg",
+  features: [
+    { title: "HydraZip", text: "A dynamic face-blasting and laser-line system is tuned by loft to increase friction and help maximise spin in wet conditions." },
+    { title: "ZipCore", text: "A lightweight, low-density core shifts the centre of gravity while adding stability, feel and forgiveness across the face." },
+    { title: "UltiZip grooves", text: "Sharper, deeper and more tightly spaced grooves are designed to cut through debris and create two extra groove edges across the face." },
+    { title: "Four sole families", text: "LOW, LOW+, MID and FULL sole options cover different turf conditions, delivery patterns and greenside techniques." },
+  ],
+  detailEyebrow: "LOFT · BOUNCE · GRIND",
+  detailTitle: "MATCH THE GRIND TO THE TURF.",
+  detailBody: [
+    "The manufacturer range spans 46° through 60°. MID covers every loft, while LOW, LOW+ and FULL add specialised choices in the sand- and lob-wedge lofts.",
+    "These are manufacturer references, not current Karibu inventory. Select a preference below and the team will confirm the exact build and future availability before payment.",
+  ],
+  detailImage: "/images/products/cleveland-rtx6-zipcore-tour-satin-grooves.jpg",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Loft / bounce / grind", values: [
+      "46.10 MID", "48.10 MID", "50.10 MID", "52.10 MID",
+      "54.08 LOW+", "54.10 MID", "54.12 FULL",
+      "56.08 LOW+", "56.10 MID", "56.12 FULL",
+      "58.06 LOW", "58.10 MID", "58.12 FULL",
+      "60.06 LOW", "60.10 MID", "60.12 FULL",
+    ] },
+    { label: "Finish", values: ["Tour Satin"] },
+    { label: "Shaft", values: ["Steel wedge shaft (confirm exact model / flex)"] },
+  ],
+  specTitle: "RTX 6 ZIPCORE GRIND REFERENCE.",
+  specIntro: "Manufacturer-reference loft, bounce and grind combinations. Standard lie is 64° throughout; these options do not represent current Karibu stock.",
+  specs: {
+    headers: ["Grind", "Loft / bounce", "Manufacturer fit summary"],
+    rows: [
+      ["LOW", "58.06 · 60.06", "Firm turf, shallow delivery and maximum face manipulation"],
+      ["LOW+", "54.08 · 56.08", "Versatile low bounce with extra help from sand"],
+      ["MID", "46.10 · 48.10 · 50.10 · 52.10 · 54.10 · 56.10 · 58.10 · 60.10", "Neutral delivery and varied turf conditions"],
+      ["FULL", "54.12 · 56.12 · 58.12 · 60.12", "Softer turf, steeper delivery and a fuller sole"],
+    ],
+  },
+  equipment: [
+    { title: "Reference lengths", text: "46° / 48°: 35.625 inches; 50° / 52°: 35.375 inches; 54° / 56°: 35.125 inches; 58° / 60°: 34.875 inches." },
+    { title: "Reference swing weights", text: "D3 for 46° / 48°, D4 for 50° / 52°, and D5 from 54° through 60°." },
+    { title: "Lie and components", text: "Standard lie is 64°. Ask Karibu Golf to confirm the exact shaft, flex and grip fitted to any future stock." },
+  ],
+  source: { label: "Cleveland RTX 6 ZipCore Tour Satin official product page", url: "https://us.dunlopsports.com/cleveland-golf/clubs/wedges/rtx-6-zipcore/rtx-6-zipcore-tour-satin-wedge/30227308.html" },
+  presentation: {
+    imageLabels: ["Back", "Face", "Grooves", "Cavity", "Sole", "Topline"],
+    featuresTitle: "THE RTX 6 ZIPCORE DETAILS.",
+    featuresIntro: "Explore the face treatment, core construction, groove geometry and sole choices behind this Tour Satin wedge.",
+    inquiryTitle: "CHOOSE THE LOFT. MATCH THE GRIND.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference loft, bounce, grind and hand, then ask Karibu Golf to confirm future availability and the exact shaft and grip. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this RTX 6 wedge",
+  },
+};
+
 const vokeySm11Wedge: ProductPageDetails = {
   brand: "Titleist",
   intro: "A precision scoring wedge built around six Tour-proven grinds, unified CG placement and the Vokey Spin System for cleaner contact, controlled flight and predictable spin.",
@@ -1278,6 +1349,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-gl008") return stasofGlove;
   if (product.slug === "gk-gl009") return weathersofGlove;
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
+  if (product.slug === "gk-wg006") return rtx6ZipCoreWedge;
   if (product.slug === "gk-wg009") return mg5Wedge;
   if (product.slug === "gk-wg010") return vokeySm11Wedge;
   if (product.slug === "gk-ir005") return sim2MaxIrons;

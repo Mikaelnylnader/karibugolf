@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T17:02:17.177018+00:00",
+  "generatedAt": "2026-10-06T18:43:48.770629+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -644,6 +644,30 @@
         "/images/products/lab-golf-oz1-custom-putter-black-sole.png",
         "/images/products/lab-golf-oz1-custom-putter-black-profile.png",
         "/images/products/lab-golf-oz1-custom-putter-black-angled-face.png"
+      ]
+    },
+    {
+      "sku": "GK-WG006",
+      "slug": "gk-wg006",
+      "name": "Cleveland RTX 6 ZipCore Tour Satin Wedge",
+      "categorySlug": "wedges",
+      "categoryLabel": "Wedges",
+      "description": "Cleveland RTX 6 ZipCore Tour Satin Wedge with HydraZip face technology, a low-density ZipCore and tightly spaced UltiZip grooves for spin and control from varied lies. Manufacturer loft, bounce, grind, hand and component choices are reference options rather than current Karibu inventory. Currently out of stock.",
+      "priceKes": 12694,
+      "priceUsd": 98.02,
+      "priceCny": 668.11,
+      "sizes": "46°–60°; LOW, LOW+, MID and FULL grinds (manufacturer reference)",
+      "colors": "Tour Satin",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-back.jpg",
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-face.jpg",
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-grooves.jpg",
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-cavity.jpg",
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-sole.jpg",
+        "/images/products/cleveland-rtx6-zipcore-tour-satin-topline.webp"
       ]
     }
   ]
