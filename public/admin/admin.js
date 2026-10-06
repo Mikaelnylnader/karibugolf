@@ -397,6 +397,49 @@ function updateMargin() {
   $("#margin-value").textContent = price > 0 ? `${Math.round(((price - cost) / price) * 100)}%` : "—";
 }
 
+const CNY_TO_KES = 19;
+const USD_TO_KES = 129.5;
+let pricingUpdating = false;
+
+function numericInputValue(input) {
+  const value = Number(input.value);
+  return input.value !== "" && Number.isFinite(value) ? value : null;
+}
+
+function convertedValue(value, decimals) {
+  return decimals === 0 ? String(Math.round(value)) : value.toFixed(decimals);
+}
+
+function syncPricing(source) {
+  if (pricingUpdating) return;
+  pricingUpdating = true;
+  const form = $("#product-form");
+  const input = form.elements[source];
+  const value = numericInputValue(input);
+  const set = (name, next, decimals) => { form.elements[name].value = next === null ? "" : convertedValue(next, decimals); };
+
+  if (source === "costCny") set("costKes", value === null ? null : value * CNY_TO_KES, 0);
+  if (source === "costKes") set("costCny", value === null ? null : value / CNY_TO_KES, 2);
+
+  if (source === "priceCny") {
+    const kes = value === null ? null : value * CNY_TO_KES;
+    set("priceKes", kes, 0);
+    set("priceUsd", kes === null ? null : kes / USD_TO_KES, 2);
+  }
+  if (source === "priceKes") {
+    set("priceCny", value === null ? null : value / CNY_TO_KES, 2);
+    set("priceUsd", value === null ? null : value / USD_TO_KES, 2);
+  }
+  if (source === "priceUsd") {
+    const kes = value === null ? null : value * USD_TO_KES;
+    set("priceKes", kes, 0);
+    set("priceCny", kes === null ? null : kes / CNY_TO_KES, 2);
+  }
+
+  updateMargin();
+  pricingUpdating = false;
+}
+
 async function uploadImage(file) {
   const buffer = await file.arrayBuffer();
   return api("/api/admin-image", { method: "POST", body: buffer, headers: { "content-type": file.type, "x-filename": file.name } });
@@ -534,18 +577,9 @@ $("#close-editor").addEventListener("click", () => $("#editor").close());
 $("#cancel-editor").addEventListener("click", () => $("#editor").close());
 $("#product-form").addEventListener("submit", save);
 $("#image-url").addEventListener("input", updateImagePreview);
-$("#product-form").elements.costCny.addEventListener("input", (event) => {
-  $("#product-form").elements.costKes.value = Math.round(Number(event.target.value || 0) * 19);
-  updateMargin();
-});
-$("#product-form").elements.priceCny.addEventListener("input", (event) => {
-  const kes = Math.round(Number(event.target.value || 0) * 19);
-  $("#product-form").elements.priceKes.value = kes;
-  $("#product-form").elements.priceUsd.value = (kes / 129.5).toFixed(2);
-  updateMargin();
-});
-$("#product-form").elements.costKes.addEventListener("input", updateMargin);
-$("#product-form").elements.priceKes.addEventListener("input", updateMargin);
+for (const field of ["costCny", "costKes", "priceCny", "priceKes", "priceUsd"]) {
+  $("#product-form").elements[field].addEventListener("input", () => syncPricing(field));
+}
 $("#product-form").elements.stock.addEventListener("input", (event) => {
   const quantity = Number(event.target.value || 0);
   const status = $("#product-form").elements.status;
