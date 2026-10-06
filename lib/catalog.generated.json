@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T15:51:36.869469+00:00",
+  "generatedAt": "2026-10-06T16:19:17.868051+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -590,6 +590,36 @@
         "/images/products/lab-golf-df3i-custom-putter-face.png",
         "/images/products/lab-golf-df3i-custom-putter-sole.png",
         "/images/products/lab-golf-df3i-custom-putter-rear.png"
+      ]
+    },
+    {
+      "sku": "GK-PT034",
+      "slug": "gk-pt034",
+      "name": "L.A.B. Golf DF3 Custom Putter",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "L.A.B. Golf DF3 custom mallet putter with Lie Angle Balance and a fully CNC-milled 6061-aluminum head. This is the no-insert DF3, offered here as a custom-fit reference in Black, Blue and Pink. Hand, putting style, head weight, length, lie angle, shaft, alignment and grip are not current Karibu inventory. Currently out of stock; the exact build must be confirmed.",
+      "priceKes": 33537,
+      "priceUsd": 258.97,
+      "priceCny": 1579,
+      "sizes": "28–38 in (standard); 36–40 in (counterbalanced); 38–46 in (ArmLock); 40–50 in (sweeper)",
+      "colors": "Black; Blue; Pink",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/lab-golf-df3-custom-putter-black-address.png",
+        "/images/products/lab-golf-df3-custom-putter-black-front.png",
+        "/images/products/lab-golf-df3-custom-putter-black-rear.png",
+        "/images/products/lab-golf-df3-custom-putter-black-profile.png",
+        "/images/products/lab-golf-df3-custom-putter-blue-address.png",
+        "/images/products/lab-golf-df3-custom-putter-blue-front.png",
+        "/images/products/lab-golf-df3-custom-putter-blue-sole.png",
+        "/images/products/lab-golf-df3-custom-putter-blue-rear.png",
+        "/images/products/lab-golf-df3-custom-putter-pink-address.png",
+        "/images/products/lab-golf-df3-custom-putter-pink-front.png",
+        "/images/products/lab-golf-df3-custom-putter-pink-sole.png",
+        "/images/products/lab-golf-df3-custom-putter-pink-rear.png"
       ]
     }
   ]
