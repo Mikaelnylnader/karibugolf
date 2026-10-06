@@ -484,6 +484,69 @@ const pureTouchGlove: ProductPageDetails = {
   },
 };
 
+const rainGripGlove: ProductPageDetails = {
+  brand: "FootJoy",
+  intro: "A black pair of wet-weather golf gloves with water-absorbent palms and quick-drying backs. Currently out of stock; ask about future availability and your size.",
+  gallery: [
+    { src: "/images/products/footjoy-raingrip-pair-set.png", alt: "Black FootJoy RainGrip golf glove pair beside blue retail packaging", label: "Pair + packaging" },
+    { src: "/images/products/footjoy-raingrip-pair-packaging.png", alt: "FootJoy RainGrip pair blue retail packaging", label: "Packaging" },
+    { src: "/images/products/footjoy-raingrip-pair-grip.png", alt: "Black FootJoy RainGrip pair holding a golf club", label: "Wet-weather grip" },
+    { src: "/images/products/footjoy-raingrip-pair-palm-left.png", alt: "FootJoy RainGrip glove Sure-Grip Autosuede knit palm", label: "Palm 1" },
+    { src: "/images/products/footjoy-raingrip-pair-palm-right.png", alt: "Second FootJoy RainGrip glove Sure-Grip Autosuede knit palm", label: "Palm 2" },
+  ],
+  galleryNote: "All five RainGrip product-reference screenshots were supplied by Karibu Golf. The listing is for a pair, but no size is currently in stock. Confirm the exact pair, size and packaging before payment.",
+  overviewEyebrow: "FOOTJOY RAINGRIP PAIR",
+  overviewTitle: "RAIN-READY GRIP. TWO-GLOVE CONTROL.",
+  overviewBody: [
+    "RainGrip is FootJoy's wet-weather glove pair. The water-absorbent Sure-Grip Autosuede knit palms are designed to conform to the hands and club as they get wet, supporting control in rainy conditions.",
+    "Quick-Dry material across the backs of the fingers is designed to dry quickly while supporting breathability, flexibility and comfort. The supplied photographs show the black pair and blue HydroSeries packaging.",
+  ],
+  overviewImage: "/images/products/footjoy-raingrip-pair-grip.png",
+  features: [
+    { title: "Sure-Grip wet-weather palms", text: "Water-absorbent Autosuede knit palms are designed to improve fit and grip in rainy conditions." },
+    { title: "Quick-drying comfort", text: "Quick-Dry material on the backs of the fingers supports faster drying and comfortable wet-weather play." },
+    { title: "Flexible, breathable build", text: "FootJoy describes the Quick-Dry construction as supporting breathability, flexibility and comfort." },
+    { title: "Secure ComforTab closure", text: "A strategically angled hook-and-loop tab is designed to create a secure, precise fit." },
+  ],
+  detailEyebrow: "PAIR · BLACK · WET WEATHER",
+  detailTitle: "MATCH THE PAIR TO YOUR HAND SIZE.",
+  detailBody: [
+    "RainGrip is sold as a pair, so there is no separate glove-hand selection. FootJoy lists S, M, ML, L, XL and XXL as manufacturer size options for this black Regular Pair.",
+    "Those sizes are reference options rather than Karibu inventory. Use the fitting guide below, then ask us to confirm the exact size and package available when stock returns.",
+  ],
+  detailImage: "/images/products/footjoy-raingrip-pair-palm-left.png",
+  configuration: [
+    { label: "Size", values: ["Small (S)", "Medium (M)", "Medium-Large (ML)", "Large (L)", "Extra Large (XL)", "2X Large (XXL)"] },
+    { label: "Pack", values: ["Regular pair"] },
+    { label: "Colour", values: ["Black"] },
+  ],
+  specTitle: "RAINGRIP PAIR REFERENCE DETAILS.",
+  specIntro: "Official FootJoy product information. Manufacturer options do not indicate current Karibu inventory.",
+  specs: {
+    headers: ["Detail", "Information"],
+    rows: [
+      ["Model", "FootJoy RainGrip Pair"],
+      ["Style", "66083E"],
+      ["Colour", "Black"],
+      ["Pack", "Pair of gloves"],
+      ["Manufacturer sizes", "S · M · ML · L · XL · XXL"],
+      ["Palm", "Sure-Grip Autosuede knit"],
+      ["Back", "Quick-Dry material"],
+      ["Closure", "Angled ComforTab hook-and-loop"],
+      ["Current stock", "Out of stock · 0"],
+    ],
+  },
+  source: { label: "FootJoy RainGrip Pair official product page", url: "https://www.footjoy.eu/en/men/gloves/raingrip-pair/024PAI.html?dwvar_024PAI_color=66083E" },
+  presentation: {
+    imageLabels: ["Pair", "Wet-weather grip", "Quick-Dry"],
+    featuresTitle: "BUILT FOR WET-WEATHER CONTROL.",
+    featuresIntro: "Explore the palm material, quick-drying construction, flexibility and closure.",
+    inquiryTitle: "YOUR SIZE. ASK WHAT'S NEXT.",
+    inquiryBody: "Currently out of stock. Select your preferred size, then ask about future availability and delivery across East Africa. We will confirm the exact pair and packaging before any order.",
+    inquiryLink: "Ask about this RainGrip pair",
+  },
+};
+
 const stasofGlove: ProductPageDetails = {
   brand: "FootJoy",
   intro: "Advanced performance leather with breathable mesh, perforations and a secure angled closure. Pearl / Black. Currently out of stock; ask about your size, glove hand and fit on restock.",
@@ -1122,6 +1185,69 @@ const sim2MaxRescue: ProductPageDetails = {
   },
 };
 
+const teamTaylorMadeJuniorSet: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A premium junior golf set offered in three height-matched sizes for young golfers ages 4–12, with the club makeup growing alongside the player.",
+  gallery: [
+    { src: "/images/products/taylormade-junior-set-bag.jpg", alt: "Team TaylorMade Junior golf set and blue stand bag", label: "Complete set" },
+    { src: "/images/products/taylormade-junior-set-woods.jpg", alt: "Team TaylorMade Junior driver, fairway and Rescue club heads", label: "Long clubs" },
+    { src: "/images/products/taylormade-junior-set-irons-putter.jpg", alt: "Team TaylorMade Junior irons and putter", label: "Irons & putter" },
+    { src: "/images/products/taylormade-junior-set-bag-closeup.jpg", alt: "Team TaylorMade Junior clubs inside the stand bag", label: "In the bag" },
+    { src: "/images/products/taylormade-junior-set-fairway.jpg", alt: "Team TaylorMade Junior fairway wood", label: "Fairway" },
+    { src: "/images/products/taylormade-junior-set-seven-iron.jpg", alt: "Team TaylorMade Junior 7-iron", label: "7-iron" },
+    { src: "/images/products/taylormade-junior-set-putter.jpg", alt: "Team TaylorMade Junior putter", label: "Putter" },
+  ],
+  galleryNote: "Seven product-reference photographs were supplied by Karibu Golf. Confirm the exact set, size, hand and included clubs before ordering.",
+  overviewEyebrow: "TEAM TAYLORMADE JUNIOR SETS",
+  overviewTitle: "THE RIGHT SIZE FOR THEIR FIRST SWING.",
+  overviewBody: [
+    "TaylorMade offers three progressively larger sets for juniors from 42 to 59 inches tall, covering the manufacturer age guide from 4 to 12 years.",
+    "The club makeup grows with the golfer: four clubs in Size 1, five clubs in Size 2 and seven clubs in Size 3, each packaged with a dual-strap stand bag, rain hood and headcovers.",
+  ],
+  overviewImage: "/images/products/taylormade-junior-set-woods.jpg",
+  features: [
+    { title: "Three height-matched stages", text: "Size 1 is for 42–47 inches, Size 2 for 48–53 inches and Size 3 for 54–59 inches. TaylorMade pairs those ranges with ages 4–6, 7–9 and 10–12 as guidance." },
+    { title: "Junior-specific long clubs", text: "The larger sets use a 400cc titanium driver with a flexible face. Fairway and Rescue clubs use easy-launch profiles and ultra-low centres of gravity." },
+    { title: "Easy-launch scoring clubs", text: "The junior irons and wedges are designed for high launch and playability, while the putter uses simple alignment cues to build confidence on the greens." },
+    { title: "A complete carrying setup", text: "Every size includes a lightweight dual-strap stand bag, rain hood and headcovers, plus access to TaylorMade's junior instruction content through the bag tag." },
+  ],
+  detailEyebrow: "HEIGHT FIRST · AGE AS A GUIDE",
+  detailTitle: "CHOOSE THE SET THAT FITS NOW.",
+  detailBody: [
+    "Use the child's standing height as the primary guide. Age is a useful secondary reference, but height is the better starting point for comfortable posture and club control.",
+    "The Size 1, Size 2 and Size 3 options include different clubs. Review the table below and ask Karibu Golf to confirm the exact set and handedness before payment.",
+  ],
+  detailImage: "/images/products/taylormade-junior-set-bag-closeup.jpg",
+  configuration: [
+    { label: "Size", values: ["Size 1 · 42–47 in · ages 4–6", "Size 2 · 48–53 in · ages 7–9", "Size 3 · 54–59 in · ages 10–12"] },
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+  ],
+  specTitle: "JUNIOR SET SIZE GUIDE.",
+  specIntro: "TaylorMade's official height, age and set-composition references. Height should be the primary guide; exact Karibu availability must be confirmed.",
+  specs: {
+    headers: ["Set", "Height", "Age guide", "Included clubs", "Bag"],
+    rows: [
+      ["Size 1", "42–47 in", "4–6", "Fairway · 7-iron · wedge · putter", "Stand bag"],
+      ["Size 2", "48–53 in", "7–9", "Driver · hybrid · 7-iron · wedge · putter", "Stand bag"],
+      ["Size 3", "54–59 in", "10–12", "Driver · fairway · hybrid · 7-iron · 9-iron · wedge · putter", "Stand bag"],
+    ],
+  },
+  equipment: [
+    { title: "Size 1 · four clubs", text: "Fairway wood, 7-iron, 54° wedge and 3.5° putter, plus the junior stand bag." },
+    { title: "Size 2 · five clubs", text: "17° driver, 27° hybrid, 36° 7-iron, 54° wedge and 3.5° putter, plus the junior stand bag." },
+    { title: "Size 3 · seven clubs", text: "17° driver, 21° fairway, 27° hybrid, 36° 7-iron, 45° 9-iron, 54° wedge and 3.5° putter, plus the junior stand bag." },
+  ],
+  source: { label: "Team TaylorMade Junior Sets official product page", url: "https://www.taylormadegolf.com/Team-TaylorMade-Junior-Sets/DW-TC602.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Complete set", "Long clubs", "Irons & putter", "In the bag", "Fairway", "7-iron", "Putter"],
+    featuresTitle: "BUILT FOR JUNIOR GOLFERS.",
+    featuresIntro: "Explore the sizing stages, easy-launch club design and complete stand-bag setup.",
+    inquiryTitle: "MEASURE HEIGHT. CHOOSE THE STAGE.",
+    inquiryBody: "Currently out of stock. Select the child's height-matched size and preferred hand, then ask Karibu Golf to confirm the exact set, final landed price and future availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this junior set",
+  },
+};
+
 const labGolfDf3: ProductPageDetails = {
   brand: "L.A.B. Golf",
   intro: "The no-insert DF3: a compact Lie Angle Balanced mallet, CNC-milled from 6061 aluminum and currently offered in one right-handed Standard configuration.",
@@ -1326,6 +1452,72 @@ const labGolfDf3i: ProductPageDetails = {
   },
 };
 
+const scottyCameronH25: ProductPageDetails = {
+  brand: "Scotty Cameron",
+  intro: "A limited-release Newport 2 blade pairing a Teryllium face inlay with a glare-resistant black PVD finish and distinctive copper details.",
+  gallery: [
+    { src: "/images/products/scotty-cameron-h25-teryllium-newport-2-sole.jpg", alt: "Scotty Cameron H25 Limited Teryllium Newport 2 sole, weights and H25 headcover", label: "Sole" },
+    { src: "/images/products/scotty-cameron-h25-teryllium-newport-2-insert.jpg", alt: "Scotty Cameron H25 Limited Teryllium Newport 2 Teryllium face inlay", label: "Teryllium insert" },
+    { src: "/images/products/scotty-cameron-h25-teryllium-newport-2-face.jpg", alt: "Scotty Cameron H25 Limited Teryllium Newport 2 putter face", label: "Face" },
+    { src: "/images/products/scotty-cameron-h25-teryllium-newport-2-address.jpg", alt: "Scotty Cameron H25 Limited Teryllium Newport 2 viewed from above", label: "At address" },
+  ],
+  galleryNote: "Four H25 product-reference photographs were supplied by Karibu Golf. This supplier listing is not current stock: confirm the exact item, serial details, authenticity, handedness and availability before payment.",
+  overviewEyebrow: "2025 H25 LIMITED TERYLLIUM NEWPORT 2",
+  overviewTitle: "TERYLLIUM FEEL. LIMITED BLACK FINISH.",
+  overviewBody: [
+    "Scotty Cameron's H25 Limited returns the Teryllium face concept in a modern Newport 2 blade. A copper-alloy insert is paired with gray vibration damping to produce the soft, responsive feel associated with the historic TeI3 design.",
+    "The stainless-steel head receives a glare-resistant black PVD finish, while the milled sight dot and sole engraving carry metallic copper accents that coordinate with the insert and dedicated H25 headcover.",
+  ],
+  overviewImage: "/images/products/scotty-cameron-h25-teryllium-newport-2-insert.jpg",
+  features: [
+    { title: "Teryllium face inlay", text: "A copper-alloy face inlay is cushioned by gray vibration-damping material for the distinctive soft Teryllium response." },
+    { title: "Black PVD finish", text: "The stainless-steel head uses a glare-resistant black PVD finish with metallic copper paintfill and detailing." },
+    { title: "Modern Newport 2 shaping", text: "A tri-sole, crisp contours and an I-beam plumbing neck define the modern blade setup." },
+    { title: "Limited-release build", text: "The official 34.5-inch configuration includes a Tour Black shaft, gray Baby T grip, H25 shaft band and custom H25 headcover." },
+  ],
+  detailEyebrow: "34.5 IN · BLACK PVD · TERYLLIUM",
+  detailTitle: "CONFIRM THE EXACT LIMITED PUTTER.",
+  detailBody: [
+    "The official H25 release is a fixed 34.5-inch limited build. This Karibu listing records the supplier reference but does not yet confirm current inventory or handedness.",
+    "Before payment, request current photographs and confirmation of the exact item, serial details, authenticity, included headcover and delivery terms.",
+  ],
+  detailImage: "/images/products/scotty-cameron-h25-teryllium-newport-2-face.jpg",
+  configuration: [
+    { label: "Length", values: ["34.5 in"] },
+    { label: "Hand", values: ["Confirm handedness"] },
+  ],
+  specTitle: "H25 LIMITED SPECIFICATIONS.",
+  specIntro: "Official reference details from Scotty Cameron's 2025 H25 Limited introduction. The exact supplier item must still be confirmed before ordering.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Length", "34.5 in"],
+      ["Head shape", "Modern Newport 2 blade"],
+      ["Head", "Stainless steel"],
+      ["Face inlay", "Teryllium copper alloy"],
+      ["Neck", "I-beam plumbing neck"],
+      ["Sole", "Tri-sole"],
+      ["Finish", "Glare-resistant black PVD"],
+      ["Shaft", "Tour Black"],
+      ["Grip", "Gray Baby T"],
+    ],
+  },
+  equipment: [
+    { title: "Face construction", text: "The Teryllium inlay is paired with gray vibration-damping material and set into the stainless-steel head." },
+    { title: "Official setup", text: "The limited release is listed at 34.5 inches with a Tour Black shaft and gray Baby T grip." },
+    { title: "Included presentation", text: "The manufacturer reference includes an H25 Limited shaft band and custom black-and-copper H25 headcover." },
+  ],
+  source: { label: "Scotty Cameron H25 Limited official introduction", url: "https://www.scottycameron.com/articles/introducing-the-scotty-cameron-2025-h25-limited-teryllium-newport-2/" },
+  presentation: {
+    imageLabels: ["Teryllium", "Newport 2", "H25 Limited"],
+    featuresTitle: "THE H25 LIMITED DETAILS.",
+    featuresIntro: "Explore the Teryllium construction, black PVD finish, modern Newport 2 geometry and official limited-release setup.",
+    inquiryTitle: "VERIFY THE EXACT H25 BEFORE ORDERING.",
+    inquiryBody: "Currently out of stock. Ask Karibu Golf to confirm the exact item, serial details, authenticity, handedness, included headcover and availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this H25 Limited putter",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -1333,6 +1525,7 @@ const categoryGuidance: Record<string, { eyebrow: string; title: string; text: s
   golf_irons: { eyebrow: "APPROACH PLAY", title: "UNDERSTAND THE SET.", text: "Confirm every included iron, the shaft material, flex, handedness and condition of the set." },
   wedges: { eyebrow: "SCORING CLUBS", title: "CHECK LOFT AND BOUNCE.", text: "The right wedge depends on loft gaps, bounce, sole design and the conditions you normally play." },
   putters: { eyebrow: "ON THE GREEN", title: "CHOOSE YOUR LOOK AND FEEL.", text: "Confirm head style, length, toe hang or face balance, grip and overall condition." },
+  junior_sets: { eyebrow: "GROW INTO THE GAME", title: "START WITH THE RIGHT SIZE.", text: "Use height as the primary guide, then confirm age range, hand and the exact clubs included in the set." },
   mens_shoes: { eyebrow: "COURSE FOOTWEAR", title: "FIT FOR THE WALK.", text: "Confirm size, width, traction system, colour and return arrangements before ordering." },
   womens_shoes: { eyebrow: "COURSE FOOTWEAR", title: "FIT FOR THE WALK.", text: "Confirm size, width, traction system, colour and return arrangements before ordering." },
 };
@@ -1346,6 +1539,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-bl011") return proV1x;
   if (product.slug === "gk-gl005") return playersGlove;
   if (product.slug === "gk-gl010") return pureTouchGlove;
+  if (product.slug === "gk-gl007") return rainGripGlove;
   if (product.slug === "gk-gl008") return stasofGlove;
   if (product.slug === "gk-gl009") return weathersofGlove;
   if (product.slug === "gk-gl011") return womensWeathersofGlove;
@@ -1356,9 +1550,11 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-dr001") return sim2MaxDriver;
   if (product.slug === "gk-fw001") return sim2MaxFairway;
   if (product.slug === "gk-hy001") return sim2MaxRescue;
+  if (product.slug === "gk-jr001") return teamTaylorMadeJuniorSet;
   if (product.slug === "gk-pt034") return labGolfDf3;
   if (product.slug === "gk-pt035") return labGolfDf3i;
   if (product.slug === "gk-pt036") return labGolfOz1;
+  if (product.slug === "gk-pt037") return scottyCameronH25;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

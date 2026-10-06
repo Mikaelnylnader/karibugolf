@@ -11,6 +11,8 @@ npm run dev
 
 The product-management dashboard remains in `backend/` and runs separately at `http://localhost:5000`.
 
+Preview the online admin, Clients and Sales areas locally with `npm run admin:local`, then open `http://127.0.0.1:8787/admin/`. Sales capture actual prices, quantities and dates, with totals, monthly figures and an editable history. This saves development records on this computer in `.tmp/admin-local-data.json` and makes no Google Sheets or Netlify calls. Build and review locally first; upload to Netlify only after explicit owner approval.
+
 ## Production build
 
 ```powershell

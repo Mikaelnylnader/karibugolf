@@ -15,6 +15,7 @@ const selectedProductSlugs = new Set([
 ]);
 const departments = {
   clubs: ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"],
+  kids: ["junior_sets"],
   shoes: ["mens_shoes", "womens_shoes"],
   apparel: ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts", "womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"],
   bags: ["bags"],

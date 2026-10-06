@@ -1,8 +1,11 @@
+import { salesFigures } from "./sales-report.js";
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const categories = [
   ["drivers", "Drivers"], ["woods", "Fairway Woods"], ["hybrids", "Hybrids"], ["golf_irons", "Irons"], ["wedges", "Wedges"], ["putters", "Putters"],
+  ["junior_sets", "Junior Sets"],
   ["mens_shoes", "Men’s Shoes"], ["womens_shoes", "Women’s Shoes"], ["mens_polos", "Men’s Polos"], ["mens_pants", "Men’s Trousers"],
   ["mens_jackets", "Men’s Jackets"], ["mens_shorts", "Men’s Shorts"], ["womens_polos", "Women’s Polos"], ["womens_skirts", "Women’s Skirts"],
   ["womens_pants", "Women’s Trousers"], ["womens_dresses", "Women’s Dresses"], ["womens_jackets", "Women’s Jackets"], ["womens_tops", "Women’s Tops"],
@@ -10,6 +13,7 @@ const categories = [
 ];
 const categoryGroups = [
   ["Clubs", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]],
+  ["Kids", ["junior_sets"]],
   ["Shoes", ["mens_shoes", "womens_shoes"]],
   ["Men’s apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts"]],
   ["Women’s apparel", ["womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]],
@@ -20,6 +24,8 @@ const viewCopy = {
   products: ["Products", "Search, filter and manage every product in your catalogue."],
   inventory: ["Inventory", "Review and update products that are currently in stock."],
   categories: ["Categories", "Browse the catalogue using the same structure as your shop."],
+  clients: ["Clients", "Contact details and notes for people who have bought or received items."],
+  sales: ["Sales", "Record what you sold and see figures based on your actual selling prices."],
 };
 
 let products = [];
@@ -28,6 +34,17 @@ let activeFilter = "all";
 let editingSku = null;
 const selectedSkus = new Set();
 const inventoryChanges = new Map();
+let clients = [];
+let clientsLoaded = false;
+let clientsLoading = false;
+let editingClientId = null;
+let clientSaving = false;
+let sales = [];
+let salesLoaded = false;
+let salesLoading = null;
+let editingSaleId = null;
+let saleSubmissionId = null;
+let saleSaving = false;
 
 const api = async (url, options = {}) => {
   const headers = options.body instanceof ArrayBuffer ? options.headers : { "content-type": "application/json", ...options.headers };
@@ -41,7 +58,19 @@ const api = async (url, options = {}) => {
   return data;
 };
 
-function showLogin() { $("#app").hidden = true; $("#login").hidden = false; }
+function showLogin() {
+  $("#app").hidden = true;
+  $("#login").hidden = false;
+  $("#editor").close();
+  $("#client-editor").close();
+  $("#sale-editor").close();
+  clients = [];
+  clientsLoaded = false;
+  sales = [];
+  salesLoaded = false;
+  renderSales();
+  renderClients();
+}
 function showApp() { $("#login").hidden = true; $("#app").hidden = false; }
 function money(value) { return `KSh ${Math.round(Number(value) || 0).toLocaleString("en-KE")}`; }
 function escapeHtml(value) { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; }
@@ -335,12 +364,240 @@ function showView(view, updateHash = true) {
   $$(".sidebar nav a[id^='nav-']").forEach((link) => link.classList.toggle("active", link.id === `nav-${view}`));
   $("#view-title").textContent = viewCopy[view][0];
   $("#view-subtitle").textContent = viewCopy[view][1];
-  $("#new-product").hidden = view === "categories";
+  $("#new-product").hidden = ["categories", "clients", "sales"].includes(view);
+  $("#new-client").hidden = view !== "clients";
+  $("#new-sale").hidden = view !== "sales";
+  $$(".mobile-admin-nav [data-go]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.go === view);
+    if (button.dataset.go === view) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  });
+  if (view === "clients" && !clientsLoaded && !clientsLoading) loadClients();
+  if ((view === "sales" || view === "dashboard") && !salesLoaded) loadSales();
   if (updateHash) {
     const url = new URL(location.href);
     if (view !== "categories") url.searchParams.delete("category");
     url.hash = view;
     history.replaceState({}, "", url);
+  }
+}
+
+async function loadClients() {
+  if (clientsLoading) return;
+  clientsLoading = true;
+  $("#refresh").disabled = true;
+    $("#client-rows").innerHTML = '<tr><td colspan="7" class="loading">Loading clients…</td></tr>';
+  try {
+    const data = await api("/api/admin-clients");
+    clients = data.clients;
+    clientsLoaded = true;
+    renderClients();
+  } catch (error) {
+    clientsLoaded = false;
+      $("#client-rows").innerHTML = '<tr><td colspan="7" class="loading">Unable to load clients. <button type="button" class="edit-button" data-client-retry>Try again</button></td></tr>';
+    showNotice(error.message, true);
+  } finally {
+    clientsLoading = false;
+    $("#refresh").disabled = false;
+  }
+}
+
+function renderClients() {
+  const query = $("#client-search").value.trim().toLowerCase();
+  const queryDigits = query.replace(/\D/g, "");
+  const visible = clients.filter((client) => {
+    const text = [client.firstName, client.lastName, client.company, client.email, client.phone, client.whatsapp, client.notes].join(" ").toLowerCase();
+    return !query || text.includes(query) || (/^[+\d\s().-]+$/.test(query) && queryDigits && [client.phone, client.whatsapp].some((phone) => String(phone).replace(/\D/g, "").includes(queryDigits)));
+  }).sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
+  $("#client-count").textContent = `${visible.length} of ${clients.length} clients`;
+  const phoneLink = (value, whatsapp = false) => {
+    if (!value) return '<span class="client-missing">—</span>';
+    const digits = String(value).replace(/\D/g, "");
+    if (!/^\d{7,15}$/.test(digits)) return escapeHtml(value);
+    const href = whatsapp ? `https://wa.me/${digits}` : `tel:${String(value).trim().startsWith("+") ? "+" : ""}${digits}`;
+    return `<a href="${href}"${whatsapp ? ' target="_blank" rel="noreferrer"' : ""}>${escapeHtml(value)}</a>`;
+  };
+  $("#client-rows").innerHTML = visible.length ? visible.map((client) => `<tr>
+    <td><strong>${escapeHtml(client.firstName)} ${escapeHtml(client.lastName)}</strong></td>
+    <td>${client.company ? escapeHtml(client.company) : '<span class="client-missing">—</span>'}</td>
+    <td>${client.email ? `<a href="mailto:${encodeURIComponent(client.email)}">${escapeHtml(client.email)}</a>` : '<span class="client-missing">—</span>'}</td>
+    <td>${phoneLink(client.phone)}</td><td>${phoneLink(client.whatsapp, true)}</td>
+    <td class="client-notes">${client.notes ? escapeHtml(client.notes) : '<span class="client-missing">—</span>'}</td>
+    <td><div class="client-row-actions"><button type="button" class="edit-button" data-client-edit="${encodeURIComponent(client.id)}">Edit</button><button type="button" class="edit-button" data-client-sale="${encodeURIComponent(client.id)}">Record sale</button></div></td>
+  </tr>`).join("") : `<tr><td colspan="7" class="loading">${clients.length ? "No clients match your search." : "No clients yet. Select Add client to save your first customer."}</td></tr>`;
+}
+
+function openClientEditor(client = null) {
+  editingClientId = client?.id || null;
+  const form = $("#client-form");
+  form.reset();
+  for (const key of ["firstName", "lastName", "company", "email", "phone", "whatsapp", "notes"]) form.elements[key].value = client?.[key] || "";
+  $("#client-editor-title").textContent = client ? "Edit client" : "Add client";
+  $("#client-save-status").textContent = "";
+  $("#client-editor").showModal();
+}
+
+async function saveClient(event) {
+  event.preventDefault();
+  if (clientSaving) return;
+  clientSaving = true;
+  const form = $("#client-form");
+  const client = Object.fromEntries(new FormData(form));
+  if (editingClientId) client.id = editingClientId;
+  $("#save-client").disabled = true;
+  $("#save-client").textContent = "Saving…";
+  $("#close-client-editor").disabled = true;
+  $("#cancel-client-editor").disabled = true;
+  $("#client-save-status").textContent = "Saving client…";
+  try {
+    const result = await api("/api/admin-clients", { method: editingClientId ? "PUT" : "POST", body: JSON.stringify(client) });
+    const index = clients.findIndex((item) => item.id === result.client.id);
+    if (index >= 0) clients[index] = result.client; else clients.push(result.client);
+    $("#client-editor").close();
+    renderClients();
+    showNotice(`${result.client.firstName} ${result.client.lastName} saved to your client list.`);
+  } catch (error) {
+    $("#client-save-status").textContent = error.message;
+  } finally {
+    clientSaving = false;
+    $("#save-client").disabled = false;
+    $("#save-client").textContent = "Save client";
+    $("#close-client-editor").disabled = false;
+    $("#cancel-client-editor").disabled = false;
+  }
+}
+
+function saleMoney(value) {
+  return `KSh ${Number(value || 0).toLocaleString("en-KE", { maximumFractionDigits: 2, minimumFractionDigits: Number(value) % 1 ? 2 : 0 })}`;
+}
+
+function localDate(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+async function loadSales() {
+  if (salesLoading) return salesLoading;
+  salesLoading = (async () => {
+    $("#refresh").disabled = true;
+    $("#sales-rows").innerHTML = '<tr><td colspan="7" class="loading">Loading sales…</td></tr>';
+    try {
+      const data = await api("/api/admin-sales");
+      sales = data.sales;
+      salesLoaded = true;
+      renderSales();
+    } catch (error) {
+      salesLoaded = false;
+      for (const selector of ["#sales-revenue", "#sales-count", "#sales-units", "#sales-average"]) $(selector).textContent = "—";
+      $("#sales-months").textContent = "Sales figures are unavailable until records load.";
+      $("#sales-top-products").textContent = "";
+      $("#sales-rows").innerHTML = '<tr><td colspan="7" class="loading">Unable to load sales. <button type="button" class="edit-button" data-sales-retry>Try again</button></td></tr>';
+      $("#dash-sales-total").textContent = "—";
+      $("#dash-sales-month").textContent = "—";
+      $("#dash-sales-month-count").textContent = "Sales unavailable";
+      $("#dashboard-sales").innerHTML = '<p class="loading-inline">Sales are unavailable. Use Refresh to try again.</p>';
+      showNotice(error.message, true);
+    } finally { $("#refresh").disabled = false; }
+  })();
+  await salesLoading;
+  salesLoading = null;
+}
+
+function filteredSales() {
+  const query = $("#sales-search").value.trim().toLowerCase();
+  const period = $("#sales-period").value;
+  const status = $("#sales-status").value;
+  const today = localDate();
+  const previousMonth = localDate(new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1));
+  return sales.filter((sale) => {
+    const matchesPeriod = period === "all" || (period === "month" && sale.date.startsWith(today.slice(0, 7))) || (period === "last-month" && sale.date.startsWith(previousMonth.slice(0, 7))) || (period === "year" && sale.date.startsWith(today.slice(0, 4)));
+    const matchesQuery = !query || [sale.productName, sale.productSku, sale.customerName, sale.notes].join(" ").toLowerCase().includes(query);
+    return matchesPeriod && matchesQuery && (status === "all" || sale.status === status);
+  }).sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
+}
+
+function renderSales() {
+  const visible = filteredSales();
+  const figures = salesFigures(visible);
+  $("#sales-revenue").textContent = saleMoney(figures.totalKes);
+  $("#sales-count").textContent = figures.count.toLocaleString("en-KE");
+  $("#sales-units").textContent = figures.units.toLocaleString("en-KE");
+  $("#sales-average").textContent = saleMoney(figures.averageKes);
+  const max = Math.max(1, ...figures.months.map((month) => month.totalKes));
+  $("#sales-months").innerHTML = figures.months.map((month) => `<div class="sales-month-row"><span>${month.label}</span><div class="bar-track" aria-hidden="true"><i style="width:${Math.round(month.totalKes / max * 100)}%"></i></div><strong>${saleMoney(month.totalKes)}</strong></div>`).join("");
+  $("#sales-top-products").innerHTML = figures.topProducts.length ? figures.topProducts.map((item) => `<div class="sales-top-row"><div><strong>${escapeHtml(item.name)}</strong><small>${item.units} items / sets sold</small></div><span>${saleMoney(item.totalKes)}</span></div>`).join("") : '<p class="loading-inline">Record a sale to see your top selling items.</p>';
+  $("#sales-record-count").textContent = `${visible.length} of ${sales.length} records · Figures follow your filters`;
+  $("#sales-rows").innerHTML = visible.length ? visible.map((sale) => `<tr class="${sale.status === "void" ? "sale-void" : ""}">
+    <td>${new Date(`${sale.date}T12:00:00`).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" })}</td>
+    <td class="sale-item"><strong>${escapeHtml(sale.productName)}</strong><small>${escapeHtml(sale.productSku || "Previous / other item")}${sale.status === "void" ? " · VOIDED" : ""}</small>${sale.notes ? `<small>${escapeHtml(sale.notes)}</small>` : ""}</td>
+    <td>${escapeHtml(sale.customerName || "Walk-in")}</td><td>${sale.quantity}</td><td>${saleMoney(sale.unitPriceKes)}</td><td><strong>${saleMoney(sale.totalKes)}</strong></td>
+    <td><button type="button" class="edit-button" data-sale-edit="${encodeURIComponent(sale.id)}">Edit</button></td>
+  </tr>`).join("") : `<tr><td colspan="7" class="loading">${sales.length ? "No sales match your filters." : "No sales recorded yet. Select Record sale to add your first sale."}</td></tr>`;
+  renderDashboardSales();
+}
+
+function renderDashboardSales() {
+  const completed = sales.filter((sale) => sale.status === "completed");
+  const monthKey = localDate().slice(0, 7);
+  const monthSales = completed.filter((sale) => sale.date.startsWith(monthKey));
+  const allFigures = salesFigures(completed);
+  const monthFigures = salesFigures(monthSales);
+  $("#dash-sales-total").textContent = saleMoney(allFigures.totalKes);
+  $("#dash-sales-month").textContent = saleMoney(monthFigures.totalKes);
+  $("#dash-sales-month-count").textContent = `${monthFigures.count} sale${monthFigures.count === 1 ? "" : "s"} this month`;
+  const recent = [...sales].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
+  $("#dashboard-sales").innerHTML = recent.length ? recent.map((sale) => `<div class="dashboard-sale-row${sale.status === "void" ? " sale-void" : ""}">
+    <div><strong>${escapeHtml(sale.productName)}</strong><small>${new Date(`${sale.date}T12:00:00`).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" })}${sale.status === "void" ? " · VOIDED" : ""}</small></div>
+    <span>${escapeHtml(sale.customerName || "Walk-in")}</span><b>${saleMoney(sale.totalKes)}</b><button type="button" data-dashboard-sale="${encodeURIComponent(sale.id)}">Edit</button>
+  </div>`).join("") : '<p class="loading-inline">No sales recorded yet. Use Record a sale to add the first one.</p>';
+}
+
+async function openSaleEditor(sale = null, client = null) {
+  await Promise.all([salesLoaded ? Promise.resolve() : loadSales(), clientsLoaded ? Promise.resolve() : loadClients()]);
+  if (!salesLoaded) return;
+  editingSaleId = sale?.id || null;
+  saleSubmissionId = sale?.id || crypto.randomUUID();
+  const form = $("#sale-form");
+  form.reset();
+  // Use DOM options so product and client names cannot become HTML attributes.
+  form.elements.productSku.replaceChildren(new Option("Other / previous item", ""), ...products.map((product) => new Option(`${product.name} · ${product.sku}`, product.sku)));
+  form.elements.clientId.replaceChildren(new Option("Walk-in / no saved client", ""), ...clients.map((item) => new Option(`${item.firstName} ${item.lastName}${item.company ? ` · ${item.company}` : ""}`, item.id)));
+  if (sale?.productSku && !products.some((item) => item.sku === sale.productSku)) form.elements.productSku.add(new Option(`${sale.productName} · Previous product`, sale.productSku));
+  if (sale?.clientId && !clients.some((item) => item.id === sale.clientId)) form.elements.clientId.add(new Option(sale.customerName, sale.clientId));
+  const values = sale || { quantity: 1, date: localDate(), status: "completed", clientId: client?.id || "", customerName: client ? `${client.firstName} ${client.lastName}` : "" };
+  for (const [key, value] of Object.entries(values)) if (form.elements[key]) form.elements[key].value = value;
+  $("#sale-editor-title").textContent = sale ? "Edit sale" : "Record sale";
+  $("#sale-save-status").textContent = "";
+  updateSalePreview();
+  $("#sale-editor").showModal();
+}
+
+function updateSalePreview() {
+  const form = $("#sale-form");
+  $("#sale-total-preview").textContent = saleMoney(Math.round(Number(form.elements.unitPriceKes.value || 0) * 100) * Number(form.elements.quantity.value || 0) / 100);
+  const product = products.find((item) => item.sku === form.elements.productSku.value);
+  $("#sale-catalogue-price").textContent = product ? `Catalogue price: ${saleMoney(product.priceKes)}. Enter the actual price agreed.` : "Enter the price you actually sold it for.";
+}
+
+async function saveSale(event) {
+  event.preventDefault();
+  if (saleSaving) return;
+  saleSaving = true;
+  const input = { ...Object.fromEntries(new FormData($("#sale-form"))), id: saleSubmissionId };
+  for (const selector of ["#save-sale", "#close-sale-editor", "#cancel-sale-editor"]) $(selector).disabled = true;
+  $("#save-sale").textContent = "Saving…";
+  $("#sale-save-status").textContent = "Saving sale…";
+  try {
+    const result = await api("/api/admin-sales", { method: editingSaleId ? "PUT" : "POST", body: JSON.stringify(input) });
+    const index = sales.findIndex((sale) => sale.id === result.sale.id);
+    if (index >= 0) sales[index] = result.sale; else sales.push(result.sale);
+    $("#sale-editor").close();
+    renderSales();
+    showNotice(`${result.sale.productName} saved at ${saleMoney(result.sale.totalKes)}${result.sale.status === "void" ? " · Voided, excluded from figures." : "."}`);
+  } catch (error) { $("#sale-save-status").textContent = error.message; }
+  finally {
+    saleSaving = false;
+    for (const selector of ["#save-sale", "#close-sale-editor", "#cancel-sale-editor"]) $(selector).disabled = false;
+    $("#save-sale").textContent = "Save sale";
   }
 }
 
@@ -514,13 +771,61 @@ $$("[data-go]").forEach((button) => button.addEventListener("click", () => {
 }));
 $("[data-quick='add']").addEventListener("click", () => openEditor());
 $("#new-product").addEventListener("click", () => openEditor());
-$("#refresh").addEventListener("click", loadProducts);
+$("#refresh").addEventListener("click", () => activeView === "clients" ? loadClients() : activeView === "sales" ? loadSales() : activeView === "dashboard" ? Promise.all([loadProducts(), loadSales()]) : loadProducts());
+$("#new-client").addEventListener("click", () => openClientEditor());
+$("#client-search").addEventListener("input", renderClients);
+$("#client-rows").addEventListener("click", (event) => {
+  if (event.target.closest("[data-client-retry]")) { loadClients(); return; }
+  const saleButton = event.target.closest("[data-client-sale]");
+  if (saleButton) {
+    const client = clients.find((item) => item.id === decodeURIComponent(saleButton.dataset.clientSale));
+    showView("sales");
+    openSaleEditor(null, client);
+    return;
+  }
+  const button = event.target.closest("[data-client-edit]");
+  if (button) openClientEditor(clients.find((client) => client.id === decodeURIComponent(button.dataset.clientEdit)));
+});
+$("#client-form").addEventListener("submit", saveClient);
+$("#use-client-phone").addEventListener("click", () => {
+  $("#client-form").elements.whatsapp.value = $("#client-form").elements.phone.value;
+});
+$("#close-client-editor").addEventListener("click", () => $("#client-editor").close());
+$("#cancel-client-editor").addEventListener("click", () => $("#client-editor").close());
+$("#client-editor").addEventListener("cancel", (event) => { if (clientSaving) event.preventDefault(); });
+$("#new-sale").addEventListener("click", () => openSaleEditor());
+$("[data-quick='sale']").addEventListener("click", () => { showView("sales"); openSaleEditor(); });
+$("#sales-search").addEventListener("input", renderSales);
+$("#sales-period").addEventListener("change", renderSales);
+$("#sales-status").addEventListener("change", renderSales);
+$("#sales-rows").addEventListener("click", (event) => {
+  if (event.target.closest("[data-sales-retry]")) { loadSales(); return; }
+  const button = event.target.closest("[data-sale-edit]");
+  if (button) openSaleEditor(sales.find((sale) => sale.id === decodeURIComponent(button.dataset.saleEdit)));
+});
+$("#sale-form").addEventListener("submit", saveSale);
+$("#sale-product").addEventListener("change", () => {
+  const product = products.find((item) => item.sku === $("#sale-product").value);
+  if (product) $("#sale-form").elements.productName.value = product.name;
+  updateSalePreview();
+});
+$("#sale-client").addEventListener("change", () => {
+  const client = clients.find((item) => item.id === $("#sale-client").value);
+  $("#sale-form").elements.customerName.value = client ? `${client.firstName} ${client.lastName}` : "";
+});
+$("#sale-form").elements.quantity.addEventListener("input", updateSalePreview);
+$("#sale-form").elements.unitPriceKes.addEventListener("input", updateSalePreview);
+$("#close-sale-editor").addEventListener("click", () => $("#sale-editor").close());
+$("#cancel-sale-editor").addEventListener("click", () => $("#sale-editor").close());
+$("#sale-editor").addEventListener("cancel", (event) => { if (saleSaving) event.preventDefault(); });
 
 $("#dashboard").addEventListener("click", (event) => {
   const edit = event.target.closest("[data-dashboard-edit]");
   const category = event.target.closest("[data-dashboard-category]");
+  const sale = event.target.closest("[data-dashboard-sale]");
   if (edit) openEditor(products.find((product) => product.sku === edit.dataset.dashboardEdit));
-  if (category) showCategoryProducts(category.dataset.dashboardCategory);
+  else if (category) showCategoryProducts(category.dataset.dashboardCategory);
+  else if (sale) openSaleEditor(sales.find((item) => item.id === decodeURIComponent(sale.dataset.dashboardSale)));
 });
 
 $("#category-groups").addEventListener("click", (event) => {

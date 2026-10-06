@@ -17,7 +17,7 @@
       <img src="/images/logo.png" alt="Karibu Golf" class="login-mark-full">
       <p class="eyebrow">PRIVATE OPERATIONS</p>
       <h1>Your Karibu<br><em>control room.</em></h1>
-      <p class="login-copy">Manage products, inventory, prices and what appears in the live webshop.</p>
+      <p class="login-copy">Manage products, inventory, clients, sales and what appears in the live webshop.</p>
       <form id="login-form">
         <label for="password">Admin password</label>
         <input id="password" type="password" autocomplete="current-password" required autofocus>
@@ -38,6 +38,8 @@
         <a id="nav-dashboard" class="active" href="#dashboard"><span>⌂</span> Dashboard</a>
         <a id="nav-products" href="#products"><span>◫</span> Products</a>
         <a id="nav-inventory" href="#inventory"><span>▦</span> Inventory</a>
+        <a id="nav-clients" href="#clients"><span>♧</span> Clients</a>
+        <a id="nav-sales" href="#sales"><span>↗</span> Sales</a>
         <a id="nav-categories" href="#categories"><span>◇</span> Categories</a>
         <div class="nav-rule"></div>
         <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span> Live shop</a>
@@ -59,10 +61,20 @@
         <div class="topbar-actions">
           <button id="refresh" type="button" class="secondary compact">↻ Refresh</button>
           <button id="new-product" class="primary" type="button">＋ Add product</button>
+          <button id="new-client" class="primary" type="button" hidden>＋ Add client</button>
+          <button id="new-sale" class="primary" type="button" hidden>＋ Record sale</button>
         </div>
       </header>
 
       <div id="notice" class="notice global-notice" hidden></div>
+      <nav class="mobile-admin-nav" aria-label="Admin sections on mobile">
+        <button type="button" data-go="dashboard">Dashboard</button>
+        <button type="button" data-go="products">Products</button>
+        <button type="button" data-go="inventory">Inventory</button>
+        <button type="button" data-go="clients">Clients</button>
+        <button type="button" data-go="sales">Sales</button>
+        <button type="button" data-go="categories">Categories</button>
+      </nav>
 
       <main class="content view-panel" id="dashboard">
         <section class="overview-strip" aria-label="Store summary">
@@ -70,6 +82,8 @@
           <button class="overview-card green" data-go="products" data-filter-target="live"><span>Live webshop</span><strong id="dash-live">—</strong><small>Visible to customers</small></button>
           <button class="overview-card gold" data-go="products" data-filter-target="private"><span>Private inventory</span><strong id="dash-private">—</strong><small>Stored but hidden</small></button>
           <button class="overview-card coal" data-go="inventory"><span>Units available</span><strong id="dash-units">—</strong><small>Across in-stock items</small></button>
+          <button class="overview-card green sales-overview-card" data-go="sales"><span>Total sales value</span><strong id="dash-sales-total">—</strong><small>Completed sales · all time</small></button>
+          <button class="overview-card gold sales-overview-card" data-go="sales"><span>Sales this month</span><strong id="dash-sales-month">—</strong><small id="dash-sales-month-count">Loading sales…</small></button>
         </section>
 
         <section class="dashboard-grid">
@@ -79,6 +93,7 @@
               <button data-quick="add"><span>＋</span><strong>Add a product</strong><small>Create it in the Sheet and backend.</small></button>
               <button data-go="inventory"><span>▦</span><strong>Update inventory</strong><small>Edit several stock quantities together.</small></button>
               <button data-go="categories"><span>◇</span><strong>Browse categories</strong><small>Open products by department.</small></button>
+              <button data-quick="sale"><span>↗</span><strong>Record a sale</strong><small>Add what you sold and the actual price.</small></button>
               <a href="https://karibugolf.com/shop/" target="_blank" rel="noreferrer"><span>↗</span><strong>Check the live shop</strong><small>See exactly what customers see.</small></a>
             </div>
           </article>
@@ -96,6 +111,11 @@
           <article class="panel catalogue-snapshot">
             <header class="panel-head"><div><p class="eyebrow">LIVE CATALOGUE</p><h2>Published products.</h2></div><button data-go="products" data-filter-target="live" class="text-button">View all →</button></header>
             <div id="dashboard-products" class="mini-list"><p class="loading-inline">Loading products…</p></div>
+          </article>
+
+          <article class="panel sales-snapshot">
+            <header class="panel-head"><div><p class="eyebrow">RECENT SALES</p><h2>Latest actual selling prices.</h2></div><button data-go="sales" class="text-button">All sales →</button></header>
+            <div id="dashboard-sales" class="dashboard-sales-list"><p class="loading-inline">Loading sales…</p></div>
           </article>
         </section>
       </main>
@@ -162,6 +182,45 @@
               <tbody id="inventory-rows"><tr><td colspan="7" class="loading">Loading inventory…</td></tr></tbody>
             </table>
           </div>
+        </section>
+      </main>
+
+      <main class="content view-panel" id="clients" hidden>
+        <section class="catalog-card">
+          <header class="clients-intro"><p class="eyebrow">YOUR CUSTOMERS</p><h2>Keep your clients close.</h2><p>Add people who have bought or received items, and keep their contact details in one place.</p></header>
+          <div class="catalog-tools client-tools">
+            <label class="search"><span>⌕</span><input id="client-search" type="search" placeholder="Search name, company, email, number or notes" aria-label="Search clients"></label>
+          </div>
+          <div class="table-wrap">
+            <table class="client-table">
+              <thead><tr><th>Client</th><th>Company</th><th>Email</th><th>Phone number</th><th>WhatsApp</th><th>Items received / notes</th><th></th></tr></thead>
+              <tbody id="client-rows"><tr><td colspan="7" class="loading">Loading clients…</td></tr></tbody>
+            </table>
+          </div>
+          <footer class="table-footer"><span id="client-count">— clients</span><span>Private client records saved in Google Sheets.</span></footer>
+        </section>
+      </main>
+
+      <main class="content view-panel" id="sales" hidden>
+        <section class="catalog-card sales-toolbar">
+          <label class="search"><span>⌕</span><input id="sales-search" type="search" placeholder="Search clubs, client or notes" aria-label="Search sales"></label>
+          <select id="sales-period" aria-label="Sales period"><option value="all">All time</option><option value="month">This month</option><option value="last-month">Last month</option><option value="year">This year</option></select>
+          <select id="sales-status" aria-label="Sales status"><option value="completed">Completed sales</option><option value="all">All records, including voided</option><option value="void">Voided records</option></select>
+        </section>
+        <section class="inventory-summary sales-summary" aria-label="Sales figures">
+          <article><span>Total sales value</span><strong id="sales-revenue">—</strong></article>
+          <article><span>Sales recorded</span><strong id="sales-count">—</strong></article>
+          <article><span>Items / sets sold</span><strong id="sales-units">—</strong></article>
+          <article><span>Average sale value</span><strong id="sales-average">—</strong></article>
+        </section>
+        <section class="sales-charts">
+          <article class="panel"><header class="panel-head"><div><p class="eyebrow">LAST SIX MONTHS</p><h2>Sales by month.</h2></div></header><div id="sales-months" class="bar-list"></div></article>
+          <article class="panel"><header class="panel-head"><div><p class="eyebrow">ACTUAL SALES VALUE</p><h2>Top selling items.</h2></div></header><div id="sales-top-products" class="sales-top-list"></div></article>
+        </section>
+        <section class="catalog-card">
+          <header class="clients-intro"><p class="eyebrow">SALES HISTORY</p><h2>What you sold, and for how much.</h2><p>Figures use the actual prices recorded below. Voided records are kept in the history and excluded from totals.</p></header>
+          <div class="table-wrap"><table class="sales-table"><thead><tr><th>Date</th><th>Item / clubs sold</th><th>Client</th><th>Quantity</th><th>Actual price</th><th>Sale total</th><th></th></tr></thead><tbody id="sales-rows"><tr><td colspan="7" class="loading">Loading sales…</td></tr></tbody></table></div>
+          <footer class="table-footer"><span id="sales-record-count">— records</span><span>All amounts in KSh. Use Inventory to update available stock.</span></footer>
         </section>
       </main>
 
@@ -256,6 +315,58 @@
         <button id="cancel-editor" class="secondary" type="button">Cancel</button>
         <button id="save-product" class="primary" type="submit">Save product</button>
       </footer>
+    </form>
+  </dialog>
+
+  <dialog id="client-editor" aria-labelledby="client-editor-title">
+    <form id="client-form">
+      <header class="editor-head">
+        <div><p class="eyebrow">CLIENT DETAILS</p><h2 id="client-editor-title">Add client</h2><p>Save contact details and what they bought or received.</p></div>
+        <button id="close-client-editor" class="icon-button" type="button" aria-label="Close client editor">×</button>
+      </header>
+      <div class="client-editor-body">
+        <section class="form-card">
+          <div class="form-grid client-form-grid">
+            <label>First name<input name="firstName" required maxlength="100" autocomplete="given-name"></label>
+            <label>Last name<input name="lastName" required maxlength="100" autocomplete="family-name"></label>
+            <label class="full">Company<input name="company" maxlength="200" autocomplete="organization" placeholder="Company or golf club"></label>
+            <label class="full">Email<input name="email" type="email" maxlength="254" autocomplete="email" placeholder="client@example.com"></label>
+            <label>Phone number<input name="phone" type="tel" maxlength="40" autocomplete="tel" placeholder="+254 712 345 678"></label>
+            <label>WhatsApp<input name="whatsapp" type="tel" maxlength="40" placeholder="+254 712 345 678"><button id="use-client-phone" class="text-button" type="button">Use phone number</button></label>
+            <p class="hint full">First and last name are required. Contact details are optional. Include the country code for phone and WhatsApp numbers.</p>
+            <label class="full">Items received / notes<textarea name="notes" rows="4" maxlength="2000" placeholder="For example: TaylorMade irons, delivered 6 October. Size or delivery notes."></textarea></label>
+          </div>
+        </section>
+        <p id="client-save-status" class="form-error" role="alert" aria-live="polite"></p>
+      </div>
+      <footer class="editor-actions">
+        <button id="cancel-client-editor" class="secondary" type="button">Cancel</button>
+        <button id="save-client" class="primary" type="submit">Save client</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="sale-editor" aria-labelledby="sale-editor-title">
+    <form id="sale-form">
+      <header class="editor-head"><div><p class="eyebrow">ACTUAL SELLING PRICE</p><h2 id="sale-editor-title">Record sale</h2><p>Add a completed sale, including the price you agreed with the buyer.</p></div><button id="close-sale-editor" class="icon-button" type="button" aria-label="Close sale editor">×</button></header>
+      <div class="sale-editor-body">
+        <section class="form-card">
+          <div class="form-grid sale-form-grid">
+            <label class="full">Choose product<select id="sale-product" name="productSku"><option value="">Other / previous item</option></select></label>
+            <label class="full">Item / clubs sold<input name="productName" required maxlength="200" placeholder="For example: TaylorMade P790 iron set"></label>
+            <label>Quantity (items or sets)<input name="quantity" type="number" min="1" max="1000" step="1" value="1" required></label>
+            <label>Actual price per item / set (KSh)<input name="unitPriceKes" type="number" min="0.01" max="100000000" step="0.01" inputmode="decimal" required placeholder="What you sold it for"><small id="sale-catalogue-price" class="hint"></small></label>
+            <div class="sale-total full"><span>Total sale value</span><strong id="sale-total-preview">KSh 0</strong></div>
+            <label>Sale date<input name="date" type="date" required></label>
+            <label>Status<select name="status"><option value="completed">Completed</option><option value="void">Voided — exclude from figures</option></select></label>
+            <label class="full">Client<select id="sale-client" name="clientId"><option value="">Walk-in / no saved client</option></select></label>
+            <label class="full">Customer name (optional)<input name="customerName" maxlength="200" placeholder="Buyer or recipient"></label>
+            <label class="full">Notes<textarea name="notes" rows="3" maxlength="2000" placeholder="Set makeup, payment reference or delivery notes"></textarea></label>
+          </div>
+        </section>
+        <p id="sale-save-status" class="form-error" role="alert" aria-live="polite"></p>
+      </div>
+      <footer class="editor-actions"><button id="cancel-sale-editor" class="secondary" type="button">Cancel</button><button id="save-sale" class="primary" type="submit">Save sale</button></footer>
     </form>
   </dialog>
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T18:43:48.770629+00:00",
+  "generatedAt": "2026-10-06T20:12:45.865229+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -42,6 +42,13 @@
       "description": "The best of both worlds",
       "categoryType": "club",
       "displayOrder": 6
+    },
+    {
+      "slug": "junior_sets",
+      "label": "Junior Sets",
+      "description": "Complete height-matched golf sets for junior players",
+      "categoryType": "club",
+      "displayOrder": 7
     },
     {
       "slug": "mens_polos",
@@ -668,6 +675,76 @@
         "/images/products/cleveland-rtx6-zipcore-tour-satin-cavity.jpg",
         "/images/products/cleveland-rtx6-zipcore-tour-satin-sole.jpg",
         "/images/products/cleveland-rtx6-zipcore-tour-satin-topline.webp"
+      ]
+    },
+    {
+      "sku": "GK-JR001",
+      "slug": "gk-jr001",
+      "name": "Team TaylorMade Junior Golf Set",
+      "categorySlug": "junior_sets",
+      "categoryLabel": "Junior Sets",
+      "description": "Team TaylorMade Junior Golf Set engineered specifically for young golfers ages 4–12. Three height-based sizes progress from a fairway, 7-iron, wedge and putter set to a complete seven-club junior setup. Each set includes a dual-strap stand bag, rain hood and club headcovers. Right- and left-handed options are manufacturer references; exact Karibu availability and the final landed price must be confirmed. Currently out of stock.",
+      "priceKes": 102234,
+      "priceUsd": 789.45,
+      "priceCny": 5380.74,
+      "sizes": "Size 1 · 42–47 in · ages 4–6; Size 2 · 48–53 in · ages 7–9; Size 3 · 54–59 in · ages 10–12",
+      "colors": "Blue / White / Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/taylormade-junior-set-bag.jpg",
+        "/images/products/taylormade-junior-set-woods.jpg",
+        "/images/products/taylormade-junior-set-irons-putter.jpg",
+        "/images/products/taylormade-junior-set-bag-closeup.jpg",
+        "/images/products/taylormade-junior-set-fairway.jpg",
+        "/images/products/taylormade-junior-set-seven-iron.jpg",
+        "/images/products/taylormade-junior-set-putter.jpg"
+      ]
+    },
+    {
+      "sku": "GK-PT037",
+      "slug": "gk-pt037",
+      "name": "Scotty Cameron H25 Limited Teryllium Newport 2",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "The 2025 Scotty Cameron H25 Limited Teryllium Newport 2 pairs a modern Newport 2 blade with a Teryllium copper-alloy face inlay, gray vibration damping and a glare-resistant black PVD finish. The official limited release uses a 34.5-inch Tour Black shaft, gray Baby T grip and dedicated H25 headcover. This supplier listing is currently out of stock; the exact item, authenticity, handedness and availability must be confirmed before payment.",
+      "priceKes": 20000,
+      "priceUsd": 154.44,
+      "priceCny": 1052.63,
+      "sizes": "34.5 in",
+      "colors": "Black PVD / Teryllium",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/scotty-cameron-h25-teryllium-newport-2-sole.jpg",
+        "/images/products/scotty-cameron-h25-teryllium-newport-2-insert.jpg",
+        "/images/products/scotty-cameron-h25-teryllium-newport-2-face.jpg",
+        "/images/products/scotty-cameron-h25-teryllium-newport-2-address.jpg"
+      ]
+    },
+    {
+      "sku": "GK-GL007",
+      "slug": "gk-gl007",
+      "name": "FootJoy RainGrip Pair Golf Gloves",
+      "categorySlug": "gloves",
+      "categoryLabel": "Gloves",
+      "description": "FootJoy RainGrip Pair golf gloves in Black for wet-weather play. The water-absorbent Sure-Grip Autosuede knit palms are designed to conform to the hands and club in rain, while Quick-Dry material supports breathability, flexibility and comfort. Sold as a pair. Manufacturer size options are a reference only; exact Karibu availability must be confirmed. Currently out of stock.",
+      "priceKes": 5294,
+      "priceUsd": 40.88,
+      "priceCny": 278.63,
+      "sizes": "S, M, ML, L, XL, XXL (manufacturer reference)",
+      "colors": "Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/footjoy-raingrip-pair-set.png",
+        "/images/products/footjoy-raingrip-pair-packaging.png",
+        "/images/products/footjoy-raingrip-pair-grip.png",
+        "/images/products/footjoy-raingrip-pair-palm-left.png",
+        "/images/products/footjoy-raingrip-pair-palm-right.png"
       ]
     }
   ]

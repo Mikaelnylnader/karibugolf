@@ -23,6 +23,9 @@ const dashboard = await page.evaluate(() => ({
   heading: document.querySelector("#view-title")?.textContent,
   total: document.querySelector("#dash-total")?.textContent,
   live: document.querySelector("#dash-live")?.textContent,
+  salesTotal: document.querySelector("#dash-sales-total")?.textContent,
+  salesMonth: document.querySelector("#dash-sales-month")?.textContent,
+  recentSales: document.querySelectorAll("#dashboard-sales .dashboard-sale-row").length,
   quickActions: document.querySelectorAll(".quick-actions > *").length,
   stockRows: document.querySelectorAll("#stock-watch-list .mini-row").length,
   categoryBars: document.querySelectorAll("#dashboard-categories .bar-row").length,
@@ -30,7 +33,9 @@ const dashboard = await page.evaluate(() => ({
 }));
 assert.equal(dashboard.heading, "Dashboard");
 assert(Number(dashboard.total) >= 150, `Expected at least 150 products, received ${dashboard.total}`);
-assert.equal(dashboard.quickActions, 4);
+assert.equal(dashboard.quickActions, 5);
+assert.notEqual(dashboard.salesTotal, "—", "Dashboard sales total did not load");
+assert.notEqual(dashboard.salesMonth, "—", "Dashboard monthly sales did not load");
 assert(dashboard.stockRows > 0);
 assert(dashboard.categoryBars > 0);
 assert(dashboard.overflow <= 0, `Dashboard overflowed by ${dashboard.overflow}px`);

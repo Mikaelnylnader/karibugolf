@@ -49,7 +49,8 @@ CATEGORY_MAP = {
     "accessories": "accessories", "apparel": "mens_jackets", "bags": "bags",
     "balls": "balls", "gloves": "gloves", "grips": "grips",
     "hats & caps": "hats_and_caps", "irons": "golf_irons", "putters": "putters",
-    "range finders": "range_finders", "shoes": "mens_shoes", "wedges": "wedges",
+    "junior sets": "junior_sets", "kids": "junior_sets", "range finders": "range_finders",
+    "shoes": "mens_shoes", "wedges": "wedges",
 }
 
 # ── Category Attribute Templates ──
@@ -92,7 +93,7 @@ CATEGORY_ATTR_TEMPLATES = {
 
 CATEGORY_TYPES = {
     "drivers": "club", "golf_irons": "club", "putters": "putter",
-    "woods": "club", "wedges": "club", "hybrids": "club",
+    "woods": "club", "wedges": "club", "hybrids": "club", "junior_sets": "club",
     "mens_polos": "apparel", "mens_pants": "apparel", "mens_jackets": "apparel",
     "mens_shorts": "apparel", "womens_polos": "apparel", "womens_skirts": "apparel",
     "womens_pants": "apparel", "womens_dresses": "apparel", "womens_jackets": "apparel",
@@ -105,7 +106,7 @@ CATEGORY_TYPES = {
 
 CATEGORY_SKU_PREFIXES = {
     "drivers": "dr", "golf_irons": "ir", "putters": "pt",
-    "woods": "wd", "wedges": "wg", "hybrids": "hy",
+    "woods": "wd", "wedges": "wg", "hybrids": "hy", "junior_sets": "jr",
     "mens_polos": "mp", "mens_pants": "mpt", "mens_jackets": "mj",
     "mens_shorts": "msh", "womens_polos": "wp", "womens_skirts": "ws",
     "womens_pants": "wpt", "womens_dresses": "wd", "womens_jackets": "wj",
@@ -127,9 +128,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(CATEGORY_IMG_FOLDER, exist_ok=True)
 
 # ── Auto Deploy State ──
-# Product saves export the catalog into the React storefront, rebuild it and
-# publish the resulting static site to the existing Netlify project.
-_auto_deploy_enabled = True
+# Develop locally first. Publishing is an explicit owner-approved action.
+_auto_deploy_enabled = False
 _last_deploy_result = ""
 _last_deploy_time = None
 
@@ -309,6 +309,7 @@ def seed_categories():
         "woods": ("Woods", "Power and versatility from the fairway", 4),
         "wedges": ("Wedges", "Scoring shots around the green", 5),
         "hybrids": ("Hybrids", "The best of both worlds", 6),
+        "junior_sets": ("Junior Sets", "Complete height-matched golf sets for junior players", 7),
         "mens_polos": ("Men's Polos", "Style and performance on the course", 10),
         "mens_pants": ("Men's Pants", "Comfort and mobility for your swing", 11),
         "mens_jackets": ("Men's Jackets", "Weather-ready outerwear", 12),
@@ -1210,6 +1211,7 @@ def category_list():
 
     CATEGORY_GROUPS = [
         ("clubs", "🏌️ Clubs", ["drivers", "golf_irons", "putters", "woods", "wedges", "hybrids"]),
+        ("kids", "🧒 Kids", ["junior_sets"]),
         ("apparel", "👕 Apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts",
                        "womens_polos", "womens_skirts", "womens_pants", "womens_dresses",
                        "womens_jackets", "womens_tops"]),
@@ -1243,6 +1245,7 @@ def category_group(group_name):
     """Show individual categories within a group."""
     CATEGORY_GROUPS = {
         "clubs": ("🏌️ Clubs", ["drivers", "golf_irons", "putters", "woods", "wedges", "hybrids"]),
+        "kids": ("🧒 Kids", ["junior_sets"]),
         "apparel": ("👕 Apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts",
                        "womens_polos", "womens_skirts", "womens_pants", "womens_dresses",
                        "womens_jackets", "womens_tops"]),

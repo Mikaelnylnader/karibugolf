@@ -27,7 +27,7 @@ export default function Shop() {
        </div>
        <a href="/shop/stock">Shop in-stock now <ArrowUpRight size={20}/></a>
       </div>
-      <div className="store-hero-note"><span>{products.length} PRODUCTS · {inStockProducts.length} IN STOCK · 6 DEPARTMENTS</span><p>Start with what is ready now or browse the full shop by department. Ask a real person when you want help choosing.</p></div>
+      <div className="store-hero-note"><span>{products.length} PRODUCTS · {inStockProducts.length} IN STOCK · {departments.length} DEPARTMENTS</span><p>Start with what is ready now or browse the full shop by department. Ask a real person when you want help choosing.</p></div>
      </div>
     </section>
 

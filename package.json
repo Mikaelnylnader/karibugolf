@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "vinext dev",
+    "admin:local": "node execution/serve_admin_local.mjs",
     "build": "node execution/export_catalog_for_build.mjs && node execution/build_vinext_static.mjs && node execution/export-new-site-static.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",

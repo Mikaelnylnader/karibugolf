@@ -41,6 +41,7 @@ const categoryDetails: Record<string, Pick<ShopCategory, "label" | "image">> = {
   golf_irons: { label: "Irons", image: "/images/shop/categories-v2/golf_irons.webp" },
   wedges: { label: "Wedges", image: "/images/shop/categories-v2/wedges.webp" },
   putters: { label: "Putters", image: "/images/shop/categories-v2/putters.webp" },
+  junior_sets: { label: "Junior Sets", image: "/images/shop/categories-v2/junior_sets.jpg" },
   mens_shoes: { label: "Men’s Shoes", image: "/images/shop/categories-v2/mens_shoes.webp" },
   womens_shoes: { label: "Women’s Shoes", image: "/images/shop/categories-v2/womens_shoes.webp" },
   mens_polos: { label: "Men’s Polos", image: "/images/shop/categories-v2/mens_polos.webp" },
@@ -85,6 +86,7 @@ const department = (
 
 export const departments: Department[] = [
   department("clubs", "Clubs", "BUILD YOUR SET", "From the tee to the green, browse every club family in one place.", "/images/shop/clubs-v2.webp", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]),
+  department("kids", "Kids", "START THEIR GAME", "Height-matched junior golf sets built to make the first swing easier and more fun.", "/images/shop/kids-v2.jpg", ["junior_sets"]),
   department("shoes", "Shoes", "WALK THE COURSE", "Golf footwear selected for grip, comfort and long days on the course.", "/images/shop/shoes-v2.webp", ["mens_shoes", "womens_shoes"]),
   department("apparel", "Apparel", "WEAR YOUR GAME", "Performance layers and everyday golf style for women and men.", "/images/shop/apparel-v2.webp", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts", "womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]),
   department("bags", "Bags", "CARRY IT WELL", "Stand bags, travel bags and practical storage for every golf day.", "/images/shop/bags-v2.webp", ["bags"]),

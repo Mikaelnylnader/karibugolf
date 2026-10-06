@@ -40,7 +40,7 @@ async function accessToken() {
   return cachedToken;
 }
 
-async function google(path, options = {}) {
+export async function google(path, options = {}) {
   const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}${path}`, {
     ...options,
     headers: { authorization: `Bearer ${await accessToken()}`, "content-type": "application/json", ...(options.headers || {}) },
