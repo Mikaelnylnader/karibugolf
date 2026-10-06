@@ -735,8 +735,12 @@ const vokeySm11Wedge: ProductPageDetails = {
     { src: "/images/products/titleist-vokey-sm11-wedge-sole.png", alt: "Titleist Vokey SM11 wedge sole and bounce profile", label: "Sole" },
     { src: "/images/products/titleist-vokey-sm11-wedge-profile.png", alt: "Titleist Vokey SM11 Tour Chrome side profile", label: "Profile" },
     { src: "/images/products/titleist-vokey-sm11-wedge-address.png", alt: "Titleist Vokey SM11 wedge at address", label: "Address" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-back.png", alt: "Titleist Vokey SM11 Jet Black wedge back", label: "Jet Black back" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-face.png", alt: "Titleist Vokey SM11 Jet Black wedge face and grooves", label: "Jet Black face" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-sole.png", alt: "Titleist Vokey SM11 Jet Black wedge sole and bounce profile", label: "Jet Black sole" },
+    { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-profile.png", alt: "Titleist Vokey SM11 Jet Black side profile", label: "Jet Black profile" },
   ],
-  galleryNote: "All five product-reference screenshots were supplied by Karibu Golf. They show the Tour Chrome finish. Karibu's planned SM11 range is right-handed only and is not currently in stock; exact future availability and shaft model / flex must be confirmed.",
+  galleryNote: "All nine product-reference screenshots were supplied by Karibu Golf. They show the Tour Chrome and Jet Black finishes. Karibu's planned SM11 range is right-handed only and is not currently in stock; exact future availability and shaft model / flex must be confirmed.",
   overviewEyebrow: "TITLEIST VOKEY DESIGN SM11",
   overviewTitle: "CLEANER CONTACT. CONTROLLED FLIGHT. SMARTER SPIN.",
   overviewBody: [
@@ -779,12 +783,12 @@ const vokeySm11Wedge: ProductPageDetails = {
   equipment: [
     { title: "Right-handed build", text: "The planned Karibu range will be offered in right-handed models only." },
     { title: "Seven planned models", text: "Choose from 48.10 F, 50.08 F, 52.08 F, 54.08 M, 56.08 M, 58.04 T and 60.04 T." },
-    { title: "Tour Chrome or Jet Black", text: "The planned finish range is limited to Tour Chrome and Jet Black (sometimes referred to as Tour Black)." },
+    { title: "Tour Chrome or Jet Black", text: "The planned finish range is limited to Tour Chrome and Jet Black." },
     { title: "One standard steel shaft", text: "A single steel shaft option is planned. Karibu will confirm the exact shaft model and flex before an order is accepted." },
   ],
   source: { label: "Titleist Vokey SM11 official product page", url: "https://www.titleist.com/product/vokey-sm11/862C%3ACA-RH%3ACBW-4410.html" },
   presentation: {
-    imageLabels: ["Back", "Face", "Sole", "Profile", "Address"],
+    imageLabels: ["Back", "Face", "Sole", "Profile", "Address", "Jet Black back", "Jet Black face", "Jet Black sole", "Jet Black profile"],
     featuresTitle: "THE SM11 DETAILS.",
     featuresIntro: "Explore the contact, launch, spin and durability technologies behind the latest Vokey wedge family.",
     inquiryTitle: "CHOOSE THE LOFT. MATCH THE GRIND.",

@@ -17,7 +17,7 @@ const product = catalog.products.find((item) => item.sku === sku);
 check(Boolean(product), "catalog: Vokey SM11 missing");
 check(product?.priceKes === 67816, `catalog: price ${product?.priceKes}`);
 check(product?.status === "Out of Stock" && Number(product?.stock) === 0, "catalog: availability mismatch");
-check(product?.images?.length === 5, `catalog: expected five images, found ${product?.images?.length}`);
+check(product?.images?.length === 9, `catalog: expected nine images, found ${product?.images?.length}`);
 check(product?.sizes === "48.10 F; 50.08 F; 52.08 F; 54.08 M; 56.08 M; 58.04 T; 60.04 T", `catalog: planned models ${product?.sizes}`);
 check(product?.colors === "Tour Chrome; Jet Black", `catalog: planned finishes ${product?.colors}`);
 check(product?.description?.includes("right-handed only") && product.description.includes("not currently in stock"), "catalog: planned-range description missing");
@@ -28,6 +28,10 @@ const imagePairs = [
   ["Skärmbild 2026-10-06 143046.png", "titleist-vokey-sm11-wedge-sole.png"],
   ["Skärmbild 2026-10-06 143055.png", "titleist-vokey-sm11-wedge-profile.png"],
   ["Skärmbild 2026-10-06 143105.png", "titleist-vokey-sm11-wedge-address.png"],
+  ["Skärmbild 2026-10-06 155147.png", "titleist-vokey-sm11-wedge-jet-black-back.png"],
+  ["Skärmbild 2026-10-06 155156.png", "titleist-vokey-sm11-wedge-jet-black-face.png"],
+  ["Skärmbild 2026-10-06 155211.png", "titleist-vokey-sm11-wedge-jet-black-sole.png"],
+  ["Skärmbild 2026-10-06 155221.png", "titleist-vokey-sm11-wedge-jet-black-profile.png"],
 ];
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 for (const [source, target] of imagePairs) {
@@ -97,7 +101,8 @@ for (const contextOptions of [
   check(result.stock?.toLowerCase().includes("out of stock"), `${label}: stock text mismatch`);
   check(result.price?.includes("KSh 67,816"), `${label}: KES price missing`);
   check(!result.text.includes("$523.68") && !result.text.includes("¥3,193"), `${label}: foreign public price found`);
-  check(result.gallery === 5, `${label}: gallery count ${result.gallery}`);
+  check(result.gallery === 9, `${label}: gallery count ${result.gallery}`);
+  check(!/tour black/i.test(result.text), `${label}: obsolete Tour Black wording found`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
   check(result.specRows === 4, `${label}: specification row count ${result.specRows}`);
   check(result.specs?.some((row) => row.includes("48°") && row.includes("10° · F")), `${label}: 48.10 F specification missing`);
@@ -123,6 +128,9 @@ for (const contextOptions of [
     await page.getByRole("button", { name: "Enlarge Back photo" }).click();
     check(await page.getByRole("dialog").isVisible(), "desktop: gallery zoom did not open");
     await page.keyboard.press("Escape");
+    await page.getByRole("button", { name: "Show Jet Black back photo", exact: true }).click();
+    const jetBlackSource = await page.locator(".club-gallery-stage img").getAttribute("src");
+    check(jetBlackSource?.includes("titleist-vokey-sm11-wedge-jet-black-back.png"), "desktop: Jet Black gallery selection did not update the main photo");
   }
   results[label] = { ...result, text: undefined, errors };
   await context.close();

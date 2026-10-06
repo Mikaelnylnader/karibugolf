@@ -9,13 +9,17 @@ import json
 import shutil
 import sqlite3
 from datetime import datetime, timezone
+from pathlib import Path
 
 from add_titleist_vokey_sm11_listing import (
-    COLORS, DESCRIPTION, ROOT, SIZES, SKU,
+    COLORS, DESCRIPTION, IMAGES, ROOT, SIZES, SKU,
 )
 
 
-def main(apply: bool) -> None:
+def main(apply: bool, source: Path) -> None:
+    for original, _ in IMAGES:
+        if not (source / original).is_file():
+            raise FileNotFoundError(source / original)
     database = ROOT / "backend/golf_kenya.db"
     catalog_path = ROOT / "lib/catalog.generated.json"
     connection = sqlite3.connect(database)
@@ -37,6 +41,7 @@ def main(apply: bool) -> None:
         "status": row["status"],
         "stock": row["stock"],
         "price_kes": row["price_kes"],
+        "images": len(IMAGES),
         "apply": apply,
     }
     print(json.dumps(plan, indent=2, ensure_ascii=False))
@@ -53,9 +58,17 @@ def main(apply: bool) -> None:
         connection.backup(saved)
     shutil.copy2(catalog_path, backup / "catalog-before.json")
 
+    for original, filename in IMAGES:
+        for folder in (ROOT / "images/products", ROOT / "public/images/products"):
+            folder.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source / original, folder / filename)
+
     connection.execute(
-        "UPDATE products SET description=?, sizes=?, colors=? WHERE sku=?",
-        (DESCRIPTION, SIZES, COLORS, SKU),
+        "UPDATE products SET description=?, sizes=?, colors=?, image=?, image_filename=?, gallery=? WHERE sku=?",
+        (
+            DESCRIPTION, SIZES, COLORS, "/images/products/" + IMAGES[0][1],
+            IMAGES[0][1], json.dumps([filename for _, filename in IMAGES[1:]]), SKU,
+        ),
     )
     connection.commit()
     updated = connection.execute("SELECT * FROM products WHERE sku=?", (SKU,)).fetchone()
@@ -64,6 +77,7 @@ def main(apply: bool) -> None:
         updated["description"] != DESCRIPTION
         or updated["sizes"] != SIZES
         or updated["colors"] != COLORS
+        or json.loads(updated["gallery"]) != [filename for _, filename in IMAGES[1:]]
         or updated["status"] != "Out of Stock"
         or int(updated["stock"]) != 0
     ):
@@ -73,6 +87,7 @@ def main(apply: bool) -> None:
     product["description"] = DESCRIPTION
     product["sizes"] = SIZES
     product["colors"] = COLORS
+    product["images"] = ["/images/products/" + filename for _, filename in IMAGES]
     catalog["generatedAt"] = datetime.now(timezone.utc).isoformat()
     catalog_path.write_text(
         json.dumps(catalog, ensure_ascii=False, indent=2) + "\n",
@@ -84,5 +99,9 @@ def main(apply: bool) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument(
+        "--source", type=Path,
+        default=Path("C:/Users/mikae/Pictures/Screenshots"),
+    )
     arguments = parser.parse_args()
-    main(arguments.apply)
+    main(arguments.apply, arguments.source)

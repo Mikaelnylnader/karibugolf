@@ -41,6 +41,10 @@ IMAGES = [
     ("Skärmbild 2026-10-06 143046.png", "titleist-vokey-sm11-wedge-sole.png"),
     ("Skärmbild 2026-10-06 143055.png", "titleist-vokey-sm11-wedge-profile.png"),
     ("Skärmbild 2026-10-06 143105.png", "titleist-vokey-sm11-wedge-address.png"),
+    ("Skärmbild 2026-10-06 155147.png", "titleist-vokey-sm11-wedge-jet-black-back.png"),
+    ("Skärmbild 2026-10-06 155156.png", "titleist-vokey-sm11-wedge-jet-black-face.png"),
+    ("Skärmbild 2026-10-06 155211.png", "titleist-vokey-sm11-wedge-jet-black-sole.png"),
+    ("Skärmbild 2026-10-06 155221.png", "titleist-vokey-sm11-wedge-jet-black-profile.png"),
 ]
 
 

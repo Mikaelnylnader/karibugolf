@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T12:59:48.809284+00:00",
+  "generatedAt": "2026-10-06T13:56:08.865431+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -564,7 +564,11 @@
         "/images/products/titleist-vokey-sm11-wedge-face.png",
         "/images/products/titleist-vokey-sm11-wedge-sole.png",
         "/images/products/titleist-vokey-sm11-wedge-profile.png",
-        "/images/products/titleist-vokey-sm11-wedge-address.png"
+        "/images/products/titleist-vokey-sm11-wedge-address.png",
+        "/images/products/titleist-vokey-sm11-wedge-jet-black-back.png",
+        "/images/products/titleist-vokey-sm11-wedge-jet-black-face.png",
+        "/images/products/titleist-vokey-sm11-wedge-jet-black-sole.png",
+        "/images/products/titleist-vokey-sm11-wedge-jet-black-profile.png"
       ]
     }
   ]
