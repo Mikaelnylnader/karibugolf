@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T16:36:56.470102+00:00",
+  "generatedAt": "2026-10-06T17:02:17.177018+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -620,6 +620,30 @@
         "/images/products/lab-golf-df3-custom-putter-pink-front.png",
         "/images/products/lab-golf-df3-custom-putter-pink-sole.png",
         "/images/products/lab-golf-df3-custom-putter-pink-rear.png"
+      ]
+    },
+    {
+      "sku": "GK-PT036",
+      "slug": "gk-pt036",
+      "name": "L.A.B. Golf OZ.1 Custom Putter",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "L.A.B. Golf OZ.1 custom mallet putter with Lie Angle Balance and a soft-feeling, no-insert 6061-aluminum construction. Karibu currently offers the right-handed Standard build with Standard head weight in Black. No fitting service is currently available. Length, lie angle, shaft, alignment and grip must be confirmed before ordering. Currently out of stock; additional finishes will be added when their product images are supplied.",
+      "priceKes": 33537,
+      "priceUsd": 258.97,
+      "priceCny": 1579,
+      "sizes": "28–38 in (standard)",
+      "colors": "Black",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/lab-golf-oz1-custom-putter-black-address.png",
+        "/images/products/lab-golf-oz1-custom-putter-black-front.png",
+        "/images/products/lab-golf-oz1-custom-putter-black-rear.png",
+        "/images/products/lab-golf-oz1-custom-putter-black-sole.png",
+        "/images/products/lab-golf-oz1-custom-putter-black-profile.png",
+        "/images/products/lab-golf-oz1-custom-putter-black-angled-face.png"
       ]
     }
   ]

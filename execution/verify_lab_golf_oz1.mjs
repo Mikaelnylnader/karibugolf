@@ -4,29 +4,32 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const base = (process.argv[2] || "http://127.0.0.1:4514").replace(/\/$/, "");
 const local = /127\.0\.0\.1|localhost/.test(base);
-const sku = "GK-PT035";
+const sku = "GK-PT036";
 const slug = sku.toLowerCase();
 const failures = [];
 const results = {};
 const check = (condition, message) => { if (!condition) failures.push(message); };
-const output = `.tmp/lab-golf-df3i-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
+const output = `.tmp/lab-golf-oz1-qa/${new Date().toISOString().replace(/[:.]/g, "-")}`;
 await mkdir(output, { recursive: true });
 
 const catalog = JSON.parse(await readFile("lib/catalog.generated.json", "utf8"));
 const product = catalog.products.find((item) => item.sku === sku);
-check(Boolean(product), "catalog: DF3i missing");
-check(product?.name === "L.A.B. Golf DF3i Custom Putter", `catalog: name ${product?.name}`);
+check(Boolean(product), "catalog: OZ.1 missing");
+check(product?.name === "L.A.B. Golf OZ.1 Custom Putter", `catalog: name ${product?.name}`);
 check(product?.priceKes === 33537, `catalog: price ${product?.priceKes}`);
 check(product?.status === "Out of Stock" && Number(product?.stock) === 0, "catalog: availability mismatch");
-check(product?.images?.length === 3, `catalog: expected three images, found ${product?.images?.length}`);
-check(product?.sizes === "28–38 in (standard); 36–40 in (counterbalanced)", `catalog: fitting ranges ${product?.sizes}`);
-check(product?.colors === "Black · Type-3 anodized", `catalog: finish ${product?.colors}`);
-check(product?.description?.includes("303-stainless-steel insert") && product.description.includes("Currently out of stock"), "catalog: DF3i description mismatch");
+check(product?.images?.length === 6, `catalog: expected six images, found ${product?.images?.length}`);
+check(product?.colors === "Black", `catalog: finishes ${product?.colors}`);
+check(product?.sizes === "28–38 in (standard)", `catalog: size range ${product?.sizes}`);
+check(product?.description?.includes("no-insert 6061-aluminum") && product.description.includes("No fitting service is currently available") && product.description.includes("additional finishes"), "catalog: OZ.1 description mismatch");
 
 const imagePairs = [
-  ["DF3i 1.png", "lab-golf-df3i-custom-putter-face.png"],
-  ["DF3i 4.png", "lab-golf-df3i-custom-putter-sole.png"],
-  ["DF3i 3.png", "lab-golf-df3i-custom-putter-rear.png"],
+  ["OZ.1 1.png", "lab-golf-oz1-custom-putter-black-address.png"],
+  ["OZ.1 2.png", "lab-golf-oz1-custom-putter-black-front.png"],
+  ["OZ.1 3.png", "lab-golf-oz1-custom-putter-black-rear.png"],
+  ["OZ.1 4.png", "lab-golf-oz1-custom-putter-black-sole.png"],
+  ["OZ.1 5.png", "lab-golf-oz1-custom-putter-black-profile.png"],
+  ["OZ.1.png", "lab-golf-oz1-custom-putter-black-angled-face.png"],
 ];
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 for (const [source, target] of imagePairs) {
@@ -34,6 +37,9 @@ for (const [source, target] of imagePairs) {
   check(hash(await readFile(`images/products/${target}`)) === expected, `${target}: processing image differs from source`);
   check(hash(await readFile(`public/images/products/${target}`)) === expected, `${target}: public image differs from source`);
 }
+const ignoredDf3Hash = hash(await readFile("C:/Users/mikae/Downloads/DF3i 6.png"));
+check(!imagePairs.some(([source]) => source === "DF3i 6.png"), "catalog: DF3 duplicate included in OZ.1 gallery");
+check(ignoredDf3Hash === hash(await readFile("images/products/lab-golf-df3-custom-putter-black-front.png")), "catalog: ignored DF3 attachment is not the expected duplicate");
 
 const html = await readFile(`dist/static/shop/product/${slug}/index.html`, "utf8");
 check(html.includes('"@type":"Product"'), "static page: Product schema missing");
@@ -46,7 +52,7 @@ if (!local) {
   check(Boolean(live), `live API: ${sku} missing (HTTP ${response.status})`);
   check(live?.priceKes === 33537, `live API: price ${live?.priceKes}`);
   check(live?.status === "Out of Stock" && Number(live?.stock) === 0, "live API: availability mismatch");
-  check(new URL(live?.image || "/", base).pathname === "/images/products/lab-golf-df3i-custom-putter-face.png", "live API: image mismatch");
+  check(new URL(live?.image || "/", base).pathname === "/images/products/lab-golf-oz1-custom-putter-black-address.png", "live API: image mismatch");
   results.liveApi = live;
 }
 
@@ -77,6 +83,8 @@ for (const contextOptions of [
     stock: document.querySelector(".catalog-stock")?.textContent?.trim(),
     price: document.querySelector(".club-price")?.textContent?.trim(),
     gallery: document.querySelectorAll(".club-thumbnails button").length,
+    gallerySources: [...document.querySelectorAll(".club-thumbnails img")].map((image) => image.getAttribute("src")),
+    mainGallerySource: document.querySelector(".club-gallery-stage img")?.getAttribute("src"),
     features: document.querySelectorAll(".product-tech-rail article").length,
     specRows: document.querySelectorAll(".club-specs tbody tr").length,
     specs: [...document.querySelectorAll(".club-specs tbody tr")].map((row) => row.textContent?.replace(/\s+/g, " ").trim()),
@@ -92,39 +100,36 @@ for (const contextOptions of [
     text: document.body.innerText,
   }));
   check(response?.status() === 200, `${label}: HTTP ${response?.status()}`);
-  check(result.title === "L.A.B. Golf DF3i Custom Putter", `${label}: title mismatch`);
+  check(result.title === "L.A.B. Golf OZ.1 Custom Putter", `${label}: title mismatch`);
   check(result.stock?.toLowerCase().includes("out of stock"), `${label}: stock text mismatch`);
   check(result.price?.includes("KSh 33,537"), `${label}: KES price missing`);
   check(!result.text.includes("$258.97") && !result.text.includes("¥1,579"), `${label}: foreign public price found`);
-  check(result.gallery === 3, `${label}: gallery count ${result.gallery}`);
+  check(result.gallery === 6, `${label}: Black gallery count ${result.gallery}`);
+  check(result.mainGallerySource?.includes("lab-golf-oz1-custom-putter-black-address.png"), `${label}: default Black image mismatch`);
+  check(result.gallerySources.every((source) => source?.includes("-black-")), `${label}: another finish leaked into Black gallery`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
-  check(result.specRows === 8, `${label}: specification row count ${result.specRows}`);
-  check(result.specs?.some((row) => row.includes("6061 aluminum")), `${label}: head construction missing`);
-  check(result.specs?.some((row) => row.includes("303 stainless steel")), `${label}: insert construction missing`);
-  check(result.specs?.some((row) => row.includes("3°")), `${label}: effective loft missing`);
+  check(result.specRows === 5, `${label}: specification row count ${result.specRows}`);
+  check(result.specs?.some((row) => row.includes("No insert") && row.includes("aluminum")), `${label}: no-insert specification missing`);
+  check(result.specs?.some((row) => row.includes("Standard") && row.includes("28–38")), `${label}: Standard reference missing`);
+  check(!result.text.includes("Counterbalanced") && !result.text.includes("ArmLock") && !result.text.includes("Sweeper"), `${label}: unavailable putting style found`);
   check(result.equipment === 3, `${label}: equipment card count ${result.equipment}`);
-  check(["Hand", "Putting style", "Head weight", "Fitting"].every((group) => result.groups.includes(group)), `${label}: configuration groups incomplete`);
-  check(JSON.stringify(result.configurations.Hand) === JSON.stringify(["Right handed", "Left handed"]), `${label}: hand options ${JSON.stringify(result.configurations.Hand)}`);
-  check(JSON.stringify(result.configurations["Putting style"]) === JSON.stringify(["Standard", "Counterbalanced"]), `${label}: putting-style options ${JSON.stringify(result.configurations["Putting style"])}`);
-  check(JSON.stringify(result.configurations["Head weight"]) === JSON.stringify(["Standard", "Heavier", "Lighter"]), `${label}: head-weight options ${JSON.stringify(result.configurations["Head weight"])}`);
-  check(JSON.stringify(result.configurations.Fitting) === JSON.stringify(["Custom fitting required"]), `${label}: fitting option ${JSON.stringify(result.configurations.Fitting)}`);
-  check(result.source === "https://labgolf.com/products/df3i-custom", `${label}: official source mismatch`);
+  check(JSON.stringify(result.groups) === JSON.stringify(["Hand", "Putting style", "Finish", "Head weight"]), `${label}: configuration groups ${JSON.stringify(result.groups)}`);
+  check(JSON.stringify(result.configurations.Hand) === JSON.stringify(["Right handed"]), `${label}: hand options ${JSON.stringify(result.configurations.Hand)}`);
+  check(JSON.stringify(result.configurations["Putting style"]) === JSON.stringify(["Standard"]), `${label}: putting-style options ${JSON.stringify(result.configurations["Putting style"])}`);
+  check(JSON.stringify(result.configurations.Finish) === JSON.stringify(["Black"]), `${label}: finish options ${JSON.stringify(result.configurations.Finish)}`);
+  check(JSON.stringify(result.configurations["Head weight"]) === JSON.stringify(["Standard"]), `${label}: head-weight options ${JSON.stringify(result.configurations["Head weight"])}`);
+  check(!result.groups.includes("Fitting"), `${label}: fitting option still present`);
+  check(result.source === "https://labgolf.com/products/oz1-custom", `${label}: official source mismatch`);
   check(result.overflow <= 0, `${label}: horizontal overflow ${result.overflow}px`);
   check(result.broken.length === 0, `${label}: broken images ${result.broken.join(", ")}`);
   check(errors.length === 0, `${label}: browser errors ${errors.join(" | ")}`);
   if (label === "desktop") {
     await page.screenshot({ path: `${output}/desktop.png`, fullPage: true });
-    await page.getByRole("button", { name: "Left handed", exact: true }).click();
-    await page.getByRole("button", { name: "Counterbalanced", exact: true }).click();
-    await page.getByRole("button", { name: "Heavier", exact: true }).click();
     const whatsapp = await page.locator(".catalog-configurator .contact-button").getAttribute("href");
-    check(whatsapp?.includes("Hand%3A%20Left%20handed") && whatsapp.includes("Putting%20style%3A%20Counterbalanced") && whatsapp.includes("Head%20weight%3A%20Heavier") && whatsapp.includes("Fitting%3A%20Custom%20fitting%20required"), "desktop: WhatsApp inquiry omitted selected DF3i options");
-    await page.getByRole("button", { name: "Enlarge Face insert photo" }).click();
+    check(whatsapp?.includes("Hand%3A%20Right%20handed") && whatsapp.includes("Putting%20style%3A%20Standard") && whatsapp.includes("Finish%3A%20Black") && whatsapp.includes("Head%20weight%3A%20Standard") && !whatsapp.includes("Fitting"), "desktop: WhatsApp inquiry omitted or added OZ.1 options");
+    await page.getByRole("button", { name: "Enlarge Black address photo" }).click();
     check(await page.getByRole("dialog").isVisible(), "desktop: gallery zoom did not open");
     await page.keyboard.press("Escape");
-    await page.getByRole("button", { name: "Show Sole photo", exact: true }).click();
-    const soleSource = await page.locator(".club-gallery-stage img").getAttribute("src");
-    check(soleSource?.includes("lab-golf-df3i-custom-putter-sole.png"), "desktop: sole thumbnail did not update the main photo");
   }
   results[label] = { ...result, text: undefined, errors };
   await context.close();
@@ -134,7 +139,9 @@ for (const contextOptions of [
   const page = await browser.newPage({ viewport: { width: 1180, height: 820 } });
   await page.goto(`${base}/shop/clubs/putters/`, { waitUntil: "commit" });
   await page.locator("footer.shared-footer").waitFor({ state: "attached" });
-  check(await page.locator(`a[href="/shop/product/${slug}"]`).count() > 0, "/shop/clubs/putters/: DF3i card missing");
+  check(await page.locator(`a[href="/shop/product/${slug}"]`).count() > 0, "/shop/clubs/putters/: OZ.1 card missing");
+  check(await page.locator('a[href="/shop/product/gk-pt034"]').count() > 0, "/shop/clubs/putters/: DF3 regression card missing");
+  check(await page.locator('a[href="/shop/product/gk-pt035"]').count() > 0, "/shop/clubs/putters/: DF3i regression card missing");
   await page.close();
 }
 {
@@ -149,7 +156,7 @@ for (const route of ["/", "/shop/", "/shop/stock/"]) {
   const page = await browser.newPage({ viewport: { width: 1180, height: 820 } });
   await page.goto(`${base}${route}`, { waitUntil: "commit" });
   await page.locator("footer.shared-footer").waitFor({ state: "attached" });
-  check(await page.locator(`a[href="/shop/product/${slug}"]`).count() === 0, `${route}: out-of-stock DF3i leaked into in-stock selection`);
+  check(await page.locator(`a[href="/shop/product/${slug}"]`).count() === 0, `${route}: out-of-stock OZ.1 leaked into in-stock selection`);
   await page.close();
 }
 

@@ -170,7 +170,7 @@ for (const contextOptions of [
   await page.goto(`${base}/shop/clubs/`, { waitUntil: "commit" });
   await page.locator("footer.shared-footer").waitFor({ state: "attached" });
   const puttersText = (await page.locator("#putters").innerText()).replace(/\s+/g, " ").toLowerCase();
-  check(puttersText.includes("2 products"), `/shop/clubs/: Putters product count missing (${puttersText})`);
+  check(puttersText.includes("3 products"), `/shop/clubs/: Putters product count missing (${puttersText})`);
   await page.close();
 }
 for (const route of ["/", "/shop/", "/shop/stock/"]) {

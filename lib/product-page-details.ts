@@ -1123,6 +1123,72 @@ const labGolfDf3: ProductPageDetails = {
   },
 };
 
+const labGolfOz1: ProductPageDetails = {
+  brand: "L.A.B. Golf",
+  intro: "A tour-inspired, center-shafted mallet with Lie Angle Balance and a soft-feeling, no-insert 6061-aluminum construction.",
+  gallery: [
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-address.png", alt: "Black L.A.B. Golf OZ.1 custom putter viewed at address", label: "Black address", group: "Black" },
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-front.png", alt: "Black L.A.B. Golf OZ.1 custom putter front view", label: "Black front", group: "Black" },
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-rear.png", alt: "Black L.A.B. Golf OZ.1 custom putter rear view", label: "Black rear", group: "Black" },
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-sole.png", alt: "Black L.A.B. Golf OZ.1 custom putter sole and weighting screws", label: "Black sole", group: "Black" },
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-profile.png", alt: "Black L.A.B. Golf OZ.1 custom putter side profile", label: "Black profile", group: "Black" },
+    { src: "/images/products/lab-golf-oz1-custom-putter-black-angled-face.png", alt: "Black L.A.B. Golf OZ.1 custom putter angled face and sole view", label: "Black face", group: "Black" },
+  ],
+  galleryNote: "Six OZ.1 product-reference images were supplied by Karibu Golf. Black is the available finish for now; additional finish-specific galleries can be added when their photographs are supplied. The current configuration is right handed with Standard putting style and Standard head weight.",
+  overviewEyebrow: "L.A.B. GOLF OZ.1 CUSTOM PUTTER",
+  overviewTitle: "TOUR-INSPIRED SHAPE. LIE ANGLE BALANCED.",
+  overviewBody: [
+    "OZ.1 combines a compact, tour-inspired mallet profile with L.A.B. Golf's Lie Angle Balance concept, which is designed to reduce torque and keep the face square to the stroke arc.",
+    "This is the no-insert OZ.1. Its all-aluminum construction delivers the softer feel associated with L.A.B. Golf's original putters.",
+  ],
+  overviewImage: "/images/products/lab-golf-oz1-custom-putter-black-address.png",
+  features: [
+    { title: "Lie Angle Balance", text: "The head is balanced to reduce torque and help the putter face remain square to the stroke arc." },
+    { title: "No-insert aluminum face", text: "The face is part of the 6061-aluminum head, producing the softer response of the original OZ.1." },
+    { title: "Tour-inspired mallet", text: "The compact center-shafted profile pairs a clean address shape with the stability of a modern mallet." },
+    { title: "One available setup", text: "Karibu currently offers this OZ.1 only as a right-handed Standard build with Standard head weight in Black." },
+  ],
+  detailEyebrow: "RIGHT HANDED · STANDARD · BLACK",
+  detailTitle: "START WITH BLACK. ADD MORE FINISHES LATER.",
+  detailBody: [
+    "The current gallery and finish selector contain Black only. Each additional finish will receive its own matching gallery when Karibu supplies the photographs.",
+    "No fitting service is available. Length, lie angle, shaft, alignment mark and grip are confirmed directly before ordering.",
+  ],
+  detailImage: "/images/products/lab-golf-oz1-custom-putter-black-profile.png",
+  configuration: [
+    { label: "Hand", values: ["Right handed"] },
+    { label: "Putting style", values: ["Standard"] },
+    { label: "Finish", values: ["Black"] },
+    { label: "Head weight", values: ["Standard"] },
+  ],
+  specTitle: "OZ.1 CUSTOM SPECIFICATIONS.",
+  specIntro: "Official L.A.B. Golf reference details for the Standard no-insert OZ.1. Final length, lie angle and components must be confirmed before ordering.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Construction", "6061 aluminum"],
+      ["Face", "No insert · aluminum"],
+      ["Finish", "Type-3 anodized"],
+      ["Effective loft", "3°"],
+      ["Standard", "28–38 in · 63–79.5° lie"],
+    ],
+  },
+  equipment: [
+    { title: "Standard build", text: "Official reference range: 28–38 inches with lie angles from 63° to 79.5°. Karibu will confirm the exact length and lie angle before ordering." },
+    { title: "Available configuration", text: "Right handed, Standard putting style and Standard head weight, currently in Black." },
+    { title: "Components confirmed", text: "Shaft, alignment and grip are confirmed directly with Karibu. A fitting service is not currently available." },
+  ],
+  source: { label: "L.A.B. Golf OZ.1 Custom official product page", url: "https://labgolf.com/products/oz1-custom" },
+  presentation: {
+    imageLabels: ["Address", "Shape", "Balance"],
+    featuresTitle: "THE OZ.1 DETAILS.",
+    featuresIntro: "Explore the Lie Angle Balance concept, all-aluminum construction, mallet shape and current Standard configuration.",
+    inquiryTitle: "CONFIRM THE STANDARD BUILD.",
+    inquiryBody: "Currently out of stock. Ask Karibu Golf to confirm the right-handed Standard build, final length, lie angle and components. Black is available for selection now; more finishes will be added when their photographs are supplied. No fitting service is currently available, and an enquiry does not reserve stock.",
+    inquiryLink: "Ask about this OZ.1 custom putter",
+  },
+};
+
 const labGolfDf3i: ProductPageDetails = {
   brand: "L.A.B. Golf",
   intro: "A compact Lie Angle Balanced mallet with a CNC-milled aluminum head and a stainless-steel insert for a faster, firmer impact feel.",
@@ -1220,6 +1286,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-hy001") return sim2MaxRescue;
   if (product.slug === "gk-pt034") return labGolfDf3;
   if (product.slug === "gk-pt035") return labGolfDf3i;
+  if (product.slug === "gk-pt036") return labGolfOz1;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
