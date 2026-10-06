@@ -917,6 +917,69 @@ const sim2MaxFairway: ProductPageDetails = {
   },
 };
 
+const sim2MaxRescue: ProductPageDetails = {
+  brand: "TaylorMade",
+  intro: "A high-launching, forgiving hybrid with a refined V Steel sole, a fast C300 steel face and Tour-validated versatility.",
+  gallery: [
+    { src: "/images/products/taylormade-sim2-max-rescue-sole.jpg", alt: "TaylorMade SIM2 Max Rescue sole and V Steel design", label: "Sole" },
+    { src: "/images/products/taylormade-sim2-max-rescue-crown.jpg", alt: "TaylorMade SIM2 Max Rescue crown", label: "Crown" },
+    { src: "/images/products/taylormade-sim2-max-rescue-face.jpg", alt: "TaylorMade SIM2 Max Rescue Twist Face", label: "Face" },
+    { src: "/images/products/taylormade-sim2-max-rescue-profile.jpg", alt: "TaylorMade SIM2 Max Rescue side profile", label: "Profile" },
+    { src: "/images/products/taylormade-sim2-max-rescue-headcover.jpg", alt: "TaylorMade SIM2 Max Rescue headcover", label: "Headcover" },
+  ],
+  galleryNote: "All five official TaylorMade product-reference photographs were supplied by Karibu Golf. Ask for current photographs and confirmation of the exact loft, hand, shaft, flex, grip, headcover and condition when stock returns.",
+  overviewEyebrow: "TAYLORMADE SIM2 MAX RESCUE",
+  overviewTitle: "HIGH LAUNCH. EASY DISTANCE. RESCUE VERSATILITY.",
+  overviewBody: [
+    "SIM2 Max Rescue builds on the original SIM Max hybrid with precision sole weighting and a refined V Steel shape for increased forgiveness and launch.",
+    "The design is intended to work from tee, fairway and rough, offering a towering flight with useful workability across a broad range of golfers.",
+  ],
+  overviewImage: "/images/products/taylormade-sim2-max-rescue-sole.jpg",
+  features: [
+    { title: "New V Steel design", text: "The updated sole redistributes mass for forgiveness while its depressed heel and toe improve turf interaction and versatility." },
+    { title: "C300 Steel Twist Face", text: "The high-strength steel face is built for ball speed, while Twist Face curvature is designed to reduce common miss patterns." },
+    { title: "Tour-validated performance", text: "TaylorMade positions SIM2 Max Rescue as a high-flight, workable hybrid inspired by the success of the original SIM Max Rescue." },
+    { title: "Thru-Slot Speed Pocket", text: "TaylorMade's sole slot is designed to preserve face flexibility and ball speed on strikes made low on the face." },
+  ],
+  detailEyebrow: "LOFT · HAND · SHAFT",
+  detailTitle: "FIT THE RESCUE TO YOUR LONG-GAME GAPS.",
+  detailBody: [
+    "TaylorMade lists 3, 4 and 5 heads in right- and left-handed builds; the 6 and 7 references are right-handed. Lie and playing length change progressively through the range.",
+    "These choices are manufacturer fitting references, not Karibu inventory. The team will confirm the exact head, shaft, flex and playing length before payment.",
+  ],
+  detailImage: "/images/products/taylormade-sim2-max-rescue-face.jpg",
+  configuration: [
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+    { label: "Loft", values: ["3 · 19°", "4 · 22°", "5 · 25°", "6 · 28° (RH reference)", "7 · 31° (RH reference)"] },
+    { label: "Shaft / flex", values: ["Fujikura Ventus Blue · Senior", "Fujikura Ventus Blue · Regular", "Fujikura Ventus Blue · Stiff"] },
+  ],
+  specTitle: "SIM2 MAX RESCUE SPECIFICATIONS.",
+  specIntro: "TaylorMade manufacturer-reference specifications. Exact Karibu stock must be confirmed when the Rescue becomes available.",
+  specs: {
+    headers: ["Club", "Loft", "Hand", "Lie", "Length", "Swing weight"],
+    rows: [
+      ["3", "19°", "RH / LH", "60°", '40.75"', "D3"],
+      ["4", "22°", "RH / LH", "60.5°", '40.25"', "D3"],
+      ["5", "25°", "RH / LH", "61°", '39.75"', "D3"],
+      ["6", "28°", "RH", "61.5°", '39.25"', "D3"],
+      ["7", "31°", "RH", "62°", '38.75"', "D3"],
+    ],
+  },
+  equipment: [
+    { title: "Fujikura Ventus Blue", text: "TaylorMade's Senior, Regular and Stiff reference profiles range from 56g to 76g, with high to mid-high launch." },
+    { title: "Lamkin Crossline 360", text: "The manufacturer reference grip is a black, standard-size 52g Crossline 360 with a textured round profile." },
+  ],
+  source: { label: "TaylorMade SIM2 Max Rescue official product page", url: "https://www.taylormadegolf.com/SIM2-Max-Rescue/DW-JJI54.html?lang=en_US" },
+  presentation: {
+    imageLabels: ["Sole", "Crown", "Face", "Profile", "Headcover"],
+    featuresTitle: "THE SIM2 MAX RESCUE DETAILS.",
+    featuresIntro: "Explore the sole geometry, face construction, launch profile and low-face protection behind this forgiving hybrid.",
+    inquiryTitle: "CHOOSE THE LOFT. WE WILL CONFIRM THE BUILD.",
+    inquiryBody: "Currently out of stock. Select a manufacturer-reference loft, hand and shaft profile, then ask Karibu Golf to confirm future availability and the exact build. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this SIM2 Max Rescue",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -944,6 +1007,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir005") return sim2MaxIrons;
   if (product.slug === "gk-dr001") return sim2MaxDriver;
   if (product.slug === "gk-fw001") return sim2MaxFairway;
+  if (product.slug === "gk-hy001") return sim2MaxRescue;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),
