@@ -7,6 +7,7 @@ import LiveProductPurchase from "@/components/live-product-purchase";
 import LiveProductCardPrice from "@/components/live-product-card-price";
 import type { CatalogProduct, Department } from "@/lib/shop-catalog";
 import type { ProductPageDetails } from "@/lib/product-page-details";
+import { productSeoQuestions } from "@/lib/product-seo";
 
 type Props = {
   product: CatalogProduct;
@@ -24,6 +25,7 @@ export default function CatalogProductTemplate({ product, details, department, r
   const galleryFilter = details.gallery.some((image) => image.group)
     ? details.configuration.find((group) => group.label === "Finish")
     : undefined;
+  const kenyaQuestions = productSeoQuestions(product);
 
   return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}${details.specs.headers.length === 2 ? " product-reference-table" : ""}`} id="page-content">
     <div className="product-breadcrumb"><a href={categoryHref}><ArrowLeft size={16}/> {product.categoryLabel}</a></div>
@@ -42,6 +44,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       <a href="#product-overview">Overview</a>
       <a href="#product-features">Key details</a>
       <a href="#product-specifications">Specifications</a>
+      <a href="#buying-in-kenya">Kenya buying info</a>
       {isGlove && <a href="#glove-size-guide">Size guide</a>}
       {related.length > 0 && <a href="#related-products">Related products</a>}
       <a href="#product-order">Choose your setup ↑</a>
@@ -135,6 +138,20 @@ export default function CatalogProductTemplate({ product, details, department, r
       <div data-sc-in><p className="micro">SHAFTS, FLEX AND GRIP</p><h2>COMPLETE THE SETUP.</h2><p>These are manufacturer references, not a promise of current Karibu stock. Confirm the exact components fitted to the available set.</p></div>
       <div className="product-equipment-grid" data-sc-in data-sc-stagger="55">{details.equipment.map((item) => <article key={item.title}><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
     </section>}
+
+    <section className="product-kenya-faq" id="buying-in-kenya" aria-labelledby="product-kenya-faq-title" data-sc-act="flow">
+      <header data-sc-in>
+        <p className="micro">LOCAL PRODUCT INFORMATION</p>
+        <h2 id="product-kenya-faq-title">BUYING THIS PRODUCT IN KENYA.</h2>
+        <p>Clear answers about the listed price, Nairobi availability, options and delivery.</p>
+      </header>
+      <div className="product-kenya-faq-grid" data-sc-in data-sc-stagger="45">
+        {kenyaQuestions.map((item) => <article key={item.question}>
+          <h3>{item.question}</h3>
+          <p>{item.answer}</p>
+        </article>)}
+      </div>
+    </section>
 
     <section className="product-return-close" data-sc-act="flow">
       <div data-sc-in><p className="micro">YOUR NEXT MOVE</p><h2>{details.presentation?.inquiryTitle ?? "CHOOSE THE SETUP. WE WILL CONFIRM THE SET."}</h2></div>
