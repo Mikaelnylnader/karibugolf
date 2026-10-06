@@ -28,6 +28,7 @@ export default function CatalogProductConfigurator({ name, sku, price, available
   };
 
   const selectOption = (label: string, value: string) => {
+    window.dispatchEvent(new CustomEvent("karibu:product-configuration", { detail: { sku, label, value } }));
     setSelected((current) => {
       const next = { ...current, [label]: value };
       if (label === "Shaft" && value === "Steel" && next.Flex?.startsWith("Senior")) {

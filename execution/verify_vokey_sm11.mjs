@@ -82,6 +82,8 @@ for (const contextOptions of [
     stock: document.querySelector(".catalog-stock")?.textContent?.trim(),
     price: document.querySelector(".club-price")?.textContent?.trim(),
     gallery: document.querySelectorAll(".club-thumbnails button").length,
+    gallerySources: [...document.querySelectorAll(".club-thumbnails img")].map((image) => image.getAttribute("src")),
+    mainGallerySource: document.querySelector(".club-gallery-stage img")?.getAttribute("src"),
     features: document.querySelectorAll(".product-tech-rail article").length,
     specRows: document.querySelectorAll(".club-specs tbody tr").length,
     specs: [...document.querySelectorAll(".club-specs tbody tr")].map((row) => row.textContent?.replace(/\s+/g, " ").trim()),
@@ -101,7 +103,9 @@ for (const contextOptions of [
   check(result.stock?.toLowerCase().includes("out of stock"), `${label}: stock text mismatch`);
   check(result.price?.includes("KSh 67,816"), `${label}: KES price missing`);
   check(!result.text.includes("$523.68") && !result.text.includes("¥3,193"), `${label}: foreign public price found`);
-  check(result.gallery === 9, `${label}: gallery count ${result.gallery}`);
+  check(result.gallery === 5, `${label}: default Tour Chrome gallery count ${result.gallery}`);
+  check(result.mainGallerySource?.includes("titleist-vokey-sm11-wedge-back.png"), `${label}: default Tour Chrome image mismatch`);
+  check(result.gallerySources.every((source) => !source?.includes("jet-black")), `${label}: Jet Black image leaked into Tour Chrome gallery`);
   check(!/tour black/i.test(result.text), `${label}: obsolete Tour Black wording found`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
   check(result.specRows === 4, `${label}: specification row count ${result.specRows}`);
@@ -119,16 +123,39 @@ for (const contextOptions of [
   check(result.overflow <= 0, `${label}: horizontal overflow ${result.overflow}px`);
   check(result.broken.length === 0, `${label}: broken images ${result.broken.join(", ")}`);
   check(errors.length === 0, `${label}: browser errors ${errors.join(" | ")}`);
+  if (options.javaScriptEnabled) {
+    await page.getByRole("button", { name: "Jet Black", exact: true }).click();
+    await page.waitForFunction(() => document.querySelectorAll(".club-thumbnails button").length === 4);
+    const jetBlackGallery = await page.evaluate(() => ({
+      count: document.querySelectorAll(".club-thumbnails button").length,
+      sources: [...document.querySelectorAll(".club-thumbnails img")].map((image) => image.getAttribute("src")),
+      main: document.querySelector(".club-gallery-stage img")?.getAttribute("src"),
+    }));
+    check(jetBlackGallery.count === 4, `${label}: Jet Black gallery count ${jetBlackGallery.count}`);
+    check(jetBlackGallery.sources.every((source) => source?.includes("jet-black")), `${label}: Tour Chrome image leaked into Jet Black gallery`);
+    check(jetBlackGallery.main?.includes("titleist-vokey-sm11-wedge-jet-black-back.png"), `${label}: Jet Black selection did not reset to its first image`);
+
+    await page.getByRole("button", { name: "Tour Chrome", exact: true }).click();
+    await page.waitForFunction(() => document.querySelectorAll(".club-thumbnails button").length === 5);
+    const tourChromeGallery = await page.evaluate(() => ({
+      count: document.querySelectorAll(".club-thumbnails button").length,
+      sources: [...document.querySelectorAll(".club-thumbnails img")].map((image) => image.getAttribute("src")),
+      main: document.querySelector(".club-gallery-stage img")?.getAttribute("src"),
+    }));
+    check(tourChromeGallery.count === 5, `${label}: Tour Chrome gallery count ${tourChromeGallery.count}`);
+    check(tourChromeGallery.sources.every((source) => !source?.includes("jet-black")), `${label}: Jet Black image leaked after returning to Tour Chrome`);
+    check(tourChromeGallery.main?.includes("titleist-vokey-sm11-wedge-back.png"), `${label}: Tour Chrome selection did not reset to its first image`);
+    results[`${label}GallerySwitch`] = { jetBlackGallery, tourChromeGallery };
+  }
   if (label === "desktop") {
     await page.screenshot({ path: `${output}/desktop.png`, fullPage: true });
     await page.getByRole("button", { name: "60.04 T", exact: true }).click();
     await page.getByRole("button", { name: "Jet Black", exact: true }).click();
     const whatsapp = await page.locator(".catalog-configurator .contact-button").getAttribute("href");
     check(whatsapp?.includes("Hand%3A%20Right%20handed") && whatsapp.includes("Loft%20%2F%20bounce%20%2F%20grind%3A%2060.04%20T") && whatsapp.includes("Finish%3A%20Jet%20Black") && whatsapp.includes("Shaft%3A%20Standard%20steel%20shaft"), "desktop: WhatsApp inquiry omitted selected SM11 options");
-    await page.getByRole("button", { name: "Enlarge Back photo" }).click();
+    await page.getByRole("button", { name: "Enlarge Jet Black back photo" }).click();
     check(await page.getByRole("dialog").isVisible(), "desktop: gallery zoom did not open");
     await page.keyboard.press("Escape");
-    await page.getByRole("button", { name: "Show Jet Black back photo", exact: true }).click();
     const jetBlackSource = await page.locator(".club-gallery-stage img").getAttribute("src");
     check(jetBlackSource?.includes("titleist-vokey-sm11-wedge-jet-black-back.png"), "desktop: Jet Black gallery selection did not update the main photo");
   }
