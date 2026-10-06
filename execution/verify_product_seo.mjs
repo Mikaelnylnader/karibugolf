@@ -4,6 +4,15 @@ import path from "node:path";
 const publishDir = path.resolve("dist/static");
 const catalog = JSON.parse(await readFile(path.resolve("lib/catalog.generated.json"), "utf8"));
 const failures = [];
+const baseArg = process.argv.find((argument) => argument.startsWith("--base="));
+const baseUrl = baseArg ? baseArg.slice("--base=".length).replace(/\/$/, "") : "";
+
+const loadText = async (localParts, publicPath) => {
+  if (!baseUrl) return readFile(path.join(publishDir, ...localParts), "utf8");
+  const response = await fetch(`${baseUrl}${publicPath}`, { headers: { "user-agent": "Karibu-SEO-Verifier/1.0" } });
+  if (!response.ok) throw new Error(`${publicPath}: HTTP ${response.status}`);
+  return response.text();
+};
 
 const check = (condition, message) => {
   if (!condition) failures.push(message);
@@ -17,7 +26,7 @@ const attribute = (tag, name) => {
 for (const product of catalog.products) {
   const label = `${product.slug} (${product.name})`;
   const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
-  const html = await readFile(path.join(publishDir, "shop", "product", product.slug, "index.html"), "utf8");
+  const html = await loadText(["shop", "product", product.slug, "index.html"], `/shop/product/${product.slug}/`);
   const head = html.slice(0, html.indexOf("</head>") + 7);
   const title = head.match(/<title>([^<]*)<\/title>/i)?.[1] ?? "";
   const descriptionTag = head.match(/<meta\s+name="description"[^>]*>/i)?.[0] ?? "";
@@ -63,9 +72,9 @@ for (const product of catalog.products) {
   }
 }
 
-const sitemap = await readFile(path.join(publishDir, "sitemap.xml"), "utf8");
-const robots = await readFile(path.join(publishDir, "robots.txt"), "utf8");
-const llms = await readFile(path.join(publishDir, "llms.txt"), "utf8");
+const sitemap = await loadText(["sitemap.xml"], "/sitemap.xml");
+const robots = await loadText(["robots.txt"], "/robots.txt");
+const llms = await loadText(["llms.txt"], "/llms.txt");
 check(sitemap.includes("<lastmod>"), "sitemap.xml: missing lastmod values");
 check(sitemap.includes("xmlns:image="), "sitemap.xml: missing image sitemap namespace");
 check(robots.includes("User-agent: OAI-SearchBot"), "robots.txt: missing explicit OAI-SearchBot group");
@@ -88,4 +97,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Product SEO verification passed for all ${catalog.products.length} product pages.`);
+console.log(`Product SEO verification passed for all ${catalog.products.length} product pages${baseUrl ? ` at ${baseUrl}` : ""}.`);
