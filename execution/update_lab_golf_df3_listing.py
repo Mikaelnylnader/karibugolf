@@ -28,14 +28,12 @@ PRICE_USD = round(PRICE_KES / USD_TO_KES, 2)
 DESCRIPTION = (
     "L.A.B. Golf DF3 custom mallet putter with Lie Angle Balance and a fully "
     "CNC-milled 6061-aluminum head. This is the no-insert DF3, offered here as "
-    "a custom-fit reference in Black, Blue and Pink. Hand, putting style, head "
-    "weight, length, lie angle, shaft, alignment and grip are not current Karibu "
-    "inventory. Currently out of stock; the exact build must be confirmed."
+    "a right-handed Standard build with Standard head weight in Black, Blue or "
+    "Pink. No fitting service is currently available. Length, lie angle, shaft, "
+    "alignment and grip must be confirmed before ordering. Currently out of "
+    "stock; the exact build must be confirmed."
 )
-SIZES = (
-    "28–38 in (standard); 36–40 in (counterbalanced); "
-    "38–46 in (ArmLock); 40–50 in (sweeper)"
-)
+SIZES = "28–38 in (standard)"
 COLORS = "Black; Blue; Pink"
 IMAGES = [
     ("DF31.png", "lab-golf-df3-custom-putter-black-address.png", "Black"),

@@ -20,7 +20,8 @@ check(product?.priceKes === 33537, `catalog: price ${product?.priceKes}`);
 check(product?.status === "Out of Stock" && Number(product?.stock) === 0, "catalog: availability mismatch");
 check(product?.images?.length === 12, `catalog: expected 12 unique images, found ${product?.images?.length}`);
 check(product?.colors === "Black; Blue; Pink", `catalog: finishes ${product?.colors}`);
-check(product?.description?.includes("no-insert DF3") && product.description.includes("Currently out of stock"), "catalog: DF3 description mismatch");
+check(product?.description?.includes("no-insert DF3") && product.description.includes("No fitting service is currently available") && product.description.includes("Currently out of stock"), "catalog: DF3 description mismatch");
+check(product?.sizes === "28–38 in (standard)", `catalog: size range ${product?.sizes}`);
 
 const imagePairs = [
   ["DF31.png", "lab-golf-df3-custom-putter-black-address.png"],
@@ -110,14 +111,17 @@ for (const contextOptions of [
   check(result.mainGallerySource?.includes("lab-golf-df3-custom-putter-black-address.png"), `${label}: default Black image mismatch`);
   check(result.gallerySources.every((source) => source?.includes("-black-")), `${label}: another finish leaked into Black gallery`);
   check(result.features === 4, `${label}: feature count ${result.features}`);
-  check(result.specRows === 8, `${label}: specification row count ${result.specRows}`);
+  check(result.specRows === 5, `${label}: specification row count ${result.specRows}`);
   check(result.specs?.some((row) => row.includes("No insert") && row.includes("CNC-milled aluminum")), `${label}: no-insert specification missing`);
-  check(result.specs?.some((row) => row.includes("ArmLock") && row.includes("38–46")), `${label}: ArmLock reference missing`);
-  check(result.specs?.some((row) => row.includes("Sweeper") && row.includes("40–50")), `${label}: sweeper reference missing`);
-  check(result.equipment === 4, `${label}: equipment card count ${result.equipment}`);
-  if (options.javaScriptEnabled) check(["Hand", "Putting style", "Finish", "Head weight", "Fitting"].every((group) => result.groups.includes(group)), `${label}: configuration groups incomplete`);
+  check(result.specs?.some((row) => row.includes("Standard") && row.includes("28–38")), `${label}: Standard reference missing`);
+  check(!result.text.includes("Counterbalanced") && !result.text.includes("ArmLock") && !result.text.includes("Sweeper"), `${label}: unavailable putting style found`);
+  check(result.equipment === 3, `${label}: equipment card count ${result.equipment}`);
+  if (options.javaScriptEnabled) check(JSON.stringify(result.groups) === JSON.stringify(["Hand", "Putting style", "Finish", "Head weight"]), `${label}: configuration groups ${JSON.stringify(result.groups)}`);
+  check(JSON.stringify(result.configurations.Hand) === JSON.stringify(["Right handed"]), `${label}: hand options ${JSON.stringify(result.configurations.Hand)}`);
   check(JSON.stringify(result.configurations.Finish) === JSON.stringify(["Black", "Blue", "Pink"]), `${label}: finish options ${JSON.stringify(result.configurations.Finish)}`);
-  check(JSON.stringify(result.configurations["Putting style"]) === JSON.stringify(["Standard", "Counterbalanced", "ArmLock", "Sweeper"]), `${label}: putting-style options ${JSON.stringify(result.configurations["Putting style"])}`);
+  check(JSON.stringify(result.configurations["Putting style"]) === JSON.stringify(["Standard"]), `${label}: putting-style options ${JSON.stringify(result.configurations["Putting style"])}`);
+  check(JSON.stringify(result.configurations["Head weight"]) === JSON.stringify(["Standard"]), `${label}: head-weight options ${JSON.stringify(result.configurations["Head weight"])}`);
+  check(!result.groups.includes("Fitting"), `${label}: fitting option still present`);
   check(result.source === "https://labgolf.com/products/df3-custom", `${label}: official source mismatch`);
   check(result.overflow <= 0, `${label}: horizontal overflow ${result.overflow}px`);
   check(result.broken.length === 0, `${label}: broken images ${result.broken.join(", ")}`);
@@ -142,12 +146,9 @@ for (const contextOptions of [
   }
   if (label === "desktop") {
     await page.screenshot({ path: `${output}/desktop.png`, fullPage: true });
-    await page.getByRole("button", { name: "Left handed", exact: true }).click();
-    await page.getByRole("button", { name: "Sweeper", exact: true }).click();
     await page.getByRole("button", { name: "Pink", exact: true }).click();
-    await page.getByRole("button", { name: "Heavier", exact: true }).click();
     const whatsapp = await page.locator(".catalog-configurator .contact-button").getAttribute("href");
-    check(whatsapp?.includes("Hand%3A%20Left%20handed") && whatsapp.includes("Putting%20style%3A%20Sweeper") && whatsapp.includes("Finish%3A%20Pink") && whatsapp.includes("Head%20weight%3A%20Heavier"), "desktop: WhatsApp inquiry omitted selected DF3 options");
+    check(whatsapp?.includes("Hand%3A%20Right%20handed") && whatsapp.includes("Putting%20style%3A%20Standard") && whatsapp.includes("Finish%3A%20Pink") && whatsapp.includes("Head%20weight%3A%20Standard") && !whatsapp.includes("Fitting"), "desktop: WhatsApp inquiry omitted or added DF3 options");
     await page.getByRole("button", { name: "Enlarge Pink address photo" }).click();
     check(await page.getByRole("dialog").isVisible(), "desktop: gallery zoom did not open");
     await page.keyboard.press("Escape");
