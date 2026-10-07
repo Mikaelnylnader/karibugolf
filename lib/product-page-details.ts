@@ -208,34 +208,37 @@ const t200: ProductPageDetails = {
 
 const aiSmokeHl: ProductPageDetails = {
   brand: "Callaway",
-  intro: "A high-launch game-improvement iron designed for moderate-to-average swing speeds and a confidence-inspiring flight.",
+  intro: "A high-launch game-improvement iron for moderate-to-average swing speeds, designed to add carry distance and help more approach shots hold the green.",
   gallery: [
-    { src: "/images/shop/categories-v2/golf_irons.webp", alt: "Golf irons representing the Callaway Paradym Ai Smoke HL set", label: "Ai Smoke HL" },
+    { src: "/images/products/callaway-paradym-ai-smoke-hl-cavity.jpg", alt: "Callaway Paradym Ai Smoke HL iron cavity-back view", label: "Cavity" },
+    { src: "/images/products/callaway-paradym-ai-smoke-hl-face.jpg", alt: "Callaway Paradym Ai Smoke HL iron face and grooves", label: "Face" },
+    { src: "/images/products/callaway-paradym-ai-smoke-hl-address.jpg", alt: "Callaway Paradym Ai Smoke HL iron at address", label: "Address" },
+    { src: "/images/products/callaway-paradym-ai-smoke-hl-sole.jpg", alt: "Callaway Paradym Ai Smoke HL iron sole and hosel profile", label: "Sole" },
   ],
-  galleryNote: "Temporary category image. Ask Karibu Golf for current photographs of the exact Ai Smoke HL set before ordering.",
+  galleryNote: "Detailed manufacturer product views. Confirm the fitted shaft, flex, hand and condition of the exact Karibu set before ordering.",
   overviewEyebrow: "PARADYM AI SMOKE HL",
   overviewTitle: "HIGHER LAUNCH. MORE CONFIDENCE.",
   overviewBody: [
-    "Callaway built the HL model for golfers who need more launch to improve carry and hold more greens.",
-    "A deep cavity, low centre of gravity and longer blade length distinguish it from the standard Ai Smoke and Max Fast models.",
+    "Callaway built the HL model for golfers who need a higher flight to maximise carry distance and hit more greens.",
+    "Its game-improvement profile combines a deep cavity back, a low centre of gravity and a confidence-inspiring blade length.",
   ],
-  overviewImage: "/images/shop/categories-v2/golf_irons.webp",
+  overviewImage: "/images/products/callaway-paradym-ai-smoke-hl-cavity.jpg",
   features: [
-    { title: "Ai Smart Face", text: "Callaway says the face was optimised with swing data from thousands of golfers to support the launch and spin needs of the HL player." },
-    { title: "Deep cavity construction", text: "A low, deep centre of gravity and tungsten weighting are designed to create a higher, more playable flight." },
-    { title: "Longer long and mid irons", text: "The 4- through 7-irons use additional length to create speed; centre contact and fit still need to be checked." },
-    { title: "Dynamic Sole Design", text: "A pre-worn leading edge and variable bounce are intended to promote clean turf interaction and forgiveness." },
+    { title: "Ai Smart Face", text: "Callaway used swing data from real golfers to optimise the face for the launch and spin needs of the HL player." },
+    { title: "High-launch profile", text: "A deep cavity-back construction and low centre of gravity are designed to help the ball launch higher with more usable carry." },
+    { title: "Longer long and mid irons", text: "The 4- through 7-irons use additional length to support speed while retaining a forgiving game-improvement shape." },
+    { title: "Dynamic Sole Design", text: "A pre-worn leading edge and variable bounce are designed for cleaner turf interaction and consistent contact." },
   ],
   detailEyebrow: "4-IRON THROUGH APPROACH WEDGE",
   detailTitle: "BUILT TO HELP THE BALL CLIMB.",
   detailBody: [
-    "The reference 7-iron is 30° with a 37.5-inch standard length. The set continues to a 47° approach wedge.",
-    "Confirm that the physical stock carries the HL badge and verify its shaft, flex, handedness and condition before payment.",
+    "The Karibu configuration is 4–PW plus approach wedge. Callaway's reference 7-iron is 30° at 37.5 inches, and the approach wedge is 47°.",
+    "The official model supports both right- and left-handed builds. Confirm the actual hand, shaft, flex and condition of this set before payment.",
   ],
-  detailImage: "/images/shop/categories-v2/golf_irons.webp",
+  detailImage: "/images/products/callaway-paradym-ai-smoke-hl-face.jpg",
   configuration: [
     { label: "Set", values: ["4–PW + AW"] },
-    { label: "Shaft and flex", values: ["Confirm exact stock"] },
+    { label: "Shaft / flex", values: ["Confirm exact stock"] },
     { label: "Hand", values: ["Confirm exact stock"] },
   ],
   specTitle: "AI SMOKE HL SPECIFICATIONS.",
@@ -254,10 +257,10 @@ const aiSmokeHl: ProductPageDetails = {
     ],
   },
   equipment: [
-    { title: "Reference steel shaft", text: "Callaway lists True Temper Elevate MPH 85 as an original steel configuration. Confirm what is installed on the Karibu set." },
-    { title: "Reference graphite shaft", text: "Callaway lists Project X Cypher 2.0 60 as an original graphite configuration. Confirm the exact shaft and flex before payment." },
+    { title: "Reference steel shaft", text: "Callaway lists True Temper Elevate MPH 85 as a stock steel option. Confirm what is installed on the Karibu set." },
+    { title: "Reference graphite shaft", text: "Callaway lists Project X Cypher 2.0 60 as a stock graphite option. Confirm the exact shaft and flex before payment." },
   ],
-  source: { label: "Callaway Paradym Ai Smoke HL official product page", url: "https://www.callawaygolf.com/product/irons-2024-paradym-ai-smoke-hl" },
+  source: { label: "Callaway Paradym Ai Smoke HL official product page", url: "https://www.callawaygolf.com/golf-clubs/irons/irons-2024-paradym-ai-smoke-hl.html" },
 };
 
 const proV1: ProductPageDetails = {
@@ -1518,6 +1521,75 @@ const scottyCameronH25: ProductPageDetails = {
   },
 };
 
+const scottyCameronStudioStyleNewport2: ProductPageDetails = {
+  brand: "Scotty Cameron",
+  intro: "An iconic Newport 2 blade updated with a Studio Carbon Steel face insert and chain-link milling for soft sound, solid feel and controlled roll.",
+  gallery: [
+    { src: "/images/products/scotty-cameron-studio-style-newport-2-hero.jpg", alt: "Scotty Cameron Studio Style Newport 2 putter angled face and sole view", label: "Studio Style" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-2-sole.png", alt: "Scotty Cameron Studio Style Newport 2 sole and tungsten weights", label: "Sole" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-2-cavity.png", alt: "Scotty Cameron Studio Style Newport 2 rear cavity and plumbing neck", label: "Cavity" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-2-address.png", alt: "Scotty Cameron Studio Style Newport 2 viewed from address", label: "At address" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-2-face.png", alt: "Scotty Cameron Studio Style Newport 2 SCS insert and chain-link face milling", label: "Face" },
+  ],
+  galleryNote: "Five product-reference images supplied by Karibu Golf. Confirm the exact hand, length, authenticity, included headcover and physical condition before payment.",
+  overviewEyebrow: "STUDIO STYLE NEWPORT 2",
+  overviewTitle: "CLASSIC LINES. A NEW CARBON-STEEL FEEL.",
+  overviewBody: [
+    "The Studio Style Newport 2 retains the crisp, mechanical lines of Scotty Cameron's flagship blade while adding a slightly thicker topline inspired by the 2012 Select generation.",
+    "Its precision-milled Studio Carbon Steel insert is nickel plated for durability and paired with chain-link face milling to soften sound while preserving feedback.",
+  ],
+  overviewImage: "/images/products/scotty-cameron-studio-style-newport-2-cavity.png",
+  features: [
+    { title: "Studio Carbon Steel insert", text: "The precision-milled SCS insert delivers carbon-steel sound and feel with electroless nickel plating for added durability." },
+    { title: "Chain-link face milling", text: "The milling pattern reduces the insert's contact points at impact to soften sound and support consistent roll characteristics." },
+    { title: "303 stainless-steel head", text: "The head is precision milled in the United States from 303 stainless steel with length-specific tungsten sole weights." },
+    { title: "Newport 2 geometry", text: "A refined tri-sole, I-beam plumbing neck and full-shaft offset create the familiar alignment profile with medium toe flow." },
+  ],
+  detailEyebrow: "3.5° LOFT · 70° LIE · MEDIUM TOE FLOW",
+  detailTitle: "MATCH THE LENGTH AND HAND TO YOUR STROKE.",
+  detailBody: [
+    "Official stock lengths are 33, 34 and 35 inches, each paired with its own tungsten sole-weight configuration. Both right- and left-handed models are offered by the manufacturer.",
+    "Karibu has not confirmed current inventory. Ask us to verify the exact length, hand, authenticity, grip, headcover and final supplier price before ordering.",
+  ],
+  detailImage: "/images/products/scotty-cameron-studio-style-newport-2-address.png",
+  configuration: [
+    { label: "Length", values: ["33 in", "34 in", "35 in"] },
+    { label: "Hand", values: ["Right handed", "Left handed"] },
+  ],
+  specTitle: "STUDIO STYLE NEWPORT 2 SPECIFICATIONS.",
+  specIntro: "Official Scotty Cameron reference specifications. Manufacturer options do not represent confirmed Karibu stock.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Loft", "3.5°"],
+      ["Lie", "70°"],
+      ["Length", "33, 34, 35 in"],
+      ["Head material", "303 stainless steel"],
+      ["Face insert", "Studio Carbon Steel (SCS)"],
+      ["Offset", "Full shaft"],
+      ["Grip", "Full Contact Slim"],
+      ["Weights — 33 in", "2 × 35 g"],
+      ["Weights — 34 in", "2 × 30 g"],
+      ["Weights — 35 in", "2 × 25 g"],
+      ["Toe flow", "Medium"],
+    ],
+  },
+  equipment: [
+    { title: "Length-specific weighting", text: "Tungsten sole weights change with shaft length to maintain the intended head feel: 35 g at 33 inches, 30 g at 34 inches and 25 g at 35 inches." },
+    { title: "Standard grip", text: "The official build uses Scotty Cameron's Full Contact Slim grip. Confirm what is included with the exact Karibu item." },
+    { title: "Custom references", text: "The manufacturer offers additional half-inch right-handed lengths plus loft and lie adjustments. These are fitting references, not confirmed Karibu inventory." },
+  ],
+  source: { label: "Scotty Cameron Studio Style Newport 2 official product page", url: "https://www.scottycameron.com/putters/studio-style/newport-2/" },
+  presentation: {
+    imageLabels: ["SCS insert", "Tri-sole", "Newport 2"],
+    featuresTitle: "THE STUDIO STYLE DETAILS.",
+    featuresIntro: "Explore the carbon-steel insert, chain-link face milling, stainless-steel construction and classic Newport 2 geometry.",
+    inquiryTitle: "CONFIRM THE EXACT NEWPORT 2.",
+    inquiryBody: "Currently out of stock. Select a reference length and hand, then ask Karibu Golf to confirm the actual item, authenticity, headcover, supplier price and availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this Studio Style Newport 2",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -1555,6 +1627,7 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-pt035") return labGolfDf3i;
   if (product.slug === "gk-pt036") return labGolfOz1;
   if (product.slug === "gk-pt037") return scottyCameronH25;
+  if (product.slug === "gk-pt038") return scottyCameronStudioStyleNewport2;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

@@ -22,7 +22,9 @@ page.on("pageerror", (error) => failures.push(error.message));
 const routes = ["/", "/shop/", "/shop/stock/", "/shop/clubs/", "/shop/clubs/golf_irons/", "/shop/balls/", "/shop/balls/balls/", ...catalog.products.map((product) => `/shop/product/${product.slug}/`)];
 for (const route of routes) {
   const response = await page.goto(`${base}${route}`, { waitUntil: "commit" });
-  await page.locator("footer.shared-footer").waitFor({ state: "attached" });
+  // Some approved landing-page variants use a page-specific footer class.
+  // The static body is the stable readiness boundary across all storefront routes.
+  await page.locator("body").waitFor({ state: "attached" });
   await page.waitForTimeout(150);
   const result = await page.evaluate(() => ({
     foreignCurrencies: /(?:\bRMB\b|\bUSD\b|[¥$]\s*\d)/.test(document.body.innerText),

@@ -1,0 +1,2422 @@
+.golf-lessons {
+  color: var(--paper);
+}
+.golf-lessons h1,
+.golf-lessons h2,
+.golf-lessons h3 {
+  overflow-wrap: normal;
+}
+.golf-lessons section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 24px);
+}
+.lessons-navigation .nav-links {
+  font-size: 0.875rem;
+  gap: 27px;
+}
+.lessons-navigation .nav-contact {
+  font-size: 0.8125rem;
+}
+.lessons-motion {
+  --hero-travel: 0;
+  --hero-leave: 0;
+  --hero-enter: 0;
+  --hero-inset: 0;
+  --page-progress: 0;
+}
+.lessons-motion:after {
+  content: '';
+  position: fixed;
+  z-index: 110;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime);
+  transform: scaleX(var(--page-progress));
+  transform-origin: left;
+  pointer-events: none;
+}
+.lesson-kicker {
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  line-height: 1.65;
+  font-weight: 500;
+}
+.lessons-hero {
+  position: relative;
+  background: #0c2119;
+}
+.lessons-hero-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: 810px;
+  height: 100svh;
+  padding: calc(var(--nav-height) + 55px) 6% 65px;
+  overflow: hidden;
+}
+.lessons-fairway {
+  position: absolute;
+  z-index: -1;
+  inset: -5% -3%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 18%, #000 76%);
+  opacity: 0.63;
+  transform: translateY(calc(var(--hero-travel)*-35px))
+    scale(calc(1.1 - var(--hero-travel)*0.07));
+}
+.lessons-fairway img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+}
+.lessons-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 68%;
+}
+.lessons-hero-copy > .lesson-kicker {
+  color: var(--lime);
+}
+.lessons-hero h1 {
+  font-size: clamp(5rem, 9.9vw, 10rem);
+  line-height: 0.93;
+  letter-spacing: -0.015em;
+  margin: 30px 0 28px;
+}
+.lessons-hero h1 span,
+.lessons-hero h1 em {
+  display: block;
+  white-space: nowrap;
+}
+.lessons-hero h1 em {
+  color: var(--lime);
+}
+.hero-lead {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+.hero-description {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  max-width: 440px;
+  color: #dce6d2;
+  margin-top: 14px;
+}
+.lesson-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-top: 30px;
+}
+.lesson-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px 23px;
+  min-height: 54px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid var(--lime);
+  text-align: center;
+  line-height: 1.45;
+}
+.lesson-button:hover {
+  background: #eff8cf;
+}
+.lesson-button > span {
+  padding-left: 14px;
+  border-left: 1px solid #647c3c70;
+  white-space: nowrap;
+}
+.lesson-text-link {
+  font-size: 0.9375rem;
+  padding: 10px 0;
+  border-bottom: 1px solid currentColor;
+}
+.hero-credibility {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #c4d2ba;
+  margin-top: 25px;
+}
+.lessons-print {
+  position: absolute;
+  width: clamp(270px, 31vw, 460px);
+  right: 5%;
+  bottom: 18%;
+  z-index: 3;
+  margin: 0;
+  padding: 12px 12px 0;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 18px 45px #04180eb0;
+  transform: translateY(calc(var(--hero-travel)*-75px))
+    rotate(calc(3deg - var(--hero-travel)*5deg));
+}
+.lessons-print img {
+  width: 100%;
+  height: auto;
+}
+.lessons-print figcaption {
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  padding: 13px 2px;
+  line-height: 1.5;
+}
+.lessons-seal {
+  position: absolute;
+  right: 3.5%;
+  bottom: 14%;
+  z-index: 4;
+  padding: 10px;
+  width: 92px;
+  height: 92px;
+  background: var(--paper);
+  border-radius: 50%;
+  transform: translateY(calc(var(--hero-travel)*-110px))
+    rotate(calc(-8deg + var(--hero-travel)*12deg));
+  box-shadow: 0 8px 22px #061b1370;
+}
+.lessons-seal img {
+  width: 100%;
+  height: 100%;
+}
+.hero-bottom {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 25px;
+  padding-top: 24px;
+  border-top: 1px solid #b7c7a942;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  line-height: 1.6;
+}
+.lesson-section {
+  padding: 100px 6%;
+}
+.lesson-section h2 {
+  font-size: clamp(3.25rem, 7.2vw, 7.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin-top: 24px;
+}
+.light-section {
+  background: var(--paper);
+  color: var(--ink);
+}
+.light-section h2 em {
+  color: #456330;
+}
+.golf-lessons p {
+  overflow-wrap: break-word;
+}
+.golf-lessons [data-arrival] {
+  --arrival: 1;
+}
+.lessons-motion[data-motion='on'] [data-arrival] {
+  transform: translateY(calc((1 - var(--arrival)) *48px));
+  opacity: calc(0.45 + var(--arrival)*0.55);
+}
+@media (min-width: 1000px) and (min-height: 720px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 150svh;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    min-height: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 span {
+    transform: translateX(calc(var(--hero-travel)*-4vw));
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 em {
+    transform: translateX(calc(var(--hero-travel)*5vw));
+  }
+}
+@media (max-width: 1100px) {
+  .lessons-hero h1 {
+    font-size: clamp(4.8rem, 10.8vw, 8rem);
+  }
+  .lessons-print {
+    width: 33%;
+    bottom: 15%;
+  }
+  .lessons-navigation .nav-links {
+    gap: 20px;
+  }
+  .lessons-hero-copy {
+    max-width: 90%;
+  }
+  .hero-description {
+    max-width: 55%;
+  }
+  .hero-lead {
+    max-width: 60%;
+  }
+  .lesson-actions {
+    max-width: 60%;
+  }
+}
+@media (max-width: 850px) {
+  .lessons-hero-stage {
+    height: auto;
+    min-height: 0;
+    padding-bottom: 105px;
+  }
+  .lessons-hero-copy {
+    max-width: none;
+  }
+  .lessons-hero h1 {
+    font-size: clamp(4rem, 12.5vw, 6.5rem);
+  }
+  .hero-description,
+  .hero-lead,
+  .lesson-actions {
+    max-width: 100%;
+  }
+  .lessons-print {
+    position: relative;
+    width: 65%;
+    max-width: 440px;
+    right: auto;
+    bottom: auto;
+    margin: 55px 2% 10px auto;
+  }
+  .lessons-seal {
+    bottom: 110px;
+    right: 6%;
+    width: 75px;
+    height: 75px;
+  }
+  .hero-bottom > span {
+    display: none;
+  }
+  .lessons-fairway {
+    mask-image: linear-gradient(180deg, transparent 15%, #000 85%);
+  }
+  .lesson-section {
+    padding: 70px 6%;
+  }
+  .lessons-navigation .nav-contact {
+    display: none;
+  }
+}
+@media (max-width: 540px) {
+  .lessons-hero-stage {
+    padding: calc(var(--nav-height) + 35px) 6% 90px;
+  }
+  .lessons-hero h1 {
+    font-size: clamp(2.9rem, 13vw, 4.5rem);
+    margin: 25px 0;
+  }
+  .hero-lead {
+    font-size: 1.125rem;
+  }
+  .hero-description {
+    font-size: 1rem;
+  }
+  .lesson-actions {
+    gap: 15px;
+  }
+  .lesson-button {
+    padding: 15px 17px;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.875rem;
+  }
+  .lessons-print {
+    width: 88%;
+    padding: 8px 8px 0;
+    margin-top: 45px;
+  }
+  .lessons-print figcaption {
+    font-size: 0.75rem;
+    letter-spacing: 0;
+    padding: 10px 0;
+  }
+  .lessons-seal {
+    width: 65px;
+    height: 65px;
+    bottom: 100px;
+    right: 4%;
+  }
+  .lesson-kicker {
+    font-size: 0.8125rem;
+    letter-spacing: 0.055em;
+  }
+  .lesson-section {
+    padding: 60px 6%;
+  }
+  .lesson-section h2 {
+    font-size: clamp(2.8rem, 12vw, 4.5rem);
+  }
+  .hero-bottom {
+    font-size: 0.75rem;
+    padding-top: 18px;
+  }
+  .shared-footer nav {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .golf-lessons * {
+    transform: none !important;
+    transition: none !important;
+  }
+  .lessons-hero {
+    height: auto !important;
+  }
+  .lessons-hero-stage {
+    position: relative !important;
+    min-height: 0;
+    height: auto;
+  }
+  .golf-lessons [data-arrival] {
+    opacity: 1 !important;
+  }
+}
+
+/* Keep the homepage opening grammar last in the cascade. The coaching file
+   retains its original and full-page enhancement blocks above. */
+.lessons-motion[data-motion='on'] .lessons-fairway {
+  clip-path: inset(
+    calc(var(--hero-inset) * 7%) calc(var(--hero-inset) * 5%)
+  );
+  transform: translate3d(0, calc(var(--hero-travel) * -36px), 0);
+  opacity: 0.76;
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 span {
+  transform: translate3d(calc(var(--hero-leave) * -15vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 em {
+  transform: translate3d(calc(var(--hero-leave) * 15vw), 0, 0);
+}
+@media (min-width: 520px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 240svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+}
+@media (min-width: 520px) and (max-width: 999px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding-bottom: 58px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-copy {
+    max-width: 78%;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: min(34vw, 270px);
+    right: 3%;
+    bottom: 12%;
+    margin: 0;
+  }
+}
+@media (max-height: 719px) and (min-width: 520px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding: calc(var(--nav-height) + 18px) 5% 46px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 {
+    margin: 12px 0;
+    font-size: clamp(3rem, 8.2vw, 5.2rem);
+    line-height: 0.84;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: clamp(180px, 22vw, 290px);
+    right: 3%;
+    bottom: 9%;
+    margin: 0;
+  }
+}
+@media (max-width: 519px) and (min-height: 700px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 220svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: 54%;
+    right: -7%;
+    bottom: 7%;
+    margin: 0;
+  }
+}
+
+/* Whole-page Scroll Craft score. The homepage rhythm continues after the hero,
+   but each coaching beat uses a different device family. */
+.coach-section,
+.assessment-section,
+.corporate-section {
+  display: block;
+}
+.lesson-stage {
+  position: relative;
+  min-width: 0;
+}
+.coach-stage,
+.assessment-stage,
+.corporate-stage {
+  display: grid;
+  align-items: center;
+  gap: 8%;
+}
+.coach-stage {
+  grid-template-columns: 1fr 1fr;
+}
+.assessment-stage {
+  grid-template-columns: 1.2fr 1fr;
+}
+.corporate-stage {
+  grid-template-columns: 1.25fr 1fr;
+  align-items: start;
+}
+.assessment-stage .assessment-path,
+.assessment-stage .assessment-steps {
+  grid-column: 1 / -1;
+}
+.pricing-scroll {
+  position: relative;
+}
+
+/* 1. Editorial kinetic reveal. */
+.goals-section {
+  overflow: clip;
+}
+.goals-section .section-heading h2 span,
+.goals-section .section-heading h2 em {
+  display: block;
+}
+.lessons-motion[data-motion='on'] .goals-section .section-heading h2 span {
+  transform: translate3d(calc((1 - var(--scene-progress)) * -9vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .goals-section .section-heading h2 em {
+  transform: translate3d(calc((1 - var(--scene-progress)) * 11vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .goals-section .section-heading > p {
+  opacity: var(--scene-progress);
+  transform: translate3d(0, calc((1 - var(--scene-progress)) * 52px), 0);
+}
+.lessons-motion[data-motion='on'] .goals-section .goal-tabs {
+  transform: translate3d(calc((1 - var(--scene-journey)) * 9vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .goals-section .goal-panel {
+  opacity: calc(0.35 + var(--scene-journey) * 0.65);
+  transform: translate3d(0, calc((1 - var(--scene-journey)) * 42px), 0);
+}
+
+/* 2. Held photographic reveal. */
+.lessons-motion[data-motion='on'] .coach-copy {
+  opacity: calc(0.32 + var(--scene-progress) * 0.68);
+  transform: translate3d(calc((1 - var(--scene-progress)) * -5vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .coach-photograph {
+  clip-path: inset(0 calc((1 - var(--scene-progress)) * 100%) 0 0);
+  transform: translate3d(calc((1 - var(--scene-progress)) * 8vw), 0, 0)
+    rotate(calc((1 - var(--scene-journey)) * 2.4deg));
+}
+.lessons-motion[data-motion='on'] .coach-image-window img {
+  transform: translate3d(0, calc((0.5 - var(--scene-journey)) * 105px), 0)
+    scale(calc(1.22 - var(--scene-journey) * 0.1));
+}
+.lessons-motion[data-motion='on'] .coach-photograph figcaption {
+  opacity: clamp(0, calc((var(--scene-journey) - 0.2) * 2.4), 1);
+}
+
+/* 3. A drawn route with three sequential decisions. */
+.lessons-motion[data-motion='on'] .assessment-stage > div:first-child {
+  opacity: calc(0.35 + var(--scene-progress) * 0.65);
+  transform: translate3d(calc((1 - var(--scene-progress)) * -5vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .assessment-price {
+  opacity: calc(0.3 + var(--scene-progress) * 0.7);
+  transform: translate3d(calc((1 - var(--scene-progress)) * 7vw), 0, 0)
+    scale(calc(0.86 + var(--scene-progress) * 0.14));
+}
+.lessons-motion[data-motion='on'] .assessment-steps li {
+  opacity: calc(0.18 + var(--step-progress) * 0.82);
+  transform: translate3d(0, calc((1 - var(--step-progress)) * 48px), 0);
+}
+
+/* 4. Physical cards gather, arrive in sequence, then hold for comparison. */
+.lessons-motion[data-motion='on'] .pricing-stage .section-heading {
+  opacity: calc(0.28 + var(--scene-progress) * 0.72);
+  transform: translate3d(0, calc((1 - var(--scene-progress)) * 44px), 0);
+}
+.lessons-motion[data-motion='on'] .pricing-stage [data-pricing-card] {
+  opacity: calc(0.24 + var(--card-arrival) * 0.76);
+  box-shadow: 0 calc((1 - var(--card-arrival)) * 22px) 48px #19321b21;
+}
+
+/* 5. Split intertitle. */
+.lessons-motion[data-motion='on'] .corporate-title {
+  opacity: calc(0.3 + var(--scene-progress) * 0.7);
+}
+.lessons-motion[data-motion='on'] .corporate-copy {
+  opacity: calc(0.2 + var(--scene-journey) * 0.8);
+  transform: translate3d(calc((1 - var(--scene-journey)) * 10vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .corporate-facts > div:first-child {
+  transform: translate3d(0, calc((1 - var(--scene-journey)) * 34px), 0);
+}
+.lessons-motion[data-motion='on'] .corporate-facts > div:last-child {
+  transform: translate3d(0, calc((1 - var(--scene-journey)) * 58px), 0);
+}
+
+/* 6. Short lateral reveal between the larger chapters. */
+.equipment-section {
+  overflow: clip;
+}
+.lessons-motion[data-motion='on'] .equipment-section > .lesson-kicker {
+  opacity: var(--scene-progress);
+  transform: translate3d(calc((1 - var(--scene-progress)) * -7vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .equipment-section > div {
+  opacity: calc(0.28 + var(--scene-progress) * 0.72);
+  transform: translate3d(calc((1 - var(--scene-progress)) * 9vw), 0, 0);
+}
+
+/* 7. Quiet staggered practical answers. */
+.lessons-motion[data-motion='on'] .faq-section > div:first-child {
+  opacity: calc(0.35 + var(--scene-progress) * 0.65);
+  transform: translate3d(0, calc((1 - var(--scene-progress)) * 60px), 0);
+}
+.lessons-motion[data-motion='on'] .lesson-faq-list [data-arrival] {
+  border-color: color-mix(in srgb, #a6b497 calc(var(--arrival) * 100%), transparent);
+}
+
+/* 8. A close that resolves and remains available. */
+.booking-stage {
+  isolation: isolate;
+}
+.lessons-motion[data-motion='on'] .booking-stage > .lesson-kicker,
+.lessons-motion[data-motion='on'] .booking-bottom,
+.lessons-motion[data-motion='on'] .booking-detail {
+  opacity: var(--scene-progress);
+}
+.lessons-motion[data-motion='on'] .booking-bottom {
+  transform: translate3d(0, calc((1 - var(--scene-journey)) * 54px), 0);
+}
+.lessons-motion[data-motion='on'] .booking-detail {
+  transform: translate3d(calc((1 - var(--scene-journey)) * -5vw), 0, 0);
+}
+
+/* Roomy screens get the held homepage cadence. The same scenes remain in
+   normal document flow on compact screens, so no content is clipped. */
+[data-lesson-pin][data-lesson-pinned='true'] {
+  padding: 0;
+}
+.coach-section[data-lesson-pinned='true'] {
+  height: 185svh;
+}
+.assessment-section[data-lesson-pinned='true'] {
+  height: 235svh;
+}
+.corporate-section[data-lesson-pinned='true'] {
+  height: 180svh;
+}
+.booking-section[data-lesson-pinned='true'] {
+  height: 170svh;
+}
+[data-lesson-pin][data-lesson-pinned='true'] > .lesson-stage {
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100svh - var(--nav-height));
+  padding: clamp(28px, 5svh, 62px) 6%;
+  overflow: clip;
+  align-content: center;
+}
+.pricing-scroll[data-lesson-pinned='true'] {
+  height: 285svh;
+}
+.pricing-scroll[data-lesson-pinned='true'] > .pricing-stage {
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100svh - var(--nav-height));
+  padding: clamp(22px, 3.2svh, 38px) 0 18px;
+  overflow: clip;
+}
+.pricing-scroll[data-lesson-pinned='true'] .section-heading h2 {
+  font-size: clamp(3.1rem, 5.2vw, 5.5rem);
+  margin-top: 10px;
+}
+.pricing-scroll[data-lesson-pinned='true'] .section-heading > p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price-grid {
+  margin-top: clamp(16px, 2.4svh, 28px);
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price-card {
+  padding: clamp(17px, 2.2svh, 26px) 22px;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price {
+  font-size: clamp(3rem, 5vw, 4.7rem);
+  margin: 18px 0 12px;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price-card h3 {
+  font-size: clamp(1.55rem, 2vw, 2rem);
+  min-height: 0;
+}
+.pricing-scroll[data-lesson-pinned='true'] .price-description {
+  min-height: 0;
+  margin-top: 10px;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price-card ul {
+  padding: 14px 0 8px;
+  margin-top: 12px;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-price-card li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.pricing-scroll[data-lesson-pinned='true'] .lesson-button {
+  min-height: 44px;
+  padding: 10px 15px;
+}
+
+@media (max-width: 999px), (max-height: 719px) {
+  .coach-stage,
+  .assessment-stage,
+  .corporate-stage {
+    gap: 5%;
+  }
+}
+@media (max-width: 800px) {
+  .coach-stage,
+  .assessment-stage,
+  .corporate-stage {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .lessons-motion[data-motion='on'] .coach-photograph {
+    clip-path: inset(0 calc((1 - var(--scene-progress)) * 100%) 0 0);
+  }
+  .lessons-motion[data-motion='on'] .goals-section .goal-tabs {
+    transform: translate3d(calc((1 - var(--scene-journey)) * 26px), 0, 0);
+  }
+}
+
+/* Static and reduced-motion contracts: complete content, normal flow. */
+.lessons-motion[data-motion='off'] [data-lesson-pin],
+.lessons-motion[data-motion='off'] .pricing-scroll {
+  height: auto !important;
+}
+.lessons-motion[data-motion='off'] .lesson-stage {
+  position: relative !important;
+  top: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lessons-motion .lesson-stage {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* Homepage-matched opening: one held scene, two messages and a photographic push. */
+.lessons-skip {
+  position: fixed;
+  z-index: 140;
+  top: -90px;
+  left: 10px;
+  padding: 11px 15px;
+  color: var(--ink);
+  background: var(--lime);
+}
+.lessons-skip:focus {
+  top: 10px;
+}
+.lessons-hero-copy {
+  transform: translate3d(
+    calc(var(--hero-leave) * -8vw),
+    calc(var(--hero-leave) * -54px),
+    0
+  );
+  opacity: calc(1 - var(--hero-leave));
+}
+.lessons-hero-copy:focus-within {
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+.lessons-hero[data-hero-state='second'] .lessons-hero-copy {
+  pointer-events: none;
+}
+.lessons-hero-second {
+  position: absolute;
+  z-index: 2;
+  inset: 19% 7% 18%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  opacity: var(--hero-enter);
+  transform: translate3d(0, calc((1 - var(--hero-enter)) * 65px), 0);
+}
+.lessons-hero-second .lesson-kicker {
+  color: var(--lime);
+}
+.lessons-hero-second h2 {
+  margin: 18px 0 20px;
+  font-size: clamp(4.8rem, 9.2vw, 9.4rem);
+  line-height: 0.88;
+  letter-spacing: -0.025em;
+}
+.lessons-hero-second h2 span,
+.lessons-hero-second h2 em {
+  display: block;
+}
+.lessons-hero-second h2 em {
+  color: var(--lime);
+}
+.lessons-hero-second > p:last-child {
+  font-size: 0.9375rem;
+  max-width: 32rem;
+  line-height: 1.5;
+}
+.lessons-motion[data-motion='on'] .lessons-fairway {
+  clip-path: inset(
+    calc(var(--hero-inset) * 7%) calc(var(--hero-inset) * 5%)
+  );
+  transform: translate3d(0, calc(var(--hero-travel) * -36px), 0);
+  opacity: 0.76;
+}
+.lessons-motion[data-motion='on'] .lessons-fairway img {
+  transform: scale(calc(1.08 + var(--hero-travel) * 0.42))
+    rotate(calc(-4deg + var(--hero-travel) * 8deg));
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 span {
+  transform: translate3d(calc(var(--hero-leave) * -15vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 em {
+  transform: translate3d(calc(var(--hero-leave) * 15vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .lessons-print {
+  opacity: calc(1 - var(--hero-enter) * 1.25);
+}
+.lessons-motion[data-motion='on'] .lessons-seal {
+  opacity: calc(1 - var(--hero-enter));
+}
+
+/* The homepage keeps its opening held on roomy phones as well as desktop.
+   Very short screens remain natural flow so the booking action always fits. */
+@media (min-width: 520px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 240svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+}
+@media (min-width: 520px) and (max-width: 999px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding-bottom: 58px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-copy {
+    max-width: 78%;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: min(34vw, 270px);
+    right: 3%;
+    bottom: 12%;
+    margin: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-seal {
+    right: 2%;
+    bottom: 43%;
+    width: 62px;
+    height: 62px;
+  }
+}
+@media (max-height: 719px) and (min-width: 520px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding: calc(var(--nav-height) + 18px) 5% 46px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 {
+    margin: 12px 0;
+    font-size: clamp(3rem, 8.2vw, 5.2rem);
+    line-height: 0.84;
+  }
+  .lessons-motion[data-motion='on'] .hero-description,
+  .lessons-motion[data-motion='on'] .hero-credibility {
+    display: none;
+  }
+  .lessons-motion[data-motion='on'] .hero-lead {
+    max-width: 55%;
+    font-size: 0.95rem;
+  }
+  .lessons-motion[data-motion='on'] .lesson-actions {
+    max-width: 64%;
+    margin-top: 14px;
+    gap: 14px;
+  }
+  .lessons-motion[data-motion='on'] .lesson-button {
+    min-height: 42px;
+    padding: 9px 13px;
+    font-size: 0.78rem;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: clamp(180px, 22vw, 290px);
+    right: 3%;
+    bottom: 9%;
+    margin: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-seal {
+    width: 58px;
+    height: 58px;
+    right: 2%;
+    bottom: 42%;
+  }
+  .lessons-motion[data-motion='on'] .hero-bottom {
+    bottom: 10px;
+    padding-top: 10px;
+  }
+  .lessons-hero-second {
+    inset: 12% 6% 16%;
+  }
+  .lessons-hero-second h2 {
+    font-size: clamp(4rem, 9.5vw, 6.7rem);
+  }
+  .lessons-hero-second > p:last-child {
+    max-width: 70%;
+    font-size: 0.82rem;
+  }
+}
+@media (max-width: 519px) and (min-height: 700px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 220svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: 54%;
+    right: -7%;
+    bottom: 7%;
+    margin: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-seal {
+    right: 1%;
+    bottom: 29%;
+  }
+  .lessons-hero-second {
+    inset: 16% 5% 18%;
+  }
+  .lessons-hero-second h2 {
+    font-size: clamp(3.7rem, 17vw, 5.6rem);
+  }
+  .lessons-hero-second > p:last-child {
+    max-width: 86%;
+    font-size: 0.82rem;
+  }
+}
+.lessons-motion[data-motion='off'] .lessons-hero-copy,
+.lessons-motion[data-motion='off'] .lessons-fairway img {
+  transform: none;
+  opacity: 1;
+}
+.lessons-motion[data-motion='off'] .lessons-hero-second {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lessons-hero-copy,
+  .lessons-fairway img {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .lessons-hero-second {
+    display: none !important;
+  }
+}
+.lessons-print > .lessons-seal {
+  top: 6%;
+  right: -9%;
+  bottom: auto;
+}
+.lessons-motion[data-motion='off'] .lessons-hero {
+  height: auto !important;
+}
+.lessons-motion[data-motion='off'] .lessons-hero-stage {
+  position: relative;
+  height: auto;
+  min-height: 0;
+}
+.lessons-motion[data-motion='off'] [data-arrival] {
+  opacity: 1;
+  transform: none;
+}
+.section-heading {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 8%;
+  align-items: end;
+}
+.section-heading > p {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  max-width: 420px;
+  margin-bottom: 8px;
+  color: #415043;
+}
+.lesson-goals {
+  margin-top: 55px;
+  gap: 0 !important;
+}
+.lesson-goals .goal-tabs {
+  width: 100%;
+  height: auto !important;
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  border-bottom: 1px solid #9faf91;
+  gap: 0;
+}
+.lesson-goals .goal-tabs [data-slot='tabs-trigger'] {
+  color: #415043;
+  border: 0;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  background: transparent;
+  flex: 0 1 auto;
+  min-height: 62px;
+  padding: 15px 30px;
+  white-space: normal;
+  line-height: 1.5;
+}
+.lesson-goals .goal-tabs [aria-selected='true'] {
+  color: var(--ink);
+  background: var(--lime);
+  box-shadow: none;
+}
+.lesson-goals .goal-tabs [data-slot='tabs-trigger']:hover {
+  background: #d9ed9299;
+}
+.lesson-goals .goal-panel {
+  padding-top: 45px;
+  display: grid;
+  grid-template-columns: 0.35fr 1fr;
+  gap: 6%;
+  min-height: 310px;
+}
+.goal-number {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 8rem;
+  line-height: 0.9;
+  color: #456330;
+  opacity: 0.65;
+}
+.goal-panel h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+.goal-panel p {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  max-width: 750px;
+  color: #415043;
+  margin-top: 20px;
+}
+.goal-panel p.goal-focus {
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: #456330;
+  margin-top: 25px;
+}
+.goal-panel .lesson-text-link {
+  display: inline-block;
+  margin-top: 20px;
+}
+.coach-section {
+  background: #142e23;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8%;
+  align-items: center;
+}
+.coach-section h2 {
+  font-size: clamp(3.3rem, 6.1vw, 6rem);
+}
+.coach-section h2 em {
+  color: var(--lime);
+}
+.coach-copy > p:not(.lesson-kicker) {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #d2dec7;
+  margin-top: 23px;
+  max-width: 510px;
+}
+.coach-copy > p.coach-lead {
+  font-size: 1.375rem;
+  line-height: 1.5;
+  color: var(--paper);
+  margin-top: 35px;
+}
+.coach-signoff {
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid #819a6e6b;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+.coach-signoff > span {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--lime);
+}
+.coach-photograph {
+  margin: 0;
+  padding: 0;
+  transform-origin: center;
+}
+.coach-photograph img {
+  width: 100%;
+  height: auto;
+}
+.coach-photograph figcaption {
+  padding: 18px 0;
+  border-bottom: 1px solid #819a6e6b;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--paper);
+}
+.coach-photograph figcaption span {
+  display: block;
+  color: #c4d2ba;
+  font-size: 0.8125rem;
+  margin-top: 4px;
+}
+.assessment-section {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8%;
+  background: var(--lime);
+  color: var(--ink);
+}
+.assessment-section h2 em {
+  color: #456330;
+}
+.assessment-section > div:first-child > p:not(.lesson-kicker) {
+  font-size: 1.0625rem;
+  max-width: 540px;
+  line-height: 1.8;
+  margin-top: 30px;
+}
+.assessment-section .lesson-button {
+  margin-top: 30px;
+}
+.dark-button {
+  background: var(--ink);
+  color: var(--lime);
+  border-color: var(--ink);
+}
+.dark-button:hover {
+  background: #2a452d;
+}
+.assessment-price {
+  align-self: center;
+  border-left: 1px solid #516d4480;
+  padding-left: 15%;
+  min-width: 0;
+}
+.assessment-price > span {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  display: block;
+}
+.assessment-price strong {
+  display: block;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(6rem, 14.4vw, 15rem);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.assessment-price p {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  margin-top: 20px;
+}
+.assessment-steps {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5%;
+  padding: 35px 0 0;
+  margin: 15px 0 0;
+  list-style: none;
+  border-top: 1px solid #516d4480;
+}
+.assessment-steps li {
+  display: flex;
+  gap: 20px;
+}
+.assessment-steps li > span {
+  font-size: 0.875rem;
+  color: #456330;
+  line-height: 1.8;
+}
+.assessment-steps h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  font-weight: 500;
+}
+.assessment-steps p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  margin-top: 10px;
+  max-width: 260px;
+}
+.pricing-section {
+  background: var(--paper);
+  color: var(--ink);
+}
+.pricing-section h2 em {
+  color: #456330;
+}
+.lesson-price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 55px;
+  border: 1px solid #a6b497;
+}
+.lesson-price-card {
+  padding: 32px 28px;
+  border-right: 1px solid #a6b497;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lesson-price-card:last-child {
+  border: 0;
+}
+.featured-lesson {
+  background: var(--lime);
+}
+.price-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 0.75rem;
+  letter-spacing: 0.035em;
+  line-height: 1.6;
+}
+.price-card-top > span:last-child {
+  color: #53664a;
+}
+.featured-lesson .price-card-top > span:first-child {
+  background: var(--ink);
+  color: var(--lime);
+  padding: 3px 9px;
+}
+.lesson-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(3.5rem, 6vw, 5.7rem);
+  line-height: 1.1;
+  margin: 28px 0 20px;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.lesson-price > span {
+  font-size: 0.875rem;
+  font-family: var(--font-body), Arial, sans-serif;
+  letter-spacing: 0;
+}
+.lesson-price-card h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.12;
+  min-height: 72px;
+}
+.price-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #415043;
+  margin-top: 18px;
+  min-height: 82px;
+}
+.lesson-price-card ul {
+  list-style: none;
+  padding: 25px 0;
+  margin: 20px 0 0;
+  border-top: 1px solid #94a47f;
+  flex: 1;
+}
+.lesson-price-card li {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.lesson-price-card li svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: #456330;
+}
+.lesson-price-card .lesson-button {
+  background: transparent;
+  border-color: var(--ink);
+  font-size: 0.875rem;
+  padding: 15px 12px;
+  min-height: 56px;
+}
+.lesson-price-card .lesson-button:hover {
+  background: var(--ink);
+  color: var(--lime);
+}
+.featured-lesson .lesson-button {
+  background: var(--ink);
+  color: var(--lime);
+}
+.featured-lesson .lesson-button:hover {
+  background: #2a452d;
+}
+.more-lessons-heading {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: end;
+  margin: 70px 0 30px;
+}
+.more-lessons-heading h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 500;
+  font-size: 2.25rem;
+  line-height: 1.15;
+}
+.more-lessons-heading p {
+  font-size: 0.9375rem;
+  color: #53664a;
+  line-height: 1.7;
+  max-width: 300px;
+}
+.more-lessons {
+  border-top: 1px solid #a6b497;
+}
+.more-lessons article {
+  display: grid;
+  grid-template-columns: 1.8fr 0.8fr 1fr 0.9fr;
+  gap: 4%;
+  align-items: center;
+  padding: 27px 0;
+  border-bottom: 1px solid #a6b497;
+}
+.more-lessons h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  font-weight: 500;
+}
+.more-lessons p {
+  font-size: 0.9375rem;
+  color: #53664a;
+  line-height: 1.65;
+  margin-top: 7px;
+}
+.lesson-duration {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #415043;
+}
+.lesson-row-price strong {
+  font-size: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.lesson-row-price > span {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #53664a;
+  margin-top: 5px;
+}
+.more-lessons .lesson-text-link {
+  justify-self: end;
+}
+.pricing-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #53664a;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  margin-top: 27px;
+}
+.pricing-note svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.corporate-section {
+  background: var(--lime);
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 8%;
+  align-items: start;
+}
+.corporate-section h2 {
+  font-size: clamp(3.4rem, 6.6vw, 6.6rem);
+}
+.corporate-section h2 em {
+  color: #456330;
+}
+.corporate-copy > p {
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 490px;
+}
+.corporate-copy > p.corporate-lead {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+.corporate-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  border-block: 1px solid #819a6e;
+  padding: 25px 0;
+  margin: 35px 0 25px;
+}
+.corporate-facts dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #456330;
+}
+.corporate-facts dd {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 2.25rem;
+  margin: 10px 0 0;
+  line-height: 1.1;
+}
+.corporate-copy > p.corporate-price {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 3rem;
+  line-height: 1.1;
+}
+.corporate-price > span {
+  font-size: 1rem;
+  font-family: var(--font-body), Arial, sans-serif;
+}
+.corporate-copy > p.corporate-note {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 16px 0 25px;
+  color: #415043;
+}
+.equipment-section {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 8%;
+  padding: 70px 6%;
+  background: #1d3527;
+}
+.equipment-section > .lesson-kicker {
+  color: var(--lime);
+}
+.equipment-section h3 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 500;
+  font-size: clamp(2.25rem, 3.7vw, 3.5rem);
+  line-height: 1.1;
+}
+.equipment-section p {
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 660px;
+  margin: 25px 0;
+  color: #d2dec7;
+}
+.equipment-section .lesson-text-link {
+  display: inline-block;
+}
+.faq-section {
+  background: var(--paper);
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 8%;
+}
+.faq-section h2 {
+  font-size: clamp(3rem, 5.2vw, 5.5rem);
+}
+.faq-section h2 em {
+  color: #456330;
+}
+.faq-section > div:first-child > p:not(.lesson-kicker) {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #53664a;
+  margin: 30px 0 18px;
+}
+.faq-section .lesson-text-link {
+  display: inline-block;
+}
+.lesson-faq-list [data-slot='accordion-item'] {
+  border-bottom: 1px solid #a6b497;
+}
+.lesson-faq-list [data-slot='accordion-item']:first-child {
+  border-top: 1px solid #a6b497;
+}
+.lesson-faq-list [data-slot='accordion-trigger'] {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--ink);
+  padding: 22px 0;
+  border-radius: 0;
+  gap: 25px;
+}
+.lesson-faq-list [data-slot='accordion-trigger'] svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  color: #456330;
+}
+.lesson-faq-list [data-slot='accordion-content'] p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #415043;
+  margin: 0 0 14px;
+}
+.faq-static > div {
+  padding: 25px 0;
+  border-top: 1px solid #a6b497;
+}
+.faq-static h3 {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+.faq-static p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-top: 16px;
+}
+.booking-section {
+  background: #0c2119;
+}
+.booking-section h2 {
+  font-size: clamp(4rem, 10vw, 10rem);
+  line-height: 0.95;
+}
+.booking-section h2 em {
+  color: var(--lime);
+}
+.booking-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: center;
+  margin-top: 55px;
+  border-top: 1px solid #819a6e6b;
+  padding-top: 35px;
+}
+.booking-bottom p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #c4d2ba;
+}
+.booking-section .booking-detail {
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  line-height: 1.8;
+  color: #c4d2ba;
+  margin-top: 40px;
+}
+@media (max-width: 1000px) {
+  .section-heading {
+    gap: 5%;
+  }
+  .coach-section,
+  .assessment-section,
+  .corporate-section {
+    gap: 5%;
+  }
+  .lesson-price-card {
+    padding: 27px 20px;
+  }
+  .price-card-top {
+    min-height: 50px;
+    align-content: flex-start;
+  }
+  .lesson-price {
+    font-size: 4.35rem;
+  }
+  .lesson-price-card h3 {
+    font-size: 1.8rem;
+    min-height: 75px;
+  }
+  .more-lessons article {
+    grid-template-columns: 1.5fr 0.75fr 1fr;
+    gap: 20px;
+  }
+  .more-lessons article > .lesson-text-link {
+    grid-column: 1/-1;
+    justify-self: start;
+  }
+  .corporate-section h2 {
+    font-size: 4.75rem;
+  }
+}
+@media (max-width: 800px) {
+  .section-heading {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .section-heading > p {
+    max-width: 600px;
+  }
+  .lesson-goals {
+    margin-top: 35px;
+  }
+  .lesson-goals .goal-tabs [data-slot='tabs-trigger'] {
+    padding: 15px 18px;
+    flex: 1;
+    font-size: 0.9375rem;
+  }
+  .lesson-goals .goal-panel {
+    grid-template-columns: 0.25fr 1fr;
+    gap: 20px;
+    min-height: 350px;
+  }
+  .goal-number {
+    font-size: 6rem;
+  }
+  .coach-section {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .coach-photograph {
+    max-width: 700px;
+  }
+  .assessment-section {
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .assessment-section h2 {
+    font-size: 4.5rem;
+  }
+  .assessment-price {
+    padding-left: 10%;
+  }
+  .assessment-price strong {
+    font-size: 6.5rem;
+  }
+  .assessment-steps {
+    gap: 25px;
+  }
+  .assessment-steps li {
+    gap: 12px;
+  }
+  .assessment-steps h3 {
+    font-size: 1.5rem;
+  }
+  .lesson-price-grid {
+    grid-template-columns: 1fr;
+    max-width: 660px;
+    margin: 40px auto 0;
+  }
+  .lesson-price-card {
+    padding: 32px;
+    border-right: 0;
+    border-bottom: 1px solid #a6b497;
+  }
+  .price-card-top {
+    min-height: 0;
+  }
+  .lesson-price {
+    font-size: 5rem;
+  }
+  .lesson-price-card h3 {
+    min-height: 0;
+    font-size: 2.15rem;
+  }
+  .price-description {
+    min-height: 0;
+  }
+  .lesson-price-card ul {
+    padding-bottom: 14px;
+  }
+  .lesson-price-card .lesson-button {
+    align-self: flex-start;
+    min-width: 240px;
+  }
+  .more-lessons-heading {
+    display: block;
+    margin-top: 55px;
+  }
+  .more-lessons-heading p {
+    margin-top: 15px;
+    max-width: none;
+  }
+  .corporate-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .corporate-section h2 {
+    font-size: clamp(3.4rem, 10vw, 5.5rem);
+  }
+  .corporate-copy > p {
+    max-width: 600px;
+  }
+  .corporate-facts {
+    max-width: 600px;
+  }
+  .equipment-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .faq-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+@media (max-width: 540px) {
+  .lesson-goals .goal-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lesson-goals .goal-tabs [data-slot='tabs-trigger'] {
+    justify-content: flex-start;
+    font-size: 1rem;
+    min-height: 54px;
+    padding: 14px 20px;
+    border-top: 1px solid #a6b497;
+  }
+  .lesson-goals .goal-panel {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    min-height: 390px;
+    padding-top: 30px;
+  }
+  .goal-number {
+    font-size: 4.5rem;
+  }
+  .goal-panel p {
+    font-size: 1rem;
+  }
+  .goal-panel h3 {
+    font-size: 2.3rem;
+  }
+  .coach-section h2 {
+    font-size: 3.75rem;
+  }
+  .coach-signoff {
+    display: block;
+  }
+  .coach-signoff .lesson-text-link {
+    display: inline-block;
+    margin-top: 16px;
+  }
+  .assessment-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .assessment-section h2 {
+    font-size: 3.65rem;
+  }
+  .assessment-price {
+    border-left: 0;
+    border-top: 1px solid #819a6e;
+    padding: 25px 0 0;
+  }
+  .assessment-price strong {
+    font-size: 7rem;
+  }
+  .assessment-price p {
+    margin-top: 12px;
+  }
+  .assessment-steps {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .assessment-steps h3 {
+    font-size: 1.8rem;
+  }
+  .assessment-steps p {
+    max-width: none;
+  }
+  .lesson-price-card {
+    padding: 29px 23px;
+  }
+  .price-card-top {
+    gap: 10px;
+  }
+  .lesson-price {
+    font-size: 4.9rem;
+  }
+  .lesson-price-card .lesson-button {
+    align-self: stretch;
+    min-width: 0;
+  }
+  .more-lessons article {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .more-lessons article > div:first-child {
+    grid-column: 1/-1;
+  }
+  .lesson-row-price {
+    justify-self: end;
+    text-align: right;
+  }
+  .more-lessons article > .lesson-text-link {
+    grid-column: 1/-1;
+  }
+  .more-lessons h3 {
+    font-size: 2rem;
+  }
+  .corporate-section h2 {
+    font-size: clamp(3rem, 12.7vw, 4.5rem);
+  }
+  .corporate-copy > p.corporate-lead {
+    font-size: 1.3rem;
+  }
+  .corporate-facts {
+    gap: 20px;
+  }
+  .corporate-facts dd {
+    font-size: 2rem;
+  }
+  .equipment-section {
+    padding: 60px 6%;
+  }
+  .faq-section h2 {
+    font-size: 3.4rem;
+  }
+  .booking-section h2 {
+    font-size: clamp(3.5rem, 13.8vw, 5rem);
+  }
+  .booking-bottom {
+    margin-top: 35px;
+  }
+  .booking-bottom p {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 350px) {
+  .lesson-price {
+    font-size: 4rem;
+  }
+  .lessons-hero h1 {
+    font-size: 12.3vw;
+  }
+  .lesson-button > span {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .corporate-section h2 {
+    font-size: 12vw;
+  }
+  .golf-lessons h2 {
+    font-size: 12vw;
+  }
+}
+@media (min-width: 851px) and (max-height: 719px) {
+  .lessons-hero-stage {
+    min-height: 780px;
+  }
+  .lessons-print {
+    bottom: 13%;
+  }
+}
+.lessons-motion[data-motion='off'] .lessons-hero-copy {
+  max-width: 100%;
+}
+.lessons-motion[data-motion='off'] .lessons-hero h1 span,
+.lessons-motion[data-motion='off'] .lessons-hero h1 em {
+  white-space: normal;
+}
+.lessons-motion[data-motion='off'] .lessons-print {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: 70%;
+  max-width: 440px;
+  margin: 50px 2% 70px auto;
+}
+.lessons-motion[data-motion='off'] .lessons-seal {
+  bottom: 100px;
+}
+.lessons-motion[data-motion='off'] .lessons-hero-stage {
+  padding-bottom: 100px;
+}
+.golf-lessons .skip {
+  top: 15px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.golf-lessons .skip:focus {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 15px 22px;
+  clip-path: none;
+  white-space: normal;
+  max-width: calc(100% - 48px);
+}
+.lesson-skip {
+  top: 15px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lesson-skip:focus {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 15px 22px;
+  clip-path: none;
+  white-space: normal;
+  max-width: calc(100% - 48px);
+}
+.lessons-motion[data-motion='off'] .lesson-price {
+  font-size: clamp(2rem, 16vw, 5rem);
+  flex-wrap: wrap;
+  white-space: normal;
+}
+.lessons-motion[data-motion='off'] .assessment-price strong {
+  font-size: clamp(3rem, 20vw, 12rem);
+}
+.lessons-motion[data-motion='off'] .lesson-price-card h3 {
+  overflow-wrap: anywhere;
+}
+
+/* The three prices arrive as separate physical cards and settle into comparison.
+   No fixed stage: the visitor keeps scrolling through the original reading order. */
+.lesson-price-grid[data-pricing-cards] {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  gap: 18px;
+}
+.lesson-price-grid[data-pricing-cards] .lesson-price-card {
+  --card-arrival: 1;
+  --card-shift: 0px;
+  --card-lift: 0px;
+  --card-turn: 0deg;
+  position: relative;
+  border: 1px solid #a6b497;
+  background: var(--paper);
+  transform-origin: center bottom;
+}
+.lesson-price-grid[data-pricing-cards] .featured-lesson {
+  background: var(--lime);
+}
+.lesson-price-grid[data-pricing-cards] .lesson-price-card:nth-child(2) {
+  z-index: 2;
+}
+.lesson-price-grid[data-pricing-cards] .lesson-price-card:nth-child(3) {
+  z-index: 3;
+}
+.lessons-motion[data-motion='on'] [data-pricing-card] {
+  transform: translate3d(
+      calc((1 - var(--card-arrival)) * var(--card-shift)),
+      calc((1 - var(--card-arrival)) * var(--card-lift)),
+      0
+    )
+    rotate(calc((1 - var(--card-arrival)) * var(--card-turn)))
+    scale(calc(0.95 + var(--card-arrival) * 0.05));
+  opacity: calc(0.72 + var(--card-arrival) * 0.28);
+}
+.lessons-motion[data-motion='on'] [data-pricing-card]:focus-within {
+  transform: none;
+  opacity: 1;
+}
+.lessons-motion[data-motion='off'] [data-pricing-card] {
+  transform: none;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .golf-lessons [data-pricing-card] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Scroll Craft device floor, scoped to this existing brand. */
+.lessons-motion {
+  --sc-canvas: #0c2119;
+  --sc-surface: var(--paper);
+  --sc-ink: var(--paper);
+  --sc-ink-soft: #c4d2ba;
+  --sc-accent: var(--lime);
+  --sc-accent-ink: var(--ink);
+  --sc-font-display: var(--font-display);
+  --sc-font-text: var(--font-body);
+  --sc-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+.golf-lessons .sc-split {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.golf-lessons .sc-split--line {
+  display: block;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.golf-lessons .sc-split__i {
+  display: inline-block;
+}
+.golf-lessons [data-sc-kinetic] {
+  display: block;
+}
+.lessons-motion [data-lesson-scene] {
+  --scene-progress: 1;
+  --scene-journey: 1;
+}
+.lessons-motion[data-motion='on'] [data-sc-in] {
+  opacity: 0.5;
+  transform: translate3d(0, 35px, 0);
+  transition:
+    opacity 260ms var(--sc-ease-out),
+    transform 260ms var(--sc-ease-out);
+}
+.lessons-motion[data-motion='on'] [data-sc-in].sc-in,
+.lessons-motion[data-motion='on'] [data-sc-in]:focus-within {
+  opacity: 1;
+  transform: none;
+}
+.lessons-hero {
+  --scene-progress: 0;
+}
+.lessons-swing-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.swing-arc-ground {
+  stroke: #cbeaab;
+  stroke-width: 1;
+  opacity: 0.14;
+}
+.swing-arc-draw {
+  stroke: var(--lime);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+.lessons-motion[data-motion='on'] .swing-arc-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--hero-travel));
+}
+.lessons-light-plane {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    110deg,
+    transparent 55%,
+    #d5ecbc0b 73%,
+    transparent 90%
+  );
+  pointer-events: none;
+  transform: translateX(calc(var(--hero-travel) * -8vw));
+}
+.lessons-motion[data-motion='on'] .lessons-fairway {
+  transform: translate3d(0, calc(var(--hero-travel) * -95px), 0)
+    scale(calc(1.16 - var(--hero-travel) * 0.12));
+  opacity: 0.76;
+}
+.lessons-motion[data-motion='on'] .lessons-print {
+  transform: translate3d(0, calc(var(--hero-travel) * -155px), 0)
+    rotate(calc(4deg - var(--hero-travel) * 7deg))
+    scale(calc(1 + var(--hero-travel) * 0.1));
+}
+.lessons-motion[data-motion='on'] .lessons-seal {
+  transform: translate3d(0, calc(var(--hero-travel) * -185px), 0)
+    rotate(calc(-8deg + var(--hero-travel) * 28deg));
+}
+.coach-image-window {
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+}
+.coach-image-window img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lessons-motion[data-motion='on'] .coach-image-window img {
+  transform: translate3d(0, calc((0.5 - var(--scene-journey)) * 65px), 0)
+    scale(1.15);
+}
+.assessment-path {
+  grid-column: 1 / -1;
+  height: 75px;
+  margin-top: 24px;
+}
+.assessment-path svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.assessment-path-ground {
+  stroke: #456330;
+  stroke-width: 1;
+  opacity: 0.25;
+}
+.assessment-path-draw {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.assessment-steps li {
+  --step-progress: 1;
+}
+.assessment-steps li > span {
+  position: relative;
+}
+.assessment-steps li > span:before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 21px;
+  height: 3px;
+  background: var(--ink);
+  transform: scaleX(var(--step-progress));
+  transform-origin: left;
+}
+.lessons-motion[data-motion='on'] .assessment-path-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--scene-journey));
+}
+.lessons-motion[data-motion='on'] .assessment-steps li > div {
+  transform: translate3d(0, calc((1 - var(--step-progress)) * 35px), 0);
+  opacity: calc(0.65 + var(--step-progress) * 0.35);
+}
+.corporate-section {
+  overflow: clip;
+}
+.corporate-title h2 > span,
+.corporate-title h2 > em {
+  display: block;
+}
+.lessons-motion[data-motion='on'] .corporate-title h2 > span {
+  transform: translate3d(calc((1 - var(--scene-progress)) * -60px), 0, 0);
+}
+.lessons-motion[data-motion='on'] .corporate-title h2 > em {
+  transform: translate3d(calc((1 - var(--scene-progress)) * 85px), 0, 0);
+}
+.booking-section {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+}
+.booking-ring {
+  position: absolute;
+  z-index: -1;
+  width: clamp(350px, 54vw, 750px);
+  aspect-ratio: 1;
+  right: -8%;
+  top: -18%;
+  border: 1px solid #c4db9b40;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 40px #c4db9b0a,
+    0 0 0 95px #c4db9b05;
+  pointer-events: none;
+}
+.lessons-motion[data-motion='on'] .booking-ring {
+  transform: scale(calc(0.76 + var(--scene-progress) * 0.24))
+    rotate(calc((1 - var(--scene-progress)) * -16deg));
+  opacity: calc(0.3 + var(--scene-progress) * 0.7);
+}
+.lessons-motion[data-motion='on'] .booking-section h2 {
+  transform: translate3d(0, calc((1 - var(--scene-progress)) * 70px), 0);
+}
+@media (min-width: 1000px) and (min-height: 720px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 205svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    height: 100svh;
+    position: sticky;
+    top: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 span {
+    transform: translateX(calc(var(--hero-travel) * -3vw));
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 em {
+    transform: translateX(calc(var(--hero-travel) * 2vw));
+  }
+}
+@media (max-width: 999px), (max-height: 719px) {
+  .lessons-motion .lessons-hero {
+    height: auto !important;
+  }
+  .lessons-motion .lessons-hero-stage {
+    position: relative;
+    height: auto;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    transform: translate3d(0, calc(var(--hero-travel) * -70px), 0)
+      rotate(calc(4deg - var(--hero-travel) * 6deg));
+  }
+  .lessons-motion[data-motion='on'] .lessons-seal {
+    transform: translateY(calc(var(--hero-travel) * -90px))
+      rotate(calc(-8deg + var(--hero-travel) * 20deg));
+  }
+}
+@media (max-width: 540px) {
+  .lessons-swing-arc {
+    inset: auto -22% 30px auto;
+    width: 120%;
+    height: 46%;
+  }
+  .assessment-path {
+    height: 48px;
+    margin-top: 0;
+  }
+  .lessons-motion[data-motion='on'] .corporate-title h2 > span {
+    transform: translateX(calc((1 - var(--scene-progress)) * -22px));
+  }
+  .lessons-motion[data-motion='on'] .corporate-title h2 > em {
+    transform: translateX(calc((1 - var(--scene-progress)) * 28px));
+  }
+}
+/* Complete static scenes for all accessibility and failure fallbacks. */
+@media (min-width: 851px) and (max-height: 719px) {
+  .lessons-hero-stage { padding-top: calc(var(--nav-height) + 30px); }
+  .lessons-hero h1 { font-size: clamp(4rem, 7.5vw, 6.2rem); margin: 20px 0; }
+}
+.golf-lessons a, .golf-lessons button { scroll-margin-block: calc(var(--nav-height) + 24px); }
+.lessons-motion[data-motion='off'] .lessons-hero {
+  height: auto !important;
+}
+.lessons-motion[data-motion='off'] .lessons-hero-stage {
+  position: relative;
+  height: auto;
+}
+.lessons-motion[data-motion='off'] [data-sc-reveal] {
+  clip-path: none !important;
+}
+.lessons-motion[data-motion='off'] [data-sc-cue],
+.lessons-motion[data-motion='off'] .sc-split__i,
+.lessons-motion[data-motion='off'] [data-sc-in] {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lessons-motion .lessons-hero {
+    height: auto !important;
+  }
+  .lessons-motion .lessons-hero-stage {
+    position: relative;
+    height: auto;
+  }
+  .lessons-motion [data-sc-reveal] {
+    clip-path: none !important;
+  }
+  .lessons-motion [data-sc-cue],
+  .lessons-motion .sc-split__i,
+  .lessons-motion [data-sc-in] {
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* Final cascade: align the Coaching opening with the homepage after every
+   inherited full-page motion rule above. */
+.lessons-motion[data-motion='on'] .lessons-fairway {
+  clip-path: inset(
+    calc(var(--hero-inset) * 7%) calc(var(--hero-inset) * 5%)
+  );
+  transform: translate3d(0, calc(var(--hero-travel) * -36px), 0);
+  opacity: 0.76;
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 span {
+  transform: translate3d(calc(var(--hero-leave) * -15vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .lessons-hero h1 em {
+  transform: translate3d(calc(var(--hero-leave) * 15vw), 0, 0);
+}
+@media (min-width: 520px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 240svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+}
+@media (min-width: 520px) and (max-width: 999px) and (min-height: 560px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding-bottom: 58px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-copy {
+    max-width: 78%;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: min(34vw, 270px);
+    right: 3%;
+    bottom: 12%;
+    margin: 0;
+  }
+}
+@media (max-height: 719px) and (min-width: 520px) {
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    padding: calc(var(--nav-height) + 18px) 5% 46px;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero h1 {
+    margin: 12px 0;
+    font-size: clamp(3rem, 8.2vw, 5.2rem);
+    line-height: 0.84;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: clamp(180px, 22vw, 290px);
+    right: 3%;
+    bottom: 9%;
+    margin: 0;
+  }
+}
+@media (max-width: 519px) and (min-height: 700px) {
+  .lessons-motion[data-motion='on'] .lessons-hero {
+    height: 220svh !important;
+  }
+  .lessons-motion[data-motion='on'] .lessons-hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 0;
+  }
+  .lessons-motion[data-motion='on'] .lessons-print {
+    position: absolute;
+    width: 54%;
+    right: -7%;
+    bottom: 7%;
+    margin: 0;
+  }
+}
+
+/* Final whole-page cascade. Keep the section score authoritative after the
+   original Coaching layout and the homepage-aligned hero rules. */
+.golf-lessons {
+  overflow-x: clip;
+}
+.coach-section,
+.assessment-section,
+.corporate-section {
+  display: block;
+}
+.coach-stage,
+.assessment-stage,
+.corporate-stage {
+  display: grid;
+  align-items: center;
+  gap: 8%;
+}
+.coach-stage {
+  grid-template-columns: 1fr 1fr;
+}
+.assessment-stage {
+  grid-template-columns: 1.2fr 1fr;
+}
+.corporate-stage {
+  grid-template-columns: 1.25fr 1fr;
+  align-items: start;
+}
+.assessment-stage .assessment-path,
+.assessment-stage .assessment-steps {
+  grid-column: 1 / -1;
+}
+.assessment-stage > div:first-child > p:not(.lesson-kicker) {
+  max-width: 540px;
+  margin-top: 30px;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+.lessons-motion[data-motion='on'] .coach-image-window img {
+  transform: translate3d(0, calc((0.5 - var(--scene-journey)) * 105px), 0)
+    scale(calc(1.22 - var(--scene-journey) * 0.1));
+}
+.lessons-motion[data-motion='on'] .pricing-stage [data-pricing-card] {
+  opacity: calc(0.24 + var(--card-arrival) * 0.76);
+}
+.lessons-motion[data-motion='on'] .corporate-title h2 > span {
+  transform: translate3d(calc((1 - var(--scene-progress)) * -8vw), 0, 0);
+}
+.lessons-motion[data-motion='on'] .corporate-title h2 > em {
+  transform: translate3d(calc((1 - var(--scene-progress)) * 10vw), 0, 0);
+}
+@media (max-width: 800px) {
+  .coach-stage,
+  .assessment-stage,
+  .corporate-stage {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+}

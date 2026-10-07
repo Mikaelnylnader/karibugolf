@@ -39,6 +39,7 @@ const blogRoutes = [
 const routes = [
   "/",
   "/about",
+  "/Coaching",
   "/growing-the-game",
   "/blog",
   ...blogRoutes,
@@ -172,6 +173,7 @@ try {
     "## Primary pages",
     "",
     "- [Shop](https://karibugolf.com/shop/): Browse the complete golf catalogue.",
+    "- [Golf coaching](https://karibugolf.com/Coaching/): Private lessons, swing assessments, junior coaching and corporate clinics in Nairobi.",
     "- [Current stock](https://karibugolf.com/shop/stock/): Browse products currently listed in stock.",
     "- [Contact Karibu Golf](https://karibugolf.com/contact/): Confirm availability, specifications and delivery in Kenya.",
     "",

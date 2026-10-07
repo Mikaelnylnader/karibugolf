@@ -106,7 +106,7 @@ export default function Home() {
   ["From Nairobi. Across East Africa.","Based in Nairobi, we serve golfers across East Africa. Tell us your location and we’ll talk through delivery options and how to get you started."]
  ];
  return (
- <main ref={root} className="new-site" id="top">
+ <main ref={root} className="new-site" id="page-content">
   <a className="skip" href="#welcome">Skip opening</a>
   <section className="opening" ref={opening} aria-label="Welcome to Karibu Golf">
    <div className="opening-stage">

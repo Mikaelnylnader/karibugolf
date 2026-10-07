@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T20:12:45.865229+00:00",
+  "generatedAt": "2026-10-07T18:52:03.403588+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -235,19 +235,20 @@
       "name": "Callaway Paradym Ai Smoke HL Irons",
       "categorySlug": "golf_irons",
       "categoryLabel": "Golf Irons",
-      "description": "High-launch game-improvement iron set with an Ai Smart Face and deep cavity-back construction.",
+      "description": "Callaway Paradym Ai Smoke HL high-launch game-improvement irons for golfers with moderate-to-average swing speeds. The deep cavity-back design, Ai Smart Face and Dynamic Sole Design are built to increase launch, carry distance and forgiveness. Karibu set configuration: 4–PW + AW; confirm the fitted shaft, flex, hand and physical condition before ordering.",
       "priceKes": 100000,
       "priceUsd": 689.55,
       "priceCny": 4204,
       "sizes": "4–PW + AW",
-      "colors": "Standard",
+      "colors": "Chrome / Smoke",
       "status": "In Stock",
       "stock": "1",
       "featured": false,
       "images": [
-        "/api/product-images/27a8fa90-3e6f-4074-a503-d08238c62bf4-irons-2024-paradym-ai-smoke-hl-1.png",
-        "/images/shop/categories-v2/golf_irons.webp",
-        "/images/clubs.jpg"
+        "/images/products/callaway-paradym-ai-smoke-hl-cavity.jpg",
+        "/images/products/callaway-paradym-ai-smoke-hl-face.jpg",
+        "/images/products/callaway-paradym-ai-smoke-hl-address.jpg",
+        "/images/products/callaway-paradym-ai-smoke-hl-sole.jpg"
       ]
     },
     {
@@ -745,6 +746,29 @@
         "/images/products/footjoy-raingrip-pair-grip.png",
         "/images/products/footjoy-raingrip-pair-palm-left.png",
         "/images/products/footjoy-raingrip-pair-palm-right.png"
+      ]
+    },
+    {
+      "sku": "GK-PT038",
+      "slug": "gk-pt038",
+      "name": "Scotty Cameron Studio Style Newport 2 Putter",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "Scotty Cameron Studio Style Newport 2 blade putter precision milled from 303 stainless steel with a Studio Carbon Steel face insert, chain-link face milling, refined tri-sole and I-beam plumbing neck. Official lengths are 33, 34 and 35 inches, with right- and left-handed options. This listing is currently out of stock; confirm the exact hand, length, authenticity, included headcover and final supplier price before payment.",
+      "priceKes": 170053,
+      "priceUsd": 1313.15,
+      "priceCny": 8950.16,
+      "sizes": "33 in; 34 in; 35 in (manufacturer reference)",
+      "colors": "Silver / Red",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/scotty-cameron-studio-style-newport-2-hero.jpg",
+        "/images/products/scotty-cameron-studio-style-newport-2-sole.png",
+        "/images/products/scotty-cameron-studio-style-newport-2-cavity.png",
+        "/images/products/scotty-cameron-studio-style-newport-2-address.png",
+        "/images/products/scotty-cameron-studio-style-newport-2-face.png"
       ]
     }
   ]

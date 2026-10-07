@@ -15,5 +15,5 @@ export const metadata: Metadata = {
  icons:{icon:'/images/karibu-badge.svg'}
 };
 export default function RootLayout({children}:Readonly<{children:React.ReactNode}>) {
- return <html lang="en"><body className={display.variable+" "+body.variable}><SiteNav/>{children}<SiteFooter/></body></html>;
+ return <html lang="en"><body className={display.variable+" "+body.variable}><a className="skip" href="#page-content">Skip to content</a><SiteNav/>{children}<SiteFooter/></body></html>;
 }
