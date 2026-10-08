@@ -28,8 +28,8 @@ catch (error) {
   const products = database.prepare("SELECT * FROM products ORDER BY display_order, name").all();
   database.close();
   sheets = { Sheet1: [
-    ["SKU", "Name", "Category", "Description", "Sizes", "Colors", "Cost China (CNY)", "Cost China (Ksh)", "Selling Price (CNY)", "Price Kenya (Ksh)", "Selling Price (USD)", "Status", "Stock", "Image", "Website Visible"],
-    ...products.map((p) => [p.sku, p.name, p.category_slug, p.description, p.sizes, p.colors, p.cost_cny, p.cost_kes, p.price_cny, p.price_kes, p.price_usd, p.status, p.stock, p.image || (p.image_filename ? `/images/products/${p.image_filename}` : ""), p.website_visible ? "TRUE" : "FALSE"]),
+    ["SKU", "Name", "Category", "Description", "Sizes", "Colors", "Shaft Flex", "Shaft Material", "Cost China (CNY)", "Cost China (Ksh)", "Selling Price (CNY)", "Price Kenya (Ksh)", "Selling Price (USD)", "Status", "Stock", "Image", "Website Visible"],
+    ...products.map((p) => [p.sku, p.name, p.category_slug, p.description, p.sizes, p.colors, p.shaft_flex || "", p.shaft_material || "", p.cost_cny, p.cost_kes, p.price_cny, p.price_kes, p.price_usd, p.status, p.stock, p.image || (p.image_filename ? `/images/products/${p.image_filename}` : ""), p.website_visible ? "TRUE" : "FALSE"]),
   ] };
 }
 let persistence = Promise.resolve();

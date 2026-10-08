@@ -19,6 +19,7 @@ const categoryGroups = [
   ["Women’s apparel", ["womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]],
   ["Bags, balls & accessories", ["bags", "balls", "gloves", "hats_and_caps", "grips", "range_finders", "accessories"]],
 ];
+const shaftFlexCategories = new Set(["drivers", "woods", "hybrids", "golf_irons", "wedges", "junior_sets"]);
 const viewCopy = {
   dashboard: ["Dashboard", "Your catalogue, stock and live shop in one place."],
   products: ["Products", "Search, filter and manage every product in your catalogue."],
@@ -77,6 +78,10 @@ function escapeHtml(value) { const node = document.createElement("span"); node.t
 function categoryLabel(slug) { return categories.find(([value]) => value === slug)?.[1] || String(slug || "Uncategorised").replaceAll("_", " "); }
 function stockNumber(product) { const value = Number(product.stock); return Number.isFinite(value) ? Math.max(0, value) : 0; }
 function isInStock(product) { return product.status?.toLowerCase() === "in stock" && stockNumber(product) > 0; }
+function shaftFlexValue(value) { const flex = String(value || "").trim().toUpperCase(); return ["R", "S"].includes(flex) ? flex : ""; }
+function shaftMaterialValue(value) { const material = String(value || "").trim().toLowerCase(); return material === "steel" ? "Steel" : material === "graphite" ? "Graphite" : ""; }
+function tracksShaftFlex(product) { return shaftFlexCategories.has(product.categorySlug); }
+function tracksShaftMaterial(product) { return product.categorySlug === "golf_irons"; }
 function productImage(product, className = "thumb") {
   return product.image
     ? `<img class="${className}" src="${escapeHtml(product.image)}" alt="" onerror="this.outerHTML='<span class=thumb-placeholder>◇</span>'">`
@@ -125,6 +130,8 @@ function setLoading(loading) {
 
 function syncSummaries(summary) {
   const totalUnits = products.reduce((sum, product) => sum + (isInStock(product) ? stockNumber(product) : 0), 0);
+  const stockCostValue = products.reduce((sum, product) => sum + (isInStock(product) ? stockNumber(product) * Number(product.costKes || 0) : 0), 0);
+  const stockRetailValue = products.reduce((sum, product) => sum + (isInStock(product) ? stockNumber(product) * Number(product.priceKes || 0) : 0), 0);
   const out = products.filter((product) => !isInStock(product)).length;
   const values = {
     "#stat-total": summary.total, "#stat-live": summary.live, "#stat-private": summary.private,
@@ -135,6 +142,8 @@ function syncSummaries(summary) {
     "#inventory-live": products.filter((product) => isInStock(product) && product.websiteVisible).length,
   };
   for (const [selector, value] of Object.entries(values)) $(selector).textContent = Number(value).toLocaleString("en-KE");
+  $("#inventory-cost-value").textContent = money(stockCostValue);
+  $("#inventory-retail-value").textContent = money(stockRetailValue);
 }
 
 function populateCategoryFilters() {
@@ -265,30 +274,68 @@ function inventoryProducts() {
     && (!category || product.categorySlug === category));
 }
 
+function inventoryDraft(product) {
+  return inventoryChanges.get(product.sku) || {
+    stock: stockNumber(product),
+    shaftFlex: shaftFlexValue(product.shaftFlex),
+    shaftMaterial: shaftMaterialValue(product.shaftMaterial),
+  };
+}
+
+function updateInventoryDraft(product, patch) {
+  const next = { ...inventoryDraft(product), ...patch };
+  const unchanged = next.stock === stockNumber(product)
+    && next.shaftFlex === shaftFlexValue(product.shaftFlex)
+    && next.shaftMaterial === shaftMaterialValue(product.shaftMaterial);
+  if (unchanged) inventoryChanges.delete(product.sku);
+  else inventoryChanges.set(product.sku, next);
+}
+
 function renderInventory() {
   const visible = inventoryProducts();
   $("#inventory-rows").innerHTML = visible.length ? visible.map((product) => {
-    const quantity = inventoryChanges.has(product.sku) ? inventoryChanges.get(product.sku) : stockNumber(product);
-    const changed = inventoryChanges.has(product.sku);
+    const draft = inventoryDraft(product);
+    const quantity = draft.stock;
+    const quantityChanged = quantity !== stockNumber(product);
+    const flexChanged = draft.shaftFlex !== shaftFlexValue(product.shaftFlex);
+    const materialChanged = draft.shaftMaterial !== shaftMaterialValue(product.shaftMaterial);
     const nextStatus = quantity > 0 ? "In Stock" : "Out of Stock";
+    const flexControl = tracksShaftFlex(product) ? `<select class="shaft-flex-select${flexChanged ? " changed" : ""}" data-inventory-flex="${escapeHtml(product.sku)}" aria-label="Shaft flex for ${escapeHtml(product.name)}">
+        <option value=""${draft.shaftFlex ? "" : " selected"}>Not set</option>
+        <option value="R"${draft.shaftFlex === "R" ? " selected" : ""}>R — Regular</option>
+        <option value="S"${draft.shaftFlex === "S" ? " selected" : ""}>S — Stiff</option>
+      </select>` : '<span class="not-applicable">—</span>';
+    const materialControl = tracksShaftMaterial(product) ? `<select class="shaft-material-select${materialChanged ? " changed" : ""}" data-inventory-material="${escapeHtml(product.sku)}" aria-label="Shaft material for ${escapeHtml(product.name)}">
+        <option value=""${draft.shaftMaterial ? "" : " selected"}>Not set</option>
+        <option value="Steel"${draft.shaftMaterial === "Steel" ? " selected" : ""}>Steel</option>
+        <option value="Graphite"${draft.shaftMaterial === "Graphite" ? " selected" : ""}>Graphite</option>
+      </select>` : '<span class="not-applicable">—</span>';
     return `<tr>
       <td><div class="product-cell">${productImage(product)}<div><strong>${escapeHtml(product.name)}</strong></div></div></td>
       <td><code>${escapeHtml(product.sku)}</code></td><td>${escapeHtml(categoryLabel(product.categorySlug))}</td>
-      <td><input class="stock-input${changed ? " changed" : ""}" type="number" min="0" step="1" value="${quantity}" data-inventory-sku="${escapeHtml(product.sku)}" aria-label="Available quantity for ${escapeHtml(product.name)}"></td>
+      <td>${flexControl}</td>
+      <td>${materialControl}</td>
+      <td><input class="stock-input${quantityChanged ? " changed" : ""}" type="number" min="0" step="1" value="${quantity}" data-inventory-sku="${escapeHtml(product.sku)}" aria-label="Available quantity for ${escapeHtml(product.name)}"></td>
       <td><span class="badge ${quantity > 0 ? "in" : "out"}">${nextStatus}</span></td>
       <td><span class="badge ${product.websiteVisible ? "live" : "private"}"><i></i>${product.websiteVisible ? "LIVE" : "PRIVATE"}</span></td>
       <td><button class="edit-button" type="button" data-inventory-edit="${escapeHtml(product.sku)}">Edit details</button></td>
     </tr>`;
-  }).join("") : '<tr><td colspan="7" class="loading">No in-stock products match this view.</td></tr>';
+  }).join("") : '<tr><td colspan="9" class="loading">No in-stock products match this view.</td></tr>';
   $("#save-inventory").disabled = inventoryChanges.size === 0;
   $("#save-inventory").textContent = inventoryChanges.size ? `Save ${inventoryChanges.size} change${inventoryChanges.size === 1 ? "" : "s"}` : "Save inventory changes";
 }
 
 async function saveInventory() {
   if (!inventoryChanges.size) return;
-  const updates = [...inventoryChanges].map(([sku, quantity]) => {
+  const updates = [...inventoryChanges].map(([sku, draft]) => {
     const product = products.find((item) => item.sku === sku);
-    return { ...product, stock: String(quantity), status: quantity > 0 ? "In Stock" : "Out of Stock" };
+    return {
+      ...product,
+      stock: String(draft.stock),
+      status: draft.stock > 0 ? "In Stock" : "Out of Stock",
+      shaftFlex: draft.shaftFlex,
+      shaftMaterial: draft.shaftMaterial,
+    };
   });
   $("#save-inventory").disabled = true;
   $("#save-inventory").textContent = "Saving to Google Sheets…";
@@ -615,7 +662,7 @@ function formProduct() {
   const data = new FormData(form);
   return {
     sku: data.get("sku"), name: data.get("name"), categorySlug: data.get("categorySlug"), status: data.get("status"), stock: data.get("stock"),
-    description: data.get("description"), sizes: data.get("sizes"), colors: data.get("colors"), image: data.get("image"), websiteVisible: data.get("websiteVisible") === "on",
+    description: data.get("description"), sizes: data.get("sizes"), colors: data.get("colors"), shaftFlex: data.get("shaftFlex"), shaftMaterial: data.get("shaftMaterial"), image: data.get("image"), websiteVisible: data.get("websiteVisible") === "on",
     costCny: Number(data.get("costCny") || 0), costKes: Number(data.get("costKes") || 0), priceCny: Number(data.get("priceCny") || 0), priceKes: Number(data.get("priceKes") || 0), priceUsd: Number(data.get("priceUsd") || 0),
   };
 }
@@ -627,12 +674,13 @@ function openEditor(product = null) {
   $("#editor-title").textContent = product ? "Edit product" : "Add product";
   $("#editor-sku-note").textContent = product ? `${product.sku} · Saved in Google Sheets` : "Create a complete listing, then decide when it goes live.";
   form.elements.sku.readOnly = Boolean(product);
-  const defaults = { status: "Out of Stock", stock: "0", categorySlug: "golf_irons", websiteVisible: false };
+  const defaults = { status: "Out of Stock", stock: "0", categorySlug: "golf_irons", shaftFlex: "", shaftMaterial: "", websiteVisible: false };
   for (const [key, value] of Object.entries(product || defaults)) {
     if (!form.elements[key]) continue;
     if (form.elements[key].type === "checkbox") form.elements[key].checked = Boolean(value);
     else form.elements[key].value = value ?? "";
   }
+  syncEditorShaftMaterial(false);
   const preview = $("#editor-preview");
   preview.hidden = !product?.websiteVisible;
   preview.href = product ? `/shop/product/${product.sku.toLowerCase()}/` : "#";
@@ -640,6 +688,13 @@ function openEditor(product = null) {
   updateMargin();
   $("#save-status").textContent = "";
   $("#editor").showModal();
+}
+
+function syncEditorShaftMaterial(clearWhenHidden = true) {
+  const form = $("#product-form");
+  const isIron = form.elements.categorySlug.value === "golf_irons";
+  $("[data-shaft-material-field]").hidden = !isIron;
+  if (!isIron && clearWhenHidden) form.elements.shaftMaterial.value = "";
 }
 
 function updateImagePreview() {
@@ -867,9 +922,22 @@ $("#inventory-rows").addEventListener("input", (event) => {
   if (!input) return;
   const quantity = Math.max(0, Math.floor(Number(input.value) || 0));
   input.value = quantity;
-  const original = stockNumber(products.find((product) => product.sku === input.dataset.inventorySku));
-  if (quantity === original) inventoryChanges.delete(input.dataset.inventorySku);
-  else inventoryChanges.set(input.dataset.inventorySku, quantity);
+  const product = products.find((item) => item.sku === input.dataset.inventorySku);
+  updateInventoryDraft(product, { stock: quantity });
+  renderInventory();
+});
+$("#inventory-rows").addEventListener("change", (event) => {
+  const select = event.target.closest("[data-inventory-flex]");
+  const materialSelect = event.target.closest("[data-inventory-material]");
+  if (!select && !materialSelect) return;
+  if (select) {
+    const product = products.find((item) => item.sku === select.dataset.inventoryFlex);
+    updateInventoryDraft(product, { shaftFlex: shaftFlexValue(select.value) });
+  }
+  if (materialSelect) {
+    const product = products.find((item) => item.sku === materialSelect.dataset.inventoryMaterial);
+    updateInventoryDraft(product, { shaftMaterial: shaftMaterialValue(materialSelect.value) });
+  }
   renderInventory();
 });
 $("#inventory-rows").addEventListener("click", (event) => {
@@ -891,5 +959,6 @@ $("#product-form").elements.stock.addEventListener("input", (event) => {
   if (quantity > 0 && status.value === "Out of Stock") status.value = "In Stock";
   if (quantity <= 0 && status.value === "In Stock") status.value = "Out of Stock";
 });
+$("#product-form").elements.categorySlug.addEventListener("change", () => syncEditorShaftMaterial());
 
 checkSession();

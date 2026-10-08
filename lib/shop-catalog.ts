@@ -12,6 +12,8 @@ export type CatalogProduct = {
   priceCny: number;
   sizes: string;
   colors: string;
+  shaftFlex?: string;
+  shaftMaterial?: string;
   status: string;
   stock: string;
   featured: boolean;

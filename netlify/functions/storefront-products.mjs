@@ -16,6 +16,8 @@ export default async function handler(request) {
         status: product.status,
         stock: product.stock,
         image: product.image,
+        shaftFlex: product.shaftFlex,
+        shaftMaterial: product.shaftMaterial,
       }));
     return json({ products: visible });
   } catch (error) {

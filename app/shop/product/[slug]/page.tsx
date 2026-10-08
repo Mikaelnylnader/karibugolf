@@ -83,6 +83,8 @@ export default async function CatalogProductPage({ params }: { params: Promise<{
         additionalProperty: [
           { "@type": "PropertyValue", name: "Listed size or configuration", value: product.sizes },
           { "@type": "PropertyValue", name: "Listed colour or finish", value: product.colors },
+          ...(product.shaftMaterial ? [{ "@type": "PropertyValue", name: "Shaft material", value: product.shaftMaterial }] : []),
+          ...(product.shaftFlex ? [{ "@type": "PropertyValue", name: "Shaft flex", value: product.shaftFlex }] : []),
           { "@type": "PropertyValue", name: "Location", value: "Nairobi, Kenya" },
         ],
         offers: {

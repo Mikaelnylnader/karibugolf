@@ -5,7 +5,7 @@ import CatalogProductConfigurator from "@/components/catalog-product-configurato
 import type { ProductConfiguration } from "@/lib/product-page-details";
 import { formatKes, type CatalogProduct } from "@/lib/shop-catalog";
 
-type LiveProduct = Pick<CatalogProduct, "sku" | "priceKes" | "priceCny" | "priceUsd" | "status" | "stock">;
+type LiveProduct = Pick<CatalogProduct, "sku" | "priceKes" | "priceCny" | "priceUsd" | "status" | "stock" | "shaftFlex" | "shaftMaterial">;
 
 type Props = {
   product: CatalogProduct;
@@ -34,6 +34,7 @@ export default function LiveProductPurchase({ product, configuration }: Props) {
 
   const available = availableNow(live);
   const price = formatKes(live.priceKes);
+  const shaft = [live.shaftMaterial, live.shaftFlex ? `${live.shaftFlex} flex` : ""].filter(Boolean).join(" · ");
 
   return <>
     <div className={`catalog-stock ${available ? "available" : "unavailable"}`} data-live-stock={live.sku}>
@@ -44,6 +45,7 @@ export default function LiveProductPurchase({ product, configuration }: Props) {
     <dl className="club-set">
       <div><dt>Listed options</dt><dd>{product.sizes || "Confirm with us"}</dd></div>
       <div><dt>Colour / finish</dt><dd>{product.colors || "Confirm with us"}</dd></div>
+      {product.categorySlug === "golf_irons" && <div><dt>Shaft</dt><dd data-live-shaft={live.sku}>{shaft || "Confirm with us"}</dd></div>}
     </dl>
     <CatalogProductConfigurator name={product.name} sku={product.sku} price={price} available={available} configuration={configuration}/>
   </>;

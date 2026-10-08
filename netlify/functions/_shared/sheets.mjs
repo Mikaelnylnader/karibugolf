@@ -86,6 +86,8 @@ export async function readProducts() {
       description: String(cell(row, headers, "Description")).trim(),
       sizes: String(cell(row, headers, "Sizes")).trim(),
       colors: String(cell(row, headers, "Colors")).trim(),
+      shaftFlex: String(cell(row, headers, "Shaft Flex", "Flex")).trim().toUpperCase(),
+      shaftMaterial: String(cell(row, headers, "Shaft Material")).trim(),
       costCny: numberValue(cell(row, headers, "Cost China (CNY)", "Cost Price (CNY)", "Cost CNY")),
       costKes: numberValue(cell(row, headers, "Cost China (Ksh)", "Cost KES")),
       priceCny,
@@ -124,6 +126,8 @@ async function ensureAnyHeader(headers, labels) {
 const productFields = (product) => [
   [["SKU"], product.sku], [["Name"], product.name], [["Category"], product.categorySlug],
   [["Description"], product.description || ""], [["Sizes"], product.sizes || ""], [["Colors"], product.colors || ""],
+  [["Shaft Flex", "Flex"], product.shaftFlex || ""],
+  [["Shaft Material"], product.shaftMaterial || ""],
   [["Cost China (CNY)", "Cost Price (CNY)", "Cost CNY"], product.costCny || 0],
   [["Cost China (Ksh)", "Cost KES"], product.costKes || 0],
   [["Price Kenya (CNY)", "Selling Price (CNY)", "Sell CNY"], product.priceCny || 0],

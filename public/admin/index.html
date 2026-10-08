@@ -166,6 +166,8 @@
           <article><span>In-stock products</span><strong id="inventory-in">—</strong></article>
           <article><span>Low stock (1–2)</span><strong id="inventory-low">—</strong></article>
           <article><span>Live in webshop</span><strong id="inventory-live">—</strong></article>
+          <article><span>Stock cost value</span><strong id="inventory-cost-value">—</strong><small>Based on recorded KSh costs</small></article>
+          <article><span>Stock retail value</span><strong id="inventory-retail-value">—</strong><small>At current KSh selling prices</small></article>
         </section>
         <section class="catalog-card">
           <div class="inventory-intro">
@@ -178,8 +180,8 @@
           </div>
           <div class="table-wrap inventory-wrap">
             <table class="inventory-table">
-              <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Available</th><th>Status after save</th><th>Website</th><th></th></tr></thead>
-              <tbody id="inventory-rows"><tr><td colspan="7" class="loading">Loading inventory…</td></tr></tbody>
+              <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Shaft flex</th><th>Shaft material</th><th>Available</th><th>Status after save</th><th>Website</th><th></th></tr></thead>
+              <tbody id="inventory-rows"><tr><td colspan="9" class="loading">Loading inventory…</td></tr></tbody>
             </table>
           </div>
         </section>
@@ -295,6 +297,8 @@
               <label>Category<select name="categorySlug" required></select></label>
               <label>Sizes / set makeup<input name="sizes" placeholder="4–PW or S, M, L"></label>
               <label>Colours / finish<input name="colors" placeholder="Silver, Black"></label>
+              <label>Shaft flex<select name="shaftFlex"><option value="">Not set</option><option value="R">R — Regular</option><option value="S">S — Stiff</option></select></label>
+              <label data-shaft-material-field>Shaft material<select name="shaftMaterial"><option value="">Not set</option><option value="Steel">Steel</option><option value="Graphite">Graphite</option></select></label>
             </div>
           </section>
 

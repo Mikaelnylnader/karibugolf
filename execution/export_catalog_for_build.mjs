@@ -31,6 +31,8 @@ const live = products.filter((product) => product.websiteVisible).map((product) 
     priceCny: product.priceCny || 0,
     sizes: product.sizes || "",
     colors: product.colors || "",
+    shaftFlex: product.shaftFlex || "",
+    shaftMaterial: product.shaftMaterial || "",
     status: product.status || "Out of Stock",
     stock: String(product.stock || "0"),
     featured: previous?.featured || false,

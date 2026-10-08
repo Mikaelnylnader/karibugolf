@@ -165,16 +165,26 @@ button.badge { cursor: pointer; }
 .edit-button:hover { border-color: var(--green); color: var(--green); }
 .table-footer { display: flex; justify-content: space-between; gap: 15px; padding: 11px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
 
-.inventory-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; margin-bottom: 14px; }
+.inventory-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; margin-bottom: 14px; }
 .inventory-summary article { padding: 18px; border: 1px solid var(--line); border-radius: 9px; background: var(--white); }
 .inventory-summary span { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
 .inventory-summary strong { display: block; margin-top: 8px; font-size: 27px; }
+.inventory-summary small { display: block; margin-top: 6px; color: var(--muted); font-size: 9px; }
 .inventory-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding: 21px; border-bottom: 1px solid var(--line); }
 .inventory-intro p:not(.eyebrow) { margin: 7px 0 0; color: var(--muted); font-size: 12px; }
 .inventory-tools { grid-template-columns: minmax(260px, 1fr) 240px; }
-.inventory-wrap { max-height: calc(100vh - 425px); }
+.inventory-wrap {
+  /* Inventory grows with its rows so the browser page is the only vertical
+     scrolling surface. Keep horizontal table scrolling for narrow screens. */
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: visible;
+}
 .stock-input { width: 88px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-weight: 700; }
-.stock-input.changed { border-color: var(--gold); background: #fff9e9; box-shadow: 0 0 0 2px rgba(201, 154, 74, .13); }
+.shaft-flex-select, .shaft-material-select { width: 128px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-weight: 700; }
+.stock-input.changed, .shaft-flex-select.changed, .shaft-material-select.changed { border-color: var(--gold); background: #fff9e9; box-shadow: 0 0 0 2px rgba(201, 154, 74, .13); }
+.not-applicable { color: var(--muted); }
+.inventory-table { min-width: 1210px; }
 
 .category-shell { padding: 24px; }
 .category-intro { margin-bottom: 27px; }
