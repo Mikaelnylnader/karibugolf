@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, MessageCircle } from "lucide-react";
+import { ArrowUpRight, MessageCircle } from "lucide-react";
 import DepartmentScrollShell from "@/components/department-scroll-shell";
+import EquipmentScrollGuide from "@/components/equipment-scroll-guide";
+import PutterScrollGuide from "@/components/putter-scroll-guide";
 import ShopProductCard from "@/components/shop-product-card";
 import { categoryBySlug, departmentBySlug, departments, productsForCategory } from "@/lib/shop-catalog";
 import "../../scrollcraft.css";
@@ -19,33 +21,19 @@ export default async function CategoryPage({ params }: { params: Promise<{ depar
   const category = categoryBySlug(values.category);
   if (!department || !category || !department.categories.some((item) => item.slug === category.slug)) notFound();
   const categoryProducts = productsForCategory(category.slug);
+  const isPutters = department.slug === "clubs" && category.slug === "putters";
   const whatsappText = encodeURIComponent(`Hi Karibu Golf! I would like to ask about ${category.label}.`);
   return (
     <DepartmentScrollShell department={department} categoryMode>
-      <main className="department-scroll-page category-scroll-page" id="page-content">
-        <section
-          className="category-object-hero"
-          id={category.slug}
-          data-kit-category={category.slug}
-          data-sc-act="flow"
-        >
-          <figure aria-hidden="true">
-            <img src={category.image} alt="" fetchPriority="high" data-sc-parallax="-0.78" />
-          </figure>
-          <div className="category-hero-shade" aria-hidden="true" />
-          <div className="category-object-copy">
-            <a className="department-back-link" href={`/shop/${department.slug}`}>
-              <ArrowLeft size={17} /> {department.label}
-            </a>
-            <p className="micro">{department.label.toUpperCase()} COLLECTION</p>
-            <h1>{category.label.toUpperCase()}.</h1>
-            <p>{category.description}</p>
-            <div>
-              <span>{categoryProducts.length} products listed</span>
-              <a href="#products">See products <ArrowUpRight size={18} /></a>
-            </div>
-          </div>
-        </section>
+      <main className={`department-scroll-page category-scroll-page${isPutters ? " putter-scroll-page" : " equipment-scroll-page"}`} id="page-content">
+        {isPutters ? <PutterScrollGuide productCount={categoryProducts.length} /> : <EquipmentScrollGuide
+          categorySlug={category.slug}
+          categoryLabel={category.label}
+          categoryImage={category.image}
+          departmentSlug={department.slug}
+          departmentLabel={department.label}
+          productCount={categoryProducts.length}
+        />}
 
         {categoryProducts.length > 0 ? (
           <section className="category-product-shelf" id="products" data-sc-act="flow">
