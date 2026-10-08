@@ -1590,6 +1590,143 @@ const scottyCameronStudioStyleNewport2: ProductPageDetails = {
   },
 };
 
+const scottyCameronStudioStyleNewportPlus: ProductPageDetails = {
+  brand: "Scotty Cameron",
+  intro: "A wider Newport blade with perimeter weighting, higher MOI and the soft sound and feel of Scotty Cameron's Studio Carbon Steel face insert.",
+  gallery: [
+    { src: "/images/products/scotty-cameron-studio-style-newport-plus-hero.png", alt: "Scotty Cameron Studio Style Newport Plus angled sole and face view", label: "Newport Plus" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-plus-cavity.png", alt: "Scotty Cameron Studio Style Newport Plus rear cavity and I-beam plumbing neck", label: "Cavity" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-plus-address.png", alt: "Scotty Cameron Studio Style Newport Plus wider blade viewed from address", label: "At address" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-plus-face.png", alt: "Scotty Cameron Studio Style Newport Plus SCS insert and chain-link face milling", label: "Face" },
+  ],
+  galleryNote: "Four product-reference images supplied by Karibu Golf. Confirm the exact length, authenticity, included headcover and physical condition before payment.",
+  overviewEyebrow: "STUDIO STYLE NEWPORT PLUS",
+  overviewTitle: "BLADE LOOKS. MORE STABILITY.",
+  overviewBody: [
+    "The Studio Style Newport Plus keeps the rounded contours and clean alignment of a Newport blade while adding a slightly wider profile for more confidence, forgiveness and stability.",
+    "Its integrated 6061 aircraft-grade aluminium sole plate shifts weight towards the perimeter for higher MOI, while the precision-milled 303 stainless-steel body preserves the familiar blade presentation.",
+  ],
+  overviewImage: "/images/products/scotty-cameron-studio-style-newport-plus-cavity.png",
+  features: [
+    { title: "Plus profile", text: "The slightly wider Newport shape increases MOI and stability while retaining the look, alignment and feel of a traditional blade." },
+    { title: "Studio Carbon Steel insert", text: "The precision-milled SCS insert delivers carbon-steel sound and feel with electroless nickel plating for added durability." },
+    { title: "Chain-link face milling", text: "The milling pattern reduces the insert's contact points at impact to soften sound and support improved roll characteristics." },
+    { title: "Multi-material weighting", text: "A 6061 aluminium sole plate lets more weight sit around the perimeter of the 303 stainless-steel head for balance and forgiveness." },
+  ],
+  detailEyebrow: "3.5° LOFT · 70° LIE · MEDIUM TOE FLOW",
+  detailTitle: "MATCH THE LENGTH TO YOUR SETUP.",
+  detailBody: [
+    "Official stock lengths are 33, 34 and 35 inches, each paired with its own stainless-steel sole-weight configuration. The manufacturer's standard Newport Plus specification is right handed.",
+    "Karibu has not confirmed current inventory. Ask us to verify the exact length, authenticity, grip, headcover and final supplier price before ordering.",
+  ],
+  detailImage: "/images/products/scotty-cameron-studio-style-newport-plus-address.png",
+  configuration: [
+    { label: "Length", values: ["33 in", "34 in", "35 in"] },
+    { label: "Hand", values: ["Right handed"] },
+  ],
+  specTitle: "STUDIO STYLE NEWPORT PLUS SPECIFICATIONS.",
+  specIntro: "Official Scotty Cameron reference specifications. Manufacturer options do not represent confirmed Karibu stock.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Loft", "3.5°"],
+      ["Lie", "70°"],
+      ["Length", "33, 34, 35 in"],
+      ["Head material", "303 stainless steel"],
+      ["Sole plate", "6061 aircraft-grade aluminium"],
+      ["Face insert", "Studio Carbon Steel (SCS)"],
+      ["Offset", "Full shaft"],
+      ["Grip", "Full Contact Slim"],
+      ["Weights — 33 in", "2 × 20 g"],
+      ["Weights — 34 in", "2 × 15 g"],
+      ["Weights — 35 in", "2 × 10 g"],
+      ["Toe flow", "Medium"],
+    ],
+  },
+  equipment: [
+    { title: "Length-specific weighting", text: "Stainless-steel sole weights change with shaft length: 20 g at 33 inches, 15 g at 34 inches and 10 g at 35 inches." },
+    { title: "Standard grip", text: "The official build uses Scotty Cameron's Full Contact Slim grip. Confirm what is included with the exact Karibu item." },
+    { title: "Custom references", text: "The manufacturer offers additional half-inch right-handed lengths plus loft and lie adjustments. These are fitting references, not confirmed Karibu inventory." },
+  ],
+  source: { label: "Scotty Cameron Studio Style Newport Plus official product page", url: "https://www.scottycameron.com/putters/studio-style/newport-plus/" },
+  presentation: {
+    imageLabels: ["SCS insert", "Plus profile", "High MOI"],
+    featuresTitle: "THE NEWPORT PLUS DETAILS.",
+    featuresIntro: "Explore the wider blade geometry, multi-material sole, carbon-steel insert and chain-link face milling.",
+    inquiryTitle: "CONFIRM THE EXACT NEWPORT PLUS.",
+    inquiryBody: "Currently out of stock. Select a reference length, then ask Karibu Golf to confirm the actual item, authenticity, headcover, supplier price and availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this Studio Style Newport Plus",
+  },
+};
+
+const scottyCameronStudioStyleNewport: ProductPageDetails = {
+  brand: "Scotty Cameron",
+  intro: "The time-honoured rounded Newport blade, updated with a Studio Carbon Steel insert, vibration damping and chain-link face milling.",
+  gallery: [
+    { src: "/images/products/scotty-cameron-studio-style-newport-hero.png", alt: "Scotty Cameron Studio Style Newport angled sole and face view", label: "Studio Style" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-cavity.png", alt: "Scotty Cameron Studio Style Newport rear cavity and plumbing neck", label: "Cavity" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-address.png", alt: "Scotty Cameron Studio Style Newport rounded blade viewed from address", label: "At address" },
+    { src: "/images/products/scotty-cameron-studio-style-newport-face.png", alt: "Scotty Cameron Studio Style Newport SCS insert and chain-link face milling", label: "Face" },
+  ],
+  galleryNote: "Four product-reference images supplied by Karibu Golf. Confirm the exact length, authenticity, included headcover and physical condition before payment.",
+  overviewEyebrow: "STUDIO STYLE NEWPORT",
+  overviewTitle: "THE CLASSIC ROUNDED BLADE.",
+  overviewBody: [
+    "The Studio Style Newport keeps the familiar rounded contours and heel-and-toe weighting that define this long-standing blade shape, paired with a plumbing neck for medium toe flow.",
+    "Its 303 stainless-steel head is precision milled and assembled in the USA, finished in misted stainless steel and balanced with adjustable tungsten sole weights.",
+  ],
+  overviewImage: "/images/products/scotty-cameron-studio-style-newport-cavity.png",
+  features: [
+    { title: "Studio Carbon Steel insert", text: "The precision-milled SCS insert delivers carbon-steel sound and feel with electroless nickel plating for enhanced durability." },
+    { title: "Aerospace-inspired damping", text: "Vibration damping works with the fused insert to refine sound, feedback and control at impact." },
+    { title: "Chain-link face milling", text: "The milling pattern reduces the insert's contact points at impact for softer sound and tour-preferred roll characteristics." },
+    { title: "Rounded Newport geometry", text: "Softly rounded contours, heel-and-toe weighting and a plumbing neck create the classic Newport presentation and medium toe flow." },
+  ],
+  detailEyebrow: "3.5° LOFT · 70° LIE · MEDIUM TOE FLOW",
+  detailTitle: "MATCH THE LENGTH TO YOUR STROKE.",
+  detailBody: [
+    "Official stock lengths are 33, 34 and 35 inches, each paired with its own tungsten sole-weight configuration. The manufacturer's standard Studio Style Newport specification is right handed.",
+    "Karibu has not confirmed current inventory. Ask us to verify the exact length, authenticity, grip, headcover and final supplier price before ordering.",
+  ],
+  detailImage: "/images/products/scotty-cameron-studio-style-newport-address.png",
+  configuration: [
+    { label: "Length", values: ["33 in", "34 in", "35 in"] },
+    { label: "Hand", values: ["Right handed"] },
+  ],
+  specTitle: "STUDIO STYLE NEWPORT SPECIFICATIONS.",
+  specIntro: "Official Scotty Cameron reference specifications. Manufacturer options do not represent confirmed Karibu stock.",
+  specs: {
+    headers: ["Detail", "Official reference"],
+    rows: [
+      ["Loft", "3.5°"],
+      ["Lie", "70°"],
+      ["Length", "33, 34, 35 in"],
+      ["Head material", "303 stainless steel"],
+      ["Face insert", "Studio Carbon Steel (SCS)"],
+      ["Offset", "Full shaft"],
+      ["Grip", "Full Contact Slim"],
+      ["Weights — 33 in", "2 × 35 g tungsten"],
+      ["Weights — 34 in", "2 × 30 g tungsten"],
+      ["Weights — 35 in", "2 × 25 g tungsten"],
+      ["Toe flow", "Medium"],
+    ],
+  },
+  equipment: [
+    { title: "Length-specific weighting", text: "Tungsten sole weights change with shaft length to maintain the intended head feel: 35 g at 33 inches, 30 g at 34 inches and 25 g at 35 inches." },
+    { title: "Standard grip", text: "The official build uses Scotty Cameron's Full Contact Slim grip. Confirm what is included with the exact Karibu item." },
+    { title: "Custom references", text: "The manufacturer offers additional half-inch right-handed lengths plus loft and lie adjustments. These are fitting references, not confirmed Karibu inventory." },
+  ],
+  source: { label: "Scotty Cameron Studio Style Newport official product page", url: "https://www.scottycameron.com/putters/studio-style/newport/" },
+  presentation: {
+    imageLabels: ["SCS insert", "Rounded blade", "Tungsten weights"],
+    featuresTitle: "THE STUDIO STYLE DETAILS.",
+    featuresIntro: "Explore the carbon-steel insert, vibration damping, chain-link face milling and classic rounded Newport geometry.",
+    inquiryTitle: "CONFIRM THE EXACT NEWPORT.",
+    inquiryBody: "Currently out of stock. Select a reference length, then ask Karibu Golf to confirm the actual item, authenticity, headcover, supplier price and availability. An enquiry does not reserve stock.",
+    inquiryLink: "Ask about this Studio Style Newport",
+  },
+};
+
 const categoryGuidance: Record<string, { eyebrow: string; title: string; text: string }> = {
   drivers: { eyebrow: "OFF THE TEE", title: "KNOW YOUR DRIVER.", text: "Confirm loft, shaft, flex, handedness and head condition before choosing a driver." },
   woods: { eyebrow: "FROM TEE OR TURF", title: "BUILD THE TOP OF YOUR BAG.", text: "Confirm loft, shaft, flex and the role this fairway wood should play in your distance gaps." },
@@ -1628,6 +1765,8 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-pt036") return labGolfOz1;
   if (product.slug === "gk-pt037") return scottyCameronH25;
   if (product.slug === "gk-pt038") return scottyCameronStudioStyleNewport2;
+  if (product.slug === "gk-pt039") return scottyCameronStudioStyleNewportPlus;
+  if (product.slug === "gk-pt040") return scottyCameronStudioStyleNewport;
 
   const guide = categoryGuidance[product.categorySlug] ?? {
     eyebrow: product.categoryLabel.toUpperCase(),

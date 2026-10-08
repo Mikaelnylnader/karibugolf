@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T18:52:03.403588+00:00",
+  "generatedAt": "2026-10-07T19:33:16.473888+00:00",
   "categories": [
     {
       "slug": "drivers",
@@ -769,6 +769,50 @@
         "/images/products/scotty-cameron-studio-style-newport-2-cavity.png",
         "/images/products/scotty-cameron-studio-style-newport-2-address.png",
         "/images/products/scotty-cameron-studio-style-newport-2-face.png"
+      ]
+    },
+    {
+      "sku": "GK-PT039",
+      "slug": "gk-pt039",
+      "name": "Scotty Cameron Studio Style Newport Plus Putter",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "Scotty Cameron Studio Style Newport Plus wider blade putter precision milled from 303 stainless steel with a nickel-plated Studio Carbon Steel face insert, chain-link face milling and a 6061 aluminium sole plate for higher MOI and stability. Official stock lengths are 33, 34 and 35 inches. This listing is currently out of stock; confirm the exact length, authenticity, included headcover and final supplier price before payment.",
+      "priceKes": 170053,
+      "priceUsd": 1313.15,
+      "priceCny": 8950.16,
+      "sizes": "33 in; 34 in; 35 in (manufacturer reference)",
+      "colors": "Silver / Red",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/scotty-cameron-studio-style-newport-plus-hero.png",
+        "/images/products/scotty-cameron-studio-style-newport-plus-cavity.png",
+        "/images/products/scotty-cameron-studio-style-newport-plus-address.png",
+        "/images/products/scotty-cameron-studio-style-newport-plus-face.png"
+      ]
+    },
+    {
+      "sku": "GK-PT040",
+      "slug": "gk-pt040",
+      "name": "Scotty Cameron Studio Style Newport Putter",
+      "categorySlug": "putters",
+      "categoryLabel": "Putters",
+      "description": "Scotty Cameron Studio Style Newport rounded blade putter precision milled from 303 stainless steel with a nickel-plated Studio Carbon Steel face insert, aerospace-inspired vibration damping, chain-link face milling and adjustable tungsten sole weights. Official stock lengths are 33, 34 and 35 inches. This listing is currently out of stock; confirm the exact length, authenticity, included headcover and final supplier price before payment.",
+      "priceKes": 170053,
+      "priceUsd": 1313.15,
+      "priceCny": 8950.16,
+      "sizes": "33 in; 34 in; 35 in (manufacturer reference)",
+      "colors": "Silver / Red",
+      "status": "Out of Stock",
+      "stock": "0",
+      "featured": false,
+      "images": [
+        "/images/products/scotty-cameron-studio-style-newport-hero.png",
+        "/images/products/scotty-cameron-studio-style-newport-cavity.png",
+        "/images/products/scotty-cameron-studio-style-newport-address.png",
+        "/images/products/scotty-cameron-studio-style-newport-face.png"
       ]
     }
   ]
