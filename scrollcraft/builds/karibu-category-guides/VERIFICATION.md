@@ -7,7 +7,8 @@ Date: 8 October 2026
 - Source: authored Next/Vinext storefront.
 - Reviewed export: `dist/static`.
 - Local URL: `http://127.0.0.1:4515`.
-- Production deployment: not performed. The owner has not yet approved a Netlify upload for this revision.
+- Production URL: `https://karibugolf.com`.
+- Netlify deploy: `6ac7aee292059b8b1e0c73f0`, published after owner approval on 8 October 2026.
 
 ## Automated evidence
 
@@ -15,7 +16,9 @@ Command:
 
 `node execution/verify_category_guides.mjs http://127.0.0.1:4515`
 
-Final result: `errors: []`, `failures: []`.
+`node execution/verify_category_guides.mjs https://karibugolf.com`
+
+Local and production results: `errors: []`, `failures: []`.
 
 Representative routes:
 
@@ -63,4 +66,3 @@ Diff: the lateral decision rail reads more as comparison than orientation, which
 ## Limits
 
 - A real iPhone was not available. The phone evidence is Chrome emulation and does not reproduce Safari’s exact scrolling or font rasterisation.
-- No production URL was changed or checked in this turn.

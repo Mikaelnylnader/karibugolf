@@ -1,18 +1,20 @@
 # Karibu Putters verification
 
-## Release candidate
+## Release
 
 Verified local static package: `dist/static/shop/clubs/putters/index.html`
 
 Preview reviewed at: `http://127.0.0.1:4515/shop/clubs/putters/`
 
-Production was not published during this build. The website deployment directive requires explicit owner approval after local review.
+Production reviewed at: `https://karibugolf.com/shop/clubs/putters/`
+
+Netlify deploy `6ac7aee292059b8b1e0c73f0` was published after owner approval on 8 October 2026.
 
 ## Automated evidence
 
 Harness: `execution/verify_putters_scroll.mjs`
 
-Final result: PASS, with an empty failures array.
+Local and production result: PASS, with empty errors and failures arrays.
 
 Configurations:
 
