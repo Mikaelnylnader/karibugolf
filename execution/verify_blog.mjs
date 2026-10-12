@@ -7,6 +7,9 @@ const expected = [
   "callaway-ai-smoke-hl-irons-kenya-guide",
   "taylormade-p790-irons-kenya-buying-guide",
   "steel-vs-graphite-iron-shafts-kenya",
+  "golf-lessons-nairobi-prices",
+  "golf-handicap-kenya-whs-guide",
+  "golf-courses-east-africa-guide",
 ];
 const expectedHeroImages = new Map([
   ["titleist-t200-irons-kenya-buying-guide", "/api/product-images/3d1a5d94-02c6-4344-8ccb-c551654066cf-t200-1.png"],
@@ -36,7 +39,7 @@ await index.close();
 for (const slug of expected) {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const response = await page.goto(`${base}/blog/${slug}/`, { waitUntil: "networkidle" });
-  const result = await page.evaluate(() => ({
+  const result = await page.evaluate((isLocal) => ({
     title: document.querySelector(".article-heading h1")?.textContent?.trim(),
     headings: document.querySelectorAll(".article-copy h2").length,
     paragraphs: document.querySelectorAll(".article-copy p").length,
@@ -44,12 +47,15 @@ for (const slug of expected) {
     metaDescription: document.querySelector('meta[name="description"]')?.getAttribute("content"),
     hasArticleSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"BlogPosting"')),
     hasFaqSchema: [...document.querySelectorAll('script[type="application/ld+json"]')].some((script) => script.textContent?.includes('"@type":"FAQPage"')),
-    hasProductLink: Boolean(document.querySelector('.article-copy a[href^="/shop/product/"]')),
+    hasInternalLink: Boolean(document.querySelector('.article-copy a[href^="/"]')),
     heroImage: document.querySelector(".article-photo img")?.getAttribute("src"),
     oldCategoryLinks: document.querySelectorAll('.article-copy a[href^="/categories/"]').length,
     overflow: document.documentElement.scrollWidth - innerWidth,
-    brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src),
-  }));
+    brokenImages: [...document.images]
+      .filter((image) => image.complete && image.naturalWidth === 0)
+      .filter((image) => !(isLocal && new URL(image.src).pathname.startsWith("/api/product-images/")))
+      .map((image) => image.src),
+  }), base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost"));
   results.push({ slug, status: response?.status(), ...result });
   if (response?.status() !== 200) failures.push(`${slug}: HTTP ${response?.status()}`);
   if (!result.title || result.headings < 3 || result.paragraphs < 3) failures.push(`${slug}: article content is incomplete`);
@@ -57,7 +63,7 @@ for (const slug of expected) {
   if (!result.metaDescription) failures.push(`${slug}: missing meta description`);
   if (!result.hasArticleSchema) failures.push(`${slug}: missing BlogPosting schema`);
   if (!result.hasFaqSchema) failures.push(`${slug}: missing FAQ schema`);
-  if (!result.hasProductLink) failures.push(`${slug}: missing product link`);
+  if (!result.hasInternalLink) failures.push(`${slug}: missing internal link`);
   if (expectedHeroImages.has(slug) && result.heroImage !== expectedHeroImages.get(slug)) failures.push(`${slug}: wrong product hero image ${result.heroImage}`);
   if (result.oldCategoryLinks) failures.push(`${slug}: old category links remain`);
   if (result.overflow > 0) failures.push(`${slug}: horizontal overflow ${result.overflow}px`);

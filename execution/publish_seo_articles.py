@@ -38,8 +38,8 @@ def validate(article):
 
 def main():
     articles = json.loads(ARTICLES.read_text(encoding="utf-8"))
-    if len(articles) != 5 or len({article["slug"] for article in articles}) != 5:
-        raise ValueError("Exactly five articles with unique slugs are required")
+    if not articles or len({article["slug"] for article in articles}) != len(articles):
+        raise ValueError("At least one article with a unique slug is required")
     for article in articles:
         validate(article)
 
