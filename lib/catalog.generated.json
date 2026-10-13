@@ -135,6 +135,13 @@
       "displayOrder": 21
     },
     {
+      "slug": "kids_shoes",
+      "label": "Kids’ Shoes",
+      "description": "Junior golf footwear. Explore fit, traction and easy fastening, then ask about models, sizes and availability.",
+      "categoryType": "shoes",
+      "displayOrder": 21.5
+    },
+    {
       "slug": "bags",
       "label": "Bags",
       "description": "Carry your gear in style",

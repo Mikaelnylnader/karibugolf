@@ -6,7 +6,7 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const categories = [
   ["drivers", "Drivers"], ["woods", "Fairway Woods"], ["hybrids", "Hybrids"], ["golf_irons", "Irons"], ["wedges", "Wedges"], ["putters", "Putters"],
   ["junior_sets", "Junior Sets"],
-  ["mens_shoes", "Men’s Shoes"], ["womens_shoes", "Women’s Shoes"], ["mens_polos", "Men’s Polos"], ["mens_pants", "Men’s Trousers"],
+  ["mens_shoes", "Men’s Shoes"], ["womens_shoes", "Women’s Shoes"], ["kids_shoes", "Kids’ Shoes"], ["mens_polos", "Men’s Polos"], ["mens_pants", "Men’s Trousers"],
   ["mens_jackets", "Men’s Jackets"], ["mens_shorts", "Men’s Shorts"], ["womens_polos", "Women’s Polos"], ["womens_skirts", "Women’s Skirts"],
   ["womens_pants", "Women’s Trousers"], ["womens_dresses", "Women’s Dresses"], ["womens_jackets", "Women’s Jackets"], ["womens_tops", "Women’s Tops"],
   ["bags", "Golf Bags"], ["balls", "Golf Balls"], ["gloves", "Gloves"], ["hats_and_caps", "Hats & Caps"], ["grips", "Grips"], ["range_finders", "Range Finders"], ["accessories", "Accessories"],
@@ -14,7 +14,7 @@ const categories = [
 const categoryGroups = [
   ["Clubs", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]],
   ["Kids", ["junior_sets"]],
-  ["Shoes", ["mens_shoes", "womens_shoes"]],
+  ["Shoes", ["mens_shoes", "womens_shoes", "kids_shoes"]],
   ["Men’s apparel", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts"]],
   ["Women’s apparel", ["womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]],
   ["Bags, balls & accessories", ["bags", "balls", "gloves", "hats_and_caps", "grips", "range_finders", "accessories"]],

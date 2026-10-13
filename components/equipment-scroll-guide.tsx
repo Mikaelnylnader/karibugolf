@@ -402,6 +402,25 @@ const shoeGuide: Guide = {
   ],
 };
 
+const kidsShoeGuide: Guide = {
+  room: 'THE JUNIOR WALK TEST',
+  intro: 'Fit, grip and easy fastening for young golfers. Ask us about junior models, sizes and availability.',
+  question: 'What does your junior need next?',
+  lensTitle: 'FIT THE FEET THEY HAVE TODAY.',
+  lensBody: 'Start with current foot measurements and the chosen brand’s junior size chart. Check both feet, heel hold and toe room in golf socks. Age and an adult size conversion are not enough to confirm fit.',
+  instrument: 'field',
+  decisions: [
+    { kicker: '01 / FIT', title: 'Comfort comes first', body: 'Look for a secure heel and comfortable toe room. Have your child walk, turn and try a practice swing. Avoid choosing an oversized pair simply to make it last longer.' },
+    { kicker: '02 / GRIP', title: 'Match their practice', body: 'Compare the outsole with where they play: practice mats, dry fairways or damp grass. Confirm the model’s traction and any course footwear rules before ordering.' },
+    { kicker: '03 / FASTENING', title: 'Keep it simple', body: 'Choose laces or another fastening your child can manage securely. Check the actual junior model’s closure, weight and weather protection rather than assuming adult features are included.' },
+  ],
+  choices: [
+    { label: 'First lessons', title: 'Make practice comfortable', body: 'Start with a lightweight, comfortable fit and a fastening they can use. Tell us their current shoe size, foot length and where lessons take place so we can check suitable options.', note: 'Ask about: fit, easy fastening and practice surfaces' },
+    { label: 'Regular rounds', title: 'Prepare for the course', body: 'Compare comfortable walking support, outsole grip and the model’s stated weather protection. Confirm the junior size and exact specification before payment.', note: 'Ask about: course grip and walking comfort' },
+    { label: 'Fit check', title: 'Measure before choosing', body: 'Share current measurements for both feet and the sizing system on their usual shoes. We will confirm the chosen brand’s chart and available junior sizes; do not rely on age alone.', note: 'Ask about: junior size chart and current measurements' },
+  ],
+};
+
 const apparelGuide: Guide = {
   room: 'THE COURSE WARDROBE',
   intro:
@@ -513,6 +532,7 @@ const guideBySlug: Record<string, Guide> = {
   accessories: fieldGuide,
   mens_shoes: shoeGuide,
   womens_shoes: shoeGuide,
+  kids_shoes: kidsShoeGuide,
   hats_and_caps: apparelGuide,
   mens_polos: apparelGuide,
   mens_pants: apparelGuide,
@@ -638,6 +658,7 @@ export default function EquipmentScrollGuide({
   const guide = guideBySlug[categorySlug] ?? fieldGuide;
   const [choice, setChoice] = useState(1);
   const active = useMemo(() => guide.choices[choice], [guide, choice]);
+  const juniorInquiry = encodeURIComponent(`Hi Karibu Golf! I would like to ask about kids’ golf shoes. Priority: ${active.label}. Current shoe size/sizing system: __. Foot length: __. Please confirm junior models, available sizes, price and delivery options.`);
 
   return (
     <>
@@ -762,9 +783,7 @@ export default function EquipmentScrollGuide({
           <p className="micro">KARIBU FIT LINE</p>
           <h2>{guide.question.toUpperCase()}</h2>
           <p>
-            Choose the description closest to your game. This is a useful place
-            to begin, then confirm it with the actual product and your normal
-            conditions.
+            {categorySlug === 'kids_shoes' ? 'Choose the description closest to your junior’s next step. Confirm fit and available sizes against the actual shoe before ordering.' : 'Choose the description closest to your game. This is a useful place to begin, then confirm it with the actual product and your normal conditions.'}
           </p>
         </header>
         <div className="equipment-fit-workbench" data-sc-in>
@@ -790,8 +809,8 @@ export default function EquipmentScrollGuide({
             <h3>{active.title}</h3>
             <p>{active.body}</p>
             <strong>{active.note}</strong>
-            <a href="#products">
-              See the Karibu collection <ArrowUpRight size={18} />
+            <a href={categorySlug === 'kids_shoes' ? `https://wa.me/254116416105?text=${juniorInquiry}` : productCount ? '#products' : '#availability'}>
+              {categorySlug === 'kids_shoes' ? 'Ask about junior sizes' : productCount ? 'See the Karibu collection' : 'Ask about availability'} <ArrowUpRight size={18} />
             </a>
           </div>
         </div>

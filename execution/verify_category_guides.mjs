@@ -1,8 +1,9 @@
 import { chromium } from "playwright-core";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const base = (process.argv[2] || "http://127.0.0.1:4515").replace(/\/$/, "");
 const out = "scrollcraft/builds/karibu-category-guides/lab";
+const localCatalog = /127\.0\.0\.1|localhost/.test(base) ? JSON.parse(await readFile("lib/catalog.generated.json", "utf8")) : null;
 await mkdir(out, { recursive: true });
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
   { name: "balls", path: "/shop/balls/balls/", title: "GOLF BALLS.", products: 2, instrument: "contact" },
   { name: "gloves", path: "/shop/accessories/gloves/", title: "GLOVES.", products: 6, instrument: "contact" },
   { name: "shoes", path: "/shop/shoes/mens_shoes/", title: "MEN’S SHOES.", products: 0, instrument: "field" },
+  { name: "kids-shoes", path: "/shop/shoes/kids_shoes/", title: "KIDS’ SHOES.", products: 0, instrument: "field" },
 ];
 
 const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
@@ -21,7 +23,9 @@ const errors = [];
 const runs = [];
 
 const prepare = async (page, label) => {
+  if (localCatalog) await page.route("**/api/storefront-products*", route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({products:localCatalog.products})}));
   await page.addInitScript(() => {
+    Element.prototype.requestPointerLock = () => Promise.resolve();
     Element.prototype.setPointerCapture = () => {};
     Element.prototype.releasePointerCapture = () => {};
   });
@@ -35,6 +39,7 @@ for (const route of routes) {
     { name: "phone", viewport: { width: 390, height: 844 } },
   ]) {
     const label = `${route.name}-${device.name}`;
+    process.stdout.write(`Checking ${label}\n`);
     const context = await browser.newContext({ viewport: device.viewport });
     const page = await context.newPage();
     await prepare(page, label);

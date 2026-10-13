@@ -13,13 +13,17 @@ export default function DepartmentScrollShell({
   children,
   department,
   categoryMode = false,
+  inlineCategoryIndex = false,
+  currentCategory,
 }: {
   children: ReactNode;
   department: Department;
   categoryMode?: boolean;
+  inlineCategoryIndex?: boolean;
+  currentCategory?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(department.categories[0]?.slug ?? "");
+  const [active, setActive] = useState(currentCategory ?? department.categories[0]?.slug ?? "");
   const [visited, setVisited] = useState<string[]>([]);
 
   useEffect(() => {
@@ -82,7 +86,7 @@ export default function DepartmentScrollShell({
 
   const ledgerStyle = { "--kit-count": department.categories.length } as CSSProperties;
   return (
-    <div ref={rootRef} className="department-scroll-shell" style={ledgerStyle}>
+    <div ref={rootRef} className={`department-scroll-shell${inlineCategoryIndex ? " inline-category-index" : ""}`} style={ledgerStyle}>
       <nav className="kit-ledger" aria-label={department.label + " category index"}>
         <div className="kit-ledger-heading">
           <span>Build your {department.slug === "clubs" ? "bag" : "kit"}</span>

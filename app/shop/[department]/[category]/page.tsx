@@ -12,6 +12,11 @@ export function generateStaticParams() { return departments.flatMap((department)
 export async function generateMetadata({ params }: { params: Promise<{ department: string; category: string }> }): Promise<Metadata> {
   const values = await params;
   const category = categoryBySlug(values.category);
+  if (values.department === "shoes" && values.category === "kids_shoes") return {
+    title: "Kids’ Golf Shoes in Kenya | Karibu Golf",
+    description: "Explore junior golf shoe fit, grip and easy fastening. Ask Karibu Golf about kids’ models, sizes and availability in Kenya before ordering.",
+    alternates: { canonical: "https://karibugolf.com/shop/shoes/kids_shoes/" },
+  };
   return { title: category ? `${category.label} | Karibu Golf Shop` : "Category | Karibu Golf", description: category?.description };
 }
 
@@ -22,9 +27,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ depar
   if (!department || !category || !department.categories.some((item) => item.slug === category.slug)) notFound();
   const categoryProducts = productsForCategory(category.slug);
   const isPutters = department.slug === "clubs" && category.slug === "putters";
-  const whatsappText = encodeURIComponent(`Hi Karibu Golf! I would like to ask about ${category.label}.`);
+  const isKidsShoes = department.slug === "shoes" && category.slug === "kids_shoes";
+  const whatsappText = encodeURIComponent(isKidsShoes ? "Hi Karibu Golf! I would like to ask about kids’ golf shoes. Current shoe size/sizing system: __. Foot length: __. Please confirm junior models, available sizes, price and delivery options." : `Hi Karibu Golf! I would like to ask about ${category.label}.`);
   return (
-    <DepartmentScrollShell department={department} categoryMode>
+    <DepartmentScrollShell department={department} categoryMode inlineCategoryIndex={isKidsShoes} currentCategory={category.slug}>
       <main className={`department-scroll-page category-scroll-page${isPutters ? " putter-scroll-page" : " equipment-scroll-page"}`} id="page-content">
         {isPutters ? <PutterScrollGuide productCount={categoryProducts.length} /> : <EquipmentScrollGuide
           categorySlug={category.slug}
@@ -47,11 +53,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ depar
             </div>
           </section>
         ) : (
-          <section className="category-empty" data-sc-act="flow">
+          <section className="category-empty" id="availability" data-sc-act="flow">
             <div data-sc-in>
-              <p className="micro">COLLECTION GROWING</p>
-              <h2>NOTHING LISTED<br />JUST YET.</h2>
-              <p>Ask our team about current availability or a special order in this category.</p>
+              <p className="micro">{isKidsShoes ? "JUNIOR FOOTWEAR / AVAILABILITY" : "COLLECTION GROWING"}</p>
+              <h2>{isKidsShoes ? <>KIDS’ SHOES.<br />ASK US FIRST.</> : <>NOTHING LISTED<br />JUST YET.</>}</h2>
+              <p>{isKidsShoes ? "No kids’ shoe models are listed yet. Tell us their current shoe size, sizing system and foot length. We’ll confirm suitable junior options, availability and price before you order. The junior-golf lifestyle image is not a photograph of stocked footwear." : "Ask our team about current availability or a special order in this category."}</p>
             </div>
           </section>
         )}

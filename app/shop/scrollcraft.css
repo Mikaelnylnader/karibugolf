@@ -1466,6 +1466,14 @@ video[data-sc-scrub].sc-has-clip { opacity: 1; }
 
 /* Shared category education, with a different fitting instrument per equipment family. */
 .equipment-scroll-page { background:#0d100d; }
+/* Junior footwear keeps its category index in flow, clear of fitting advice. */
+.department-scroll-shell.inline-category-index { padding-top:var(--nav-height,76px); }
+.inline-category-index .kit-ledger { position:relative; inset:auto; transform:none; width:auto; max-height:none; margin:0; padding:10px 6%; display:block; z-index:1; }
+.inline-category-index .kit-ledger-heading { display:none; }
+.inline-category-index .kit-ledger-items { display:flex; flex-direction:row; flex-wrap:wrap; gap:4px 18px; overflow:visible; }
+.inline-category-index .kit-ledger-items a { display:flex; flex:0 0 auto; min-height:44px; padding:4px 0; }
+.inline-category-index .kit-ledger-items a>span { display:none; }
+.inline-category-index .kit-ledger-items a>em { display:block; max-width:none; font-size:12px; }
 .equipment-object-hero { min-height:100svh; background:#0d100d; }
 .equipment-hero-stage { isolation:isolate; overflow:hidden; background:#0d100d; }
 .equipment-hero-photo {
@@ -1625,3 +1633,6 @@ video[data-sc-scrub].sc-has-clip { opacity: 1; }
   .equipment-decision-track>* { scroll-snap-align:start; }
   .equipment-flight,.equipment-turf,.equipment-sole,.equipment-field,.equipment-ladder-bar,.equipment-load,.equipment-contact { transition:none; }
 }
+
+/* Account for both in-flow navigation rows, including motion-off layouts. */
+.inline-category-index .equipment-hero-stage { height:calc(100svh - var(--nav-height,76px) - 66px); min-height:calc(100svh - var(--nav-height,76px) - 66px); }

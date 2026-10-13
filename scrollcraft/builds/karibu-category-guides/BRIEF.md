@@ -21,6 +21,12 @@ The visitor knows the category they are shopping but may not know which design c
 
 ## Truth boundary
 
+### Kids' shoes extension, 13 October 2026
+
+Owner request: “here can you also add kids shoes and build page for kids shoese”. This extends the existing Shoes department and category guide family, not a new site or fingerprint. Retain the existing Gallery / catalog grammar, Kit Ledger, layered hero, decision rail and Karibu Fit Line. Authored content decisions: junior fit, traction and easy fastening; three priorities covering first lessons, regular rounds and fit checks; resolve into availability confirmation. Reuse the existing junior-golf lifestyle image (`/images/shop/kids-v2.jpg`), not a new product photograph. No junior footwear is currently listed, so show an explicit enquiry-only state with no invented brands, sizes, prices or stock. Add the canonical route `/shop/shoes/kids_shoes/`, export it and expose the category in admin for future real listings. The feeling curve and layer contract below remain unchanged.
+
+Visual-review adjustment: keep the three-category Shoes index in normal flow on the junior footwear page, because the floating ledger covered the fit advice. Account for both navigation rows in the opening stage so its action remains in the first viewport. The selected junior priority carries into the WhatsApp enquiry. The Shoes department retains its existing category ledger.
+
 - Advice is presented as a starting point, not a diagnosis or guarantee.
 - No invented Tour counts, distances, launch windows, stock or performance numbers are used.
 - Tour references stay qualitative unless a dated source is shown on the page.
