@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import ProductGallery from "@/components/product-gallery";
 import GloveSizeGuide from "@/components/glove-size-guide";
+import VokeyGrindGuide from "@/components/vokey-grind-guide";
 import ProductScrollShell from "@/components/product-scroll-shell";
 import LiveProductPurchase from "@/components/live-product-purchase";
 import LiveProductCardPrice from "@/components/live-product-card-price";
@@ -46,6 +47,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       <a href="#product-specifications">Specifications</a>
       <a href="#buying-in-kenya">Kenya buying info</a>
       {isGlove && <a href="#glove-size-guide">Size guide</a>}
+      {product.slug === "gk-wg010" && <a href="#wedge-grind-guide">Bounce &amp; grinds</a>}
       {related.length > 0 && <a href="#related-products">Related products</a>}
       <a href="#product-order">Choose your setup ↑</a>
     </nav>
@@ -132,6 +134,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       {details.source && <a className="club-source" href={details.source.url} target="_blank" rel="noreferrer">Source: {details.source.label} ↗</a>}
     </section>
 
+    {product.slug === "gk-wg010" && <VokeyGrindGuide/>}
     {isGlove && <GloveSizeGuide women={product.slug === "gk-gl011"}/>}
 
     {details.equipment && <section className="product-equipment-section" data-sc-act="flow">

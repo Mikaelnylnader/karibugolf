@@ -78,7 +78,7 @@ function escapeHtml(value) { const node = document.createElement("span"); node.t
 function categoryLabel(slug) { return categories.find(([value]) => value === slug)?.[1] || String(slug || "Uncategorised").replaceAll("_", " "); }
 function stockNumber(product) { const value = Number(product.stock); return Number.isFinite(value) ? Math.max(0, value) : 0; }
 function isInStock(product) { return product.status?.toLowerCase() === "in stock" && stockNumber(product) > 0; }
-function shaftFlexValue(value) { const flex = String(value || "").trim().toUpperCase(); return ["R", "S"].includes(flex) ? flex : ""; }
+function shaftFlexValue(value) { const flex = String(value || "").trim().toUpperCase(); return ["R", "S", "A"].includes(flex) ? flex : ""; }
 function shaftMaterialValue(value) { const material = String(value || "").trim().toLowerCase(); return material === "steel" ? "Steel" : material === "graphite" ? "Graphite" : ""; }
 function tracksShaftFlex(product) { return shaftFlexCategories.has(product.categorySlug); }
 function tracksShaftMaterial(product) { return product.categorySlug === "golf_irons"; }
@@ -304,6 +304,7 @@ function renderInventory() {
         <option value=""${draft.shaftFlex ? "" : " selected"}>Not set</option>
         <option value="R"${draft.shaftFlex === "R" ? " selected" : ""}>R — Regular</option>
         <option value="S"${draft.shaftFlex === "S" ? " selected" : ""}>S — Stiff</option>
+        <option value="A"${draft.shaftFlex === "A" ? " selected" : ""}>A — Senior</option>
       </select>` : '<span class="not-applicable">—</span>';
     const materialControl = tracksShaftMaterial(product) ? `<select class="shaft-material-select${materialChanged ? " changed" : ""}" data-inventory-material="${escapeHtml(product.sku)}" aria-label="Shaft material for ${escapeHtml(product.name)}">
         <option value=""${draft.shaftMaterial ? "" : " selected"}>Not set</option>

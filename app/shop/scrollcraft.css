@@ -289,6 +289,8 @@ video[data-sc-scrub] { opacity: 0; transition: opacity 380ms var(--sc-ease-out);
   transition: opacity 620ms var(--sc-ease-out), transform 620ms var(--sc-ease-out);
 }
 [data-sc-in].sc-in, [data-sc-stagger] > .sc-in { opacity: 1; transform: none; }
+.department-scroll-shell:not([data-scrollcraft-mounted="true"]) [data-sc-in],
+.department-scroll-shell:not([data-scrollcraft-mounted="true"]) [data-sc-stagger] > * { opacity:1; transform:none; }
 
 /* pointer devices */
 [data-sc-tilt] { transform-style: preserve-3d; will-change: transform; }
@@ -468,6 +470,44 @@ video[data-sc-scrub].sc-has-clip { opacity: 1; }
   inset:0;
   display:block;
   cursor:pointer;
+}
+
+/* Owner-supplied club photography: wide windows retain the club and ball. */
+.clubs-photo-page .department-object-hero>figure { inset:0 0 0 35%; }
+.clubs-photo-page .department-object-hero>figure img { object-position:45% 40%; }
+.clubs-photo-page .department-object-copy { width:min(560px,43vw); }
+.clubs-photo-page .department-object-copy h1 { font-size:clamp(80px,9.5vw,144px); }
+.clubs-photo-page .department-hero-intro { display:none; }
+.clubs-hero-detail { position:absolute; right:16%; bottom:8%; width:clamp(220px,24vw,370px); aspect-ratio:1.35; padding:9px; background:#efe3cc; box-shadow:0 24px 58px #08060455; z-index:1; rotate:-5deg; }
+.clubs-hero-detail img { width:100%; height:100%; object-fit:cover; }
+.clubs-photo-page .clubs-photo-chapter { grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr); gap:clamp(30px,5vw,76px); padding-inline:clamp(28px,6vw,96px); }
+.department-scroll-page.clubs-photo-page .clubs-photo-chapter>figure { height:auto; aspect-ratio:1.4; }
+.clubs-photo-chapter>figure img { object-position:center; }
+.clubs-photo-page .clubs-reference-chapter>figure { background:#14110e; }
+.department-scroll-page.clubs-photo-page .clubs-reference-chapter>figure { aspect-ratio:1; }
+.clubs-reference-chapter[data-kit-category="wedges"]>figure { background:#fff; }
+.clubs-photo-page .clubs-reference-chapter>figure img { inset:0; width:100%; height:100%; object-fit:contain; padding:18px; }
+.clubs-photo-chapter .department-chapter-copy h2 { font-size:clamp(62px,6.6vw,106px); }
+@media(max-width:980px) {
+ .clubs-photo-page .department-object-copy { width:50vw; }
+ .clubs-hero-detail { right:6%; bottom:8%; width:25vw; }
+}
+@media(max-width:760px) {
+ .clubs-photo-page .department-object-hero { min-height:0; padding-top:var(--nav-height); display:flex; flex-direction:column; overflow:visible; }
+ .clubs-photo-page .department-object-hero>figure { position:relative; inset:auto; width:100%; height:340px; z-index:auto; }
+ .clubs-photo-page .department-object-hero>figure img { object-position:45% 35%; }
+ .clubs-photo-page .department-hero-shade { display:none; }
+ .clubs-photo-page .department-object-copy { position:relative; inset:auto; width:auto; padding:38px 6% 48px; order:2; }
+ .clubs-photo-page .department-object-copy h1 { font-size:clamp(70px,20vw,96px); }
+ .clubs-photo-page .department-back-link { margin-bottom:26px; }
+ .clubs-hero-detail { position:relative; inset:auto; width:min(55%,250px); margin:-64px 7% 0 auto; rotate:-4deg; z-index:1; }
+ .department-scroll-page.clubs-photo-page .clubs-photo-chapter>figure { aspect-ratio:1.4; }
+ .department-scroll-page.clubs-photo-page .clubs-reference-chapter>figure { aspect-ratio:1; }
+ .clubs-photo-page .clubs-photo-chapter { gap:40px; padding-inline:18px; }
+ .clubs-photo-chapter .department-chapter-copy h2 { font-size:clamp(58px,17vw,82px); }
+}
+@media(prefers-reduced-motion:reduce) {
+ .clubs-hero-detail { transform:none!important; rotate:0deg; }
 }
 .department-picture-link:focus-visible {
   outline:3px solid #c89947;
@@ -1360,6 +1400,11 @@ video[data-sc-scrub].sc-has-clip { opacity: 1; }
 }
 
 /* Live inventory window on the main shop */
+/* Keep the shared homepage stock section clear of shop navigation. */
+.store-page .store-quick-nav { grid-template-columns:repeat(7,minmax(0,1fr)); }
+.shop-scroll-shell[data-stock-active="true"] .store-quick-nav { position:relative; top:auto; }
+.shop-scroll-shell[data-stock-active="true"] .fairway-trail:not(:focus-within) { visibility:hidden; }
+
 .shop-stock-window {
   padding:clamp(95px,12vw,170px) 6%;
   background:#14110e;

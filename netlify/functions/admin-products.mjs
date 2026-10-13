@@ -15,7 +15,7 @@ function normalizeProduct(product) {
 function invalidProduct(product) {
   return !/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(product.sku)
     || !product.name
-    || !["", "R", "S"].includes(product.shaftFlex)
+    || !["", "R", "S", "A"].includes(product.shaftFlex)
     || !["", "Steel", "Graphite"].includes(product.shaftMaterial);
 }
 
@@ -40,7 +40,7 @@ export default async function handler(request, context) {
       if (!body.products.length || body.products.length > 100) return json({ error: "Select between 1 and 100 products." }, 400);
       const products = body.products.map(normalizeProduct);
       const invalid = products.find(invalidProduct);
-      if (invalid) return json({ error: `Invalid product in bulk update: ${invalid.sku || "missing SKU"}. Shaft flex must be R, S or blank; shaft material must be Steel, Graphite or blank.` }, 400);
+      if (invalid) return json({ error: `Invalid product in bulk update: ${invalid.sku || "missing SKU"}. Shaft flex must be R, S, A (Senior) or blank; shaft material must be Steel, Graphite or blank.` }, 400);
       await saveProducts(products);
       context.waitUntil(triggerStorefrontBuild());
       return json({ saved: true, count: products.length, products, rebuildStarted: true });
@@ -48,7 +48,7 @@ export default async function handler(request, context) {
     const product = normalizeProduct(body);
     if (!/^[A-Z0-9][A-Z0-9_-]{2,39}$/.test(product.sku)) return json({ error: "Use a valid SKU (letters, numbers, dash or underscore)." }, 400);
     if (!product.name) return json({ error: "Product name is required." }, 400);
-    if (!["", "R", "S"].includes(product.shaftFlex)) return json({ error: "Shaft flex must be R, S or blank." }, 400);
+    if (!["", "R", "S", "A"].includes(product.shaftFlex)) return json({ error: "Shaft flex must be R, S, A (Senior) or blank." }, 400);
     if (!["", "Steel", "Graphite"].includes(product.shaftMaterial)) return json({ error: "Shaft material must be Steel, Graphite or blank." }, 400);
     await saveProduct(product);
     context.waitUntil(triggerStorefrontBuild());

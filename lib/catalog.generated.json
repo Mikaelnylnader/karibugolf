@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T19:33:16.473888+00:00",
+  "generatedAt": "2026-10-13T16:53:55.547Z",
   "categories": [
     {
       "slug": "drivers",
@@ -206,7 +206,9 @@
         "/images/products/gk-ir-p770/p770-address.jpg",
         "/images/products/gk-ir-p770/p770-profile.jpg",
         "/images/clubs.jpg"
-      ]
+      ],
+      "shaftMaterial": "Steel",
+      "shaftFlex": "S"
     },
     {
       "sku": "GK-IR-TTT",
@@ -218,7 +220,7 @@
       "priceKes": 130000,
       "priceUsd": 482.69,
       "priceCny": 2943,
-      "sizes": "4–PW + AW",
+      "sizes": "4–PW",
       "colors": "Standard",
       "status": "In Stock",
       "stock": "1",
@@ -227,7 +229,9 @@
         "/api/product-images/3d1a5d94-02c6-4344-8ccb-c551654066cf-t200-1.png",
         "/images/products/Titleist_T200.jpg",
         "/images/clubs.jpg"
-      ]
+      ],
+      "shaftMaterial": "Steel",
+      "shaftFlex": "R"
     },
     {
       "sku": "GK-IR004",
@@ -249,7 +253,9 @@
         "/images/products/callaway-paradym-ai-smoke-hl-face.jpg",
         "/images/products/callaway-paradym-ai-smoke-hl-address.jpg",
         "/images/products/callaway-paradym-ai-smoke-hl-sole.jpg"
-      ]
+      ],
+      "shaftMaterial": "Graphite",
+      "shaftFlex": "R"
     },
     {
       "sku": "GK-IR-TMP",
@@ -270,7 +276,9 @@
         "/api/product-images/2ac095d5-cde6-4957-9c33-46b13384c68d-tc635-zoom-d.jpg",
         "/images/p790-hero.webp",
         "/images/clubs.jpg"
-      ]
+      ],
+      "shaftMaterial": "Graphite",
+      "shaftFlex": "R"
     },
     {
       "sku": "GK-BL012",
@@ -470,7 +478,7 @@
       "description": "TaylorMade SIM2 Max game-improvement irons with Cap Back construction, a Thru-Slot Speed Pocket, Progressive Inverted Cone Technology and an ECHO Damping System. The 5–PW + AW set, hand, shaft and flex choices are manufacturer references; exact Karibu availability must be confirmed. Currently out of stock.",
       "priceKes": 120000,
       "priceUsd": 664.93,
-      "priceCny": 4532.0,
+      "priceCny": 4532,
       "sizes": "5–PW + AW (manufacturer set reference)",
       "colors": "Chrome / Black",
       "status": "Out of Stock",

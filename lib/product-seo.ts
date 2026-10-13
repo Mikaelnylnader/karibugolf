@@ -34,7 +34,7 @@ export const productSeoQuestions = (product: CatalogProduct): ProductSeoQuestion
     },
     {
       question: `What options are listed for ${product.name}?`,
-      answer: `The listed size or configuration is ${product.sizes}. The listed colour or finish is ${product.colors}. Availability of a particular option must be confirmed before payment.`,
+      answer: product.categorySlug==="golf_irons" ? `Set: ${product.sizes}. You can enquire about Steel or Graphite shafts with Regular, Stiff or Senior flex. The page identifies the shaft/flex currently in stock; other selections are enquiries, not confirmed stock. Confirm handedness, fitted components and availability before payment.` : `The listed size or configuration is ${product.sizes}. The listed colour or finish is ${product.colors}. Availability of a particular option must be confirmed before payment.`,
     },
     {
       question: `Can Karibu Golf deliver ${product.name} in Kenya?`,

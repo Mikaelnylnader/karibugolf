@@ -6,6 +6,15 @@ import ShopProductCard from "@/components/shop-product-card";
 import { departmentBySlug, departments, productsForCategory, productsForDepartment } from "@/lib/shop-catalog";
 import "../scrollcraft.css";
 
+const clubPhotoDescriptions: Record<string, string> = {
+  drivers: "Driver set behind a golf ball on a tee",
+  woods: "Fairway wood behind a golf ball on the grass",
+  hybrids: "Golfer with a club during a follow-through",
+  golf_irons: "TaylorMade P790 iron heads arranged on grass",
+  wedges: "Golfer holding three Vokey SM11 wedges over a towel",
+  putters: "Scotty Cameron Studio Style Newport 2 reference photograph",
+};
+
 export function generateStaticParams() {
   return departments.map((department) => ({ department: department.slug }));
 }
@@ -35,13 +44,14 @@ export default async function DepartmentPage({
   const departmentProducts = productsForDepartment(slug);
   const firstCategory = selected.categories[0];
   const shelfProducts = departmentProducts.slice(0, 8);
+  const isClubs = slug === "clubs";
   const whatsappText = encodeURIComponent(
     `Hi Karibu Golf! I would like help choosing from the ${selected.label} collection.`,
   );
 
   return (
     <DepartmentScrollShell department={selected}>
-      <main className="department-scroll-page" id="page-content">
+      <main className={`department-scroll-page${isClubs ? " clubs-photo-page" : ""}`} id="page-content">
         <section
           className="department-object-hero"
           data-sc-act="flow"
@@ -51,16 +61,21 @@ export default async function DepartmentPage({
               src={selected.image}
               alt=""
               fetchPriority="high"
+              width="1314"
+              height="915"
               data-sc-parallax="-1.05"
             />
           </figure>
           <div className="department-hero-shade" aria-hidden="true" />
+          {isClubs && <div className="clubs-hero-detail" aria-hidden="true" data-sc-parallax="0.35">
+            <img src="/images/shop/clubs-editorial/driver-headcover.webp" alt="" width="1263" height="936"/>
+          </div>}
           <div className="department-object-copy">
             <a className="department-back-link" href="/shop">
               <ArrowLeft size={17} /> All departments
             </a>
             <p className="micro">{selected.eyebrow}</p>
-            <h1>{selected.label.toUpperCase()}.</h1>
+            <h1>{isClubs ? <>GOLF<br/><em>CLUBS.</em></> : `${selected.label.toUpperCase()}.`}</h1>
             <p>{selected.description}</p>
             <div className="department-object-meta">
               <span>{selected.categories.length} categories / {departmentProducts.length} products</span>
@@ -85,7 +100,7 @@ export default async function DepartmentPage({
               : "right";
           return (
             <section
-              className={`department-category-chapter chapter-tone-${index % 4}`}
+              className={`department-category-chapter chapter-tone-${index % 4}${isClubs ? ` clubs-photo-chapter${index >= 4 ? " clubs-reference-chapter" : ""}` : ""}`}
               id={category.slug}
               data-kit-category={category.slug}
               data-sc-act="flow"
@@ -103,19 +118,21 @@ export default async function DepartmentPage({
                 >
                   <img
                     src={category.image}
-                    alt={`${category.label} at Karibu Golf`}
+                    alt={isClubs ? clubPhotoDescriptions[category.slug] : `${category.label} at Karibu Golf`}
+                    width="1300"
+                    height="930"
                     loading="lazy"
                     data-sc-parallax={index % 2 === 0 ? "-0.42" : "0.38"}
                   />
                 </a>
               </figure>
               <div className="department-chapter-copy" data-sc-in data-sc-stagger="65">
-                <p className="micro">{selected.label.toUpperCase()} / {number}</p>
+                {(!isClubs || index % 3 === 0) && <p className="micro">{isClubs ? "FROM TEE TO GREEN" : `${selected.label.toUpperCase()} / ${number}`}</p>}
                 <h2>{category.label.toUpperCase()}.</h2>
                 <p>{category.description}</p>
                 <dl>
                   <div><dt>Listed</dt><dd>{categoryProducts.length} products</dd></div>
-                  <div><dt>Route</dt><dd>{selected.label} / {category.label}</dd></div>
+                  <div><dt>Collection</dt><dd>{category.label}</dd></div>
                 </dl>
                 <a className="department-chapter-link" href={`/shop/${selected.slug}/${category.slug}`}>
                   Explore {category.label} <ArrowUpRight size={19} />
@@ -131,7 +148,7 @@ export default async function DepartmentPage({
             <h2>SHOP WHAT IS<br />LISTED NOW.</h2>
             <p>
               Start with these products, or use the category index to narrow the collection.
-              Stock changes made in the Karibu product admin are reflected here when the site publishes.
+              Open a product to check its price, specifications and current availability.
             </p>
           </header>
           {shelfProducts.length > 0 ? (

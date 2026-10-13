@@ -16,6 +16,22 @@ const existingBySku = new Map(existing.products.map((product) => [product.sku.to
 const existingOrder = new Map(existing.products.map((product, index) => [product.sku.toLowerCase(), index]));
 const labels = new Map(existing.categories.map((category) => [category.slug, category.label]));
 const { products } = await readProducts();
+// Scoped inventory refreshes preserve reviewed copy, media, prices and pages.
+const inventoryArgument = process.argv.find((argument) => argument.startsWith("--inventory-only="));
+if (inventoryArgument) {
+  const skus = inventoryArgument.slice("--inventory-only=".length).split(",").filter(Boolean).map((sku) => sku.toLowerCase());
+  if (!skus.length || new Set(skus).size !== skus.length) throw new Error("Provide unique SKUs for --inventory-only.");
+  for (const sku of skus) {
+    const target = existingBySku.get(sku);
+    const matches = products.filter((product) => product.sku.toLowerCase() === sku);
+    if (!target || matches.length !== 1) throw new Error(`Inventory refresh requires one existing local and live record for ${sku}.`);
+    const source = matches[0];
+    Object.assign(target, { sizes: source.sizes, shaftFlex: source.shaftFlex, shaftMaterial: source.shaftMaterial, status: source.status, stock: source.stock });
+  }
+  await fs.writeFile(output, `${JSON.stringify({ ...existing, generatedAt: new Date().toISOString() }, null, 2)}\n`, "utf8");
+  console.log(`Catalog build: refreshed inventory for ${skus.length} SKUs; preserved ${existing.products.length} reviewed product pages.`);
+  process.exit(0);
+}
 const live = products.filter((product) => product.websiteVisible).map((product) => {
   const previous = existingBySku.get(product.sku.toLowerCase());
   const image = product.image && (/^https?:\/\//i.test(product.image) || product.image.startsWith("/")) ? product.image : null;

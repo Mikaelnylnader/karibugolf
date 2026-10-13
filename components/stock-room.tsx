@@ -1,10 +1,13 @@
 "use client";
+/* oxlint-disable next/no-html-link-for-pages -- Static document links remount the scroll engine without an RSC prefetch server. */
 
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowUpRight, MessageCircle } from "lucide-react";
 import type { CatalogProduct } from "@/lib/shop-catalog";
-import { formatKes } from "@/lib/shop-catalog";
+import { formatKes, productIsInStock } from "@/lib/shop-catalog";
+import { useLiveProducts } from "@/components/use-live-products";
 import LiveProductImage from "@/components/live-product-image";
+import { stockSetupLabel } from "@/lib/iron-options";
 
 declare global {
   interface Window {
@@ -14,7 +17,9 @@ declare global {
 
 const whatsapp = "https://wa.me/254116416105";
 
-export default function StockRoom({ products }: { products: CatalogProduct[] }) {
+export default function StockRoom({ products:initialProducts }: { products: CatalogProduct[] }) {
+  const liveProducts=useLiveProducts(initialProducts);
+  const products=useMemo(()=>liveProducts.filter(productIsInStock),[liveProducts]);
   const rootRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -92,6 +97,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
       <dl>
         <div><dt>Price (KSh)</dt><dd>{formatKes(active.priceKes)}</dd></div>
         <div><dt>Available</dt><dd>{active.stock}</dd></div>
+        {stockSetupLabel(active) && <div><dt>In-stock setup</dt><dd>{stockSetupLabel(active)}</dd></div>}
       </dl>
     </aside>}
 
@@ -132,7 +138,7 @@ export default function StockRoom({ products }: { products: CatalogProduct[] }) 
             <p>{product.description}</p>
             <dl>
               <div><dt>Set</dt><dd>{product.sizes || "Confirm with Karibu"}</dd></div>
-              <div><dt>Specification</dt><dd>{product.colors || "Confirm with Karibu"}</dd></div>
+              <div><dt>In-stock setup</dt><dd data-stock-setup={product.sku}>{stockSetupLabel(product) || product.colors || "Confirm with Karibu"}</dd></div>
               <div><dt>Available</dt><dd>{product.stock}</dd></div>
             </dl>
             <div className="stock-exhibit-price"><strong>{formatKes(product.priceKes)}</strong></div>

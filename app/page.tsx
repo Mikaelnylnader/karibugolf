@@ -5,8 +5,7 @@ import Image from "next/image";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, MessageCircle } from "lucide-react";
-import { formatKes, inStockProducts } from "@/lib/shop-catalog";
-import LiveProductImage from "@/components/live-product-image";
+import StockFeature from "@/components/stock-feature";
 
 const chat = "https://wa.me/254116416105";
 const topics = ["Equipment", "Apparel", "Essentials"];
@@ -21,7 +20,6 @@ export default function Home() {
  const opening = useRef<HTMLElement>(null);
  const welcome = useRef<HTMLElement>(null);
  const journey = useRef<HTMLElement>(null);
- const homeStock = useRef<HTMLElement>(null);
  const people = useRef<HTMLElement>(null);
  const mission = useRef<HTMLElement>(null);
  const track = useRef<HTMLDivElement>(null);
@@ -53,17 +51,6 @@ export default function Home() {
    journey.current.style.setProperty("--rail-x",String(-r*Math.max(0,(track.current?.scrollWidth??journey.current.clientWidth)-journey.current.clientWidth))+"px");
    const step=Math.round(r*2);
    if(step!==previous) { previous=step; setActive(step); }
-   if(homeStock.current) {
-    const stockBox=homeStock.current.getBoundingClientRect();
-    const stockProgress=clamp(-stockBox.top/Math.max(1,homeStock.current.offsetHeight-vh));
-    homeStock.current.style.setProperty("--home-stock-p",String(stockProgress));
-    const spread=Math.min(window.innerWidth*.145,210);
-    const positions=[[-1.15,-.16,-8],[-.38,.16,-3],[.38,-.13,4],[1.15,.15,8]];
-    homeStock.current.querySelectorAll<HTMLElement>("[data-home-stock-card]").forEach((card,index)=>{
-     const [x,y,rotate]=positions[index] ?? [0,0,0];
-     card.style.transform=`translate(-50%,-50%) translate3d(${x*spread*stockProgress}px,${y*vh*stockProgress}px,0) rotate(${rotate*stockProgress}deg)`;
-    });
-   }
    if(people.current) {
     const peopleBox=people.current.getBoundingClientRect();
     const peopleProgress=clamp((vh*.9-peopleBox.top)/Math.max(1,vh*.78));
@@ -93,12 +80,6 @@ export default function Home() {
   const y=journey.current.getBoundingClientRect().top+window.scrollY;
   const headerHeight=document.querySelector(".persistent-nav")?.getBoundingClientRect().height ?? 76;
   window.scrollTo({top:y-headerHeight+(journey.current.offsetHeight-window.innerHeight+headerHeight)*(i/2),behavior:"smooth"});
- };
- const openStockRack=()=>{
-  if(!homeStock.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  const top=homeStock.current.getBoundingClientRect().top+window.scrollY;
-  const travel=Math.max(0,homeStock.current.offsetHeight-window.innerHeight);
-  window.scrollTo({top:top+travel*.92,behavior:"smooth"});
  };
  const supports=[
   ["A real person in your corner","Choosing your first clubs or upgrading your set? Get personal guidance on your setup and sizing, with honest help exploring options for your game and budget."],
@@ -141,17 +122,7 @@ export default function Home() {
    </div>
    <a href="/shop">Open the webshop <ArrowUpRight size={25}/></a>
   </section>
-  <section className="home-stock" id="stock-now" ref={homeStock} aria-labelledby="home-stock-title">
-   <div className="home-stock-stage">
-    <div className="home-stock-copy"><p className="micro">LIVE FROM THE KARIBU STOCK ROOM</p><h2 id="home-stock-title">HERE NOW.<br/><em>READY TO PLAY.</em></h2><p>{inStockProducts.length} products are currently in stock at our Nairobi base, ready for golfers across East Africa. See the exact sets, live prices and product details in one focused collection.</p><a href="/shop/stock">See what is in stock <ArrowUpRight size={21}/></a></div>
-    <div className="home-stock-rack" aria-label="Products in stock now">
-     {inStockProducts.slice(0,4).map((product,index)=><a className={`home-stock-card home-stock-card-${index+1}`} href={`/shop/product/${product.slug}`} data-home-stock-card onFocus={openStockRack} key={product.sku}>
-      <span>{String(index+1).padStart(2,"0")} · IN STOCK</span><figure><LiveProductImage product={product} alt={product.name} width="800" height="800" loading="lazy"/></figure><div><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
-     </a>)}
-    </div>
-    <div className="home-stock-footer"><span>KARIBU GOLF · NAIROBI · EAST AFRICA</span><a href="/shop">Browse the full shop <ArrowUpRight size={16}/></a></div>
-   </div>
-  </section>
+  <StockFeature/>
   <section className="people" id="people" ref={people}>
    <span className="people-orbit" aria-hidden="true"/>
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>

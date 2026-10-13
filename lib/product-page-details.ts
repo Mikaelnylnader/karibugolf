@@ -1,5 +1,6 @@
 import type { CatalogProduct } from "@/lib/shop-catalog";
 import type { ProductGalleryImage } from "@/components/product-gallery";
+import { ironShaftOptions, ironFlexOptions } from "@/lib/iron-options";
 
 export type ProductFeature = { title: string; text: string };
 export type ProductConfiguration = { label: string; values: string[] };
@@ -44,6 +45,10 @@ const p790: ProductPageDetails = {
     { src: "/images/products/gk-ir-tmp/p790-face.jpg", alt: "TaylorMade P790 iron face and grooves", label: "Face" },
     { src: "/images/products/gk-ir-tmp/p790-address.jpg", alt: "TaylorMade P790 iron viewed from the playing position", label: "At address" },
     { src: "/images/products/gk-ir-tmp/p790-profile.jpg", alt: "TaylorMade P790 iron profile and topline", label: "Profile" },
+    { src: "/images/shop/clubs-editorial/p790-on-course.webp", alt: "TaylorMade P790 iron head beside a golf ball on the course", label: "On course" },
+    { src: "/images/shop/clubs-editorial/p790-in-bag.webp", alt: "TaylorMade P790 irons in a golf bag", label: "In the bag" },
+    { src: "/images/shop/clubs-editorial/p790-set-on-grass.webp", alt: "TaylorMade P790 iron heads arranged on grass", label: "The set" },
+    { src: "/images/shop/clubs-editorial/p790-cleaning.webp", alt: "Golfer cleaning a TaylorMade P790 iron with a towel", label: "Club detail" },
   ],
   galleryNote: "TaylorMade product reference images supplied to Karibu Golf. Ask us for photographs of the exact set before ordering.",
   overviewEyebrow: "2025 P·790 IRONS",
@@ -102,6 +107,9 @@ const p770: ProductPageDetails = {
     { src: "/images/products/gk-ir-p770/p770-face.jpg", alt: "TaylorMade P770 iron face and grooves", label: "Face" },
     { src: "/images/products/gk-ir-p770/p770-address.jpg", alt: "TaylorMade P770 iron viewed from the playing position", label: "At address" },
     { src: "/images/products/gk-ir-p770/p770-profile.jpg", alt: "TaylorMade P770 iron profile, topline and sole", label: "Profile" },
+    { src: "/images/shop/clubs-editorial/p770-on-course.webp", alt: "TaylorMade P770 iron head above a golf ball on grass", label: "On course" },
+    { src: "/images/shop/clubs-editorial/p770-in-bag.webp", alt: "Gloved hand holding a TaylorMade P770 iron above an iron set in a golf bag", label: "In the bag" },
+    { src: "/images/shop/clubs-editorial/p770-at-address.webp", alt: "TaylorMade P770 iron at address beside a golf ball, viewed from above", label: "Address on grass" },
   ],
   galleryNote: "TaylorMade product reference images supplied to Karibu Golf. Ask us for current photographs of the exact set before ordering.",
   overviewEyebrow: "2024 P·770 IRONS",
@@ -154,33 +162,37 @@ const p770: ProductPageDetails = {
 
 const t200: ProductPageDetails = {
   brand: "Titleist",
-  intro: "A players-distance iron that pairs a clean, Tour-inspired shape with a forged face, hollow construction and modern launch technology.",
+  intro: "A players-distance iron with a forged face, hollow-body construction and a compact, Tour-inspired profile.",
   gallery: [
-    { src: "/images/products/Titleist_T200.jpg", alt: "Titleist T200 iron set available from Karibu Golf", label: "T200 set" },
+    { src: "/images/shop/clubs-editorial/t200-back.webp", alt: "2023 Titleist T200 iron back showing the Titleist badge and T200 marking", label: "Back" },
+    { src: "/images/shop/clubs-editorial/t200-face.webp", alt: "2023 Titleist T200 iron face and grooves", label: "Face" },
+    { src: "/images/shop/clubs-editorial/t200-address.webp", alt: "2023 Titleist T200 iron viewed at address", label: "At address" },
+    { src: "/images/shop/clubs-editorial/t200-rear-profile.webp", alt: "2023 Titleist T200 iron angled rear profile", label: "Rear profile" },
+    { src: "/images/shop/clubs-editorial/t200-sole.webp", alt: "2023 Titleist T200 iron toe and sole profile", label: "Sole" },
   ],
-  galleryNote: "Karibu Golf catalogue image. Ask us for current photographs of the exact set, shafts, faces and soles before ordering.",
-  overviewEyebrow: "TITLEIST T200 IRONS",
-  overviewTitle: "CLEAN SHAPE. CONTROLLED DISTANCE.",
+  galleryNote: "The five detailed views are manufacturer references for the 2023 T200, supplied by Karibu Golf. Confirm the physical set's generation, fitted shafts, flex, handedness and condition before ordering.",
+  overviewEyebrow: "2023 TITLEIST T200 IRONS",
+  overviewTitle: "A PLAYERS LOOK. DISTANCE BUILT IN.",
   overviewBody: [
-    "T200 is Titleist’s players-distance design: a forged face and hollow-body chassis in a compact shape with less offset.",
-    "This Karibu listing covers a 4–PW plus approach-wedge set. Confirm the model generation and installed shaft against the physical stock before payment.",
+    "The 2023 T200 combines a hollow-body chassis and forged face with the compact proportions of a players-distance iron.",
+    "This Karibu listing covers a 4–PW set. Confirm the model generation and installed shaft against the physical stock before payment.",
   ],
-  overviewImage: "/images/products/Titleist_T200.jpg",
+  overviewImage: "/images/shop/clubs-editorial/t200-back.webp",
   features: [
-    { title: "Forged face and Max Impact", text: "Titleist combines a dual-taper forged face with a reengineered chassis and Max Impact technology to support feel and performance across the face." },
-    { title: "Player-validated profile", text: "The head uses a clean Tour-inspired shape, less offset and proportions designed to frame the ball without looking oversized." },
-    { title: "Progressive tungsten weighting", text: "Dense D18 tungsten is positioned through the set to tune launch in the long irons and control in the scoring clubs." },
-    { title: "Variable-bounce sole", text: "A softened trailing edge, influenced by Vokey Design, is intended to help the sole move cleanly through the turf after impact." },
+    { title: "Max Impact and forged face", text: "A stiffer chassis brings the refined Max Impact system closer to the dual-taper forged face to improve feel across the hitting surface." },
+    { title: "Compact shaping", text: "Less offset, a measured blade length and a player-tested topline preserve the clean look at address." },
+    { title: "Dual D18 tungsten", text: "Dense tungsten and aerospace brazing allow more precise centre-of-gravity placement through the set, balancing long-iron launch with short-iron control." },
+    { title: "Vokey-influenced sole", text: "The Variable Bounce Sole uses a softened trailing edge to help the club move through the turf after contact." },
   ],
-  detailEyebrow: "4-IRON THROUGH APPROACH WEDGE",
-  detailTitle: "EIGHT CLUBS. CHECK EVERY SPEC.",
+  detailEyebrow: "4-IRON THROUGH PITCHING WEDGE",
+  detailTitle: "KNOW THE BUILD. CHECK THE SET.",
   detailBody: [
-    "The manufacturer reference lofts run from 21° in the 4-iron to 48° in the approach wedge.",
+    "The listed 4–PW set runs from a 21° 4-iron to a 43° pitching wedge. An approach wedge is not included.",
     "The exact shaft, flex, handedness, condition and model generation must be confirmed with Karibu Golf before payment.",
   ],
-  detailImage: "/images/products/Titleist_T200.jpg",
+  detailImage: "/images/shop/clubs-editorial/t200-face.webp",
   configuration: [
-    { label: "Set", values: ["4–PW + AW"] },
+    { label: "Set", values: ["4–PW"] },
     { label: "Shaft and flex", values: ["Confirm exact stock"] },
     { label: "Hand", values: ["Confirm exact stock"] },
   ],
@@ -196,14 +208,21 @@ const t200: ProductPageDetails = {
       ["8", "34.5°", "63.5°", '36.50"'],
       ["9", "38.5°", "64°", '36.00"'],
       ["PW", "43°", "64°", '35.75"'],
-      ["AW", "48°", "64°", '35.50"'],
     ],
   },
   equipment: [
     { title: "Steel and graphite", text: "Titleist lists a broad range of shaft weights and launch profiles. Ask for the exact brand, model, material, weight and flex fitted to this set." },
-    { title: "Wedge gapping", text: "The 48° approach wedge should be checked against the next wedge in your bag by loft and carry distance." },
+    { title: "Wedge gapping", text: "The set ends at a 43° pitching wedge. Check the loft and carry-distance gap to the next wedge in your bag." },
   ],
-  source: { label: "Titleist T200 official product page", url: "https://www.titleist.com/golf-clubs/irons/t200-2023" },
+  source: { label: "Titleist 2023 T200 official product page", url: "https://www.titleist.com/golf-clubs/irons/t200-2023" },
+  presentation: {
+    imageLabels: ["Back", "Face", "At address"],
+    featuresTitle: "HOW THE T200 IS BUILT.",
+    featuresIntro: "Manufacturer details for the 2023 generation: face support, shaping, weighting and sole design.",
+    inquiryTitle: "CONFIRM THE EXACT T200 SET.",
+    inquiryBody: "Ask for current photographs and confirmation of the model year, shaft, flex, handedness and 4–PW composition before payment. Manufacturer references do not confirm the specification of the physical set.",
+    inquiryLink: "Ask about this T200 set",
+  },
 };
 
 const aiSmokeHl: ProductPageDetails = {
@@ -876,8 +895,17 @@ const vokeySm11Wedge: ProductPageDetails = {
     { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-face.png", alt: "Titleist Vokey SM11 Jet Black wedge face and grooves", label: "Jet Black face", group: "Jet Black" },
     { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-sole.png", alt: "Titleist Vokey SM11 Jet Black wedge sole and bounce profile", label: "Jet Black sole", group: "Jet Black" },
     { src: "/images/products/titleist-vokey-sm11-wedge-jet-black-profile.png", alt: "Titleist Vokey SM11 Jet Black side profile", label: "Jet Black profile", group: "Jet Black" },
+    { src: "/images/shop/clubs-editorial/sm11-finishes.webp", alt: "Titleist Vokey SM11 wedges showing three manufacturer finishes", label: "Finish reference" },
+    { src: "/images/shop/clubs-editorial/sm11-t-grind.webp", alt: "Vokey SM11 T grind with its sole highlighted in blue", label: "T grind" },
+    { src: "/images/shop/clubs-editorial/sm11-d-grind.webp", alt: "Vokey SM11 D grind with its sole highlighted in blue", label: "D grind" },
+    { src: "/images/shop/clubs-editorial/sm11-m-grind.webp", alt: "Vokey SM11 M grind with its sole highlighted in blue", label: "M grind" },
+    { src: "/images/shop/clubs-editorial/sm11-f-grind.webp", alt: "Vokey SM11 F grind with its sole highlighted in blue", label: "F grind" },
+    { src: "/images/shop/clubs-editorial/sm11-s-grind.webp", alt: "Vokey SM11 S grind with its sole highlighted in blue", label: "S grind" },
+    { src: "/images/shop/clubs-editorial/sm11-k-grind.webp", alt: "Vokey SM11 58 degree 12 bounce K grind with its sole highlighted in blue", label: "K grind" },
+    { src: "/images/shop/clubs-editorial/sm11-wedge-setup.webp", alt: "Golfer holding three Vokey SM11 wedges over a towel", label: "Wedge setup" },
+    { src: "/images/shop/clubs-editorial/sm11-in-bag.webp", alt: "Vokey SM11 58 degree M grind wedge in a golf bag", label: "In the bag" },
   ],
-  galleryNote: "All nine product-reference screenshots were supplied by Karibu Golf. They show the Tour Chrome and Jet Black finishes. Karibu's planned SM11 range is right-handed only and is not currently in stock; exact future availability and shaft model / flex must be confirmed.",
+  galleryNote: "Manufacturer reference photographs and grind diagrams supplied by Karibu Golf. The finish comparison and D/S grind pictures illustrate the wider SM11 range, not additional Karibu options. Our planned range is right-handed, Tour Chrome or Jet Black, and not currently in stock. Confirm future availability and shaft model / flex before ordering.",
   overviewEyebrow: "TITLEIST VOKEY DESIGN SM11",
   overviewTitle: "CLEANER CONTACT. CONTROLLED FLIGHT. SMARTER SPIN.",
   overviewBody: [
@@ -1740,6 +1768,13 @@ const categoryGuidance: Record<string, { eyebrow: string; title: string; text: s
 };
 
 export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
+  const details=authoredDetailsForProduct(product);
+  if (product.categorySlug!=="golf_irons") return details;
+  const other=details.configuration.filter(group=>!["Shaft","Flex","Shaft and flex","Shaft / flex","Shaft / Flex"].includes(group.label));
+  return {...details,configuration:[...other,{label:"Shaft",values:ironShaftOptions},{label:"Flex",values:ironFlexOptions}]};
+}
+
+function authoredDetailsForProduct(product: CatalogProduct): ProductPageDetails {
   if (product.slug === "gk-ir-tmp") return p790;
   if (product.slug === "gk-ir-p770") return p770;
   if (product.slug === "gk-ir-ttt") return t200;

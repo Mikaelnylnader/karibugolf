@@ -10,6 +10,7 @@ export default async function handler(request) {
       .filter((product) => product.websiteVisible && (!requestedSku || product.sku.toLowerCase() === requestedSku))
       .map((product) => ({
         sku: product.sku,
+        sizes: product.sizes,
         priceKes: product.priceKes,
         priceCny: product.priceCny,
         priceUsd: product.priceUsd,

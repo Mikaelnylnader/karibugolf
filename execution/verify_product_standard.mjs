@@ -147,7 +147,7 @@ if (!p790.source?.includes("taylormadegolf.com")) failures.push("P790: official 
 if (!p790.video?.includes("youtube-nocookie.com/embed/MhMeZNyzRrE")) failures.push("P790: official TaylorMade video embed");
 if (!p790.videoStory?.includes("taylormadegolf.com/clubhouse/")) failures.push("P790: official video story link");
 if (!p790.graphiteFlexes.includes("Senior (A)") || p790.xStiffCount !== 0) failures.push(`P790: graphite flex options ${p790.graphiteFlexes.join(", ")}`);
-if (p790.steelFlexes.includes("Senior (A)") || p790.selectedSteelFlex !== "Regular (R)") failures.push(`P790: steel flex options ${p790.steelFlexes.join(", ")} / selected ${p790.selectedSteelFlex}`);
+if (!p790.steelFlexes.includes("Senior (A)") || !p790.selectedSteelFlex?.startsWith("Senior (A)")) failures.push(`P790: steel flex options ${p790.steelFlexes.join(", ")} / selected ${p790.selectedSteelFlex}`);
 if (p790.selectedFlexContrast < 4.5) failures.push(`P790: selected option contrast ${p790.selectedFlexContrast}`);
 if (!p790.whatsapp?.includes("Left%20handed") || !p790.whatsapp?.includes("Shaft%3A%20Graphite") || !p790.whatsapp?.includes("Flex%3A%20Senior")) failures.push("P790: configurable WhatsApp enquiry");
 if (!p790.zoomOpened) failures.push("P790: gallery zoom did not open");

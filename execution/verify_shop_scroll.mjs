@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 
 const url = process.argv[2] || "http://127.0.0.1:4500/shop/";
 const browser = await chromium.launch({ headless: true, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" });
-const expected = ["clubs", "shoes", "apparel", "bags", "balls", "accessories"];
+const expected = ["clubs", "kids", "shoes", "apparel", "bags", "balls", "accessories"];
 const failures = [];
 const errors = [];
 const out = ".tmp/shop-scroll-qa";
@@ -135,14 +135,15 @@ async function sampleEffects(page, label) {
       const media = document.querySelector(mediaSelector);
       const image = media?.querySelector("img");
       const copy = media?.closest("a")?.querySelector(":scope > div:last-child");
-      return { clipPath: media ? getComputedStyle(media).clipPath : "missing", imageTransform: image ? getComputedStyle(image).transform : "missing", copyOpacity: copy ? Number(getComputedStyle(copy).opacity) : 0 };
+      const card = media?.closest(".home-stock-card");
+      return { clipPath: media ? getComputedStyle(media).clipPath : "missing", imageTransform: image ? getComputedStyle(image).transform : "missing", copyOpacity: copy ? Number(getComputedStyle(copy).opacity) : 0, cardTransform: card ? getComputedStyle(card).transform : null };
     }, mediaSelector);
     await page.screenshot({ path: `${out}/${label}-${name}.png` });
     return state;
   };
   const effects = {
-    stockEntry: await sample(".shop-stock-window", ".shop-stock-item:first-child figure", 0.16, "stock-entry"),
-    stockSettled: await sample(".shop-stock-window", ".shop-stock-item:first-child figure", 0.52, "stock-settled"),
+    stockEntry: await sample(".shop-stock-feature", ".home-stock-card:first-child figure", 0.16, "stock-entry"),
+    stockSettled: await sample(".shop-stock-feature", ".home-stock-card:first-child figure", 0.52, "stock-settled"),
     categoryEntry: await sample('[data-shop-department="clubs"]', '[data-shop-department="clubs"] figure', 0.18, "category-entry"),
     categorySettled: await sample('[data-shop-department="clubs"]', '[data-shop-department="clubs"] figure', 0.68, "category-settled"),
   };
@@ -184,7 +185,7 @@ for (const [label, result] of [["desktop", desktopResult], ["mobile", mobileResu
   if (!result.snapStyles.every((item) => item.align.includes("center") && item.stop === "always")) failures.push(`${label} card snap styles`);
   if (!result.imageStates.every((item) => item.loaded)) failures.push(`${label} category image`);
   if (!Object.values(result.routeStatuses).every((status) => status === 200)) failures.push(`${label} department route`);
-  if (result.trailMarkers !== 6) failures.push(`${label} trail marker count`);
+  if (result.trailMarkers !== expected.length) failures.push(`${label} trail marker count`);
   if (result.horizontalOverflow > 0) failures.push(`${label} horizontal overflow ${result.horizontalOverflow}px`);
   if (result.brokenImages.length) failures.push(`${label} broken images`);
   if (result.samples.some((sample) => Math.abs(sample.centreDelta ?? 999) > 60 || sample.visibleRatio < 0.99)) failures.push(`${label} category does not settle fully in view`);
@@ -193,9 +194,8 @@ for (const [label, result] of [["desktop", desktopResult], ["mobile", mobileResu
 if (quickNavTarget.active !== "#apparel" || quickNavTarget.hash !== "#apparel" || Math.abs(quickNavTarget.centreDelta ?? 999) > 60) failures.push("quick navigation does not centre apparel");
 for (const [label, effects] of [["desktop", desktopEffects], ["mobile", mobileEffects]]) {
   const remainingReveal = (clipPath) => Math.max(0, ...[...clipPath.matchAll(/([\d.]+)%/g)].map((match) => Number(match[1])));
-  if (effects.stockEntry.clipPath === effects.stockSettled.clipPath || remainingReveal(effects.stockSettled.clipPath) > 0.5) failures.push(`${label} stock reveal does not resolve`);
+  if (label === "desktop" && effects.stockEntry.cardTransform === effects.stockSettled.cardTransform) failures.push(`${label} stock cards do not fan open`);
   if (effects.categoryEntry.clipPath === effects.categorySettled.clipPath || remainingReveal(effects.categorySettled.clipPath) > 0.5) failures.push(`${label} category reveal does not resolve`);
-  if (effects.stockEntry.imageTransform === effects.stockSettled.imageTransform) failures.push(`${label} stock image has no scroll drift`);
   if (effects.categoryEntry.imageTransform === effects.categorySettled.imageTransform) failures.push(`${label} category image has no scroll drift`);
   if (effects.stockSettled.copyOpacity < 0.99 || effects.categorySettled.copyOpacity < 0.99) failures.push(`${label} settled card copy is not readable`);
 }

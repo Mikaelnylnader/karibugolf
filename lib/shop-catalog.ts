@@ -18,6 +18,7 @@ export type CatalogProduct = {
   stock: string;
   featured: boolean;
   images: string[];
+  image?:string;
 };
 
 export type ShopCategory = {
@@ -37,12 +38,12 @@ export type Department = {
 };
 
 const categoryDetails: Record<string, Pick<ShopCategory, "label" | "image">> = {
-  drivers: { label: "Drivers", image: "/images/shop/categories-v2/drivers.webp" },
-  woods: { label: "Fairway Woods", image: "/images/shop/categories-v2/woods.webp" },
-  hybrids: { label: "Hybrids", image: "/images/shop/categories-v2/hybrids.webp" },
-  golf_irons: { label: "Irons", image: "/images/shop/categories-v2/golf_irons.webp" },
-  wedges: { label: "Wedges", image: "/images/shop/categories-v2/wedges.webp" },
-  putters: { label: "Putters", image: "/images/shop/categories-v2/putters.webp" },
+  drivers: { label: "Drivers", image: "/images/shop/clubs-editorial/driver-address.webp" },
+  woods: { label: "Fairway Woods", image: "/images/shop/clubs-editorial/fairway-address.webp" },
+  hybrids: { label: "Hybrids", image: "/images/shop/clubs-editorial/hybrid-swing.webp" },
+  golf_irons: { label: "Irons", image: "/images/shop/clubs-editorial/p790-set-on-grass.webp" },
+  wedges: { label: "Wedges", image: "/images/shop/clubs-editorial/sm11-wedge-setup.webp" },
+  putters: { label: "Putters", image: "/images/products/scotty-cameron-studio-style-newport-2-hero.jpg" },
   junior_sets: { label: "Junior Sets", image: "/images/shop/categories-v2/junior_sets.jpg" },
   mens_shoes: { label: "Men’s Shoes", image: "/images/shop/categories-v2/mens_shoes.webp" },
   womens_shoes: { label: "Women’s Shoes", image: "/images/shop/categories-v2/womens_shoes.webp" },
@@ -87,7 +88,7 @@ const department = (
 ): Department => ({ slug, label, eyebrow, description, image, categories: categorySlugs.map(category) });
 
 export const departments: Department[] = [
-  department("clubs", "Clubs", "BUILD YOUR SET", "From the tee to the green, browse every club family in one place.", "/images/shop/clubs-v2.webp", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]),
+  department("clubs", "Clubs", "BUILD YOUR SET", "From the tee to the green, browse every club family in one place.", "/images/shop/clubs-editorial/driver-swing.webp", ["drivers", "woods", "hybrids", "golf_irons", "wedges", "putters"]),
   department("kids", "Kids", "START THEIR GAME", "Height-matched junior golf sets built to make the first swing easier and more fun.", "/images/shop/kids-v2.jpg", ["junior_sets"]),
   department("shoes", "Shoes", "WALK THE COURSE", "Golf footwear selected for grip, comfort and long days on the course.", "/images/shop/shoes-v2.webp", ["mens_shoes", "womens_shoes"]),
   department("apparel", "Apparel", "WEAR YOUR GAME", "Performance layers and everyday golf style for women and men.", "/images/shop/apparel-v2.webp", ["mens_polos", "mens_pants", "mens_jackets", "mens_shorts", "womens_polos", "womens_skirts", "womens_pants", "womens_dresses", "womens_jackets", "womens_tops"]),

@@ -1,37 +1,20 @@
 "use client";
+/* oxlint-disable next/no-img-element -- Exported thumbnails use local/API image paths without a Next image optimizer. */
 
-import { useEffect, useState, type ImgHTMLAttributes } from "react";
+import { useState, type ImgHTMLAttributes } from "react";
 import { productDisplayImage, type CatalogProduct } from "@/lib/shop-catalog";
+import { useLiveProduct } from "@/components/use-live-products";
 
 type LiveProductImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & {
   product: CatalogProduct;
 };
 
-type StorefrontProduct = {
-  sku: string;
-  image?: string;
-};
-
 export default function LiveProductImage({ product, alt, onError, ...props }: LiveProductImageProps) {
   const fallback = productDisplayImage(product);
-  const [src, setSrc] = useState(fallback);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch(`/api/storefront-products?sku=${encodeURIComponent(product.sku)}`, {
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Live image unavailable")))
-      .then((payload: { products?: StorefrontProduct[] }) => {
-        const liveImage = payload.products?.[0]?.image?.trim();
-        if (liveImage) setSrc(liveImage);
-      })
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === "AbortError")) setSrc(fallback);
-      });
-    return () => controller.abort();
-  }, [fallback, product.sku]);
+  const live=useLiveProduct(product);
+  const preferred=live.image?.trim() || fallback;
+  const [failed,setFailed]=useState("");
+  const src=preferred===failed ? fallback : preferred;
 
   return <img
     {...props}
@@ -39,7 +22,7 @@ export default function LiveProductImage({ product, alt, onError, ...props }: Li
     alt={alt ?? product.name}
     data-live-product-image={product.sku}
     onError={(event) => {
-      if (src !== fallback) setSrc(fallback);
+      if (src !== fallback) setFailed(preferred);
       onError?.(event);
     }}
   />;

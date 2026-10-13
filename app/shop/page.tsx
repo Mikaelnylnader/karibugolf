@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, MessageCircle, PackageCheck, Truck } from "lucide-react";
-import { departments, formatKes, inStockProducts, products } from "@/lib/shop-catalog";
+import { departments, inStockProducts, products } from "@/lib/shop-catalog";
 import ShopScrollShell from "@/components/shop-scroll-shell";
-import LiveProductImage from "@/components/live-product-image";
+import StockFeature from "@/components/stock-feature";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
@@ -35,20 +35,7 @@ export default function Shop() {
       {departments.map((item, index) => <a href={`#${item.slug}`} key={item.slug}><span>0{index + 1}</span>{item.label}</a>)}
     </nav>
 
-    <section className="shop-stock-window" aria-labelledby="shop-stock-title" data-sc-act="flow">
-      <header data-sc-in data-sc-stagger="55">
-        <div><p className="micro">LIVE KARIBU INVENTORY</p><span>{String(inStockProducts.length).padStart(2, "0")} READY IN NAIROBI</span></div>
-        <h2 id="shop-stock-title">WHAT IS<br/><em>IN STOCK NOW.</em></h2>
-        <p>Only products currently marked available in the Karibu catalogue appear here. Prices and stock come from the same source as each product page.</p>
-      </header>
-      <div className="shop-stock-rack" data-sc-in data-sc-stagger="55">
-        {inStockProducts.map((product, index) => <a href={`/shop/product/${product.slug}`} className={`shop-stock-item shop-stock-item-${index + 1}`} data-sc-tilt="2" key={product.sku}>
-          <figure data-sc-reveal={index % 2 ? "right" : "up"} data-sc-reveal-at={`${0.08 + index * 0.04} ${0.42 + index * 0.05}`}><LiveProductImage product={product} alt={product.name} width="900" height="900" loading={index > 1 ? "lazy" : "eager"} data-sc-parallax={index % 2 ? "0.28" : "-0.28"}/></figure>
-          <div><span>{String(index + 1).padStart(2, "0")} · {product.sku}</span><h3>{product.name}</h3><strong>{formatKes(product.priceKes)}</strong></div>
-        </a>)}
-      </div>
-      <footer data-sc-in><p>Every in-stock item, one focused collection.</p><a href="/shop/stock">Open live stock room <ArrowUpRight size={20}/></a></footer>
-    </section>
+    <StockFeature context="shop"/>
 
     <section className="department-intro" id="departments" data-sc-act="flow" data-shop-snap>
       <p className="micro">THE FULL EQUIPMENT WALL</p>

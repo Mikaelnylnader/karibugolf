@@ -69,7 +69,8 @@ for (const [department, categories] of Object.entries(departments)) {
   if (result.ledgerCount !== categories.length) failures.push(`${department}: ledger count ${result.ledgerCount}`);
   if (result.visitedCount !== categories.length) failures.push(`${department}: ledger incomplete ${result.visitedCount}/${categories.length}`);
   if (result.categoryCount !== categories.length) failures.push(`${department}: category count ${result.categoryCount}`);
-  if (result.heroTitle !== `${department.toUpperCase()}.`) failures.push(`${department}: department hero title ${result.heroTitle}`);
+  const expectedHero = department === "clubs" ? "GOLFCLUBS." : `${department.toUpperCase()}.`;
+  if (result.heroTitle !== expectedHero) failures.push(`${department}: department hero title ${result.heroTitle}`);
   if (result.firstCategory !== categories[0]) failures.push(`${department}: first category ${result.firstCategory}`);
   if (!result.categoryFollowsHero) failures.push(`${department}: category does not follow department hero`);
   const expectedPictureLinks = categories.map((category) => `/shop/${department}/${category}`);

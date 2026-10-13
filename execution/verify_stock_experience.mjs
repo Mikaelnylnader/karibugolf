@@ -59,12 +59,19 @@ for (const href of productLinks) routeStatuses[href] = await desktop.evaluate(as
 
 await desktop.goto(`${base}/shop/`, { waitUntil: "networkidle" });
 const shop = await desktop.evaluate(() => ({
-  cards: document.querySelectorAll(".shop-stock-item").length,
-  stockLink: document.querySelector(".shop-stock-window footer a")?.getAttribute("href"),
+  cards: document.querySelectorAll(".shop-stock-feature .home-stock-card").length,
+  stockLink: document.querySelector(".shop-stock-feature .home-stock-copy>a")?.getAttribute("href"),
   heading: document.querySelector("#shop-stock-title")?.textContent?.replace(/\s+/g, " ").trim(),
 }));
-await desktop.locator(".shop-stock-window").scrollIntoViewIfNeeded();
+await desktop.locator(".shop-stock-feature").scrollIntoViewIfNeeded();
+await desktop.evaluate(() => {
+  document.documentElement.style.scrollBehavior = "auto";
+  document.documentElement.style.scrollSnapType = "none";
+  const section = document.querySelector(".shop-stock-feature");
+  scrollTo(0, section.getBoundingClientRect().top + scrollY + section.clientHeight - innerHeight - 8);
+});
 await desktop.waitForTimeout(700);
+const shopFanTransforms = await desktop.locator(".shop-stock-feature .home-stock-card").evaluateAll((items) => items.map((item) => getComputedStyle(item).transform));
 await desktop.screenshot({ path: `${output}/shop-stock-window.png` });
 
 await desktop.goto(`${base}/`, { waitUntil: "networkidle" });
@@ -117,6 +124,7 @@ const failures = [
   ...(stockPage.horizontalOverflow <= 0 ? [] : [`desktop overflow ${stockPage.horizontalOverflow}px`]),
   ...(Object.values(routeStatuses).every((status) => status === 200) ? [] : ["product route status"]),
   ...(shop.cards === expectedCount && shop.stockLink === "/shop/stock" ? [] : ["shop stock window"]),
+  ...(shop.heading === "HERE NOW.READY TO PLAY." && new Set(shopFanTransforms).size > 1 ? [] : ["shop homepage stock rack"]),
   ...(home.cards === expectedCount && home.stockLink === "/shop/stock" ? [] : ["home stock rack"]),
   ...(home.shopIntro?.includes("YOUR NEXT FIND") && home.shopLink === "/shop" ? [] : ["home shop introduction"]),
   ...(new Set(fanTransforms).size > 1 ? [] : ["home stock rack did not fan open"]),
@@ -126,5 +134,5 @@ const failures = [
   ...errors,
 ];
 
-console.log(JSON.stringify({ base, stockCount, stockPage, routeStatuses, shop, home, fanTransforms, mobileState, reducedState, errors, failures }, null, 2));
+console.log(JSON.stringify({ base, stockCount, stockPage, routeStatuses, shop, shopFanTransforms, home, fanTransforms, mobileState, reducedState, errors, failures }, null, 2));
 if (failures.length) process.exitCode = 1;
