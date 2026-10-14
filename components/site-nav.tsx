@@ -4,7 +4,7 @@ import { useEffect,useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ArrowUpRight,Plus,Minus } from "lucide-react";
-const links=[["Home","/"],["Shop","/shop"],["About Us","/about"],["Golf Coaching","/Coaching"],["Blog","/blog"],["Contact","/contact"]];
+const links=[["Home","/"],["Shop","/shop"],["About Us","/about"],["Golf Coaching","/Coaching"],["Campaign","/campaign"],["Blog","/blog"],["Contact","/contact"]];
 const talk="https://wa.me/254116416105?text="+encodeURIComponent("Hi Karibu Golf! I'd like to ask a question.");
 export default function SiteNav(){
  const path=usePathname();

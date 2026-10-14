@@ -1,0 +1,6 @@
+export const rewards = [
+  { id:"supporter", name:"Community Supporter", amount:"$25", number:"01", line:"A little support. A lasting welcome.", location:"Support from anywhere", features:["Your name on our website’s Supporters Wall", "Exclusive digital updates and behind-the-scenes campaign insights"] },
+  { id:"player", name:"Fitted Player", amount:"$100", number:"02", line:"Start with a setup that fits your game.", location:"Fitting in Nairobi", features:["One full custom-fitting session, including loft/lie assessment, regripping and swing analysis", "15% discount voucher on your first gear order", "Your name on the Supporters Wall"] },
+  { id:"vip", name:"VIP Clinic & Fitting", amount:"$250", number:"03", line:"Find your fit. Learn from a pro.", location:"Fitting and clinic in Nairobi", features:["VIP custom fitting and regripping service for a full club set", "Entry to an exclusive golf clinic led by Mikael Nylander", "An official Karibu Golf apparel item"] },
+  { id:"founder", name:"Founding Member", amount:"$500+", number:"04", line:"Help shape the next chapter of golf.", location:"Recognition and experiences in Nairobi", features:["Permanent recognition as a Founding Sponsor in the Nairobi studio", "Lifetime priority booking for fittings and masterclasses", "One full custom-fitting session and two VIP clinic passes"] },
+] as const;
