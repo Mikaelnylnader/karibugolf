@@ -28,7 +28,10 @@ for (const product of catalog.products) {
   const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
   const html = await loadText(["shop", "product", product.slug, "index.html"], `/shop/product/${product.slug}/`);
   const head = html.slice(0, html.indexOf("</head>") + 7);
-  const title = head.match(/<title>([^<]*)<\/title>/i)?.[1] ?? "";
+  // Compare text, not entity spelling: React encodes apostrophes as &#x27;.
+  const title = (head.match(/<title>([^<]*)<\/title>/i)?.[1] ?? "")
+    .replace(/&#(?:x0*27|0*39);/gi, "'")
+    .replaceAll("&apos;", "'").replaceAll("&amp;", "&");
   const descriptionTag = head.match(/<meta\s+name="description"[^>]*>/i)?.[0] ?? "";
   const canonicalTag = head.match(/<link\s+rel="canonical"[^>]*>/i)?.[0] ?? "";
 

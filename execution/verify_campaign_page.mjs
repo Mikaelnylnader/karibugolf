@@ -213,6 +213,10 @@ try{
    if(config.viewport.width<800){
     await page.getByRole('button',{name:'Open menu',exact:true}).click();
     await page.locator('#small-menu').getByRole('link',{name:'Campaign',exact:true}).click();
+    // This is a document navigation, not the standalone preview's hash link.
+    // Wait for the streamed document and engine before inspecting its chapters.
+    await page.locator('footer.shared-footer').waitFor({state:'attached'});
+    await page.waitForSelector('html.sc-ready');
     check(new URL(page.url()).pathname.replace(/\/$/,'')==='/campaign',config.name+': mobile campaign navigation');
     check(await page.locator('#small-menu').count()===0,config.name+': mobile menu closes');
    }
