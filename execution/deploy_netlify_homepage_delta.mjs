@@ -65,6 +65,7 @@ for (const fileName of reviewedFiles) {
 const functionSearch = await api.searchSiteFunctions({ siteId });
 const liveFunctions = new Map((functionSearch.functions || []).map((fn) => [fn.n, fn.d]));
 const tmpDir = await mkdtemp(path.join(root, ".tmp", "netlify-home-functions-"));
+if (path.dirname(tmpDir) !== path.join(root, ".tmp") || !path.basename(tmpDir).startsWith("netlify-home-functions-")) throw new Error("Unsafe temporary cleanup path");
 let functionZips;
 try {
   functionZips = await zipFunctions([path.join(root, "netlify", "functions")], tmpDir, { basePath: root });
@@ -170,6 +171,5 @@ try {
   console.log(JSON.stringify({ deployed: true, deployId: deploy.id, url: deploy.ssl_url || deploy.url, changedFiles, changedFunctions }, null, 2));
   }
 } finally {
-  if (path.dirname(tmpDir) !== path.join(root, ".tmp") || !path.basename(tmpDir).startsWith("netlify-home-functions-")) throw new Error("Unsafe temporary cleanup path");
   await rm(tmpDir, { recursive: true, force: true });
 }
