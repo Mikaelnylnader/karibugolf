@@ -6,6 +6,8 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, MessageCircle } from "lucide-react";
 import StockFeature from "@/components/stock-feature";
+import { HomeCoachingSection, HomeCampaignSection } from "@/components/home-feature-sections";
+import "./home-features.css";
 
 const chat = "https://wa.me/254116416105";
 const topics = ["Equipment", "Apparel", "Essentials"];
@@ -123,6 +125,7 @@ export default function Home() {
    <a href="/shop">Open the webshop <ArrowUpRight size={25}/></a>
   </section>
   <StockFeature/>
+  <HomeCoachingSection/>
   <section className="people" id="people" ref={people}>
    <span className="people-orbit" aria-hidden="true"/>
    <div className="people-top"><span className="section-label"><span className="small-cross">+</span> THE PEOPLE BEHIND YOUR GAME</span><p>Not just a name.<br/>A team in your corner.</p></div>
@@ -134,6 +137,7 @@ export default function Home() {
    <div><p className="micro">A SHOP WITH A BIGGER AMBITION</p><h2 id="home-mission-title">MORE PEOPLE.<br/><em>MORE GOLF.</em></h2></div>
    <div><p>Golf should be easier to start and a place where more people feel they belong. We bring equipment and personal guidance to golfers across East Africa.</p><p>Our next chapter is about junior golf, beginner-friendly community partnerships and giving equipment a longer life. These are future plans, not programmes already running.</p><a href="/growing-the-game/">Discover our Growing the Game plans <ArrowUpRight size={20}/></a></div>
   </section>
+  <HomeCampaignSection/>
   <section className="contact-close" id="contact"><div className="close-top"><span className="micro">YOUR NEXT ROUND STARTS WITH A CONVERSATION.</span><span>NAIROBI · EAST AFRICA</span></div><a className="huge-contact" href={chat+"?text="+encodeURIComponent("Hi Karibu Golf! I'd like to learn more about what you offer.")}><span>LET’S TALK<br/><em>GOLF.</em></span><ArrowUpRight strokeWidth={.8}/></a><div className="close-bottom"><p>Have a question? A wish list? A love for the game?<br/>We’d love to hear from you.</p><a href={chat}><MessageCircle size={18}/> +254 116 416 105</a></div></section>
  </main>);
 }

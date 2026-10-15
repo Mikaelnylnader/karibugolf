@@ -1,0 +1,48 @@
+.new-site .home-feature { --home-feature-arrival:1; position:relative; padding:clamp(56px,7vw,100px) 6%; scroll-margin-top:calc(var(--nav-height) + 20px); }
+.home-feature h2 { font-size:clamp(3rem,5vw,5.25rem); line-height:1; letter-spacing:-.025em; text-wrap:balance; overflow-wrap:anywhere; }
+.home-feature p { font-size:1rem; line-height:1.75; max-width:46ch; }
+.home-feature-link { display:inline-flex; justify-content:space-between; align-items:center; gap:28px; width:fit-content; max-width:100%; min-height:52px; padding:14px 21px; background:#12261d; color:#eeefe5; border:1px solid #12261d; font-size:.9375rem; font-weight:600; line-height:1.4; transition:background 160ms cubic-bezier(.23,1,.32,1),color 160ms cubic-bezier(.23,1,.32,1); }
+.home-feature-link svg { flex-shrink:0; }
+.home-feature-link:focus-visible { outline:3px solid #456330; outline-offset:5px; }
+.home-feature-link:active { transform:translateY(1px); }
+@media(hover:hover) and (pointer:fine) { .home-feature-link:hover { background:#294732; color:#d9ed92; } }
+.new-site .home-coaching { display:grid; grid-template-columns:1.12fr 1fr; align-items:center; gap:8%; background:#eeefe5; color:#12261d; }
+.home-coaching-photo { margin:0; min-width:0; }
+.home-coaching-image { overflow:clip; background:#dce2d2; aspect-ratio:3/2; }
+.home-coaching-image img { display:block; width:100%; height:100%; object-fit:cover; }
+.home-coaching-photo figcaption { margin-top:15px; font-size:.75rem; line-height:1.6; color:#415043; }
+.home-coaching-copy { min-width:0; }
+.home-coaching-copy .micro { font-size:.6875rem; letter-spacing:.1em; margin-bottom:24px; }
+.home-coaching h2 em { color:#456330; }
+.home-coaching-copy>p:not(.micro) { margin-top:27px; color:#415043; }
+.home-coaching .home-feature-link { margin-top:30px; }
+.new-site .home-campaign { display:grid; grid-template-columns:1.2fr 1fr; gap:9%; align-items:center; padding-bottom:clamp(82px,9vw,125px); background:#d9ed92; color:#12261d; }
+.home-campaign h2 { font-size:clamp(3.5rem,6.7vw,6.5rem); }
+.home-campaign h2 em { color:#36572b; }
+.home-campaign-copy>p:first-child { font-size:1.375rem; font-weight:500; line-height:1.45; margin-bottom:20px; }
+.home-campaign-copy>p:nth-child(2) { color:#314b27; }
+.home-campaign .home-feature-link { margin-top:27px; }
+.home-campaign-copy .home-campaign-status { font-size:.8125rem; line-height:1.7; margin-top:22px; color:#314b27; }
+.home-campaign-seam { position:absolute; left:6%; bottom:28px; width:88%; height:30px; overflow:visible; fill:none; stroke:#36572b; stroke-width:1; }
+.home-campaign-seam-ground { opacity:.3; }
+.home-campaign-seam-drawn { stroke-width:2; }
+.home-campaign-seam circle { fill:#36572b; stroke:none; }
+.home-feature[data-home-feature-motion="on"] .home-coaching-image img { transform:scale(calc(1.06 - var(--home-feature-arrival)*.06)) translateY(calc((1 - var(--home-feature-arrival))*-10px)); }
+.home-feature[data-home-feature-motion="on"] .home-coaching-copy h2 { transform:translateY(calc((1 - var(--home-feature-arrival))*14px)); }
+.home-feature[data-home-feature-motion="on"] .home-campaign-heading h2 { transform:translateX(calc((1 - var(--home-feature-arrival))*-20px)); }
+.home-feature[data-home-feature-motion="on"] .home-campaign-seam-drawn { stroke-dasharray:1; stroke-dashoffset:calc(1 - var(--home-feature-arrival)); }
+.home-feature:focus-within .home-coaching-image img,.home-feature:focus-within h2 { transform:none!important; }
+.home-feature:focus-within .home-campaign-seam-drawn { stroke-dashoffset:0; }
+@media(max-width:760px) {
+ .new-site .home-coaching,.new-site .home-campaign { grid-template-columns:1fr; gap:34px; }
+ .home-coaching-copy { grid-row:1; }
+ .home-feature h2 { font-size:clamp(2.75rem,10vw,4.5rem); }
+ .home-coaching-copy .micro { margin-bottom:20px; }
+ .home-coaching-copy>p:not(.micro) { margin-top:22px; }
+ .home-coaching .home-feature-link { margin-top:24px; }
+ .home-coaching-photo { max-width:600px; }
+ .home-campaign h2 { font-size:clamp(2.25rem,13vw,5rem); }
+ .home-campaign-copy>p:first-child { font-size:1.25rem; margin-bottom:16px; }
+ .home-campaign-seam { bottom:25px; }
+}
+@media(prefers-reduced-motion:reduce) { .home-feature * { transform:none!important; transition:none!important; } .home-campaign-seam-drawn { stroke-dashoffset:0!important; } }
