@@ -1,6 +1,10 @@
 import type { CatalogProduct } from "@/lib/shop-catalog";
 import type { ProductGalleryImage } from "@/components/product-gallery";
 import { ironShaftOptions, ironFlexOptions } from "@/lib/iron-options";
+import { qi4dCap } from "@/lib/qi4d-cap";
+import { malbonCap } from "@/lib/malbon-cap";
+import { titleistPremiumStandBag } from "@/lib/titleist-premium-stand-bag";
+import { taylormadeStandBag } from "@/lib/taylormade-stand-bag";
 
 export type ProductFeature = { title: string; text: string };
 export type ProductConfiguration = { label: string; values: string[] };
@@ -26,6 +30,8 @@ export type ProductPageDetails = {
   equipment?: { title: string; text: string }[];
   source?: { label: string; url: string };
   presentation?: {
+    galleryLabels?: boolean;
+    overviewDetailImages?: boolean;
     imageLabels: string[];
     featuresTitle: string;
     featuresIntro: string;
@@ -1775,6 +1781,10 @@ export function detailsForProduct(product: CatalogProduct): ProductPageDetails {
 }
 
 function authoredDetailsForProduct(product: CatalogProduct): ProductPageDetails {
+  if (product.slug === "gk-bg019") return titleistPremiumStandBag;
+  if (product.slug === "gk-bg020") return taylormadeStandBag;
+  if (product.slug === "gk-hc010") return qi4dCap;
+  if (product.slug === "gk-hc011") return malbonCap;
   if (product.slug === "gk-ir-tmp") return p790;
   if (product.slug === "gk-ir-p770") return p770;
   if (product.slug === "gk-ir-ttt") return t200;

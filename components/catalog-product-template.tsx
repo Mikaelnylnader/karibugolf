@@ -24,14 +24,14 @@ export default function CatalogProductTemplate({ product, details, department, r
   const isGlove = product.categorySlug === "gloves";
   const categoryHref = department ? `/shop/${department.slug}/${product.categorySlug}` : "/shop";
   const galleryFilter = details.gallery.some((image) => image.group)
-    ? details.configuration.find((group) => group.label === "Finish")
+    ? details.configuration.find((group) => ["Finish", "Colour"].includes(group.label))
     : undefined;
   const kenyaQuestions = productSeoQuestions(product);
 
   return <ProductScrollShell><main className={`inner-page club-product catalog-standard-product product-scroll-dossier${isP790 ? " product-scroll-featured" : ""}${product.categorySlug === "balls" ? " product-golf-ball" : ""}${details.specs.headers.length === 2 ? " product-reference-table" : ""}`} id="page-content">
     <div className="product-breadcrumb"><a href={categoryHref}><ArrowLeft size={16}/> {product.categoryLabel}</a></div>
     <section className="club-purchase" id="product-order" data-sc-act="flow">
-      <ProductGallery images={details.gallery} note={details.galleryNote} sku={product.sku} filterLabel={galleryFilter?.label} initialGroup={galleryFilter?.values[0]}/>
+      <ProductGallery images={details.gallery} note={details.galleryNote} sku={product.sku} filterLabel={galleryFilter?.label} initialGroup={galleryFilter?.values[0]} showLabels={details.presentation?.galleryLabels}/>
       <div className="club-buy-panel">
         <p className="micro">{details.brand.toUpperCase()} · {product.categoryLabel.toUpperCase()} · {product.sku}</p>
         <h1>{product.name}</h1>
@@ -63,14 +63,14 @@ export default function CatalogProductTemplate({ product, details, department, r
           <figure className="product-study-primary" data-sc-reveal="iris" data-sc-reveal-at="0.03 0.34">
             <Image unoptimized src={details.overviewImage} alt={`${product.name} product detail`} width={900} height={900}/>
           </figure>
-          {details.gallery[1] && <figure className="product-study-face" data-sc-reveal="left" data-sc-reveal-at="0.26 0.56" data-sc-parallax="-0.36">
+          {details.presentation?.overviewDetailImages !== false && details.gallery[1] && <figure className="product-study-face" data-sc-reveal="left" data-sc-reveal-at="0.26 0.56" data-sc-parallax="-0.36">
             <Image unoptimized src={details.gallery[1].src} alt={details.gallery[1].alt} width={900} height={900}/>
           </figure>}
-          {details.gallery[2] && <figure className="product-study-address" data-sc-reveal="right" data-sc-reveal-at="0.48 0.78" data-sc-parallax="0.28">
+          {details.presentation?.overviewDetailImages !== false && details.gallery[2] && <figure className="product-study-address" data-sc-reveal="right" data-sc-reveal-at="0.48 0.78" data-sc-parallax="0.28">
             <Image unoptimized src={details.gallery[2].src} alt={details.gallery[2].alt} width={900} height={900}/>
           </figure>}
         </div>
-        <div className="product-study-key" aria-hidden="true">{(details.presentation?.imageLabels ?? ["Cavity", "Face", "Address"]).map((label) => <span key={label}>{label}</span>)}</div>
+        {details.presentation?.galleryLabels !== false && <div className="product-study-key" aria-hidden="true">{(details.presentation?.imageLabels ?? ["Cavity", "Face", "Address"]).map((label) => <span key={label}>{label}</span>)}</div>}
       </div>
     </section>
 
