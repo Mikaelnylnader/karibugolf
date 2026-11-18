@@ -56,7 +56,7 @@ try {for(const config of configs){
    const focused=await link.evaluate(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {visible:r.top>=document.querySelector('header').getBoundingClientRect().bottom&&r.bottom<=innerHeight,hit:hit===el||el.contains(hit),outline:getComputedStyle(el).outlineWidth};});
    check(focused.visible&&focused.hit,config.name+': keyboard action reachable '+selector);
   }
-  const expected=index===0?'/Coaching/':'/campaign/';
+  const expected=index===0?'/coaching/':'/campaign/';
   check(await link.getAttribute('href')===expected,config.name+': correct destination');
   await link.click();await page.locator('footer.shared-footer').waitFor({state:'attached'});
   check(new URL(page.url()).pathname.replace(/\/$/,'')===expected.slice(0,-1),config.name+': actual navigation '+expected);

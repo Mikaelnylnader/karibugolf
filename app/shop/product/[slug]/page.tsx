@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteOrganization, siteWebsite } from "@/lib/site-seo";
 import { notFound } from "next/navigation";
 import CatalogProductTemplate from "@/components/catalog-product-template";
 import { detailsForProduct } from "@/lib/product-page-details";
@@ -127,22 +128,8 @@ export default async function CatalogProductPage({ params }: { params: Promise<{
         breadcrumb: { "@id": breadcrumbId },
         mainEntity: { "@id": productId },
       },
-      {
-        "@type": "WebSite",
-        "@id": websiteId,
-        url: "https://karibugolf.com/",
-        name: "Karibu Golf East Africa",
-        inLanguage: "en-KE",
-        publisher: { "@id": organizationId },
-      },
-      {
-        "@type": "Organization",
-        "@id": organizationId,
-        name: "Karibu Golf",
-        url: "https://karibugolf.com/",
-        logo: "https://karibugolf.com/images/logo.png",
-        areaServed: { "@type": "Country", name: "Kenya" },
-      },
+      siteWebsite,
+      siteOrganization,
     ],
   };
 

@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import { inStockProducts } from "@/lib/shop-catalog";
 import StockRoom from "@/components/stock-room";
 import "../scrollcraft.css";
 import "./stock.css";
 
-export const metadata: Metadata = {
-  title: "Golf Equipment In Stock in East Africa | Karibu Golf",
-  description: "See golf clubs currently in stock at Karibu Golf in Nairobi, with live prices, quantities and delivery enquiries across East Africa.",
-  alternates: { canonical: "https://karibugolf.com/shop/stock/" },
-};
+export const metadata: Metadata = pageMetadata("/shop/stock/", "Golf Equipment In Stock in East Africa | Karibu Golf", "See golf clubs currently in stock at Karibu Golf in Nairobi, with live prices, quantities and delivery enquiries across East Africa.");
 
 export default function StockPage() {
   const itemList = {

@@ -7,6 +7,7 @@ import ProductScrollShell from "@/components/product-scroll-shell";
 import LiveProductPurchase from "@/components/live-product-purchase";
 import LiveProductCardPrice from "@/components/live-product-card-price";
 import type { CatalogProduct, Department } from "@/lib/shop-catalog";
+import { productDisplayImage } from "@/lib/shop-catalog";
 import type { ProductPageDetails } from "@/lib/product-page-details";
 import { productSeoQuestions } from "@/lib/product-seo";
 
@@ -166,7 +167,7 @@ export default function CatalogProductTemplate({ product, details, department, r
       <div className="store-product-grid">{related.map((item) => {
         const relatedAvailable = isAvailable(item);
         return <a className="store-product-card" href={`/shop/product/${item.slug}`} key={item.sku}>
-          <div className="store-product-image"><Image unoptimized src={item.images[0] ?? "/images/clubs.jpg"} alt={item.name} width={900} height={900}/><span className={relatedAvailable ? "available" : "unavailable"}>{relatedAvailable ? "In stock" : "Out of stock"}</span></div>
+          <div className="store-product-image"><Image unoptimized src={productDisplayImage(item)} alt={item.name} width={900} height={900}/><span className={relatedAvailable ? "available" : "unavailable"}>{relatedAvailable ? "In stock" : "Out of stock"}</span></div>
           <div className="store-product-copy"><p className="micro">{item.categoryLabel}</p><h3>{item.name}</h3><LiveProductCardPrice product={item}/><span>View product <ArrowUpRight size={14}/></span></div>
         </a>;
       })}</div>

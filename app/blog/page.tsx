@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import BlogScrollShell from "@/components/blog-scroll-shell";
@@ -7,6 +8,7 @@ import "../shop/scrollcraft.css";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
+  ...pageMetadata("/blog/", "Golf Equipment Guides East Africa | The Karibu Journal", "East African golf-equipment guides and comparisons for TaylorMade P790, Titleist T200 and Callaway Ai Smoke HL, plus practical regional golf advice.", "/images/golf-moment.jpg"),
   title: "Golf Equipment Guides East Africa | The Karibu Journal",
   description: "East African golf-equipment guides and comparisons for TaylorMade P790, Titleist T200 and Callaway Ai Smoke HL, plus practical regional golf advice.",
   alternates: { canonical: "https://karibugolf.com/blog/" },

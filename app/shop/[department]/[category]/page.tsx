@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { collectionMetadata } from "@/lib/site-seo";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, MessageCircle } from "lucide-react";
 import DepartmentScrollShell from "@/components/department-scroll-shell";
@@ -12,12 +13,9 @@ export function generateStaticParams() { return departments.flatMap((department)
 export async function generateMetadata({ params }: { params: Promise<{ department: string; category: string }> }): Promise<Metadata> {
   const values = await params;
   const category = categoryBySlug(values.category);
-  if (values.department === "shoes" && values.category === "kids_shoes") return {
-    title: "Kids’ Golf Shoes in Kenya | Karibu Golf",
-    description: "Explore junior golf shoe fit, grip and easy fastening. Ask Karibu Golf about kids’ models, sizes and availability in Kenya before ordering.",
-    alternates: { canonical: "https://karibugolf.com/shop/shoes/kids_shoes/" },
-  };
-  return { title: category ? `${category.label} | Karibu Golf Shop` : "Category | Karibu Golf", description: category?.description };
+  const department = departmentBySlug(values.department);
+  if (!category || !department?.categories.some((item) => item.slug === category.slug)) notFound();
+  return collectionMetadata(department.slug, category.slug, category.label, category.image);
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ department: string; category: string }> }) {

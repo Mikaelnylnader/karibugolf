@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import { ArrowUpRight, MessageCircle, PackageCheck, Truck } from "lucide-react";
 import { departments, inStockProducts, products } from "@/lib/shop-catalog";
 import ShopScrollShell from "@/components/shop-scroll-shell";
@@ -6,8 +7,7 @@ import StockFeature from "@/components/stock-feature";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
-  title: "Golf Shop East Africa | Karibu Golf",
-  description: "Shop golf clubs, shoes, apparel, bags, balls and accessories from Karibu Golf, based in Nairobi and serving golfers across East Africa.",
+  ...pageMetadata("/shop/", "Golf Shop Kenya | Clubs, Clothing & Gear | Karibu Golf", "Explore golf clubs, shoes, apparel, bags, balls and accessories in Kenya. Confirm KSh prices, availability and delivery with Karibu Golf in Nairobi."),
 };
 
 export default function Shop() {

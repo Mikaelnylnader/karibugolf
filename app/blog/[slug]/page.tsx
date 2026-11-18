@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     keywords: post.keywords,
     alternates: { canonical },
+    twitter: { card: "summary_large_image", title, description, images: [`https://karibugolf.com${post.image}`] },
     openGraph: {
       title,
       description,
@@ -67,7 +68,7 @@ export default async function Article({ params }: { params: Promise<{ slug: stri
         inLanguage: "en-KE",
         keywords: post.keywords?.join(", "),
         author: { "@type": "Organization", name: post.author ?? "Karibu Golf", url: "https://karibugolf.com/about/" },
-        publisher: { "@type": "Organization", name: "Karibu Golf", url: "https://karibugolf.com" },
+        publisher: { "@id": "https://karibugolf.com/#organization" },
         mainEntityOfPage: canonical,
         isPartOf: { "@type": "Blog", name: "The Karibu Journal", url: "https://karibugolf.com/blog/" },
         about: post.productSlug ? { "@type": "Product", url: `https://karibugolf.com/shop/product/${post.productSlug}/` } : undefined,

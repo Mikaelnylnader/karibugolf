@@ -21,6 +21,7 @@ export type BlogPost = {
 };
 
 const articleImages: Record<string, string> = {
+  "titleist-t200-irons-kenya-buying-guide": "/images/shop/clubs-editorial/t200-back.webp",
   "beginner-golf-nairobi": "/images/golf-moment.jpg",
   "cost-of-golf-kenya-budget": "/images/fairway-aerial.jpg",
   "first-golf-clubs-kenya": "/images/shop/categories-v2/golf_irons.webp",

@@ -34,3 +34,12 @@ for (const article of selected) {
 }
 
 console.log("Five product-led articles passed content and metadata validation.");
+
+const t200 = ironArticles.find((article) => article.slug === "titleist-t200-irons-kenya-buying-guide");
+const comparison = ironArticles.find((article) => article.slug === "p790-vs-t200-vs-ai-smoke-hl-kenya");
+assert(t200.content.includes("seven-club 4–PW set") && t200.content.includes("An approach wedge is not included."), "T200 article must match the seven-club product listing");
+assert(!/T200[^\n.]*4–PW plus|Karibu listing includes 4–PW and AW|Confirm all eight clubs/.test(t200.content), "T200 article must not include an approach wedge in the Karibu set");
+assert(comparison.content.includes("P790 and T200 listings are 4–PW sets, with seven clubs each"), "Comparison must distinguish T200 from the eight-club Ai Smoke HL set");
+assert(comparison.content.includes("Ai Smoke HL listing includes 4–PW plus an approach wedge, with eight clubs"), "Keep the separate Ai Smoke HL set composition");
+assert(!selected.some((article) => article.content.includes("](/blog/regular-stiff-senior-iron-flex-guide/)")), "Do not link the unpublished flex-guide draft");
+console.log("T200 set consistency and repaired flex-guide link passed.");

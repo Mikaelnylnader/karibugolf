@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { departmentMetadata } from "@/lib/site-seo";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, MessageCircle } from "lucide-react";
 import DepartmentScrollShell from "@/components/department-scroll-shell";
@@ -26,10 +27,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { department: slug } = await params;
   const selected = departmentBySlug(slug);
-  return {
-    title: selected ? `${selected.label} | Karibu Golf Shop` : "Department | Karibu Golf",
-    description: selected?.description,
-  };
+  if (!selected) notFound();
+  return departmentMetadata(selected.slug, selected.label, selected.image);
 }
 
 export default async function DepartmentPage({

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import Image from "next/image";
 
 
@@ -8,6 +9,7 @@ import "./campaign.css";
 import "./campaign-scroll.css";
 
 export const metadata: Metadata = {
+  ...pageMetadata("/campaign/", "Karibu Golf Campaign | A Game for Everyone", "Explore Karibu Golf's pre-launch plans for a Nairobi fitting studio, fair-priced golf equipment and community programmes, with four proposed backer rewards."),
   title: "Karibu Golf Campaign | A Game for Everyone",
   description: "Explore Karibu Golf's pre-launch plans for a Nairobi fitting studio, fair-priced golf equipment and community programmes, with four proposed backer rewards.",
   alternates: { canonical: "https://karibugolf.com/campaign/" },

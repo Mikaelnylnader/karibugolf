@@ -28,6 +28,7 @@ const shopRoutes = Object.entries(departments).flatMap(([department, categories]
 ]);
 const productRoutes = catalog.products.map((product) => `/shop/product/${product.slug}`);
 const productByRoute = new Map(catalog.products.map((product) => [`/shop/product/${product.slug}`, product]));
+const renderedProductImages = new Map();
 const blogRoutes = [
   ...inStockIronArticles.map((article) => `/blog/${article.slug}`),
   ...productArticles.filter((article) => selectedProductSlugs.has(article.slug)).map((article) => `/blog/${article.slug}`),
@@ -112,6 +113,10 @@ const xmlEscape = (value) => String(value)
   .replaceAll("'", "&apos;");
 
 const absoluteUrl = (value) => value.startsWith("http") ? value : `https://karibugolf.com${value}`;
+const isPublicImage = (image) => {
+  const url = new URL(absoluteUrl(image));
+  return url.protocol === "https:" && !(url.hostname === "karibugolf.com" && /^\/(api|admin)(\/|$)/i.test(url.pathname));
+};
 
 try {
   await waitForServer();
@@ -126,10 +131,21 @@ try {
       throw new Error(`Unable to export ${route}: HTTP ${response.status}`);
     }
     const html = hoistSeoMetadata(await response.text());
+    if (productByRoute.has(route)) {
+      const schemas = [...html.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)]
+        .flatMap((match) => { const data = JSON.parse(match[1]); return data["@graph"] ?? [data]; });
+      const productSchema = schemas.find((item) => item["@type"] === "Product");
+      const images = [...new Set((productSchema?.image ?? []).filter(isPublicImage))];
+      if (!images.length) throw new Error(`No public product images for ${route}`);
+      renderedProductImages.set(route, images);
+    }
+    // Netlify serves the coaching route in lowercase. Match its real URL in
+    // exported files, canonical tags, internal links, sitemap and llms.txt.
+    const publicRoute = route === "/Coaching" ? "/coaching" : route;
     const outputDir =
-      route === "/"
+      publicRoute === "/"
         ? publishDir
-        : path.join(publishDir, route.replace(/^\//, ""));
+        : path.join(publishDir, publicRoute.replace(/^\//, ""));
     await mkdir(outputDir, { recursive: true });
     await writeFile(path.join(outputDir, "index.html"), html, "utf8");
     process.stdout.write(`exported ${route}\n`);
@@ -139,10 +155,10 @@ try {
   const lastModified = new Date().toISOString().slice(0, 10);
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${canonicalRoutes
     .map((route) => {
-      const location = `https://karibugolf.com${route === "/" ? "/" : `${route}/`}`;
+      const location = `https://karibugolf.com${route === "/" ? "/" : `${route.toLowerCase()}/`}`;
       const product = productByRoute.get(route);
       const images = product
-        ? product.images.map((image) => `\n    <image:image><image:loc>${xmlEscape(absoluteUrl(image))}</image:loc></image:image>`).join("")
+        ? renderedProductImages.get(route).map((image) => `\n    <image:image><image:loc>${xmlEscape(absoluteUrl(image))}</image:loc></image:image>`).join("")
         : "";
       return `  <url><loc>${xmlEscape(location)}</loc><lastmod>${lastModified}</lastmod>${images}</url>`;
     })
@@ -174,7 +190,7 @@ try {
     "## Primary pages",
     "",
     "- [Shop](https://karibugolf.com/shop/): Browse the complete golf catalogue.",
-    "- [Golf coaching](https://karibugolf.com/Coaching/): Private lessons, swing assessments, junior coaching and corporate clinics in Nairobi.",
+    "- [Golf coaching](https://karibugolf.com/coaching/): Private lessons, swing assessments, junior coaching and corporate clinics in Nairobi.",
     "- [Campaign](https://karibugolf.com/campaign/): Pre-launch plans and proposed USD backer rewards; payments and reservations are not open.",
     "- [Current stock](https://karibugolf.com/shop/stock/): Browse products currently listed in stock.",
     "- [Contact Karibu Golf](https://karibugolf.com/contact/): Confirm availability, specifications and delivery in Kenya.",

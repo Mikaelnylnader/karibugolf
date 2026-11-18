@@ -1,5 +1,6 @@
 /* eslint-disable next/no-html-link-for-pages -- Published static pages use native navigation. */
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import MissionScrollShell from "@/components/mission-scroll-shell";
@@ -8,7 +9,8 @@ import "./mission.css";
 
 export const metadata: Metadata = {
   title: "Growing the Game in East Africa | Karibu Golf's Mission",
-  description: "Discover Karibu Golf's mission: equipment and personal guidance today, with future plans for junior golf, grassroots access, affordable equipment and responsible reuse in East Africa.",
+  ...pageMetadata("/growing-the-game/", "Growing the Game in East Africa | Karibu Golf's Mission", "Explore Karibu Golf's East Africa mission: equipment and personal guidance today, with future plans for junior golf, affordable access and responsible reuse."),
+  description: "Explore Karibu Golf's East Africa mission: equipment and personal guidance today, with future plans for junior golf, affordable access and responsible reuse.",
   alternates: { canonical: "https://karibugolf.com/growing-the-game/" },
 };
 

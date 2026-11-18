@@ -46,7 +46,7 @@ export function HomeCoachingSection() {
       <p className="micro">GOLF COACHING IN NAIROBI</p>
       <h2 id="home-coaching-title">YOUR GAME.<br/><em>YOUR NEXT STEP.</em></h2>
       <p>Personal golf lessons with Mikael Nylander. From your first swing to a more confident round, find coaching that meets you where you are.</p>
-      <a className="home-feature-link" href="/Coaching/">Explore golf lessons <ArrowUpRight size={21} aria-hidden="true"/></a>
+      <a className="home-feature-link" href="/coaching/">Explore golf lessons <ArrowUpRight size={21} aria-hidden="true"/></a>
     </div>
   </section>;
 }

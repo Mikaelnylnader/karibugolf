@@ -12,7 +12,7 @@ const expected = [
   "golf-courses-east-africa-guide",
 ];
 const expectedHeroImages = new Map([
-  ["titleist-t200-irons-kenya-buying-guide", "/api/product-images/3d1a5d94-02c6-4344-8ccb-c551654066cf-t200-1.png"],
+  ["titleist-t200-irons-kenya-buying-guide", "/images/shop/clubs-editorial/t200-back.webp"],
 ]);
 const browser = await chromium.launch({
   headless: true,

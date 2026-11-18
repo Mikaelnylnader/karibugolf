@@ -4,15 +4,15 @@ import { useEffect,useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ArrowUpRight,Plus,Minus } from "lucide-react";
-const links=[["Home","/"],["Shop","/shop"],["About Us","/about"],["Golf Coaching","/Coaching"],["Campaign","/campaign"],["Blog","/blog"],["Contact","/contact"]];
+const links=[["Home","/"],["Shop","/shop"],["About Us","/about"],["Golf Coaching","/coaching/"],["Campaign","/campaign"],["Blog","/blog"],["Contact","/contact"]];
 const talk="https://wa.me/254116416105?text="+encodeURIComponent("Hi Karibu Golf! I'd like to ask a question.");
 export default function SiteNav(){
  const path=usePathname();
  const [open,setOpen]=useState(false);
  useEffect(()=>{const f=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false);};window.addEventListener("keydown",f);return()=>window.removeEventListener("keydown",f);},[]);
- const isActive=(href:string)=>href==="/"?path==="/":path===href||path.startsWith(href+"/");
+ const isActive=(href:string)=>{const current=path.toLowerCase().replace(/\/$/,"")||"/";const target=href.toLowerCase().replace(/\/$/,"")||"/";return target==="/"?current==="/":current===target||current.startsWith(target+"/");};
  return <header className="nav persistent-nav">
-  <a className="identity" href="/" aria-label="Karibu Golf home"><Image unoptimized src="/images/karibu-badge.svg" alt="" width={40} height={40}/><span>KARIBU<span>GOLF EAST AFRICA</span></span></a>
+  <a className="identity" href="/" aria-label="Karibu Golf East Africa home"><Image unoptimized src="/images/karibu-badge.svg" alt="" width={40} height={40}/><span>KARIBU<span>GOLF EAST AFRICA</span></span></a>
   <nav className="nav-links" aria-label="Main navigation">{links.map(([label,href])=><a href={href} key={href} target={href==="/shop"?"_blank":undefined} rel={href==="/shop"?"noopener":undefined} aria-current={isActive(href)?"page":undefined}>{label}</a>)}</nav>
   <a className="nav-contact" href={talk}>LET’S TALK <ArrowUpRight size={17}/></a>
   <button className="nav-toggle" aria-label={open?"Close menu":"Open menu"} aria-expanded={open} aria-controls="small-menu" onClick={()=>setOpen(!open)}>{open?<Minus/>:<Plus/>}</button>

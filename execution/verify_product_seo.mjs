@@ -56,7 +56,7 @@ for (const product of catalog.products) {
       failures.push(`${label}: invalid JSON-LD`);
     }
   }
-  const graph = graphs[0] ?? [];
+  const graph = graphs.flat();
   const schema = (type) => graph.find((item) => item["@type"] === type);
   const productSchema = schema("Product");
   const faqSchema = schema("FAQPage");
@@ -87,12 +87,20 @@ for (const product of catalog.products) {
   const canonical = `https://karibugolf.com/shop/product/${product.slug}/`;
   check(sitemap.includes(`<loc>${canonical}</loc>`), `${product.slug}: missing from sitemap.xml`);
   check(llms.includes(`[${product.name}](${canonical})`), `${product.slug}: missing from llms.txt catalogue`);
-  for (const image of product.images) {
-    const absolute = image.startsWith("http") ? image : `https://karibugolf.com${image}`;
+  // The authored gallery is the reviewed image source, not old admin uploads
+  // that may still be present in the fallback catalogue's image array.
+  const html = await loadText(["shop", "product", product.slug, "index.html"], `/shop/product/${product.slug}/`);
+  const graph = [...html.matchAll(/<script\s+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
+  const images = graph.find((entry) => entry["@type"] === "Product")?.image ?? [];
+  check(images.length > 0, `${product.slug}: missing authored product images`);
+  for (const absolute of images) {
+    check(!/^https:\/\/karibugolf\.com\/(api|admin)\//i.test(absolute), `${product.slug}: product image is crawler-blocked`);
     const escaped = absolute.replaceAll("&", "&amp;");
-    check(sitemap.includes(`<image:loc>${escaped}</image:loc>`), `${product.slug}: image missing from sitemap.xml (${image})`);
+    check(sitemap.includes(`<image:loc>${escaped}</image:loc>`), `${product.slug}: image missing from sitemap.xml (${absolute})`);
   }
 }
+
+check(!/<image:loc>https:\/\/karibugolf\.com\/(?:api|admin)\//i.test(sitemap), "sitemap.xml: contains a crawler-blocked image");
 
 if (failures.length > 0) {
   console.error(`Product SEO verification failed with ${failures.length} issue(s):`);

@@ -1,17 +1,19 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site-seo';
 import GolfLessons from '@/components/golf-lessons';
 import './coaching.css';
 
 export const metadata: Metadata = {
+  ...pageMetadata('/coaching/', 'Golf Coaching in Nairobi | Karibu Golf', 'Private golf coaching in Nairobi with Mikael Nylander. Explore swing assessments, private lessons, junior golf coaching and corporate golf clinics.'),
   title: 'Golf Coaching in Nairobi | Karibu Golf',
   description:
     'Private golf coaching in Nairobi with Mikael Nylander. Explore swing assessments, private lessons, junior golf coaching and corporate golf clinics.',
-  alternates: { canonical: 'https://karibugolf.com/Coaching/' },
+  alternates: { canonical: 'https://karibugolf.com/coaching/' },
   openGraph: {
     title: 'Golf Coaching in Nairobi | Karibu Golf',
     description:
       'Personal golf coaching for beginners, juniors and experienced players in Nairobi, Kenya.',
-    url: 'https://karibugolf.com/Coaching/',
+    url: 'https://karibugolf.com/coaching/',
     type: 'website',
     images: ['https://karibugolf.com/images/fairway-aerial.jpg'],
   },
@@ -23,7 +25,7 @@ const coachingSchema = {
   name: 'Karibu Golf Coaching',
   description:
     'Private golf lessons, swing assessments, junior coaching and corporate golf clinics in Nairobi.',
-  url: 'https://karibugolf.com/Coaching/',
+  url: 'https://karibugolf.com/coaching/',
   areaServed: { '@type': 'City', name: 'Nairobi' },
   provider: {
     '@type': 'Organization',

@@ -30,7 +30,7 @@ async function addBrowserAssets(directory, relative = "/_next") {
 await addBrowserAssets(path.join(publishRoot, "_next"));
 const home = await readFile(path.join(publishRoot, "index.html"), "utf8");
 if (!home.includes('id="home-coaching"') || !home.includes('id="home-campaign"')) throw new Error("Approved homepage sections are missing");
-if (!home.includes('href="/Coaching/"') || !home.includes('href="/campaign/"')) throw new Error("Approved links are missing");
+if (!home.includes('href="/coaching/"') || !home.includes('href="/campaign/"')) throw new Error("Approved links are missing");
 const cliRoot = path.join(process.env.APPDATA, "npm", "node_modules", "netlify-cli");
 const [{ NetlifyAPI }, { zipFunctions }] = await Promise.all([
   import(pathToFileURL(path.join(cliRoot, "dist", "index.js"))),

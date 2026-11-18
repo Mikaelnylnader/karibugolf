@@ -1,6 +1,7 @@
 
 /* eslint-disable next/no-html-link-for-pages -- Static export uses native navigation without an RSC prefetch server. */
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site-seo";
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
@@ -9,8 +10,7 @@ import "../shop/scrollcraft.css";
 import "./scrollcraft.css";
 
 export const metadata: Metadata = {
-  title: "About Karibu Golf | Mikael Nylander & Our Golf Community",
-  description: "Meet founder Mikael Nylander, discover his professional golf and coaching experience, and explore Karibu Golf customer gatherings and driving range clinics in Nairobi.",
+  ...pageMetadata("/about/", "About Karibu Golf | Mikael Nylander & Our Golf Community", "Meet Karibu Golf founder Mikael Nylander, explore his playing and coaching background, and learn about our Nairobi golf community and future clinics."),
 };
 
 const clinicInquiry = "https://wa.me/254116416105?text=" + encodeURIComponent("Hi Karibu Golf! I'd like to hear about the next Nairobi driving range clinic and your customer VIP group.");
